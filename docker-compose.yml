@@ -1,0 +1,28 @@
+services:
+  db:
+    image: mysql:9.3
+    container_name: tfg-mysql
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
+
+  spring-boot:
+    build:
+      context: ./spring-boot
+      dockerfile: Dockerfile
+    container_name: tfg-spring-boot
+    restart: always
+    env_file: .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:${MYSQL_DOCKER_PORT}/${MYSQL_DATABASE}
+    depends_on:
+      - db
+    ports:
+      - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
+
+volumes:
+  db_data:

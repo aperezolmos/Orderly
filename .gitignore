@@ -1,0 +1,37 @@
+.env
+
+spring-boot/target/
+spring-boot/build/
+
+spring-boot/.mvn/wrapper/maven-wrapper.jar
+
+!spring-boot/src/main/**/target/
+!spring-boot/src/test/**/target/
+!spring-boot/src/main/**/build/
+!spring-boot/src/test/**/build/
+
+
+### STS (Eclipse) ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
