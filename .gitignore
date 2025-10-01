@@ -1,12 +1,17 @@
 .env
 
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+spring-boot/target/
+spring-boot/build/
 
-### STS ###
+spring-boot/.mvn/wrapper/maven-wrapper.jar
+
+!spring-boot/src/main/**/target/
+!spring-boot/src/test/**/target/
+!spring-boot/src/main/**/build/
+!spring-boot/src/test/**/build/
+
+
+### STS (Eclipse) ###
 .apt_generated
 .classpath
 .factorypath
@@ -27,9 +32,6 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
