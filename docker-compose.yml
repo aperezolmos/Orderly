@@ -13,6 +13,7 @@ services:
   spring-boot:
     build:
       context: ./spring-boot
+      dockerfile: Dockerfile
     container_name: tfg-spring-boot
     restart: always
     env_file: .env
