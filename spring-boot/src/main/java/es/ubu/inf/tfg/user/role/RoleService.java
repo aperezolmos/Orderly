@@ -3,17 +3,17 @@ package es.ubu.inf.tfg.user.role;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class RoleService {
     
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
     
 
     public List<Role> findAll() {
