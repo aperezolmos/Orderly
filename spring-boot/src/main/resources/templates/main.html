@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Página principal</title>
+</head>
+<body>
+    <div th:if="${loggedIn}">
+        <p>Username: <span th:text="${username}"></span></p>
+        <p>Rol: <span th:text="${role}"></span></p>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Cerrar sesión</button>
+        </form>
+    </div>
+    <div th:if="${!loggedIn}">
+        <p>No estás registrado.</p>
+        <a th:href="@{/login}"><button>Ir a Login</button></a>
+    </div>
+</body>
+</html>
