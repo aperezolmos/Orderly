@@ -19,8 +19,22 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable()) // Deshabilita CSRF para facilitar pruebas con Postman
-            .authorizeHttpRequests(requests -> requests
-                    .anyRequest().permitAll()); // Permite todas las solicitudes sin autenticación -> TODO: cambiar tras pruebas
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/login", "/css/**", "/js/**").permitAll()
+                .anyRequest().permitAll()  // Permite todas las solicitudes sin autenticación -> TODO: cambiar tras pruebas
+                //.anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+            );
+            
         return http.build();
     }
 }
