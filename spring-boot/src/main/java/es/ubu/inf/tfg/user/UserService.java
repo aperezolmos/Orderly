@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
@@ -24,9 +25,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    //TODO: passwordencoder
-    
 
     public List<UserResponseDTO> findAll() {
         return userRepository.findAll().stream()
@@ -63,7 +63,7 @@ public class UserService {
                 .username(userRequest.getUsername())
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName())
-                .password(userRequest.getPassword())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
                 .role(role)
                 .build();
         
@@ -87,7 +87,7 @@ public class UserService {
         existingUser.setLastName(userUpdate.getLastName());
 
         if (userUpdate.getPassword() != null) {
-            existingUser.setPassword(userUpdate.getPassword());
+            existingUser.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         }
         if (userUpdate.getRoleId() != null) {
             Role role = roleRepository.findById(userUpdate.getRoleId())
