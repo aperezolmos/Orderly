@@ -28,23 +28,39 @@ public class RoleService {
         return roleRepository.findByName(name);
     }
 
-    public boolean existsById(Integer id) {
-        return roleRepository.existsById(id);
+    public boolean existsByName(String name) {
+        return roleRepository.existsByName(name);
     }
 
     // --------------------------------------------------------
     
     public Role save(Role role) {
-        if (roleRepository.existsByName(role.getName())) {
+        if (existsByName(role.getName())) {
             throw new IllegalArgumentException("Ya existe un rol con el nombre: " + role.getName());
         }
         return roleRepository.save(role);
     }
 
-    // TODO: update¿?
+    public Role update(Integer id, Role role) {
+        
+        Role existingRole = findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id));
+        
+        if (!existingRole.getName().equals(role.getName()) && existsByName(role.getName())) {
+            throw new IllegalArgumentException("Ya existe un rol con el nombre: " + role.getName());
+        }
+        
+        if (role.getName() != null) {
+            existingRole.setName(role.getName());
+        }
+        existingRole.setDescription(role.getDescription());
+        
+        return roleRepository.save(existingRole);
+    }
     
     public void delete(Integer id) {
-        Role role = roleRepository.findById(id)
+        
+        Role role = findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id));
         
         if (!role.getUsers().isEmpty()) {

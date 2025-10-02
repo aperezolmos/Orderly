@@ -31,6 +31,6 @@ public class UserRequestDTO {
 
     //TODO: confirmar contraseña?? -> o dto aparte para registro
 
-    //@NotNull(message = "Role ID es obligatorio")
+    @NotNull(message = "Role ID es obligatorio")
     private Integer roleId;
 }

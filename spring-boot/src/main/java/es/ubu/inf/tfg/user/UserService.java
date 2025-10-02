@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
+import es.ubu.inf.tfg.user.dto.UserUpdateDTO;
 import es.ubu.inf.tfg.user.mapper.UserMapper;
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.RoleRepository;
@@ -70,8 +71,34 @@ public class UserService {
         return userMapper.toResponseDTO(savedUser);
     }
     
-    // TODO: update
-    
+    public UserResponseDTO update(Integer id, UserUpdateDTO userUpdate) {
+        
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id));
+        
+        if (userUpdate.getUsername() != null && !userUpdate.getUsername().equals(existingUser.getUsername())) {
+            if (userRepository.existsByUsername(userUpdate.getUsername())) {
+                throw new IllegalArgumentException("El username ya está en uso: " + userUpdate.getUsername());
+            }
+            existingUser.setUsername(userUpdate.getUsername());
+        }
+        
+        existingUser.setFirstName(userUpdate.getFirstName());
+        existingUser.setLastName(userUpdate.getLastName());
+
+        if (userUpdate.getPassword() != null) {
+            existingUser.setPassword(userUpdate.getPassword());
+        }
+        if (userUpdate.getRoleId() != null) {
+            Role role = roleRepository.findById(userUpdate.getRoleId())
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userUpdate.getRoleId()));
+            existingUser.setRole(role);
+        }
+        
+        User updatedUser = userRepository.save(existingUser);
+        return userMapper.toResponseDTO(updatedUser);
+    }
+
     public void delete(Integer id) {
         if (!userRepository.existsById(id)) {
             throw new IllegalArgumentException("Usuario no encontrado con ID: " + id);
