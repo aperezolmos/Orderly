@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h2>Registro de Usuario</h2>
+    <form th:action="@{/register}" th:object="${userRegisterDTO}" method="post">
+        <div>
+            <label>Nombre de usuario:</label>
+            <input type="text" th:field="*{username}" />
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+        <div>
+            <label>Nombre:</label>
+            <input type="text" th:field="*{firstName}" />
+            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        </div>
+        <div>
+            <label>Apellido:</label>
+            <input type="text" th:field="*{lastName}" />
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        </div>
+        <div>
+            <label>Contraseña:</label>
+            <input type="password" th:field="*{password}" />
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+        <div>
+            <label>Confirmar contraseña:</label>
+            <input type="password" th:field="*{confirmPassword}" />
+            <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+        </div>
+        <div th:if="${errorMessage}">
+            <span th:text="${errorMessage}" style="color:red"></span>
+        </div>
+        <div th:if="${successMessage}">
+            <span th:text="${successMessage}" style="color:green"></span>
+        </div>
+        <button type="submit">Registrarse</button>
+    </form>
+    <a th:href="@{/login}">¿Ya tienes cuenta? Inicia sesión</a>
+</body>
+</html>

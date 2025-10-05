@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // Deshabilita CSRF para facilitar pruebas con Postman
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
                 .anyRequest().permitAll()  // Permite todas las solicitudes sin autenticación -> TODO: cambiar tras pruebas
                 //.anyRequest().authenticated()
             )
