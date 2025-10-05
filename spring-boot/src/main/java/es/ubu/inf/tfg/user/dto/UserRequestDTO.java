@@ -8,11 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserRequestDTO {
-
-    //TODO: incluir después las restricciones de tamaño y estilo
-    
+   
     @NotBlank(message = "Username es obligatorio")
-    //@Size(min = 3, max = 50, message = "Username debe tener entre 3 y 50 caracteres")
+    @Size(min = 3, max = 50, message = "Username debe tener entre 3 y 50 caracteres")
     private String username;
 
     @NotBlank(message = "Nombre es obligatorio")
@@ -24,12 +22,8 @@ public class UserRequestDTO {
     private String lastName;
 
     @NotBlank(message = "Password es obligatorio")
-    /*@Size(min = 6, message = "Password debe tener al menos 6 caracteres")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", 
-             message = "Password debe contener al menos una mayúscula, una minúscula y un número")*/ //TODO: incluir después
+    @Size(min = 4, message = "Password debe tener al menos 4 caracteres")
     private String password;
-
-    //TODO: confirmar contraseña?? -> o dto aparte para registro
 
     @NotNull(message = "Role ID es obligatorio")
     private Integer roleId;
