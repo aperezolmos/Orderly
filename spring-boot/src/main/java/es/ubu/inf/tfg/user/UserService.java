@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.user.dto.UserRegisterDTO;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
 import es.ubu.inf.tfg.user.dto.UserUpdateDTO;
@@ -67,6 +68,33 @@ public class UserService {
                 .role(role)
                 .build();
         
+        User savedUser = userRepository.save(user);
+        return userMapper.toResponseDTO(savedUser);
+    }
+
+    public UserResponseDTO register(UserRegisterDTO registerDTO) {
+        
+        if (userRepository.existsByUsername(registerDTO.getUsername())) {
+            throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
+        }
+
+        if (!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden.");
+        }
+
+        // Por defecto, los usuarios tendrán ROLE_USER
+        // TODO: cambiar -> cuando se implementen varios roles para un mismo usuario
+        Role roleUser = roleRepository.findByName("ROLE_USER")
+            .orElseThrow(() -> new IllegalArgumentException("Rol ROLE_USER no encontrado."));
+        
+            User user = User.builder()
+            .username(registerDTO.getUsername())
+            .firstName(registerDTO.getFirstName())
+            .lastName(registerDTO.getLastName())
+            .password(passwordEncoder.encode(registerDTO.getPassword()))
+            .role(roleUser)
+            .build();
+            
         User savedUser = userRepository.save(user);
         return userMapper.toResponseDTO(savedUser);
     }
