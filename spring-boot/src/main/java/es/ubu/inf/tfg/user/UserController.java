@@ -12,11 +12,13 @@ import es.ubu.inf.tfg.user.dto.UserResponseDTO;
 import es.ubu.inf.tfg.user.dto.UserUpdateDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class UserController {
     
     private final UserService userService;
@@ -46,9 +48,13 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userRequest) {
         try {
             UserResponseDTO createdUser = userService.create(userRequest);
+            log.info("Usuario creado exitosamente con ID: {} y username: {}", 
+                        createdUser.getId(), createdUser.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } 
         catch (IllegalArgumentException e) {
+            log.error("Error al crear usuario - {}: {}", e.getClass().getSimpleName(), e.getMessage());
+            log.debug("Stack trace completo del error:", e);
             return ResponseEntity.badRequest().build();
         }
     }
@@ -59,9 +65,13 @@ public class UserController {
             @Valid @RequestBody UserUpdateDTO userUpdate) {
         try {
             UserResponseDTO updatedUser = userService.update(id, userUpdate);
+            log.info("Usuario actualizado exitosamente con ID: {}", id);
             return ResponseEntity.ok(updatedUser);
         } 
         catch (IllegalArgumentException e) {
+            log.error("Error al actualizar usuario con ID {} - {}: {}", 
+                     id, e.getClass().getSimpleName(), e.getMessage());
+            log.debug("Stack trace completo del error:", e);
             return ResponseEntity.notFound().build();
         }
     }
@@ -70,9 +80,13 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         try {
             userService.delete(id);
+            log.info("Usuario eliminado exitosamente con ID: {}", id);
             return ResponseEntity.noContent().build();
         }
         catch (IllegalArgumentException e) {
+            log.error("Error al eliminar usuario con ID {} - {}: {}", 
+                        id, e.getClass().getSimpleName(), e.getMessage());
+            log.debug("Stack trace completo del error:", e);
             return ResponseEntity.notFound().build();
         }
     }
