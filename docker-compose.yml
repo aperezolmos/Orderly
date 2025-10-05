@@ -8,6 +8,12 @@ services:
       - "${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      timeout: 10s
+      retries: 10
+      interval: 5s
+      start_period: 10s
 
   spring-boot:
     build:
@@ -19,7 +25,8 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:${MYSQL_DOCKER_PORT}/${MYSQL_DATABASE}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
 
