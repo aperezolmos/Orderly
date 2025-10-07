@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar usuario</title>
+</head>
+<body>
+    <h2>Editando usuario: <span th:text="${user.username}"></span></h2>
+    <form th:action="@{'/users/' + ${user.id} + '/edit'}" th:object="${userEditDTO}" method="post">
+        <div>
+            <label>Nombre de usuario:</label>
+            <input type="text" th:field="*{username}" />
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+        <div>
+            <label>Nombre:</label>
+            <input type="text" th:field="*{firstName}" />
+            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+        </div>
+        <div>
+            <label>Apellido:</label>
+            <input type="text" th:field="*{lastName}" />
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+        </div>
+        <div>
+            <label>Nueva contraseña:</label>
+            <input type="password" th:field="*{password}" />
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+        <div>
+            <label>Confirmar nueva contraseña:</label>
+            <input type="password" th:field="*{confirmPassword}" />
+        </div>
+        <div th:if="${isSelfEdit}">
+            <label>Contraseña actual:</label>
+            <input type="password" th:field="*{currentPassword}" />
+        </div>
+        <div th:if="${isAdmin}">
+            <label>Rol:</label>
+            <select th:field="*{roleId}">
+                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${role.id == user.roleId}"></option>
+            </select>
+        </div>
+        <div th:if="${errorMessage}">
+            <span th:text="${errorMessage}" style="color:red"></span>
+        </div>
+        <div th:if="${successMessage}">
+            <span th:text="${successMessage}" style="color:green"></span>
+        </div>
+        <button type="submit">Guardar cambios</button>
+    </form>
+    <a th:href="@{/}">Volver a inicio</a>
+</body>
+</html>
