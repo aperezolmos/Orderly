@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.user.dto.UserEditDTO;
 import es.ubu.inf.tfg.user.dto.UserRegisterDTO;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
@@ -125,6 +126,42 @@ public class UserService {
         
         User updatedUser = userRepository.save(existingUser);
         return userMapper.toResponseDTO(updatedUser);
+    }
+
+    public UserResponseDTO edit(Integer editorId, Integer targetId, UserEditDTO userEditDTO) {
+        
+        User editor = userRepository.findById(editorId)
+            .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado con ID: " + editorId));
+        User target = userRepository.findById(targetId)
+            .orElseThrow(() -> new IllegalArgumentException("Usuario a editar no encontrado con ID: " + targetId));
+
+        boolean isAdmin = editor.getRole().getName().equals("ROLE_ADMIN");
+        boolean isSelfEdit = editorId.equals(targetId); // TODO: Trasladar lógica¿?
+
+        // Validaciones de negocio específicas del formulario
+        if (userEditDTO.getPassword() != null && !userEditDTO.getPassword().isBlank()) {
+            // Si el editor es el propio usuario, debe introducir la contraseña actual
+            if (isSelfEdit) {
+                if (userEditDTO.getCurrentPassword() == null ||
+                    !passwordEncoder.matches(userEditDTO.getCurrentPassword(), target.getPassword())) {
+                    throw new IllegalArgumentException("La contraseña actual es incorrecta.");
+                }
+            }
+            // Confirmar nueva contraseña
+            if (userEditDTO.getConfirmPassword() == null ||
+                !userEditDTO.getPassword().equals(userEditDTO.getConfirmPassword())) {
+                throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
+            }
+        }
+
+        UserUpdateDTO userUpdateDTO = userMapper.toUpdateDTO(userEditDTO);
+
+        // Solo admins pueden cambiar el rol
+        if (!isAdmin) {
+            userUpdateDTO.setRoleId(null);
+        }
+
+        return update(targetId, userUpdateDTO);
     }
 
     public void delete(Integer id) {
