@@ -2,11 +2,51 @@
 
 \section{Introducción}
 
+\todo[inline]{Pendiente escribir.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Planificación temporal}
+
+\todo[inline]{Pendiente escribir.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{\textit{Sprint} 1}
+
+Duración: 25/09/2025 - 02/10/2025
+
+Este \textit{sprint} se centró en crear la infraestructura inicial de la aplicación, añadiendo las dependencias y los archivos de configuración necesarios para levantar la aplicación \textit{Spring Boot}. Una vez creada, se empezó a implementar la gestión de usuarios y roles, definiendo las entidades y métodos pertinentes para, como mínimo, realizar operaciones CRUD sobre ellos.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/2?closed=1}{\textbf{Sprint 1}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Creación del proyecto \textit{Spring Boot}:} Se configuró un proyecto base con las dependencias listadas en <agregar ref>\todo{Agregar ref de apartado dependencias}.
+	\item \textbf{Generación del \texttt{docker-compose.yml}:} Se creó dicho archivo para orquestar los contenedores de \textit{MySQL} y \textit{Spring Boot}. La imagen de la aplicación \textit{Spring Boot} se creó a partir de su propio \texttt{Dockerfile}. Se añadió un archivo de inicialización de la base de datos y se comprobó que ambos servicios podían comunicarse entre sí.
+	\item \textbf{Creación de las entidades \texttt{User} y \texttt{Role} \todo{Referencia a anexo C -> diseño de datos¿?}:} Se definieron las entidades JPA y las tablas SQL del archivo de inicialización. Se estableció inicialmente que los usuarios solo puedan tener un rol. En iteraciones futuras, se agregará la funcionalidad de tener múltiples roles.
+	\item \textbf{Implementación de operaciones CRUD sobre usuarios y roles:} Se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades.
+	\item \textbf{Configuración de \textit{Spring Security}:} Se adaptaron las entidades \texttt{User} para poder autenticarse en la aplicación mediante \textit{Spring Security} y controlar el acceso a cada \textit{endpoint} según los roles.
+	\item \textbf{Creación de formulario de \textit{login} básico:} Un inicio de sesión mediante usuario y contraseña, en el que se muestran mensajes descriptivos en caso de error.
+	\item \textbf{Generación de pruebas de integración:} Se generaron pruebas básicas de integración para el repositorio y servicio de usuarios. Sirvieron para familiarizarse con los tipos de pruebas y anotaciones de \textit{Spring Boot}.
+\end{itemize}
+
+\missingfigure{Lista de issues del sprint 1? O un gráfico de commits o burn down}
+
+\subsubsection{Revisión}
+
+Se acordó, para el siguiente \textit{sprint}, seguir implementando los aspectos restantes relativos a la gestión de usuarios en la aplicación, para poder dar prácticamente por acabada esa funcionalidad. Se comentó también el tema de la \textbf{internacionalización} de la aplicación, y cómo sería beneficioso intentar implementarlo desde el primer momento.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Estudio de viabilidad}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Viabilidad económica}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Viabilidad legal}
 
