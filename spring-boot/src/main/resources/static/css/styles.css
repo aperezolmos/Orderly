@@ -1,0 +1,26 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+}
+
+.alert {
+    border-radius: 8px;
+}
+
+.invalid-feedback {
+    font-size: 0.95em;
+    margin-top: 2px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
