@@ -12,6 +12,38 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection{\textit{Sprint} 0}
+
+Duración: 18/09/2025 - 25/09/2025
+
+Este primer \textit{sprint} abarca las tareas de investigación y definición inicial, enfocadas en determinar el alcance mínimo del proyecto, junto con las tecnologías y recursos a utilizar.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/1?closed=1}{\textbf{Sprint 0}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Creación del repositorio:} Se configuró el repositorio de \textit{GitHub} para el control de versiones. Utilizando \textit{GitHub Projects}, se asoció un proyecto a dicho repositorio para la gestión y mantenimiento de las tareas de cada \textit{sprint}.
+	\item \textbf{Creación de los \textit{epics}\todo{ref de qué son¿?}:} Se definieron \textit{issues} principales para estructurar el proyecto en áreas funcionales (desarrollo, \textit{testing}, documentación) y agrupar tareas relacionadas, agilizando el acceso y el seguimiento del progreso.
+	\item \textbf{Definición del \textit{stack} tecnológico:} Se eligió \textit{\textbf{Spring Boot}} (con \textit{Spring Security} y \textit{Spring Data JPA}) para el \textit{backend} y la lógica de negocio, junto con \textit{\textbf{MySQL}} como base de datos. Para el \textit{frontend}, se optó por \textit{\textbf{Thymeleaf}}, que facilita la generación de vistas HTML dinámicas desde el servidor. Finalmente, se seleccionó \textit{\textbf{Docker}} para los contenedores de la aplicación y la base de datos, asegurando un despliegue portable y reproducible.
+	\item \textbf{Estudio y evaluación de APIs nutricionales:} Se realizó una comparativa entre varias APIs de alimentos. La API elegida fue \textit{Nutritionix}\todo{ref?}. Los criterios de elección y el resto de candidatas pueden verse en el \textit{issue} \href{https://github.com/aperezolmos/tfg-aperezolmos/issues/10}{\#10}.
+	\item \textbf{Revisión de trabajos previos y TFGs relacionados:} ...NutriMenu...\todo{referencia bibliografía}
+	\todo[inline]{Pendiente completar.}
+	\item \textbf{Análisis de integración con plataformas de \textit{delivery}:} Se investigó acerca de los requisitos necesarios para obtener claves de acceso a las APIs de distintas plataformas de \textit{delivery}. Se terminó por concluir que esta integración se pospondría para etapas más avanzadas del desarrollo, en caso de que se dispusiera del tiempo necesario.
+\end{itemize}
+
+\missingfigure{Lista de issues del sprint 0? O un gráfico de commits o burn down}
+
+\subsubsection{Revisión}
+
+Como la API de \textit{Nutritionix} no proporciona directamente datos de alérgenos, se valoró la idea de \textbf{``\textit{mapear}'' los alérgenos} en base a los ingredientes, mediante un modelo de reglas y una lista predefinida de alérgenos. Se planteó la posibilidad de que existiese algún recurso \textit{online} que ofreciese esta información (para no tener que generarlo manualmente), por lo que se propuso investigar acerca de su disponibilidad.
+
+Otro aspecto que se trató en relación con la API fue la gestión eficiente de las llamadas. Debido a que existe un límite mensual, se propuso la idea de \textbf{almacenar temporalmente} (``\textit{cachear}'') la \textbf{información de los productos} en nuestra base de datos local. De esta forma, si un usuario consultara un producto que ya hubiese sido buscado previamente, el sistema recuperaría los datos de nuestro almacén local en lugar de hacer una nueva solicitud a la API. Para asegurar que la información esté siempre actualizada, los datos almacenados podrían tener un \textbf{periodo de validez}. Una vez superado este tiempo, la aplicación forzaría una nueva llamada a la API para refrescar la información.
+
+Se acordó, para el siguiente \textit{sprint}, comenzar el desarrollo de la aplicación, empezando por la infraestructura de usuarios y roles.
+
+%---------------------------------------------------------------
+
 \subsection{\textit{Sprint} 1}
 
 Duración: 25/09/2025 - 02/10/2025
