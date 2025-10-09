@@ -13,6 +13,16 @@ h2 {
 
 .alert {
     border-radius: 8px;
+    font-size: 1em;
+    margin-bottom: 1rem;
+}
+
+.btn-success, .btn-primary, .btn-danger, .btn-secondary {
+    min-width: 100px;
+}
+
+.table th, .table td {
+    vertical-align: middle !important;
 }
 
 .invalid-feedback {

@@ -25,4 +25,6 @@ public class UserRegisterDTO {
 
     @NotBlank(message = "Debe confirmar la contraseña")
     private String confirmPassword;
+
+    private Integer roleId; // Solo para admins
 }
