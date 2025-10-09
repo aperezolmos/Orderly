@@ -37,11 +37,17 @@ public class UserEditController {
         boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
         boolean isSelfEdit = editor.getId().equals(user.getId());
 
+        // Restricción de acceso
+        if (!isAdmin && !isSelfEdit) {
+            return "redirect:/access-denied";
+        }
+
         UserEditDTO userEditDTO = UserEditDTO.builder()
             .username(user.getUsername())
             .firstName(user.getFirstName())
             .lastName(user.getLastName())
-            .roleId(isAdmin ? user.getRoleName() != null ? user.getId() : null : null)
+            // Solo admins pueden editar rol
+            .roleId(isAdmin ? user.getRoleId() : null)
             .build();
 
         model.addAttribute("userEditDTO", userEditDTO);
@@ -73,6 +79,11 @@ public class UserEditController {
 
         boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
         boolean isSelfEdit = editor.getId().equals(user.getId());
+
+        // Restricción de acceso
+        if (!isAdmin && !isSelfEdit) {
+            return "redirect:/access-denied";
+        }
 
         model.addAttribute("user", user);
         model.addAttribute("isAdmin", isAdmin);
