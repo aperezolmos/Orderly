@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import es.ubu.inf.tfg.TfgApplication;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
-import es.ubu.inf.tfg.user.dto.UserUpdateDTO;
 //import es.ubu.inf.tfg.user.mapper.UserMapper;
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.RoleRepository;
@@ -57,6 +56,7 @@ class UserServiceTest {
                 .firstName("New")
                 .lastName("User")
                 .password("Password123")
+                .confirmPassword("Password123")
                 .roleId(role.getId())
                 .build();
 
@@ -73,6 +73,7 @@ class UserServiceTest {
                 .firstName("Dup")
                 .lastName("User")
                 .password("Password123")
+                .confirmPassword("Password123")
                 .roleId(role.getId())
                 .build();
 
@@ -88,6 +89,7 @@ class UserServiceTest {
                 .firstName("Find")
                 .lastName("Me")
                 .password("Password123")
+                .confirmPassword("Password123")
                 .roleId(role.getId())
                 .build();
 
@@ -108,16 +110,18 @@ class UserServiceTest {
                 .firstName("Update")
                 .lastName("User")
                 .password("Password123")
+                .confirmPassword("Password123")
                 .roleId(role.getId())
                 .build();
 
         var created = userService.create(dto);
 
-        UserUpdateDTO updateDTO = UserUpdateDTO.builder()
+        UserRequestDTO updateDTO = UserRequestDTO.builder()
                 .username("updateduser")
                 .firstName("Updated")
                 .lastName("User")
                 .password("NewPassword123")
+                .confirmPassword("NewPassword123")
                 .roleId(role.getId())
                 .build();
 
@@ -134,6 +138,7 @@ class UserServiceTest {
                 .firstName("Delete")
                 .lastName("User")
                 .password("Password123")
+                .confirmPassword("Password123")
                 .roleId(role.getId())
                 .build();
 

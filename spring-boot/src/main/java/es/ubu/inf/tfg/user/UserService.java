@@ -7,11 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import es.ubu.inf.tfg.user.dto.UserEditDTO;
-import es.ubu.inf.tfg.user.dto.UserRegisterDTO;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
-import es.ubu.inf.tfg.user.dto.UserUpdateDTO;
 import es.ubu.inf.tfg.user.mapper.UserMapper;
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.RoleRepository;
@@ -53,13 +50,17 @@ public class UserService {
     // --------------------------------------------------------
     
     public UserResponseDTO create(UserRequestDTO userRequest) {
-
+        // Validaciones de grupo OnCreate
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             throw new IllegalArgumentException("El username ya está en uso: " + userRequest.getUsername());
         }
 
         Role role = roleRepository.findById(userRequest.getRoleId())
                 .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequest.getRoleId()));
+        
+        if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden.");
+        }
         
         User user = User.builder()
                 .username(userRequest.getUsername())
@@ -73,8 +74,8 @@ public class UserService {
         return userMapper.toResponseDTO(savedUser);
     }
 
-    public UserResponseDTO register(UserRegisterDTO registerDTO) {
-        
+    public UserResponseDTO register(UserRequestDTO registerDTO) {
+        // Igual que create, pero roleId se asigna por defecto
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
             throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
         }
@@ -88,20 +89,20 @@ public class UserService {
         Role roleUser = roleRepository.findByName("ROLE_USER")
             .orElseThrow(() -> new IllegalArgumentException("Rol ROLE_USER no encontrado."));
         
-            User user = User.builder()
-            .username(registerDTO.getUsername())
-            .firstName(registerDTO.getFirstName())
-            .lastName(registerDTO.getLastName())
-            .password(passwordEncoder.encode(registerDTO.getPassword()))
-            .role(roleUser)
-            .build();
+        User user = User.builder()
+                .username(registerDTO.getUsername())
+                .firstName(registerDTO.getFirstName())
+                .lastName(registerDTO.getLastName())
+                .password(passwordEncoder.encode(registerDTO.getPassword()))
+                .role(roleUser)
+                .build();
             
         User savedUser = userRepository.save(user);
         return userMapper.toResponseDTO(savedUser);
     }
     
-    public UserResponseDTO update(Integer id, UserUpdateDTO userUpdate) {
-        
+    public UserResponseDTO update(Integer id, UserRequestDTO userUpdate) {
+        // Validaciones de grupo OnUpdate
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id));
         
@@ -115,7 +116,10 @@ public class UserService {
         existingUser.setFirstName(userUpdate.getFirstName());
         existingUser.setLastName(userUpdate.getLastName());
 
-        if (userUpdate.getPassword() != null) {
+        if (userUpdate.getPassword() != null && !userUpdate.getPassword().isBlank()) {
+            if (!userUpdate.getPassword().equals(userUpdate.getConfirmPassword())) {
+                throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
+            }
             existingUser.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         }
         if (userUpdate.getRoleId() != null) {
@@ -128,7 +132,7 @@ public class UserService {
         return userMapper.toResponseDTO(updatedUser);
     }
 
-    public UserResponseDTO edit(Integer editorId, Integer targetId, UserEditDTO userEditDTO) {
+    public UserResponseDTO edit(Integer editorId, Integer targetId, UserRequestDTO userEditDTO) {
         
         User editor = userRepository.findById(editorId)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado con ID: " + editorId));
@@ -154,14 +158,12 @@ public class UserService {
             }
         }
 
-        UserUpdateDTO userUpdateDTO = userMapper.toUpdateDTO(userEditDTO);
-
         // Solo admins pueden cambiar el rol
         if (!isAdmin) {
-            userUpdateDTO.setRoleId(null);
+            userEditDTO.setRoleId(null);
         }
 
-        return update(targetId, userUpdateDTO);
+        return update(targetId, userEditDTO);
     }
 
     public void delete(Integer id) {

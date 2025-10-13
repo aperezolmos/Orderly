@@ -1,10 +1,10 @@
 package es.ubu.inf.tfg.user;
 
-import es.ubu.inf.tfg.user.dto.UserEditDTO;
+import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
+import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
 import es.ubu.inf.tfg.user.role.RoleService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.core.Authentication;
@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -42,11 +43,10 @@ public class UserEditController {
             return "redirect:/access-denied";
         }
 
-        UserEditDTO userEditDTO = UserEditDTO.builder()
+        UserRequestDTO userEditDTO = UserRequestDTO.builder()
             .username(user.getUsername())
             .firstName(user.getFirstName())
             .lastName(user.getLastName())
-            // Solo admins pueden editar rol
             .roleId(isAdmin ? user.getRoleId() : null)
             .build();
 
@@ -64,7 +64,7 @@ public class UserEditController {
     @PostMapping("/{id}/edit")
     public String editUser(
             @PathVariable Integer id,
-            @Valid @ModelAttribute("userEditDTO") UserEditDTO userEditDTO,
+            @Validated(UserValidationGroups.OnUpdate.class) @ModelAttribute("userEditDTO") UserRequestDTO userEditDTO,
             BindingResult bindingResult,
             Model model) {
 

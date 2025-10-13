@@ -1,13 +1,15 @@
 package es.ubu.inf.tfg.user; // TODO: cambiar ubicación?
 
-import es.ubu.inf.tfg.user.dto.UserRegisterDTO;
-import jakarta.validation.Valid;
+import es.ubu.inf.tfg.user.dto.UserRequestDTO;
+import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,13 +20,13 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("userRegisterDTO", new UserRegisterDTO());
+        model.addAttribute("userRegisterDTO", new UserRequestDTO());
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(
-            @Valid @ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO,
+            @Validated(UserValidationGroups.OnCreate.class) @ModelAttribute("userRegisterDTO") UserRequestDTO userRegisterDTO,
             BindingResult bindingResult,
             Model model) {
 

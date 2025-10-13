@@ -1,16 +1,18 @@
 package es.ubu.inf.tfg.user;
 
-import es.ubu.inf.tfg.user.dto.UserRegisterDTO;
-import es.ubu.inf.tfg.user.dto.UserEditDTO;
+import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
+import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
 import es.ubu.inf.tfg.user.role.RoleService;
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -21,10 +23,12 @@ public class UserManagementController {
     private final UserService userService;
     private final RoleService roleService;
 
+
     @GetMapping
     public String listUsers(Model model,
                             @RequestParam(value = "successMessage", required = false) String successMessage,
                             @RequestParam(value = "errorMessage", required = false) String errorMessage) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
         UserResponseDTO editor = userService.findByUsername(editorUsername)
@@ -41,16 +45,17 @@ public class UserManagementController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("userRegisterDTO", new UserRegisterDTO());
+        model.addAttribute("userRegisterDTO", new UserRequestDTO());
         model.addAttribute("roles", roleService.findAll());
         return "user-create";
     }
 
     @PostMapping("/create")
     public String createUser(
-            @Valid @ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO,
+            @Validated(UserValidationGroups.OnCreate.class) @ModelAttribute("userRegisterDTO") UserRequestDTO userRegisterDTO,
             BindingResult bindingResult,
             Model model) {
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", roleService.findAll());
             return "user-create";
@@ -60,15 +65,7 @@ public class UserManagementController {
             if (userRegisterDTO.getRoleId() == null) {
                 throw new IllegalArgumentException("Debe seleccionar un rol.");
             }
-            userService.create(
-                es.ubu.inf.tfg.user.dto.UserRequestDTO.builder()
-                    .username(userRegisterDTO.getUsername())
-                    .firstName(userRegisterDTO.getFirstName())
-                    .lastName(userRegisterDTO.getLastName())
-                    .password(userRegisterDTO.getPassword())
-                    .roleId(userRegisterDTO.getRoleId())
-                    .build()
-            );
+            userService.create(userRegisterDTO);
             return "redirect:/admin/users?successMessage=Usuario creado correctamente.";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -79,6 +76,7 @@ public class UserManagementController {
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Integer id, Model model) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
         UserResponseDTO user = userService.findById(id)
@@ -90,7 +88,7 @@ public class UserManagementController {
         if (!isAdmin) {
             return "redirect:/access-denied";
         }
-        UserEditDTO userEditDTO = UserEditDTO.builder()
+        UserRequestDTO userEditDTO = UserRequestDTO.builder()
             .username(user.getUsername())
             .firstName(user.getFirstName())
             .lastName(user.getLastName())
@@ -106,9 +104,10 @@ public class UserManagementController {
     @PostMapping("/{id}/edit")
     public String editUser(
             @PathVariable Integer id,
-            @Valid @ModelAttribute("userEditDTO") UserEditDTO userEditDTO,
+            @Validated(UserValidationGroups.OnUpdate.class) @ModelAttribute("userEditDTO") UserRequestDTO userEditDTO,
             BindingResult bindingResult,
             Model model) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
         UserResponseDTO user = userService.findById(id)
@@ -137,6 +136,7 @@ public class UserManagementController {
 
     @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable Integer id, Model model) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
         UserResponseDTO editor = userService.findByUsername(editorUsername)
