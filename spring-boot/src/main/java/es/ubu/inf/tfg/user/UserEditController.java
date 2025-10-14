@@ -26,6 +26,7 @@ public class UserEditController {
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Integer id, Model model) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
 
@@ -33,7 +34,7 @@ public class UserEditController {
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         UserResponseDTO editor = userService.findByUsername(editorUsername)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
+            .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado")); //TODO: da error si cambia el username
 
         boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
         boolean isSelfEdit = editor.getId().equals(user.getId());
@@ -97,9 +98,10 @@ public class UserEditController {
         }
 
         try {
-            userService.edit(editor.getId(), user.getId(), userRequestDTO);
+            userService.edit(editor.getId(), user.getId(), userRequestDTO, isAdmin);
             model.addAttribute("successMessage", "Usuario editado correctamente.");
-        } catch (IllegalArgumentException e) {
+        } 
+        catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
         return "user-edit";

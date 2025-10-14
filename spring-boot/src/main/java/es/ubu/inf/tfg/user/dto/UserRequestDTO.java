@@ -43,7 +43,5 @@ public class UserRequestDTO {
     private String currentPassword;
 
     // Solo para admins
-    /*@NotNull(message = "Role ID es obligatorio", 
-                groups = UserValidationGroups.OnCreate.class)*/ // TODO: revisar obligatoriedad
     private Integer roleId;
 }

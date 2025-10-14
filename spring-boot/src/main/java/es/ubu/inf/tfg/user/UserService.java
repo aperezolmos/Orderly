@@ -132,38 +132,48 @@ public class UserService {
         return userMapper.toResponseDTO(updatedUser);
     }
 
-    public UserResponseDTO edit(Integer editorId, Integer targetId, UserRequestDTO userRequestDTO) {
+    public UserResponseDTO edit(Integer editorId, Integer targetId, UserRequestDTO userRequestDTO, boolean isAdmin) {
         
         User editor = userRepository.findById(editorId)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado con ID: " + editorId));
         User target = userRepository.findById(targetId)
             .orElseThrow(() -> new IllegalArgumentException("Usuario a editar no encontrado con ID: " + targetId));
 
-        boolean isAdmin = editor.getRole().getName().equals("ROLE_ADMIN");
-        boolean isSelfEdit = editorId.equals(targetId); // TODO: Trasladar lógica¿?
+        // Validaciones de username
+        if (userRequestDTO.getUsername() != null && !userRequestDTO.getUsername().equals(target.getUsername())) {
+            if (userRepository.existsByUsername(userRequestDTO.getUsername())) {
+                throw new IllegalArgumentException("El username ya está en uso: " + userRequestDTO.getUsername());
+            }
+            target.setUsername(userRequestDTO.getUsername());
+        }
 
-        // Validaciones de negocio específicas del formulario
+        target.setFirstName(userRequestDTO.getFirstName());
+        target.setLastName(userRequestDTO.getLastName());
+
+        // Validación de cambio de contraseña solo si se ha solicitado
         if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isBlank()) {
-            // Si el editor es el propio usuario, debe introducir la contraseña actual
-            if (isSelfEdit) {
+            if (userRequestDTO.getConfirmPassword() == null ||
+                !userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
+                throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
+            }
+            if (!isAdmin) {
                 if (userRequestDTO.getCurrentPassword() == null ||
                     !passwordEncoder.matches(userRequestDTO.getCurrentPassword(), target.getPassword())) {
                     throw new IllegalArgumentException("La contraseña actual es incorrecta.");
                 }
             }
-            // Confirmar nueva contraseña
-            if (userRequestDTO.getConfirmPassword() == null ||
-                !userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
-                throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
-            }
+            target.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         }
 
         // Solo admins pueden cambiar el rol
-        if (!isAdmin) {
-            userRequestDTO.setRoleId(null);
+        if (isAdmin && userRequestDTO.getRoleId() != null) {
+            Role role = roleRepository.findById(userRequestDTO.getRoleId())
+                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequestDTO.getRoleId()));
+            target.setRole(role);
         }
 
-        return update(targetId, userRequestDTO);
+        User updatedUser = userRepository.save(target);
+        return userMapper.toResponseDTO(updatedUser);
     }
 
     public void delete(Integer id) {

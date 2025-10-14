@@ -96,9 +96,10 @@ public class UserManagementController {
             .build();
         model.addAttribute("userRequestDTO", userRequestDTO);
         model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("isSelfEdit", isSelfEdit);
-        return "user-edit-admin";
+        model.addAttribute("roles", roleService.findAll());
+        return "user-edit";
     }
 
     @PostMapping("/{id}/edit")
@@ -107,7 +108,7 @@ public class UserManagementController {
             @Validated(UserValidationGroups.OnUpdate.class) @ModelAttribute("userRequestDTO") UserRequestDTO userRequestDTO,
             BindingResult bindingResult,
             Model model) {
-        
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
         UserResponseDTO user = userService.findById(id)
@@ -120,17 +121,18 @@ public class UserManagementController {
             return "redirect:/access-denied";
         }
         model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("isSelfEdit", isSelfEdit);
+        model.addAttribute("roles", roleService.findAll());
         if (bindingResult.hasErrors()) {
-            return "user-edit-admin";
+            return "user-edit";
         }
         try {
-            userService.edit(editor.getId(), user.getId(), userRequestDTO);
+            userService.edit(editor.getId(), user.getId(), userRequestDTO, isAdmin);
             return "redirect:/admin/users?successMessage=Usuario editado correctamente.";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "user-edit-admin";
+            return "user-edit";
         }
     }
 
