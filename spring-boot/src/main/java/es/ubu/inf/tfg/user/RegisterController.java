@@ -20,13 +20,13 @@ public class RegisterController {
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("userRegisterDTO", new UserRequestDTO());
+        model.addAttribute("userRequestDTO", new UserRequestDTO());
         return "register";
     }
 
     @PostMapping("/register")
     public String registerUser(
-            @Validated(UserValidationGroups.OnCreate.class) @ModelAttribute("userRegisterDTO") UserRequestDTO userRegisterDTO,
+            @Validated(UserValidationGroups.OnCreate.class) @ModelAttribute("userRequestDTO") UserRequestDTO userRequestDTO,
             BindingResult bindingResult,
             Model model) {
 
@@ -35,7 +35,7 @@ public class RegisterController {
         }
 
         try {
-            userService.register(userRegisterDTO);
+            userService.register(userRequestDTO);
             model.addAttribute("successMessage", "Usuario registrado correctamente. Ahora puede iniciar sesión.");
             return "login"; // TODO: redirect
         } 

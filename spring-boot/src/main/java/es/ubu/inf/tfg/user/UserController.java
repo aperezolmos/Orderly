@@ -63,9 +63,9 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Integer id,
-            @Validated(UserValidationGroups.OnUpdate.class) @RequestBody UserRequestDTO userUpdate) {
+            @Validated(UserValidationGroups.OnUpdate.class) @RequestBody UserRequestDTO userRequestDTO) {
         try {
-            UserResponseDTO updatedUser = userService.update(id, userUpdate);
+            UserResponseDTO updatedUser = userService.update(id, userRequestDTO);
             log.info("Usuario actualizado exitosamente con ID: {}", id);
             return ResponseEntity.ok(updatedUser);
         } 

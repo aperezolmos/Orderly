@@ -15,7 +15,7 @@
     <div class="container">
         <h2 class="mb-3">Crear Usuario</h2>
         <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
-        <form th:action="@{/admin/users/create}" th:object="${userRegisterDTO}" method="post" class="card p-4 shadow-sm">
+        <form th:action="@{/admin/users/create}" th:object="${userRequestDTO}" method="post" class="card p-4 shadow-sm">
             <div class="mb-3">
                 <label class="form-label">Nombre de usuario:</label>
                 <input type="text" th:field="*{username}" class="form-control" />

@@ -101,30 +101,30 @@ public class UserService {
         return userMapper.toResponseDTO(savedUser);
     }
     
-    public UserResponseDTO update(Integer id, UserRequestDTO userUpdate) {
+    public UserResponseDTO update(Integer id, UserRequestDTO userRequestDTO) {
         // Validaciones de grupo OnUpdate
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id));
         
-        if (userUpdate.getUsername() != null && !userUpdate.getUsername().equals(existingUser.getUsername())) {
-            if (userRepository.existsByUsername(userUpdate.getUsername())) {
-                throw new IllegalArgumentException("El username ya está en uso: " + userUpdate.getUsername());
+        if (userRequestDTO.getUsername() != null && !userRequestDTO.getUsername().equals(existingUser.getUsername())) {
+            if (userRepository.existsByUsername(userRequestDTO.getUsername())) {
+                throw new IllegalArgumentException("El username ya está en uso: " + userRequestDTO.getUsername());
             }
-            existingUser.setUsername(userUpdate.getUsername());
+            existingUser.setUsername(userRequestDTO.getUsername());
         }
         
-        existingUser.setFirstName(userUpdate.getFirstName());
-        existingUser.setLastName(userUpdate.getLastName());
+        existingUser.setFirstName(userRequestDTO.getFirstName());
+        existingUser.setLastName(userRequestDTO.getLastName());
 
-        if (userUpdate.getPassword() != null && !userUpdate.getPassword().isBlank()) {
-            if (!userUpdate.getPassword().equals(userUpdate.getConfirmPassword())) {
+        if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isBlank()) {
+            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
                 throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
             }
-            existingUser.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
+            existingUser.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         }
-        if (userUpdate.getRoleId() != null) {
-            Role role = roleRepository.findById(userUpdate.getRoleId())
-                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userUpdate.getRoleId()));
+        if (userRequestDTO.getRoleId() != null) {
+            Role role = roleRepository.findById(userRequestDTO.getRoleId())
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequestDTO.getRoleId()));
             existingUser.setRole(role);
         }
         
@@ -132,7 +132,7 @@ public class UserService {
         return userMapper.toResponseDTO(updatedUser);
     }
 
-    public UserResponseDTO edit(Integer editorId, Integer targetId, UserRequestDTO userEditDTO) {
+    public UserResponseDTO edit(Integer editorId, Integer targetId, UserRequestDTO userRequestDTO) {
         
         User editor = userRepository.findById(editorId)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado con ID: " + editorId));
@@ -143,27 +143,27 @@ public class UserService {
         boolean isSelfEdit = editorId.equals(targetId); // TODO: Trasladar lógica¿?
 
         // Validaciones de negocio específicas del formulario
-        if (userEditDTO.getPassword() != null && !userEditDTO.getPassword().isBlank()) {
+        if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isBlank()) {
             // Si el editor es el propio usuario, debe introducir la contraseña actual
             if (isSelfEdit) {
-                if (userEditDTO.getCurrentPassword() == null ||
-                    !passwordEncoder.matches(userEditDTO.getCurrentPassword(), target.getPassword())) {
+                if (userRequestDTO.getCurrentPassword() == null ||
+                    !passwordEncoder.matches(userRequestDTO.getCurrentPassword(), target.getPassword())) {
                     throw new IllegalArgumentException("La contraseña actual es incorrecta.");
                 }
             }
             // Confirmar nueva contraseña
-            if (userEditDTO.getConfirmPassword() == null ||
-                !userEditDTO.getPassword().equals(userEditDTO.getConfirmPassword())) {
+            if (userRequestDTO.getConfirmPassword() == null ||
+                !userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
                 throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
             }
         }
 
         // Solo admins pueden cambiar el rol
         if (!isAdmin) {
-            userEditDTO.setRoleId(null);
+            userRequestDTO.setRoleId(null);
         }
 
-        return update(targetId, userEditDTO);
+        return update(targetId, userRequestDTO);
     }
 
     public void delete(Integer id) {

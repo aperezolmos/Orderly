@@ -116,7 +116,7 @@ class UserServiceTest {
 
         var created = userService.create(dto);
 
-        UserRequestDTO updateDTO = UserRequestDTO.builder()
+        UserRequestDTO userRequestDTO = UserRequestDTO.builder()
                 .username("updateduser")
                 .firstName("Updated")
                 .lastName("User")
@@ -125,7 +125,7 @@ class UserServiceTest {
                 .roleId(role.getId())
                 .build();
 
-        var updated = userService.update(created.getId(), updateDTO);
+        var updated = userService.update(created.getId(), userRequestDTO);
 
         assertThat(updated.getUsername()).isEqualTo("updateduser");
         assertThat(passwordEncoder.matches("NewPassword123", userRepository.findById(created.getId()).get().getPassword())).isTrue();

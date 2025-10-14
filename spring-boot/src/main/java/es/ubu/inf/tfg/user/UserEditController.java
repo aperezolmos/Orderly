@@ -43,14 +43,14 @@ public class UserEditController {
             return "redirect:/access-denied";
         }
 
-        UserRequestDTO userEditDTO = UserRequestDTO.builder()
+        UserRequestDTO userRequestDTO = UserRequestDTO.builder()
             .username(user.getUsername())
             .firstName(user.getFirstName())
             .lastName(user.getLastName())
             .roleId(isAdmin ? user.getRoleId() : null)
             .build();
 
-        model.addAttribute("userEditDTO", userEditDTO);
+        model.addAttribute("userRequestDTO", userRequestDTO);
         model.addAttribute("user", user);
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("isSelfEdit", isSelfEdit);
@@ -64,7 +64,7 @@ public class UserEditController {
     @PostMapping("/{id}/edit")
     public String editUser(
             @PathVariable Integer id,
-            @Validated(UserValidationGroups.OnUpdate.class) @ModelAttribute("userEditDTO") UserRequestDTO userEditDTO,
+            @Validated(UserValidationGroups.OnUpdate.class) @ModelAttribute("userRequestDTO") UserRequestDTO userRequestDTO,
             BindingResult bindingResult,
             Model model) {
 
@@ -97,7 +97,7 @@ public class UserEditController {
         }
 
         try {
-            userService.edit(editor.getId(), user.getId(), userEditDTO);
+            userService.edit(editor.getId(), user.getId(), userRequestDTO);
             model.addAttribute("successMessage", "Usuario editado correctamente.");
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
