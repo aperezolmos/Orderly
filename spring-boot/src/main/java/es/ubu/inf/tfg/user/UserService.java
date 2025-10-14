@@ -48,32 +48,8 @@ public class UserService {
     }
 
     // --------------------------------------------------------
-    
-    public UserResponseDTO create(UserRequestDTO userRequest) {
-        // Validaciones de grupo OnCreate
-        if (userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new IllegalArgumentException("El username ya está en uso: " + userRequest.getUsername());
-        }
-
-        Role role = roleRepository.findById(userRequest.getRoleId())
-                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequest.getRoleId()));
-        
-        if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
-            throw new IllegalArgumentException("Las contraseñas no coinciden.");
-        }
-        
-        User user = User.builder()
-                .username(userRequest.getUsername())
-                .firstName(userRequest.getFirstName())
-                .lastName(userRequest.getLastName())
-                .password(passwordEncoder.encode(userRequest.getPassword()))
-                .role(role)
-                .build();
-        
-        User savedUser = userRepository.save(user);
-        return userMapper.toResponseDTO(savedUser);
-    }
-
+    // MÉTODOS PARA CONTROLADORES WEB (FORMULARIOS)
+ 
     public UserResponseDTO register(UserRequestDTO registerDTO) {
         // Igual que create, pero roleId se asigna por defecto
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
@@ -99,37 +75,6 @@ public class UserService {
             
         User savedUser = userRepository.save(user);
         return userMapper.toResponseDTO(savedUser);
-    }
-    
-    public UserResponseDTO update(Integer id, UserRequestDTO userRequestDTO) {
-        // Validaciones de grupo OnUpdate
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id));
-        
-        if (userRequestDTO.getUsername() != null && !userRequestDTO.getUsername().equals(existingUser.getUsername())) {
-            if (userRepository.existsByUsername(userRequestDTO.getUsername())) {
-                throw new IllegalArgumentException("El username ya está en uso: " + userRequestDTO.getUsername());
-            }
-            existingUser.setUsername(userRequestDTO.getUsername());
-        }
-        
-        existingUser.setFirstName(userRequestDTO.getFirstName());
-        existingUser.setLastName(userRequestDTO.getLastName());
-
-        if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isBlank()) {
-            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
-                throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
-            }
-            existingUser.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-        }
-        if (userRequestDTO.getRoleId() != null) {
-            Role role = roleRepository.findById(userRequestDTO.getRoleId())
-                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequestDTO.getRoleId()));
-            existingUser.setRole(role);
-        }
-        
-        User updatedUser = userRepository.save(existingUser);
-        return userMapper.toResponseDTO(updatedUser);
     }
 
     public UserResponseDTO edit(Integer editorId, Integer targetId, UserRequestDTO userRequestDTO, boolean isAdmin) {
@@ -173,6 +118,65 @@ public class UserService {
         }
 
         User updatedUser = userRepository.save(target);
+        return userMapper.toResponseDTO(updatedUser);
+    }
+
+    // --------------------------------------------------------
+    // MÉTODOS PARA CONTROLADORES REST
+
+    public UserResponseDTO create(UserRequestDTO userRequest) {
+        // Validaciones de grupo OnCreate
+        if (userRepository.existsByUsername(userRequest.getUsername())) {
+            throw new IllegalArgumentException("El username ya está en uso: " + userRequest.getUsername());
+        }
+
+        Role role = roleRepository.findById(userRequest.getRoleId())
+                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequest.getRoleId()));
+        
+        if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
+            throw new IllegalArgumentException("Las contraseñas no coinciden.");
+        }
+        
+        User user = User.builder()
+                .username(userRequest.getUsername())
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .role(role)
+                .build();
+        
+        User savedUser = userRepository.save(user);
+        return userMapper.toResponseDTO(savedUser);
+    }
+
+    public UserResponseDTO update(Integer id, UserRequestDTO userRequestDTO) {
+        // Validaciones de grupo OnUpdate
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id));
+        
+        if (userRequestDTO.getUsername() != null && !userRequestDTO.getUsername().equals(existingUser.getUsername())) {
+            if (userRepository.existsByUsername(userRequestDTO.getUsername())) {
+                throw new IllegalArgumentException("El username ya está en uso: " + userRequestDTO.getUsername());
+            }
+            existingUser.setUsername(userRequestDTO.getUsername());
+        }
+        
+        existingUser.setFirstName(userRequestDTO.getFirstName());
+        existingUser.setLastName(userRequestDTO.getLastName());
+
+        if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isBlank()) {
+            if (!userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
+                throw new IllegalArgumentException("Las contraseñas nuevas no coinciden.");
+            }
+            existingUser.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+        }
+        if (userRequestDTO.getRoleId() != null) {
+            Role role = roleRepository.findById(userRequestDTO.getRoleId())
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequestDTO.getRoleId()));
+            existingUser.setRole(role);
+        }
+        
+        User updatedUser = userRepository.save(existingUser);
         return userMapper.toResponseDTO(updatedUser);
     }
 
