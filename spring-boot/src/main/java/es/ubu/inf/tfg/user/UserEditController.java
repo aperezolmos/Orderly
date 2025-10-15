@@ -7,6 +7,7 @@ import es.ubu.inf.tfg.user.role.RoleService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,42 +25,33 @@ public class UserEditController {
     private final UserService userService;
     private final RoleService roleService;
 
+    private record EditUserContext(
+        UserResponseDTO user,
+        UserResponseDTO editor,
+        boolean isAdmin, 
+        boolean isSelfEdit
+    ) {}
+
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Integer id, Model model) {
         
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String editorUsername = auth.getName();
+        try {
+            EditUserContext context = prepareEditContext(id, model);
+            
+            UserRequestDTO userRequestDTO = UserRequestDTO.builder()
+                .username(context.user().getUsername())
+                .firstName(context.user().getFirstName())
+                .lastName(context.user().getLastName())
+                .roleId(context.isAdmin() ? context.user().getRoleId() : null)
+                .build();
 
-        UserResponseDTO user = userService.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
-        UserResponseDTO editor = userService.findByUsername(editorUsername)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
-
-        boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
-        boolean isSelfEdit = editor.getId().equals(user.getId());
-
-        // Restricción de acceso
-        if (!isAdmin && !isSelfEdit) {
+            model.addAttribute("userRequestDTO", userRequestDTO);
+            return "user-edit";
+        } 
+        catch (AccessDeniedException e) {
             return "redirect:/access-denied";
         }
-
-        UserRequestDTO userRequestDTO = UserRequestDTO.builder()
-            .username(user.getUsername())
-            .firstName(user.getFirstName())
-            .lastName(user.getLastName())
-            .roleId(isAdmin ? user.getRoleId() : null)
-            .build();
-
-        model.addAttribute("userRequestDTO", userRequestDTO);
-        model.addAttribute("user", user);
-        model.addAttribute("isAdmin", isAdmin);
-        model.addAttribute("isSelfEdit", isSelfEdit);
-        if (isAdmin) {
-            model.addAttribute("roles", roleService.findAll());
-        }
-        return "user-edit";
     }
 
     @PostMapping("/{id}/edit")
@@ -70,10 +62,42 @@ public class UserEditController {
             Model model,
             RedirectAttributes redirectAttributes) {
 
+        try {
+            EditUserContext context = prepareEditContext(id, model);
+            boolean usernameChanged = !userRequestDTO.getUsername().equals(context.user().getUsername());
+
+            if (bindingResult.hasErrors()) {
+                return "user-edit";
+            }
+
+            userService.edit(context.user().getId(), userRequestDTO, context.isAdmin());
+            
+            if (context.isSelfEdit() && usernameChanged) {
+                return "redirect:/logout";
+            }
+            
+            redirectAttributes.addFlashAttribute("editSuccess", true);
+            redirectAttributes.addFlashAttribute("successMessage", "Usuario editado correctamente.");
+            return "redirect:/users/" + id + "/edit";
+            
+        } 
+        catch (AccessDeniedException e) {
+            return "redirect:/access-denied";
+        } 
+        catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "user-edit";
+        }
+    }
+
+    // --------------------------------------------------------
+
+    private EditUserContext prepareEditContext(Integer userId, Model model) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
 
-        UserResponseDTO user = userService.findById(id)
+        UserResponseDTO user = userService.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         UserResponseDTO editor = userService.findByUsername(editorUsername)
@@ -81,11 +105,9 @@ public class UserEditController {
 
         boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
         boolean isSelfEdit = editor.getId().equals(user.getId());
-        boolean usernameChanged = !userRequestDTO.getUsername().equals(user.getUsername());
 
-        // Restricción de acceso
         if (!isAdmin && !isSelfEdit) {
-            return "redirect:/access-denied";
+            throw new AccessDeniedException("Acceso denegado");
         }
 
         model.addAttribute("user", user);
@@ -95,24 +117,6 @@ public class UserEditController {
             model.addAttribute("roles", roleService.findAll());
         }
 
-        if (bindingResult.hasErrors()) {
-            return "user-edit";
-        }
-
-        try {
-            userService.edit(user.getId(), userRequestDTO, isAdmin);
-            // Si el usuario editó su propio username, cerrar sesión
-            if (isSelfEdit && usernameChanged) {
-                return "redirect:/logout";
-            }
-            redirectAttributes.addFlashAttribute("editSuccess", true);
-            redirectAttributes.addFlashAttribute("successMessage", "Usuario editado correctamente.");
-        } 
-        catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "user-edit";
-        }
-        
-        return "redirect:/users/" + id + "/edit";
+        return new EditUserContext(user, editor, isAdmin, isSelfEdit);
     }
 }
