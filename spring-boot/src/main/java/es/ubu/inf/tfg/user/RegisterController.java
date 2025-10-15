@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.annotation.Validated;
 
 @Controller
@@ -28,7 +29,8 @@ public class RegisterController {
     public String registerUser(
             @Validated(UserValidationGroups.OnCreate.class) @ModelAttribute("userRequestDTO") UserRequestDTO userRequestDTO,
             BindingResult bindingResult,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             return "register";
@@ -36,8 +38,9 @@ public class RegisterController {
 
         try {
             userService.register(userRequestDTO);
-            model.addAttribute("successMessage", "Usuario registrado correctamente. Ahora puede iniciar sesión.");
-            return "login"; // TODO: redirect
+            redirectAttributes.addFlashAttribute("registerSuccess", true); 
+            redirectAttributes.addFlashAttribute("successMessage", "Usuario registrado correctamente. Ahora puede iniciar sesión.");
+            return "redirect:/login";
         } 
         catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());

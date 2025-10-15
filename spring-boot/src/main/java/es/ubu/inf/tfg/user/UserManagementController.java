@@ -128,7 +128,7 @@ public class UserManagementController {
             return "user-edit";
         }
         try {
-            userService.edit(editor.getId(), user.getId(), userRequestDTO, isAdmin);
+            userService.edit(user.getId(), userRequestDTO, isAdmin);
             return "redirect:/admin/users?successMessage=Usuario editado correctamente.";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());

@@ -32,13 +32,12 @@
             <button type="submit" class="btn btn-primary w-100">Aceptar</button>
         </form>
         <div th:if="${param.error}" class="mt-3">
-            <div class="alert alert-danger" role="alert">
-                Usuario o contraseña incorrectos.
-            </div>
+            <div class="alert alert-danger" role="alert"> Usuario o contraseña incorrectos.</div>
         </div>
-        <div th:if="${param.logout}" class="mt-3">
+        <div th:if="${param.logout} or ${registerSuccess}" class="mt-3">
             <div class="alert alert-success" role="alert">
-                Sesión cerrada correctamente.
+                <span th:if="${param.logout}"> Sesión cerrada correctamente.</span>
+                <span th:if="${registerSuccess}" th:text="${successMessage}"></span>
             </div>
         </div>
     </div>

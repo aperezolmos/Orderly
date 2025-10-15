@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class UserEditController {
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         UserResponseDTO editor = userService.findByUsername(editorUsername)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado")); //TODO: da error si cambia el username
+            .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
 
         boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
         boolean isSelfEdit = editor.getId().equals(user.getId());
@@ -61,13 +62,13 @@ public class UserEditController {
         return "user-edit";
     }
 
-
     @PostMapping("/{id}/edit")
     public String editUser(
             @PathVariable Integer id,
             @Validated(UserValidationGroups.OnUpdate.class) @ModelAttribute("userRequestDTO") UserRequestDTO userRequestDTO,
             BindingResult bindingResult,
-            Model model) {
+            Model model,
+            RedirectAttributes redirectAttributes) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String editorUsername = auth.getName();
@@ -80,6 +81,7 @@ public class UserEditController {
 
         boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
         boolean isSelfEdit = editor.getId().equals(user.getId());
+        boolean usernameChanged = !userRequestDTO.getUsername().equals(user.getUsername());
 
         // Restricción de acceso
         if (!isAdmin && !isSelfEdit) {
@@ -98,12 +100,19 @@ public class UserEditController {
         }
 
         try {
-            userService.edit(editor.getId(), user.getId(), userRequestDTO, isAdmin);
-            model.addAttribute("successMessage", "Usuario editado correctamente.");
+            userService.edit(user.getId(), userRequestDTO, isAdmin);
+            // Si el usuario editó su propio username, cerrar sesión
+            if (isSelfEdit && usernameChanged) {
+                return "redirect:/logout";
+            }
+            redirectAttributes.addFlashAttribute("editSuccess", true);
+            redirectAttributes.addFlashAttribute("successMessage", "Usuario editado correctamente.");
         } 
         catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
+            return "user-edit";
         }
-        return "user-edit";
+        
+        return "redirect:/users/" + id + "/edit";
     }
 }

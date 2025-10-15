@@ -15,10 +15,12 @@ import es.ubu.inf.tfg.user.role.RoleRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     
     private final UserRepository userRepository;
@@ -77,25 +79,25 @@ public class UserService {
         return userMapper.toResponseDTO(savedUser);
     }
 
-    public UserResponseDTO edit(Integer editorId, Integer targetId, UserRequestDTO userRequestDTO, boolean isAdmin) {
+    public UserResponseDTO edit(Integer targetId, UserRequestDTO userRequestDTO, boolean isAdmin) {
         
-        User editor = userRepository.findById(editorId)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado con ID: " + editorId));
         User target = userRepository.findById(targetId)
             .orElseThrow(() -> new IllegalArgumentException("Usuario a editar no encontrado con ID: " + targetId));
 
-        // Validaciones de username
+        // Username
         if (userRequestDTO.getUsername() != null && !userRequestDTO.getUsername().equals(target.getUsername())) {
             if (userRepository.existsByUsername(userRequestDTO.getUsername())) {
                 throw new IllegalArgumentException("El username ya está en uso: " + userRequestDTO.getUsername());
             }
             target.setUsername(userRequestDTO.getUsername());
+            log.info("<Username editado>");
         }
 
+        // Nombre y apellidos
         target.setFirstName(userRequestDTO.getFirstName());
         target.setLastName(userRequestDTO.getLastName());
 
-        // Validación de cambio de contraseña solo si se ha solicitado
+        // Password
         if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isBlank()) {
             if (userRequestDTO.getConfirmPassword() == null ||
                 !userRequestDTO.getPassword().equals(userRequestDTO.getConfirmPassword())) {
@@ -107,14 +109,16 @@ public class UserService {
                     throw new IllegalArgumentException("La contraseña actual es incorrecta.");
                 }
             }
+            log.info("<Password editado>");
             target.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         }
 
-        // Solo admins pueden cambiar el rol
+        // Rol -> solo admins pueden cambiarlo
         if (isAdmin && userRequestDTO.getRoleId() != null) {
             Role role = roleRepository.findById(userRequestDTO.getRoleId())
                 .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequestDTO.getRoleId()));
             target.setRole(role);
+            log.info("<Role editado>");
         }
 
         User updatedUser = userRepository.save(target);
@@ -125,7 +129,7 @@ public class UserService {
     // MÉTODOS PARA CONTROLADORES REST
 
     public UserResponseDTO create(UserRequestDTO userRequest) {
-        // Validaciones de grupo OnCreate
+        
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             throw new IllegalArgumentException("El username ya está en uso: " + userRequest.getUsername());
         }
@@ -150,7 +154,7 @@ public class UserService {
     }
 
     public UserResponseDTO update(Integer id, UserRequestDTO userRequestDTO) {
-        // Validaciones de grupo OnUpdate
+        
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id));
         

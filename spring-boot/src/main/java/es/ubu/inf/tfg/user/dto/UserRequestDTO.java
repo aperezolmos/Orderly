@@ -29,9 +29,9 @@ public class UserRequestDTO {
 
     @NotBlank(message = "La contraseña es obligatoria", 
                 groups = UserValidationGroups.OnCreate.class)
-    @Size(min = 4, message = "La contraseña debe tener al menos 4 caracteres", 
+    /*@Size(min = 4, message = "La contraseña debe tener al menos 4 caracteres", 
             groups = {UserValidationGroups.OnCreate.class, 
-                        UserValidationGroups.OnPasswordChange.class})
+                        UserValidationGroups.OnPasswordChange.class})*/
     private String password;
 
     @NotBlank(message = "Debe confirmar la contraseña", 
