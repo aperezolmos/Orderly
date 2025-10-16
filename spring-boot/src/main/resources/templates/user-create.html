@@ -46,6 +46,7 @@
                 <select th:field="*{roleIds}" class="form-select" multiple>
                     <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
                 </select>
+                <small class="form-text text-muted">Mantenga Ctrl (Cmd en Mac) para seleccionar múltiples roles</small>
             </div>
             <button type="submit" class="btn btn-success w-100">Crear usuario</button>
         </form>
