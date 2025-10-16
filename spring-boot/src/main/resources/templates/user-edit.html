@@ -50,9 +50,10 @@
                 <input type="password" th:field="*{currentPassword}" class="form-control" />
             </div>
             <div class="mb-3" th:if="${isAdmin}">
-                <label class="form-label">Rol:</label>
-                <select th:field="*{roleId}" class="form-select">
-                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}" th:selected="${role.id == user.roleId}"></option>
+                <label class="form-label">Roles:</label>
+                <select th:field="*{roleIds}" class="form-select" multiple>
+                    <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"
+                        th:selected="${user.roleIds != null and user.roleIds.contains(role.id)}"></option>
                 </select>
             </div>
             <div th:if="${errorMessage}" class="mt-3">

@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.user.dto;
 import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -42,6 +43,5 @@ public class UserRequestDTO {
     // Solo para edición propia
     private String currentPassword;
 
-    // Solo para admins
-    private Integer roleId;
+    private Set<Integer> roleIds;
 }

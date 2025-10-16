@@ -1,6 +1,7 @@
 package es.ubu.inf.tfg.user.dto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import lombok.*;
 
@@ -13,7 +14,7 @@ public class UserResponseDTO {
     private String username;
     private String firstName;
     private String lastName;
-    private Integer roleId;
-    private String roleName;
+    private Set<Integer> roleIds;
+    private Set<String> roleNames;
     private LocalDateTime createdAt;
 }

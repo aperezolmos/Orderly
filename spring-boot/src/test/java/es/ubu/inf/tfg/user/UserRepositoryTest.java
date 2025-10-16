@@ -2,7 +2,9 @@ package es.ubu.inf.tfg.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import es.ubu.inf.tfg.TfgApplication;
 import es.ubu.inf.tfg.user.UserRepositoryTest.TestConfig;
@@ -46,8 +48,14 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        role = Role.builder().name("USER").build();
+        userRepository.deleteAll();
+        roleRepository.deleteAll();
+
+        role = Role.builder().name("ROLE_USER").build();
         role = roleRepository.save(role);
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
 
         // Usuario de ejemplo para los tests
         User user = User.builder()
@@ -55,7 +63,7 @@ class UserRepositoryTest {
                 .firstName("Test")
                 .lastName("User")
                 .password(passwordEncoder.encode("password"))
-                .role(role)
+                .roles(roles)
                 .build();
         userRepository.save(user);
     }

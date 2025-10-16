@@ -2,6 +2,8 @@ package es.ubu.inf.tfg.user;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,7 +55,6 @@ public class UserService {
     // MÉTODOS PARA CONTROLADORES WEB (FORMULARIOS)
  
     public UserResponseDTO register(UserRequestDTO registerDTO) {
-        // Igual que create, pero roleId se asigna por defecto
         if (userRepository.existsByUsername(registerDTO.getUsername())) {
             throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
         }
@@ -62,17 +63,18 @@ public class UserService {
             throw new IllegalArgumentException("Las contraseñas no coinciden.");
         }
 
-        // Por defecto, los usuarios tendrán ROLE_USER
-        // TODO: cambiar -> cuando se implementen varios roles para un mismo usuario
         Role roleUser = roleRepository.findByName("ROLE_USER")
             .orElseThrow(() -> new IllegalArgumentException("Rol ROLE_USER no encontrado."));
         
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleUser);
+
         User user = User.builder()
                 .username(registerDTO.getUsername())
                 .firstName(registerDTO.getFirstName())
                 .lastName(registerDTO.getLastName())
                 .password(passwordEncoder.encode(registerDTO.getPassword()))
-                .role(roleUser)
+                .roles(roles)
                 .build();
             
         User savedUser = userRepository.save(user);
@@ -113,12 +115,16 @@ public class UserService {
             target.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         }
 
-        // Rol -> solo admins pueden cambiarlo
-        if (isAdmin && userRequestDTO.getRoleId() != null) {
-            Role role = roleRepository.findById(userRequestDTO.getRoleId())
-                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequestDTO.getRoleId()));
-            target.setRole(role);
-            log.info("<Role editado>");
+        // Roles -> solo admins pueden cambiarlos. Asegurar ROLE_USER siempre presente.
+        if (isAdmin && userRequestDTO.getRoleIds() != null) {
+            Set<Role> newRoles = userRequestDTO.getRoleIds().stream()
+                .map(id -> roleRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id)))
+                .collect(Collectors.toSet());
+            
+            roleRepository.findByName("ROLE_USER").ifPresent(newRoles::add);
+            target.setRoles(newRoles);
+            log.info("<Roles editados>");
         }
 
         User updatedUser = userRepository.save(target);
@@ -134,19 +140,28 @@ public class UserService {
             throw new IllegalArgumentException("El username ya está en uso: " + userRequest.getUsername());
         }
 
-        Role role = roleRepository.findById(userRequest.getRoleId())
-                .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequest.getRoleId()));
-        
+        if (userRequest.getRoleIds() == null || userRequest.getRoleIds().isEmpty()) {
+            throw new IllegalArgumentException("Debe asignar al menos un rol.");
+        }
+
         if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
             throw new IllegalArgumentException("Las contraseñas no coinciden.");
         }
+
+        Set<Role> roles = userRequest.getRoleIds().stream()
+                .map(id -> roleRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id)))
+                .collect(Collectors.toSet());
+
+        // garantizar ROLE_USER mínimo
+        roleRepository.findByName("ROLE_USER").ifPresent(roles::add);
         
         User user = User.builder()
                 .username(userRequest.getUsername())
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
-                .role(role)
+                .roles(roles)
                 .build();
         
         User savedUser = userRepository.save(user);
@@ -174,10 +189,13 @@ public class UserService {
             }
             existingUser.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         }
-        if (userRequestDTO.getRoleId() != null) {
-            Role role = roleRepository.findById(userRequestDTO.getRoleId())
-                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + userRequestDTO.getRoleId()));
-            existingUser.setRole(role);
+        if (userRequestDTO.getRoleIds() != null && !userRequestDTO.getRoleIds().isEmpty()) {
+            Set<Role> roles = userRequestDTO.getRoleIds().stream()
+                    .map(roleId -> roleRepository.findById(roleId)
+                            .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + roleId)))
+                    .collect(Collectors.toSet());
+            roleRepository.findByName("ROLE_USER").ifPresent(roles::add);
+            existingUser.setRoles(roles);
         }
         
         User updatedUser = userRepository.save(existingUser);

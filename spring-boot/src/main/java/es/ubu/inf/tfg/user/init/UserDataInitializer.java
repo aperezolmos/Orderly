@@ -1,5 +1,8 @@
 package es.ubu.inf.tfg.user.init;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,12 +71,18 @@ public class UserDataInitializer implements CommandLineRunner {
             
             Role adminRole = roleRepository.findByName(adminRoleName)
                     .orElseThrow(() -> new IllegalStateException("Admin role not found. Please check database initialization."));
+            Role userRole = roleRepository.findByName(userRoleName)
+                    .orElseThrow(() -> new IllegalStateException("User role not found. Please check database initialization."));
+
+            Set<Role> roles = new HashSet<>();
+            roles.add(adminRole);
+            roles.add(userRole);
 
             User adminUser = User.builder()
                     .username(adminUsername)
                     .firstName("Administrator")
                     .password(passwordEncoder.encode(adminPassword))
-                    .role(adminRole)
+                    .roles(roles)
                     .build();
 
             userRepository.save(adminUser);

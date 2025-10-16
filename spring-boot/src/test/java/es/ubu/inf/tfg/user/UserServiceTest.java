@@ -3,8 +3,10 @@ package es.ubu.inf.tfg.user;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import es.ubu.inf.tfg.TfgApplication;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
@@ -39,14 +41,17 @@ class UserServiceTest {
     /*@Autowired
     private UserMapper userMapper;*/
 
-    private Role role;
+    private Set<Integer> roleIds;
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
         roleRepository.deleteAll();
-        role = Role.builder().name("USER").build();
+        Role role = Role.builder().name("ROLE_USER").build();
         role = roleRepository.save(role);
+
+        roleIds = new HashSet<>();
+        roleIds.add(role.getId());
     }
 
     @Test
@@ -57,7 +62,7 @@ class UserServiceTest {
                 .lastName("User")
                 .password("Password123")
                 .confirmPassword("Password123")
-                .roleId(role.getId())
+                .roleIds(roleIds)
                 .build();
 
         var response = userService.create(dto);
@@ -74,7 +79,7 @@ class UserServiceTest {
                 .lastName("User")
                 .password("Password123")
                 .confirmPassword("Password123")
-                .roleId(role.getId())
+                .roleIds(roleIds)
                 .build();
 
         userService.create(dto);
@@ -90,7 +95,7 @@ class UserServiceTest {
                 .lastName("Me")
                 .password("Password123")
                 .confirmPassword("Password123")
-                .roleId(role.getId())
+                .roleIds(roleIds)
                 .build();
 
         var created = userService.create(dto);
@@ -111,7 +116,7 @@ class UserServiceTest {
                 .lastName("User")
                 .password("Password123")
                 .confirmPassword("Password123")
-                .roleId(role.getId())
+                .roleIds(roleIds)
                 .build();
 
         var created = userService.create(dto);
@@ -122,7 +127,7 @@ class UserServiceTest {
                 .lastName("User")
                 .password("NewPassword123")
                 .confirmPassword("NewPassword123")
-                .roleId(role.getId())
+                .roleIds(roleIds)
                 .build();
 
         var updated = userService.update(created.getId(), userRequestDTO);
@@ -139,7 +144,7 @@ class UserServiceTest {
                 .lastName("User")
                 .password("Password123")
                 .confirmPassword("Password123")
-                .roleId(role.getId())
+                .roleIds(roleIds)
                 .build();
 
         var created = userService.create(dto);

@@ -43,7 +43,7 @@ public class UserEditController {
                 .username(context.user().getUsername())
                 .firstName(context.user().getFirstName())
                 .lastName(context.user().getLastName())
-                .roleId(context.isAdmin() ? context.user().getRoleId() : null)
+                .roleIds(context.isAdmin() ? context.user().getRoleIds() : null)
                 .build();
 
             model.addAttribute("userRequestDTO", userRequestDTO);
@@ -103,7 +103,7 @@ public class UserEditController {
         UserResponseDTO editor = userService.findByUsername(editorUsername)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
 
-        boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
+        boolean isAdmin = editor.getRoleNames().contains("ROLE_ADMIN");
         boolean isSelfEdit = editor.getId().equals(user.getId());
 
         if (!isAdmin && !isSelfEdit) {

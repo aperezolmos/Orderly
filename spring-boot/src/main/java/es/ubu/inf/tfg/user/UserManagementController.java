@@ -33,7 +33,7 @@ public class UserManagementController {
         String editorUsername = auth.getName();
         UserResponseDTO editor = userService.findByUsername(editorUsername)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
-        if (!"ROLE_ADMIN".equals(editor.getRoleName())) {
+        if (!editor.getRoleNames().contains("ROLE_ADMIN")) {
             return "redirect:/access-denied";
         }
         model.addAttribute("users", userService.findAll());
@@ -61,9 +61,9 @@ public class UserManagementController {
             return "user-create";
         }
         try {
-            // Permitir seleccionar rol al crear usuario desde admin
-            if (userRequestDTO.getRoleId() == null) {
-                throw new IllegalArgumentException("Debe seleccionar un rol.");
+            // Permitir seleccionar varios roles al crear usuario desde admin
+            if (userRequestDTO.getRoleIds() == null || userRequestDTO.getRoleIds().isEmpty()) {
+                throw new IllegalArgumentException("Debe seleccionar al menos un rol.");
             }
             userService.create(userRequestDTO);
             return "redirect:/admin/users?successMessage=Usuario creado correctamente.";
@@ -83,7 +83,7 @@ public class UserManagementController {
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         UserResponseDTO editor = userService.findByUsername(editorUsername)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
-        boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
+        boolean isAdmin = editor.getRoleNames().contains("ROLE_ADMIN");
         boolean isSelfEdit = editor.getId().equals(user.getId());
         if (!isAdmin) {
             return "redirect:/access-denied";
@@ -92,7 +92,7 @@ public class UserManagementController {
             .username(user.getUsername())
             .firstName(user.getFirstName())
             .lastName(user.getLastName())
-            .roleId(user.getRoleId())
+            .roleIds(user.getRoleIds())
             .build();
         model.addAttribute("userRequestDTO", userRequestDTO);
         model.addAttribute("user", user);
@@ -115,7 +115,7 @@ public class UserManagementController {
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         UserResponseDTO editor = userService.findByUsername(editorUsername)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
-        boolean isAdmin = "ROLE_ADMIN".equals(editor.getRoleName());
+        boolean isAdmin = editor.getRoleNames().contains("ROLE_ADMIN");
         boolean isSelfEdit = editor.getId().equals(user.getId());
         if (!isAdmin) {
             return "redirect:/access-denied";
@@ -143,7 +143,7 @@ public class UserManagementController {
         String editorUsername = auth.getName();
         UserResponseDTO editor = userService.findByUsername(editorUsername)
             .orElseThrow(() -> new IllegalArgumentException("Usuario editor no encontrado"));
-        if (!"ROLE_ADMIN".equals(editor.getRoleName())) {
+        if (!editor.getRoleNames().contains("ROLE_ADMIN")) {
             return "redirect:/access-denied";
         }
         if (editor.getId().equals(id)) {
