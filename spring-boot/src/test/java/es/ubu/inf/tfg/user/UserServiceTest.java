@@ -3,12 +3,13 @@ package es.ubu.inf.tfg.user;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import es.ubu.inf.tfg.TfgApplication;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
-import es.ubu.inf.tfg.user.dto.UserUpdateDTO;
 //import es.ubu.inf.tfg.user.mapper.UserMapper;
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.RoleRepository;
@@ -40,14 +41,17 @@ class UserServiceTest {
     /*@Autowired
     private UserMapper userMapper;*/
 
-    private Role role;
+    private Set<Integer> roleIds;
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
         roleRepository.deleteAll();
-        role = Role.builder().name("USER").build();
+        Role role = Role.builder().name("ROLE_USER").build();
         role = roleRepository.save(role);
+
+        roleIds = new HashSet<>();
+        roleIds.add(role.getId());
     }
 
     @Test
@@ -57,7 +61,8 @@ class UserServiceTest {
                 .firstName("New")
                 .lastName("User")
                 .password("Password123")
-                .roleId(role.getId())
+                .confirmPassword("Password123")
+                .roleIds(roleIds)
                 .build();
 
         var response = userService.create(dto);
@@ -73,7 +78,8 @@ class UserServiceTest {
                 .firstName("Dup")
                 .lastName("User")
                 .password("Password123")
-                .roleId(role.getId())
+                .confirmPassword("Password123")
+                .roleIds(roleIds)
                 .build();
 
         userService.create(dto);
@@ -88,7 +94,8 @@ class UserServiceTest {
                 .firstName("Find")
                 .lastName("Me")
                 .password("Password123")
-                .roleId(role.getId())
+                .confirmPassword("Password123")
+                .roleIds(roleIds)
                 .build();
 
         var created = userService.create(dto);
@@ -108,20 +115,22 @@ class UserServiceTest {
                 .firstName("Update")
                 .lastName("User")
                 .password("Password123")
-                .roleId(role.getId())
+                .confirmPassword("Password123")
+                .roleIds(roleIds)
                 .build();
 
         var created = userService.create(dto);
 
-        UserUpdateDTO updateDTO = UserUpdateDTO.builder()
+        UserRequestDTO userRequestDTO = UserRequestDTO.builder()
                 .username("updateduser")
                 .firstName("Updated")
                 .lastName("User")
                 .password("NewPassword123")
-                .roleId(role.getId())
+                .confirmPassword("NewPassword123")
+                .roleIds(roleIds)
                 .build();
 
-        var updated = userService.update(created.getId(), updateDTO);
+        var updated = userService.update(created.getId(), userRequestDTO);
 
         assertThat(updated.getUsername()).isEqualTo("updateduser");
         assertThat(passwordEncoder.matches("NewPassword123", userRepository.findById(created.getId()).get().getPassword())).isTrue();
@@ -134,7 +143,8 @@ class UserServiceTest {
                 .firstName("Delete")
                 .lastName("User")
                 .password("Password123")
-                .roleId(role.getId())
+                .confirmPassword("Password123")
+                .roleIds(roleIds)
                 .build();
 
         var created = userService.create(dto);

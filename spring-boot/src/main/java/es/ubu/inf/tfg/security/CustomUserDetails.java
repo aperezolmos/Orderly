@@ -1,7 +1,8 @@
 package es.ubu.inf.tfg.security;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +19,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
+        Set<String> roleNames = user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet());
+        return roleNames.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override

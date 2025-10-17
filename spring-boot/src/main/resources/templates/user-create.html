@@ -15,7 +15,7 @@
     <div class="container">
         <h2 class="mb-3">Crear Usuario</h2>
         <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
-        <form th:action="@{/admin/users/create}" th:object="${userRegisterDTO}" method="post" class="card p-4 shadow-sm">
+        <form th:action="@{/admin/users/create}" th:object="${userRequestDTO}" method="post" class="card p-4 shadow-sm">
             <div class="mb-3">
                 <label class="form-label">Nombre de usuario:</label>
                 <input type="text" th:field="*{username}" class="form-control" />
@@ -42,10 +42,11 @@
                 <div th:if="${#fields.hasErrors('confirmPassword')}" class="invalid-feedback d-block" th:errors="*{confirmPassword}"></div>
             </div>
             <div class="mb-3">
-                <label class="form-label">Rol:</label>
-                <select th:field="*{roleId}" class="form-select">
+                <label class="form-label">Roles:</label>
+                <select th:field="*{roleIds}" class="form-select" multiple>
                     <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
                 </select>
+                <small class="form-text text-muted">Mantenga Ctrl (Cmd en Mac) para seleccionar múltiples roles</small>
             </div>
             <button type="submit" class="btn btn-success w-100">Crear usuario</button>
         </form>

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
-import es.ubu.inf.tfg.user.dto.UserUpdateDTO;
-import jakarta.validation.Valid;
+import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,7 +45,8 @@ public class UserController {
     }
     
     @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO userRequest) {
+    public ResponseEntity<UserResponseDTO> createUser(
+            @Validated(UserValidationGroups.OnCreate.class) @RequestBody UserRequestDTO userRequest) {
         try {
             UserResponseDTO createdUser = userService.create(userRequest);
             log.info("Usuario creado exitosamente con ID: {} y username: {}", 
@@ -62,9 +63,9 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Integer id,
-            @Valid @RequestBody UserUpdateDTO userUpdate) {
+            @Validated(UserValidationGroups.OnUpdate.class) @RequestBody UserRequestDTO userRequestDTO) {
         try {
-            UserResponseDTO updatedUser = userService.update(id, userUpdate);
+            UserResponseDTO updatedUser = userService.update(id, userRequestDTO);
             log.info("Usuario actualizado exitosamente con ID: {}", id);
             return ResponseEntity.ok(updatedUser);
         } 
