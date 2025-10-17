@@ -13,6 +13,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\textit{Sprint} 0}
+\label{subsec:A.2_sprint0}
 
 Duración: 18/09/2025 - 25/09/2025
 
@@ -45,6 +46,7 @@ Se acordó, para el siguiente \textit{sprint}, comenzar el desarrollo de la apli
 %---------------------------------------------------------------
 
 \subsection{\textit{Sprint} 1}
+\label{subsec:A.2_sprint1}
 
 Duración: 25/09/2025 - 02/10/2025
 
@@ -69,6 +71,35 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 \subsubsection{Revisión}
 
 Se acordó, para el siguiente \textit{sprint}, seguir implementando los aspectos restantes relativos a la gestión de usuarios en la aplicación, para poder dar prácticamente por acabada esa funcionalidad. Se comentó también el tema de la \textbf{internacionalización} de la aplicación, y cómo sería beneficioso intentar implementarlo desde el primer momento.
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 2}
+\label{subsec:A.2_sprint2}
+
+Duración: 02/10/2025 - 09/10/2025
+
+Este \textit{sprint} se enfocó en expandir la funcionalidad de gestión de usuarios mediante la creación de formularios, como el de registro, edición o mantenimiento de usuarios (por parte de un administrador). También se empezaron a escribir los apéndices A y B de la documentación.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/3?closed=1}{\textbf{Sprint 2}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Creación de formulario de registro de usuarios:} Una pantalla que permite a nuevos usuarios crear su perfil en la aplicación (con \texttt{ROLE\_USER} por defecto), en la que se muestran mensajes descriptivos en caso de error.
+	\item \textbf{Creación de formulario de edición de usuarios:} Una pantalla que permite editar el perfil de un usuario, disponible para el propio usuario y para administradores que quieran editar dicho usuario. Los campos mostrados dependen de la identidad y rol del \textit{usuario editor}.
+	\item \textbf{Implementación de módulo de gestión de usuarios para \textit{admins}:} Se creó una página que permite a los administradores de la aplicación ver un listado de todos los usuarios de la misma y poder realizar operaciones de gestión, como la creación, modificación y eliminación de dichos usuarios.
+	\item \textbf{Comienzo de la documentación de \textit{sprints} anteriores:} Se redactó acerca de los \textit{sprints} completados hasta entonces (véanse \nameref{subsec:A.2_sprint0} y \nameref{subsec:A.2_sprint1}), para mantener un seguimiento claro de las tareas completadas y las decisiones tomadas durante el ciclo de vida del proyecto.
+	\item \textbf{Primera definición de requisitos funcionales:} Aunque estos requisitos ya se tenían presentes desde el comienzo del proyecto, se redactó una primera versión de éstos en la documentación.
+\end{itemize}
+
+\missingfigure{Lista de issues del sprint 2? O un gráfico de commits o burn down}
+
+\subsubsection{Revisión}
+
+Al haber mostrado el funcionamiento de los \textit{endpoints} de la aplicación al tutor mediante \textit{Postman}, se propuso la posible generación de una \textbf{colección de solicitudes} completa, para adjuntar como archivo complementario en cada \textit{release}.
+
+Se acordó, para el siguiente \textit{sprint}, dejar a un lado la funcionalidad de usuarios y proseguir con la gestión de ingredientes y productos ofertados. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
