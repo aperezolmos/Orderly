@@ -2,38 +2,13 @@
 
 \section{Introducción}
 
-Una muestra de cómo podría ser una tabla de casos de uso:
-
-% Caso de Uso 1 -> Consultar Experimentos.
-\begin{table}[p]
-	\centering
-	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
-		\toprule
-		\textbf{CU-1}    & \textbf{Ejemplo de caso de uso}\\
-		\toprule
-		\textbf{Versión}              & 1.0    \\
-		\textbf{Autor}                & Alumno \\
-		\textbf{Requisitos asociados} & RF-xx, RF-xx \\
-		\textbf{Descripción}          & La descripción del CU \\
-		\textbf{Precondición}         & Precondiciones (podría haber más de una) \\
-		\textbf{Acciones}             &
-		\begin{enumerate}
-			\def\labelenumi{\arabic{enumi}.}
-			\tightlist
-			\item Pasos del CU
-			\item Pasos del CU (añadir tantos como sean necesarios)
-		\end{enumerate}\\
-		\textbf{Postcondición}        & Postcondiciones (podría haber más de una) \\
-		\textbf{Excepciones}          & Excepciones \\
-		\textbf{Importancia}          & Alta o Media o Baja... \\
-		\bottomrule
-	\end{tabularx}
-	\caption{CU-1 Nombre del caso de uso.}
-\end{table}
+\todo[inline]{Pendiente escribir.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Objetivos generales}
+
+\todo[inline]{Pendiente escribir.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -105,4 +80,208 @@ Una muestra de cómo podría ser una tabla de casos de uso:
 
 \section{Especificación de requisitos}
 
+\todo[inline]{Líneas introductorias.}
 
+\missingfigure{Diagrama de casos de uso}
+
+%---------------------------------------------------------------
+
+\subsection{Actores}
+
+\todo[inline]{Explicar brevemente los actores.}
+
+%---------------------------------------------------------------
+
+\subsection{Casos de uso}
+
+% Caso de Uso 1 -> Registrarse (register).
+\BeginCasoUso{tab:CU-1}{CU-1}{Registrarse (\textit{register})}
+	\textbf{Versión}              & 1.0    \\
+	\textbf{Autor}                & Amanda Pérez Olmos \\
+	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Descripción}          & Visitante crea una nueva cuenta de usuario. \\
+	\textbf{Precondición}         & El usuario no está autenticado. \\
+	\textbf{Acciones}             &
+	\begin{enumerate}
+		\def\labelenumi{\arabic{enumi}.}
+		\tightlist
+		\item Hacer \textit{click} en el botón \textit{Registrarse}.
+		\item Rellenar el formulario de registro (como mínimo, el nombre de usuario y la contraseña).
+		\item El sistema valida los campos.
+		\begin{enumerate}
+			\item Si la validación es exitosa, el sistema crea el usuario y le añade el rol por defecto. Se redirige al usuario a la página de inicio de sesión.
+			\item Si la validación falla, se muestra un mensaje con la descripción del error.
+		\end{enumerate}
+	\end{enumerate} \\
+	\textbf{Postcondición}        & Nuevo usuario persistido en la BBDD con el rol por defecto. \\
+	\textbf{Excepciones}          &
+	\begin{itemize}
+		\tightlist
+		\item El \textit{username} ya existe.
+		\item La confirmación de contraseña no coincide con la contraseña introducida.
+		\item Alguno de los campos supera la longitud máxima.
+		\item No se ha rellenado el campo de \textit{username} o el de contraseña.
+	\end{itemize} \\
+	\textbf{Importancia}          & Alta \\
+\EndCasoUso
+
+
+% Caso de Uso 2 -> Iniciar sesión (login).
+\BeginCasoUso{tab:CU-2}{CU-2}{Iniciar sesión (\textit{login})}
+	\textbf{Versión}              & 1.0    \\
+	\textbf{Autor}                & Amanda Pérez Olmos \\
+	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Descripción}          & Usuario se autentica y accede a la aplicación. \\
+	\textbf{Precondición}         & 
+	\begin{itemize}
+		\tightlist
+		\item El usuario tiene una cuenta existente.
+		\item El usuario no está autenticado.
+	\end{itemize} \\
+	\textbf{Acciones}             &
+	\begin{enumerate}
+		\def\labelenumi{\arabic{enumi}.}
+		\tightlist
+		\item Hacer \textit{click} en el botón \textit{Iniciar sesión}.
+		\item Introducir \textit{username} y contraseña.
+		\item El sistema valida las credenciales.
+		\begin{enumerate}
+			\item Si la validación es exitosa, el sistema crea el usuario y le añade el rol por defecto.
+			\item Si la validación falla, se muestra un mensaje con la descripción del error.
+		\end{enumerate}
+	\end{enumerate} \\
+	\textbf{Postcondición}        & 
+	\begin{itemize}
+		\tightlist
+		\item Usuario autenticado y sesión activa.
+		\item Acceso a vistas según roles.
+	\end{itemize} \\
+	\textbf{Excepciones}          & Credenciales incorrectas o vacías. \\
+	\textbf{Importancia}          & Alta \\
+\EndCasoUso
+
+
+% Caso de Uso 3 -> Cerrar sesión (logout).
+\BeginCasoUso{tab:CU-3}{CU-3}{Cerrar sesión (\textit{logout})}
+	\textbf{Versión}              & 1.0    \\
+	\textbf{Autor}                & Amanda Pérez Olmos \\
+	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Descripción}          & Usuario termina su sesión y sale de la aplicación. \\
+	\textbf{Precondición}         & El usuario está autenticado. \\
+	\textbf{Acciones}             &
+	\begin{enumerate}
+		\def\labelenumi{\arabic{enumi}.}
+		\tightlist
+		\item Hacer \textit{click} en el botón \textit{Cerrar sesión} de la barra de navegación (\textit{navbar}).
+		\item El sistema invalida la sesión y redirige a la página de inicio.
+		\todo[inline]{inicio o login?}
+	\end{enumerate} \\
+	\textbf{Postcondición}        & Sesión inválida. \\
+	\textbf{Excepciones}          & - \\
+	\textbf{Importancia}          & Baja \\
+\EndCasoUso
+
+
+% Caso de Uso 4 -> Editar perfil propio.
+\BeginCasoUso{tab:CU-4}{CU-4}{Editar perfil propio}
+	\textbf{Versión}              & 1.0    \\
+	\textbf{Autor}                & Amanda Pérez Olmos \\
+	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Descripción}          & Usuario edita la información de su perfil. \\
+	\textbf{Precondición}         & El usuario está autenticado. \\
+	\textbf{Acciones}             &
+	\begin{enumerate}
+		\def\labelenumi{\arabic{enumi}.}
+		\tightlist
+		\item Hacer \textit{click} en el botón \textit{Editar perfil} de la barra de navegación (\textit{navbar}).
+		\item Modificar campos permitidos.
+		\begin{enumerate}
+			\item Solo podrá editar sus roles si tiene permisos de administrador.
+			\item Si se quiere editar la contraseña, se deberá introducir la contraseña actual.
+		\end{enumerate}
+		\item El sistema valida y persiste los cambios.
+		\begin{enumerate}
+			\item Si se ha editado el \textit{username}, se cierra sesión automáticamente.
+		\end{enumerate}
+	\end{enumerate} \\
+	\textbf{Postcondición}        & Campos del usuario actualizados. \\
+	\textbf{Excepciones}          & 
+	\begin{itemize}
+		\tightlist
+		\item El \textit{username} ya existe.
+		\item La confirmación de contraseña no coincide con la contraseña introducida.
+		\item La contraseña introducida como ``\textit{contraseña actual}'' no coincide con la real.
+		\item Alguno de los campos supera la longitud máxima.
+	\end{itemize} \\
+	\textbf{Importancia}          & Media \\
+\EndCasoUso
+
+
+% Caso de Uso ? -> Recuperar contraseña.
+
+
+% Caso de Uso 5 -> Gestionar usuarios (admin).
+\todo{Caso general o casos separados?}
+\BeginCasoUso{tab:CU-5}{CU-5}{Gestionar usuarios (admin)}
+	\textbf{Versión}              & 1.0    \\
+	\textbf{Autor}                & Amanda Pérez Olmos \\
+	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Descripción}          & Administrador accede a vista que muestra todos los usuarios y puede crear, editar o eliminar cualquiera de ellos. \\
+	\textbf{Precondición}         & El usuario está autenticado y tiene rol de administrador. \\
+	\textbf{Acciones}             &
+	\begin{enumerate}
+		\def\labelenumi{\arabic{enumi}.}
+		\tightlist
+		\item \textbf{Listar usuarios}: Solicitar listado con datos relevantes (sin campos sensibles) de cada usuario.
+		\item \textbf{Crear usuarios}: Rellenar formulario con datos básicos, incluyendo la asignación de roles.
+		\item \textbf{Editar usuarios}: Modificar cualquier campo editable del formulario, incluyendo la adición y eliminación de roles.
+		\item \textbf{Eliminar usuarios}: Solicitar la eliminación de un usuario, con confirmación.
+	\end{enumerate} \\
+	\textbf{Postcondición}        & 
+	\begin{itemize}
+		\tightlist
+		\item Operaciones reflejadas en la BBDD.
+		\item Cambios de roles afectan permisos en nuevas sesiones.
+	\end{itemize} \\
+	\textbf{Excepciones}          & 
+	\begin{itemize}
+		\tightlist
+		\item Acceso no autorizado.
+		\item \textit{Username} duplicado (en creación o edición).
+		\item Intento de eliminar o desprivilegiar al último administrador activo.
+	\end{itemize} \\
+	\textbf{Importancia}          & Alta \\
+\EndCasoUso
+
+
+% Caso de Uso 6 -> Gestionar roles (admin).
+% + crear, editar y eliminar + asignar/desasignar a usuarios.
+\BeginCasoUso{tab:CU-6}{CU-6}{Gestionar roles (admin)}
+	\textbf{Versión}              & 1.0    \\
+	\textbf{Autor}                & Amanda Pérez Olmos \\
+	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Descripción}          & Administrador accede a vista que muestra todos los roles y puede crear, editar o eliminar cualquiera de ellos. \\
+	\textbf{Precondición}         & El usuario está autenticado y tiene rol de administrador. \\
+	\textbf{Acciones}             &
+	\begin{enumerate}
+		\def\labelenumi{\arabic{enumi}.}
+		\tightlist
+		\item \textbf{Crear roles}: Agregar un nuevo rol, otorgándole un nombre y descripción.
+		\item \textbf{Editar roles}: Editar el nombre o descripción de roles existentes.
+		\item \textbf{Eliminar roles}: Borrar roles existentes que no estén asignados a ningún usuario.
+	\end{enumerate} \\
+	\textbf{Postcondición}        & 
+	\begin{itemize}
+		\tightlist
+		\item Operaciones reflejadas en la BBDD.
+		\item Cambios de roles afectan permisos en nuevas sesiones.
+	\end{itemize} \\
+	\textbf{Excepciones}          & 
+	\begin{itemize}
+		\tightlist
+		\item Acceso no autorizado.
+		\item Nombre duplicado (en creación o edición).
+		\item Rol está asignado a un usuario y no puede eliminarse.
+	\end{itemize} \\
+	\textbf{Importancia}          & Media \\
+\EndCasoUso
