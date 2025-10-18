@@ -1,9 +1,12 @@
 \documentclass[a4paper,12pt,twoside]{memoir}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paquetes añadidos por mí
 \usepackage{todonotes}
 \setuptodonotes{fancyline, color=blue!30}
 
+\usepackage{longtable,booktabs}
+\usepackage{enumitem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Castellano
@@ -286,6 +289,50 @@
   \label{tabla:#4}
   \end{center}
 }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos añadidos por mí
+
+% TABLA CASOS DE USO. Los parámetros son:
+% 1 -> Etiqueta (label) para referencias
+% 2 --> Id del caso de uso
+% 3 --> Título del caso de uso
+
+% Inicio de tabla de caso de uso
+\newcommand{\BeginCasoUso}[3]{%
+	\begin{longtable}{p{0.21\linewidth} p{0.71\linewidth}}
+		% \caption{#2 #3}\label{#1} \\ % Si se quisiera el caption encima
+		\toprule
+		\textbf{#2} & \textbf{#3} \\
+		\toprule
+		\endfirsthead
+		
+		% Cabecera para páginas siguientes (cuando la tabla continúa)
+		\multicolumn{2}{l}{\small\slshape continúa desde la página anterior} \\[3pt]
+		\toprule
+		\textbf{#2} & \textbf{#3} \\
+		\toprule
+		\endhead
+		
+		% Pie que aparecerá en todas las páginas excepto la última
+		\midrule
+		\multicolumn{2}{r}{\small\slshape continúa en la página siguiente} \\
+		\endfoot
+		
+		% Pie de la última página
+		\bottomrule \\
+		[1pt]
+		\caption{#2 #3}\label{#1} \\ % Si se quisiera el caption debajo
+		\endlastfoot
+	}
+	
+	% Fin de tabla de caso de uso
+	\newcommand{\EndCasoUso}{%
+	\end{longtable}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
