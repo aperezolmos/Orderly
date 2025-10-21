@@ -31,7 +31,7 @@ public class NutritionInfo {
     
     @Builder.Default
     @Column(precision=6, scale=2)
-    private BigDecimal fat = BigDecimal.ZERO;
+    private BigDecimal fats = BigDecimal.ZERO;
 
     @Builder.Default
     @Column(precision=6, scale=2)
@@ -47,7 +47,7 @@ public class NutritionInfo {
 
     @Builder.Default
     @Column(precision=6, scale=2)
-    private BigDecimal saturatedFat = BigDecimal.ZERO;
+    private BigDecimal saturatedFats = BigDecimal.ZERO;
 
     @Builder.Default
     @Column(precision=6, scale=2)
