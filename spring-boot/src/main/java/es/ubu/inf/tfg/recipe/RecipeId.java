@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-//toString
+@ToString
 public class RecipeId implements Serializable {
 
     private Integer foodId;

@@ -9,26 +9,30 @@ import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.recipe.Recipe;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "foods")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Builder
 public class Food {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
     private Integer id;
 
     @Column(nullable = false, unique = true)
+    @ToString.Include
     private String name;
 
+    @ToString.Include
     private FoodGroup foodGroup;
 
     private double servingWeightGrams;

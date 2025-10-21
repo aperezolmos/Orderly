@@ -63,9 +63,11 @@ public class RoleService {
         Role role = findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id));
         
-        if (!role.getUsers().isEmpty()) {
+        /*if (!role.getUsers().isEmpty()) {
             throw new IllegalStateException("No se puede eliminar el rol. Hay usuarios asignados a este rol.");
-        }
+        }*/
+        // TODO: ver cómo manejarlo cuando hay usuarios con el rol que se quiere eliminar
+        // se ha transformado la relación a unidireccional, así que no puede accederse a los usuarios desde rol
         
         roleRepository.delete(role);
     }
