@@ -50,5 +50,26 @@ public class Food {
 
     // --------------------------------------------------------
 
-    //TODO: métodos addRecipe, removeRecipe...para ASEGURAR CONSISTENCIA a ambos lados de la relación
+    public void addRecipe(Recipe recipe) {
+        this.recipes.add(recipe);
+        recipe.setFood(this);
+    }
+
+    public void addRecipe(Recipe recipe, Double quantity) {
+        recipe.setQuantity(quantity);
+        this.recipes.add(recipe);
+        recipe.setFood(this);
+    }
+
+    public void removeRecipe(Recipe recipe) {
+        this.recipes.remove(recipe);
+        recipe.setFood(null);
+    }
+
+    public void clearRecipes() {
+        for (Recipe recipe : this.recipes) {
+            recipe.setFood(null);
+        }
+        this.recipes.clear();
+    }
 }

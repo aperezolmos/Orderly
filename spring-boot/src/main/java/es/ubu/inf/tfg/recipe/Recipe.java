@@ -32,4 +32,32 @@ public class Recipe { // Representa la relación many-to-many entre Food y Produ
     @MapsId("productId")
     @JoinColumn(name = "product_id")
     private Product product;
+
+    // --------------------------------------------------------
+
+    public void setFood(Food food) {
+
+        if (this.food != null) {
+            this.food.getRecipes().remove(this);
+        }
+        this.food = food;
+        
+        // Actualizamos la relación inversa
+        if (food != null && !food.getRecipes().contains(this)) {
+            food.getRecipes().add(this);
+        }
+    }
+
+    public void setProduct(Product product) {
+
+        if (this.product != null) {
+            this.product.getRecipes().remove(this);
+        }
+        this.product = product;
+        
+        // Actualizamos la relación inversa
+        if (product != null && !product.getRecipes().contains(this)) {
+            product.getRecipes().add(this);
+        }
+    }
 }
