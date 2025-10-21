@@ -1,15 +1,13 @@
 package es.ubu.inf.tfg.food;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
+import es.ubu.inf.tfg.recipe.Recipe;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,5 +40,11 @@ public class Food {
 
     //info sobre cuándo se actualizó por última vez desde nutritionix -> para cachear datos y reducir llamadas
 
-    // TODO: relación con 'Product'...
+    @Builder.Default
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Recipe> recipes = new HashSet<>();
+
+    // --------------------------------------------------------
+
+    //TODO: métodos addRecipe, removeRecipe...para ASEGURAR CONSISTENCIA a ambos lados de la relación
 }
