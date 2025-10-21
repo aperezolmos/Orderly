@@ -1,10 +1,11 @@
 package es.ubu.inf.tfg.user.role;
 
-import java.util.List;
-
-import es.ubu.inf.tfg.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "roles")
@@ -23,10 +24,4 @@ public class Role {
     
     @Column(length = 255)
     private String description;
-    
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<User> users;
-
 }

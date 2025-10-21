@@ -4,22 +4,30 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import es.ubu.inf.tfg.user.role.Role;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Builder
 public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @ToString.Include
     private Integer id;
 
     @Column(nullable = false, unique = true, length = 50)
+    @ToString.Include
     private String username;
 
     @Column(length = 100)
@@ -45,5 +53,4 @@ public class User {
     protected void onCreate() {
         createdAt = LocalDateTime.now().plusHours(2);
     }
-    
 }
