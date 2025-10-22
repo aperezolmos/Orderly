@@ -58,4 +58,21 @@ public class NutritionInfo {
 
     @Embedded
     private Vitamins vitamins;
+
+    // --------------------------------------------------------
+    
+    public NutritionInfo multiplyByFactor(BigDecimal factor) {
+        return NutritionInfo.builder()
+                .calories(this.calories.multiply(factor))
+                .carbohydrates(this.carbohydrates.multiply(factor))
+                .fats(this.fats.multiply(factor))
+                .fiber(this.fiber.multiply(factor))
+                .protein(this.protein.multiply(factor))
+                .salt(this.salt.multiply(factor))
+                .saturatedFats(this.saturatedFats.multiply(factor))
+                .sugars(this.sugars.multiply(factor))
+                .minerals(this.minerals.multiplyByFactor(factor))
+                .vitamins(this.vitamins.multiplyByFactor(factor))
+                .build();
+    }
 }

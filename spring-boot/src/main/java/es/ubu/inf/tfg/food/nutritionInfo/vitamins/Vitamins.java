@@ -55,5 +55,22 @@ public class Vitamins {
 
     @Builder.Default
     @Column(precision=10, scale=4)
-    private BigDecimal vitaminB12 = BigDecimal.ZERO;    
+    private BigDecimal vitaminB12 = BigDecimal.ZERO;   
+    
+    // --------------------------------------------------------
+    
+    public Vitamins multiplyByFactor(BigDecimal factor) {
+        return Vitamins.builder()
+                .vitaminA(this.vitaminA.multiply(factor))
+                .vitaminC(this.vitaminC.multiply(factor))
+                .vitaminD(this.vitaminD.multiply(factor))
+                .vitaminE(this.vitaminE.multiply(factor))
+                .vitaminB1(this.vitaminB1.multiply(factor))
+                .vitaminB2(this.vitaminB2.multiply(factor))
+                .vitaminB3(this.vitaminB3.multiply(factor))
+                .vitaminB6(this.vitaminB6.multiply(factor))
+                .vitaminB9(this.vitaminB9.multiply(factor))
+                .vitaminB12(this.vitaminB12.multiply(factor))
+                .build();
+    }
 }
