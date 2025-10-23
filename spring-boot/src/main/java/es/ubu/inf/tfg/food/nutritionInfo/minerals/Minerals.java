@@ -51,6 +51,19 @@ public class Minerals {
 
     // --------------------------------------------------------
     
+    public Minerals add(Minerals other) {
+        return Minerals.builder()
+                .calcium(this.calcium.add(other.calcium))
+                .iron(this.iron.add(other.iron))
+                .magnesium(this.magnesium.add(other.magnesium))
+                .phosphorus(this.phosphorus.add(other.phosphorus))
+                .potassium(this.potassium.add(other.potassium))
+                .selenium(this.selenium.add(other.selenium))
+                .sodium(this.sodium.add(other.sodium))
+                .zinc(this.zinc.add(other.zinc))
+                .build();
+    }
+    
     public Minerals multiplyByFactor(BigDecimal factor) {
         return Minerals.builder()
                 .calcium(this.calcium.multiply(factor))

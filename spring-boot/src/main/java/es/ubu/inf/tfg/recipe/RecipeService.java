@@ -51,20 +51,6 @@ public class RecipeService {
 
     // --------------------------------------------------------
 
-    public NutritionInfo calculateNutritionInfoForRecipes(List<RecipeId> recipeIds) {
-        
-        NutritionInfo total = NutritionInfo.builder().build();
-        
-        for (RecipeId recipeId : recipeIds) {
-            Recipe recipe = findById(recipeId);
-            NutritionInfo recipeNutrition = recipe.calculateNutritionInfo();
-            total = total.add(recipeNutrition);
-        }
-        return total;
-    }
-
-    // --------------------------------------------------------
-
     public Recipe create(Integer foodId, Integer productId, Double quantity) {
 
         if (quantity == null || quantity <= 0) {
@@ -117,5 +103,19 @@ public class RecipeService {
 
     public void deleteByProduct(Product product) { 
         recipeRepository.deleteByProduct(product);
+    }
+
+    // --------------------------------------------------------
+
+    public NutritionInfo calculateNutritionInfoForRecipes(List<RecipeId> recipeIds) {
+        
+        NutritionInfo total = NutritionInfo.builder().build();
+        
+        for (RecipeId recipeId : recipeIds) {
+            Recipe recipe = findById(recipeId);
+            NutritionInfo recipeNutrition = recipe.calculateNutritionInfo();
+            total = total.add(recipeNutrition);
+        }
+        return total;
     }
 }

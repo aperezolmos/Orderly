@@ -59,6 +59,21 @@ public class Vitamins {
     
     // --------------------------------------------------------
     
+    public Vitamins add(Vitamins other) {
+        return Vitamins.builder()
+                .vitaminA(this.vitaminA.add(other.vitaminA))
+                .vitaminC(this.vitaminC.add(other.vitaminC))
+                .vitaminD(this.vitaminD.add(other.vitaminD))
+                .vitaminE(this.vitaminE.add(other.vitaminE))
+                .vitaminB1(this.vitaminB1.add(other.vitaminB1))
+                .vitaminB2(this.vitaminB2.add(other.vitaminB2))
+                .vitaminB3(this.vitaminB3.add(other.vitaminB3))
+                .vitaminB6(this.vitaminB6.add(other.vitaminB6))
+                .vitaminB9(this.vitaminB9.add(other.vitaminB9))
+                .vitaminB12(this.vitaminB12.add(other.vitaminB12))
+                .build();
+    }
+    
     public Vitamins multiplyByFactor(BigDecimal factor) {
         return Vitamins.builder()
                 .vitaminA(this.vitaminA.multiply(factor))

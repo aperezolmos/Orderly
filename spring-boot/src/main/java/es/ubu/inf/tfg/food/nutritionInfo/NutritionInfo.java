@@ -61,6 +61,21 @@ public class NutritionInfo {
 
     // --------------------------------------------------------
     
+    public NutritionInfo add(NutritionInfo other) {
+        return NutritionInfo.builder()
+                .calories(this.calories.add(other.calories))
+                .carbohydrates(this.carbohydrates.add(other.carbohydrates))
+                .fats(this.fats.add(other.fats))
+                .fiber(this.fiber.add(other.fiber))
+                .protein(this.protein.add(other.protein))
+                .salt(this.salt.add(other.salt))
+                .saturatedFats(this.saturatedFats.add(other.saturatedFats))
+                .sugars(this.sugars.add(other.sugars))
+                .minerals(this.minerals.add(other.minerals))
+                .vitamins(this.vitamins.add(other.vitamins))
+                .build();
+    }
+
     public NutritionInfo multiplyByFactor(BigDecimal factor) {
         return NutritionInfo.builder()
                 .calories(this.calories.multiply(factor))
