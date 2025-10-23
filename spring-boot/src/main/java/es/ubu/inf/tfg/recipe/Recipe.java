@@ -13,10 +13,8 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-@Builder
 public class Recipe { // Representa la relación many-to-many entre Food y Product
 
     @EmbeddedId
@@ -36,6 +34,16 @@ public class Recipe { // Representa la relación many-to-many entre Food y Produ
     @MapsId("productId")
     @JoinColumn(name = "product_id")
     private Product product;
+
+    // --------------------------------------------------------
+
+    @Builder
+    public Recipe(RecipeId id, Double quantity, Food food, Product product) {
+        this.id = id;
+        this.quantity = quantity;
+        this.setFood(food);
+        this.setProduct(product);
+    }
 
     // --------------------------------------------------------
 

@@ -33,6 +33,7 @@ public class Food {
     @ToString.Include
     private String name;
 
+    @Column(nullable = false)
     @ToString.Include
     private FoodGroup foodGroup;
 

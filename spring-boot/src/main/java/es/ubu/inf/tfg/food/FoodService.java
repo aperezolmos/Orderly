@@ -1,12 +1,12 @@
 package es.ubu.inf.tfg.food;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -23,16 +23,14 @@ public class FoodService { // TODO: cambiar con DTO?
         return foodRepository.findAll();
     }
 
-    public Optional<Food> findById(Integer id) {
-        return foodRepository.findById(id);
+    public Food findById(Integer id) {
+        return foodRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Food not found with id: " + id));
     }
 
-    public Optional<Food> findByName(String name) {
-        return foodRepository.findByName(name);
-    }
-
-    public boolean existsByName(String name) {
-        return foodRepository.existsByName(name);
+    public Food findByName(String name) {
+        return foodRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Food not found with name: " + name));
     }
 
     public List<Food> findByFoodGroup(FoodGroup foodGroup) {
@@ -46,26 +44,32 @@ public class FoodService { // TODO: cambiar con DTO?
     // --------------------------------------------------------
 
     public Food create(Food food) {
+        
         if (foodRepository.existsByName(food.getName())) {
-            throw new IllegalArgumentException("Food with name " + food.getName() + " already exists.");
+            throw new IllegalArgumentException("Food with name '" + food.getName() + "'' already exists");
         }
         return foodRepository.save(food);
     }
 
     public Food update(Integer id, Food food) {
         
-        Food existingFood = findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Food with ID " + id + " not found."));
+        Food existingFood = findById(id);
 
-        if (!existingFood.getName().equals(food.getName()) && foodRepository.existsByName(food.getName())) {
-            throw new IllegalArgumentException("Food with name " + food.getName() + " already exists.");
-        }
-
-        if (food.getName() != null){
+        if (food.getName() != null && !food.getName().equals(existingFood.getName())) {
+            if (foodRepository.existsByName(food.getName())) {
+                throw new IllegalArgumentException("Food with name '" + food.getName() + "' already exists");
+            }
             existingFood.setName(food.getName());
         }
-        existingFood.setFoodGroup(food.getFoodGroup());
-        existingFood.setServingWeightGrams(food.getServingWeightGrams());
+
+        if (food.getFoodGroup() != null) {
+            existingFood.setFoodGroup(food.getFoodGroup());
+        }
+        
+        if (food.getServingWeightGrams() > 0) {
+            existingFood.setServingWeightGrams(food.getServingWeightGrams());
+        }
+        
         existingFood.setNutritionInfo(food.getNutritionInfo());
 
         return foodRepository.save(existingFood);
@@ -73,8 +77,11 @@ public class FoodService { // TODO: cambiar con DTO?
 
     public void delete(Integer id) {
 
+        //TODO: manejar cuando tiene recetas asociadas?
+        // hay cascade y orphan removal, pero se debería notificar al usuario
+
         if (!foodRepository.existsById(id)){
-            throw new IllegalArgumentException("Food with ID " + id + " not found.");
+            throw new IllegalArgumentException("Food with ID " + id + " not found");
         }
         foodRepository.deleteById(id);
     }
