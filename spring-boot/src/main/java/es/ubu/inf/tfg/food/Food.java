@@ -2,6 +2,7 @@ package es.ubu.inf.tfg.food;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,7 @@ public class Food {
     @ToString.Include
     private String name;
 
+    @Column(nullable = false)
     @ToString.Include
     private FoodGroup foodGroup;
 
@@ -49,6 +51,15 @@ public class Food {
     private Set<Recipe> recipes = new HashSet<>();
 
     // --------------------------------------------------------
+
+    public NutritionInfo getNutritionInfoForQuantity(Double quantityInGrams) {
+        
+        if (quantityInGrams == null || quantityInGrams <= 0) {
+            return NutritionInfo.builder().build();
+        }
+        BigDecimal factor = BigDecimal.valueOf(quantityInGrams / this.servingWeightGrams);
+        return this.nutritionInfo.multiplyByFactor(factor);
+    }
 
     public void addRecipe(Recipe recipe) {
         this.recipes.add(recipe);

@@ -1,26 +1,28 @@
 package es.ubu.inf.tfg.recipe;
 
 import es.ubu.inf.tfg.food.Food;
+import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.product.Product;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "recipes")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class Recipe { // Representa la relación many-to-many entre Food y Product
 
     @EmbeddedId
+    @EqualsAndHashCode.Include
+    @ToString.Include
     private RecipeId id;
     
+    @ToString.Include
     private Double quantity; // Cantidad del ingrediente (food) en el producto -> "gramosEscogidos" -> cambiar nombre??
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +36,21 @@ public class Recipe { // Representa la relación many-to-many entre Food y Produ
     private Product product;
 
     // --------------------------------------------------------
+
+    @Builder
+    public Recipe(RecipeId id, Double quantity, Food food, Product product) {
+        this.id = id;
+        this.quantity = quantity;
+        this.setFood(food);
+        this.setProduct(product);
+    }
+
+    // --------------------------------------------------------
+
+    // En vez de guardar una copia de la info nutricional, llamamos al método para obtenerla según quantity
+    public NutritionInfo calculateNutritionInfo(){
+        return this.food.getNutritionInfoForQuantity(this.quantity);
+    }
 
     public void setFood(Food food) {
 
