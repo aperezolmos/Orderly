@@ -1,2 +1,2 @@
-spring-boot/mvnw text eol=lf
-spring-boot/*.cmd text eol=crlf
+app/spring-boot/mvnw text eol=lf
+app/spring-boot/*.cmd text eol=crlf

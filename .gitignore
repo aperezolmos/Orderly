@@ -1,14 +1,14 @@
 .env
 
-spring-boot/target/
-spring-boot/build/
+app/spring-boot/target/
+app/spring-boot/build/
 
-spring-boot/.mvn/wrapper/maven-wrapper.jar
+app/spring-boot/.mvn/wrapper/maven-wrapper.jar
 
-!spring-boot/src/main/**/target/
-!spring-boot/src/test/**/target/
-!spring-boot/src/main/**/build/
-!spring-boot/src/test/**/build/
+!app/spring-boot/src/main/**/target/
+!app/spring-boot/src/test/**/target/
+!app/spring-boot/src/main/**/build/
+!app/spring-boot/src/test/**/build/
 
 
 ### STS (Eclipse) ###
