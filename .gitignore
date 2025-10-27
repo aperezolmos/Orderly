@@ -1,17 +1,67 @@
+# ======================
+# Environment variables
+# ======================
 .env
+.env.local
+.env.*.local
 
+
+# ======================
+# Artifacts Spring Boot / Maven
+# ======================
+# Ignore target/build from backend
 app/spring-boot/target/
 app/spring-boot/build/
 
+# Maven wrapper jar (do not version)
 app/spring-boot/.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
 
+# Allow occasional exceptions if internal subtargets are used
 !app/spring-boot/src/main/**/target/
 !app/spring-boot/src/test/**/target/
 !app/spring-boot/src/main/**/build/
 !app/spring-boot/src/test/**/build/
 
 
-### STS (Eclipse) ###
+# ======================
+# Frontend (Vite / Node)
+# ======================
+app/frontend/node_modules/
+app/frontend/dist/
+app/frontend/dist-ssr/
+app/frontend/.vite/
+app/frontend/.cache/
+
+node_modules/
+dist/
+dist-ssr/
+.vite/
+.cache/
+.cache-loader/
+.pnpm-store/
+
+
+# ======================
+# Logs / temporary
+# ======================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+tmp/
+temp/
+*.tmp
+
+
+# ======================
+# IDEs / editors
+# ======================
+# STS / Eclipse
 .apt_generated
 .classpath
 .factorypath
@@ -20,18 +70,68 @@ app/spring-boot/.mvn/wrapper/maven-wrapper.jar
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
+# IntelliJ
+.idea/
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VS Code
 .vscode/
+!.vscode/extensions.json
+
+# Vim swap files
+*.sw?
+
+
+# ======================
+# Binaries / build artifacts
+# ======================
+**/*.jar
+**/*.war
+**/*.ear
+*.class
+*.o
+*.so
+*.dll
+
+
+# ======================
+# Misc tools / caches
+# ======================
+.idea/
+.vscode/
+.parcel-cache/
+.cache/
+.next/
+.nuxt/
+.rpt2_cache/
+.eslintcache
+.terraform/
+*.log
+
+
+# ======================
+# Optional: lockfiles (versioning recommended)
+# ======================
+# Typically, package-lock.json / yarn.lock / pnpm-lock.yaml are versioned
+# If you don't want to version them, uncomment:
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+
+# End of file
