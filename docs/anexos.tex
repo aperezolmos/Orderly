@@ -302,7 +302,7 @@
 % Inicio de tabla de caso de uso
 \newcommand{\BeginCasoUso}[3]{%
 	\begin{longtable}{p{0.21\linewidth} p{0.71\linewidth}}
-		% \caption{#2 #3}\label{#1} \\ % Si se quisiera el caption encima
+		\caption{#2 #3}\label{#1} \\ % Si se quisiera el caption encima
 		\toprule
 		\textbf{#2} & \textbf{#3} \\
 		\toprule
@@ -323,7 +323,7 @@
 		% Pie de la última página
 		\bottomrule \\
 		[1pt]
-		\caption{#2 #3}\label{#1} \\ % Si se quisiera el caption debajo
+		% \caption{#2 #3}\label{#1} \\ % Si se quisiera el caption debajo
 		\endlastfoot
 	}
 	
@@ -331,6 +331,18 @@
 	\newcommand{\EndCasoUso}{%
 	\end{longtable}%
 }
+
+
+% El otro comando de imagen genera la etiqueta a partir de la ruta
+\newcommand{\imagenConEtiqueta}[3]{
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.9\textwidth]{#1} % #1 es la RUTA
+		\caption{#2}\label{fig:#3} % #3 es la ETIQUETA LIMPIA
+	\end{figure}
+	\FloatBarrier
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
