@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
@@ -88,12 +87,11 @@ public class ProductService {
     public void delete(Integer id) {
 
         Product product = findById(id);
-        try {
-            productRepository.delete(product);
+
+        if (!product.getRecipes().isEmpty()) {
+            throw new ResourceInUseException("Product", id, "Food");
         }
-        catch (DataIntegrityViolationException e) {
-            throw new ResourceInUseException("Product", id);
-        }
+        productRepository.delete(product);
     }
 
     // --------------------------------------------------------

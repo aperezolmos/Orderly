@@ -2,7 +2,6 @@ package es.ubu.inf.tfg.food;
 
 import java.util.List;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
@@ -80,11 +79,10 @@ public class FoodService { // TODO: cambiar con DTO?
     public void delete(Integer id) {
 
         Food food = findById(id);
-        try {
-            foodRepository.delete(food);
+
+        if (!food.getRecipes().isEmpty()) {
+            throw new ResourceInUseException("Food", id, "Product");
         }
-        catch (DataIntegrityViolationException e) {
-            throw new ResourceInUseException("Food", id);
-        }
+        foodRepository.delete(food);
     }
 }
