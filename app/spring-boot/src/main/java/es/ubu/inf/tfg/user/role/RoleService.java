@@ -1,11 +1,14 @@
 package es.ubu.inf.tfg.user.role;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.exception.ResourceInUseException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,39 +23,37 @@ public class RoleService {
         return roleRepository.findAll();
     }
     
-    public Optional<Role> findById(Integer id) {
-        return roleRepository.findById(id);
+    public Role findById(Integer id) {
+        return roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
     }
     
-    public Optional<Role> findByName(String name) {
-        return roleRepository.findByName(name);
-    }
-
-    public boolean existsByName(String name) {
-        return roleRepository.existsByName(name);
+    public Role findByName(String name) {
+        return roleRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with name: " + name));
     }
 
     // --------------------------------------------------------
     
     public Role save(Role role) {
-        if (existsByName(role.getName())) {
-            throw new IllegalArgumentException("Ya existe un rol con el nombre: " + role.getName());
+        
+        if (roleRepository.existsByName(role.getName())) {
+            throw new IllegalArgumentException("Role with name '" + role.getName() + "'' already exists");
         }
         return roleRepository.save(role);
     }
 
     public Role update(Integer id, Role role) {
         
-        Role existingRole = findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id));
-        
-        if (!existingRole.getName().equals(role.getName()) && existsByName(role.getName())) {
-            throw new IllegalArgumentException("Ya existe un rol con el nombre: " + role.getName());
-        }
-        
-        if (role.getName() != null) {
+        Role existingRole = findById(id);
+
+        if (role.getName() != null && !role.getName().equals(existingRole.getName())) {
+            if (roleRepository.existsByName(role.getName())) {
+                throw new IllegalArgumentException("Role with name '" + role.getName() + "'' already exists");
+            }
             existingRole.setName(role.getName());
         }
+
         existingRole.setDescription(role.getDescription());
         
         return roleRepository.save(existingRole);
@@ -60,15 +61,12 @@ public class RoleService {
     
     public void delete(Integer id) {
         
-        Role role = findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id));
-        
-        /*if (!role.getUsers().isEmpty()) {
-            throw new IllegalStateException("No se puede eliminar el rol. Hay usuarios asignados a este rol.");
-        }*/
-        // TODO: ver cómo manejarlo cuando hay usuarios con el rol que se quiere eliminar
-        // se ha transformado la relación a unidireccional, así que no puede accederse a los usuarios desde rol
-        
-        roleRepository.delete(role);
+        Role role = findById(id);
+        try {
+            roleRepository.delete(role);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new ResourceInUseException("Role", id);
+        }
     }
 }

@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.recipe.Recipe;
@@ -85,20 +87,13 @@ public class ProductService {
 
     public void delete(Integer id) {
 
-        if (!productRepository.existsById(id)) {
-            throw new IllegalArgumentException("Product with ID " + id + " not found");
+        Product product = findById(id);
+        try {
+            productRepository.delete(product);
         }
-
-        //TODO: manejar cuando tiene recetas asociadas?
-        // hay cascade y orphan removal, pero se debería notificar al usuario
-
-        /*Product product = findById(id);
-        
-        if (!product.getRecipes().isEmpty()) {
-            recipeService.deleteByProduct(product);
-        }*/
-        
-        productRepository.deleteById(id);
+        catch (DataIntegrityViolationException e) {
+            throw new ResourceInUseException("Product", id);
+        }
     }
 
     // --------------------------------------------------------

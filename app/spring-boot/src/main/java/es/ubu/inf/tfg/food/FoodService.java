@@ -2,8 +2,10 @@ package es.ubu.inf.tfg.food;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -77,12 +79,12 @@ public class FoodService { // TODO: cambiar con DTO?
 
     public void delete(Integer id) {
 
-        //TODO: manejar cuando tiene recetas asociadas?
-        // hay cascade y orphan removal, pero se debería notificar al usuario
-
-        if (!foodRepository.existsById(id)){
-            throw new IllegalArgumentException("Food with ID " + id + " not found");
+        Food food = findById(id);
+        try {
+            foodRepository.delete(food);
         }
-        foodRepository.deleteById(id);
+        catch (DataIntegrityViolationException e) {
+            throw new ResourceInUseException("Food", id);
+        }
     }
 }
