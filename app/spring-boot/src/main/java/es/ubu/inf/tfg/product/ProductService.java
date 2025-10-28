@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
-import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.recipe.Recipe;
 import es.ubu.inf.tfg.recipe.RecipeService;
@@ -49,9 +48,7 @@ public class ProductService {
     }
 
     public List<Product> findProductsByFood(Integer foodId) {
-        Food food = new Food();
-        food.setId(foodId);
-        return productRepository.findByRecipes_Food(food);
+        return productRepository.findByRecipes_FoodId(foodId);
     }
 
     // --------------------------------------------------------

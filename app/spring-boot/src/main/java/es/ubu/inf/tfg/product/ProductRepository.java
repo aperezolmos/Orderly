@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.ubu.inf.tfg.food.Food;
-
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer>{
     Optional<Product> findByName(String name);
@@ -16,5 +14,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
     List<Product> findByPriceLessThanEqual(Double maxPrice);
 
     // Consulta inversa a través de la relación
-    List<Product> findByRecipes_Food(Food food);
+    List<Product> findByRecipes_FoodId(Integer foodId);
 }
