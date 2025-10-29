@@ -16,8 +16,7 @@ public interface FoodMapper {
     @Mapping(target = "recipes", ignore = true)
     Food toEntity(FoodRequestDTO dto);
 
-    @Mapping(target = "recipeCount",
-                expression = "java(food.getRecipes().size())")
+    @Mapping(target = "recipeCount", expression = "java(food.getRecipes().size())")
     FoodResponseDTO toResponseDTO(Food food);
 
     // --------------------------------------------------------

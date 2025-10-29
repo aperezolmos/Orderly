@@ -18,14 +18,12 @@ public interface ProductMapper {
     @Mapping(target = "recipes", ignore = true)
     Product toEntity(ProductRequestDTO dto);
 
-    @Mapping(target = "ingredientCount", 
-                expression = "java(product.getRecipes().size())")
+    @Mapping(target = "ingredientCount", expression = "java(product.getRecipes().size())")
     @Mapping(target = "totalNutrition", ignore = true)
     @Mapping(target = "totalCalories", ignore = true)
     ProductResponseDTO toResponseDTO(Product product);
 
-    @Mapping(target = "ingredientCount",
-                expression = "java(product.getRecipes().size())")
+    @Mapping(target = "ingredientCount", expression = "java(product.getRecipes().size())")
     @Mapping(target = "totalNutrition", source = "nutritionInfo")
     @Mapping(target = "totalCalories", source = "nutritionInfo.calories")
     ProductResponseDTO toDetailedResponseDTO(Product product, NutritionInfoDTO nutritionInfo);
