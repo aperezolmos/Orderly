@@ -36,6 +36,11 @@ public class FoodService {
         return foodMapper.toResponseDTO(food);
     }
 
+    public Food findEntityById(Integer id) {
+        return foodRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Food not found with id: " + id));
+    }
+
     public FoodResponseDTO findByName(String name) {
         Food food = foodRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Food not found with name: " + name));
@@ -77,8 +82,7 @@ public class FoodService {
 
     public FoodResponseDTO update(Integer id, FoodRequestDTO foodRequest) {
         
-        Food existingFood = foodRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Food not found with id: " + id));
+        Food existingFood = findEntityById(id);
 
         if (foodRequest.getName() != null && !foodRequest.getName().equals(existingFood.getName())) {
             if (existsByName(foodRequest.getName())) {
@@ -105,8 +109,7 @@ public class FoodService {
 
     public void delete(Integer id) {
         
-        Food food = foodRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Food not found with id: " + id));
+        Food food = findEntityById(id);
 
         if (!food.getRecipes().isEmpty()) {
             throw new ResourceInUseException("Food", id, "Product");

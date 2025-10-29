@@ -53,8 +53,8 @@ public class RecipeService {
             throw new IllegalArgumentException("Quantity must be positive");
         }
 
-        Food food = foodService.findById(foodId);
-        Product product = productService.findById(productId);
+        Food food = foodService.findEntityById(foodId);
+        Product product = productService.findEntityById(productId);
 
         RecipeId recipeId = new RecipeId(foodId, productId);
         if (recipeRepository.existsById(recipeId)) {

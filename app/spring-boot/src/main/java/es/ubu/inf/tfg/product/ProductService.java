@@ -43,6 +43,11 @@ public class ProductService {
         return productMapper.toResponseDTO(product);
     }
 
+    public Product findEntityById(Integer id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+    }
+
     public ProductResponseDTO findByName(String name) {
         Product product = productRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with name: " + name));
@@ -94,8 +99,7 @@ public class ProductService {
 
     public ProductResponseDTO update(Integer id, ProductRequestDTO productRequest) {
         
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+        Product existingProduct = findEntityById(id);
         
         if (productRequest.getName() != null && !productRequest.getName().equals(existingProduct.getName())) {
             if (existsByName(productRequest.getName())) {
@@ -116,8 +120,7 @@ public class ProductService {
 
     public void delete(Integer id) {
         
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+        Product product = findEntityById(id);
 
         if (!product.getRecipes().isEmpty()) {
             throw new ResourceInUseException("Product", id, "Food");
@@ -143,8 +146,7 @@ public class ProductService {
 
     public NutritionInfoDTO calculateProductNutritionInfo(Integer productId) {
         
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+        Product product = findEntityById(productId);
         
         NutritionInfo totalNutrition = NutritionInfo.builder().build();
         
@@ -157,8 +159,7 @@ public class ProductService {
 
     public ProductResponseDTO getProductDetailedInfo(Integer productId) {
         
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+        Product product = findEntityById(productId);
         
         NutritionInfoDTO nutritionInfo = calculateProductNutritionInfo(productId);
         
@@ -167,8 +168,7 @@ public class ProductService {
 
     public List<RecipeResponseDTO> getProductIngredients(Integer productId) {
         
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+        Product product = findEntityById(productId);
         
         return product.getRecipes().stream()
                 .map(recipeMapper::toResponseDTO)
