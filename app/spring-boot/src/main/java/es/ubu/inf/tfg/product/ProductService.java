@@ -51,6 +51,18 @@ public class ProductService {
         return productRepository.findByRecipes_FoodId(foodId);
     }
 
+    public boolean existsById(Integer id) {
+        return productRepository.existsById(id);
+    }
+
+    public boolean existsByName(String name) {
+        return productRepository.existsByName(name);
+    }
+
+    public boolean existsByFoodId(Integer foodId) {
+        return productRepository.existsByRecipes_FoodId(foodId);
+    }
+
     // --------------------------------------------------------
 
     public Product create(Product product) {

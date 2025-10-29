@@ -15,4 +15,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
     // Consulta inversa a través de la relación
     List<Product> findByRecipes_FoodId(Integer foodId);
+    boolean existsByRecipes_FoodId(Integer foodId);
 }

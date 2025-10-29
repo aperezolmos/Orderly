@@ -42,6 +42,14 @@ public class FoodService { // TODO: cambiar con DTO?
         return foodRepository.findByNameContainingIgnoreCase(namePart);
     }
 
+    public boolean existsById(Integer id) {
+        return foodRepository.existsById(id);
+    }
+
+    public boolean existsByName(String name) {
+        return foodRepository.existsByName(name);
+    }
+
     // --------------------------------------------------------
 
     public Food create(Food food) {
