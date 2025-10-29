@@ -1,15 +1,19 @@
 package es.ubu.inf.tfg.product;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
+import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
+import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
+import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
+import es.ubu.inf.tfg.product.mapper.ProductMapper;
 import es.ubu.inf.tfg.recipe.Recipe;
 import es.ubu.inf.tfg.recipe.RecipeService;
+import es.ubu.inf.tfg.recipe.dto.RecipeResponseDTO;
+import es.ubu.inf.tfg.recipe.mapper.RecipeMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -23,32 +27,44 @@ public class ProductService {
     
     private final ProductRepository productRepository;
     private final RecipeService recipeService;
+    private final ProductMapper productMapper;
+    private final RecipeMapper recipeMapper;
 
-
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    
+    public List<ProductResponseDTO> findAll() {
+        return productRepository.findAll().stream()
+                .map(productMapper::toResponseDTO)
+                .toList();
     }
 
-    public Product findById(Integer id) {
-        return productRepository.findById(id)
+    public ProductResponseDTO findById(Integer id) {
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+        return productMapper.toResponseDTO(product);
     }
 
-    public Product findByName(String name) {
-        return productRepository.findByName(name)
+    public ProductResponseDTO findByName(String name) {
+        Product product = productRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with name: " + name));
+        return productMapper.toResponseDTO(product);
     }
 
-    public List<Product> findByNameContaining(String namePart) {
-        return productRepository.findByNameContainingIgnoreCase(namePart);
+    public List<ProductResponseDTO> findByNameContaining(String namePart) {
+        return productRepository.findByNameContainingIgnoreCase(namePart).stream()
+                .map(productMapper::toResponseDTO)
+                .toList();
     }
 
-    public List<Product> findByMaxPrice(Double maxPrice) {
-        return productRepository.findByPriceLessThanEqual(maxPrice);
+    public List<ProductResponseDTO> findByMaxPrice(Double maxPrice) {
+        return productRepository.findByPriceLessThanEqual(maxPrice).stream()
+                .map(productMapper::toResponseDTO)
+                .toList();
     }
 
-    public List<Product> findProductsByFood(Integer foodId) {
-        return productRepository.findByRecipes_FoodId(foodId);
+    public List<ProductResponseDTO> findProductsByFood(Integer foodId) {
+        return productRepository.findByRecipes_FoodId(foodId).stream()
+                .map(productMapper::toResponseDTO)
+                .toList();
     }
 
     public boolean existsById(Integer id) {
@@ -65,37 +81,43 @@ public class ProductService {
 
     // --------------------------------------------------------
 
-    public Product create(Product product) {
+    public ProductResponseDTO create(ProductRequestDTO productRequest) {
         
-        if (productRepository.existsByName(product.getName())) {
-            throw new IllegalArgumentException("Product with name '" + product.getName() + "' already exists");
+        if (existsByName(productRequest.getName())) {
+            throw new IllegalArgumentException("Product with name '" + productRequest.getName() + "' already exists");
         }
-        return productRepository.save(product);
+        
+        Product product = productMapper.toEntity(productRequest);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.toResponseDTO(savedProduct);
     }
 
-    public Product update(Integer id, Product productUpdate) {
+    public ProductResponseDTO update(Integer id, ProductRequestDTO productRequest) {
         
-        Product existingProduct = findById(id);
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
         
-        if (productUpdate.getName() != null && !productUpdate.getName().equals(existingProduct.getName())) {
-            if (productRepository.existsByName(productUpdate.getName())) {
-                throw new IllegalArgumentException("Product with name '" + productUpdate.getName() + "' already exists");
+        if (productRequest.getName() != null && !productRequest.getName().equals(existingProduct.getName())) {
+            if (existsByName(productRequest.getName())) {
+                throw new IllegalArgumentException("Product with name '" + productRequest.getName() + "' already exists");
             }
-            existingProduct.setName(productUpdate.getName());
+            existingProduct.setName(productRequest.getName());
         }
         
-        existingProduct.setDescription(productUpdate.getDescription());
+        existingProduct.setDescription(productRequest.getDescription());
         
-        if (productUpdate.getPrice() != null) {
-            existingProduct.setPrice(productUpdate.getPrice());
+        if (productRequest.getPrice() >= 0) {
+            existingProduct.setPrice(productRequest.getPrice());
         }
         
-        return productRepository.save(existingProduct);
+        Product updatedProduct = productRepository.save(existingProduct);
+        return productMapper.toResponseDTO(updatedProduct);
     }
 
     public void delete(Integer id) {
-
-        Product product = findById(id);
+        
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
 
         if (!product.getRecipes().isEmpty()) {
             throw new ResourceInUseException("Product", id, "Food");
@@ -105,42 +127,51 @@ public class ProductService {
 
     // --------------------------------------------------------
 
-    public Recipe addFoodToProduct(Integer productId, Integer foodId, Double quantity) {
-        return recipeService.create(productId, foodId, quantity);
+    public RecipeResponseDTO addFoodToProduct(Integer productId, Integer foodId, Double quantity) {
+        Recipe recipe = recipeService.create(productId, foodId, quantity);
+        return recipeMapper.toResponseDTO(recipe);
     }
 
-    public Recipe updateFoodQuantityInProduct(Integer productId, Integer foodId, Double newQuantity) {
-        return recipeService.updateQuantity(productId, foodId, newQuantity);
+    public RecipeResponseDTO updateFoodQuantityInProduct(Integer productId, Integer foodId, Double newQuantity) {
+        Recipe recipe = recipeService.updateQuantity(productId, foodId, newQuantity);
+        return recipeMapper.toResponseDTO(recipe);
     }
 
     public void removeFoodFromProduct(Integer productId, Integer foodId) {
         recipeService.delete(productId, foodId);
     }
 
-    public NutritionInfo calculateProductNutritionInfo(Integer productId) {
+    public NutritionInfoDTO calculateProductNutritionInfo(Integer productId) {
         
-        Product product = findById(productId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+        
         NutritionInfo totalNutrition = NutritionInfo.builder().build();
         
         for (Recipe recipe : product.getRecipes()) {
             NutritionInfo recipeNutrition = recipe.calculateNutritionInfo();
             totalNutrition = totalNutrition.add(recipeNutrition);
         }
-        
-        return totalNutrition;
+        return productMapper.toNutritionInfoDTO(totalNutrition);
     }
 
-    public Map<String, Object> getProductDetailedInfo(Integer productId) {
+    public ProductResponseDTO getProductDetailedInfo(Integer productId) {
         
-        Product product = findById(productId);
-        NutritionInfo nutritionInfo = calculateProductNutritionInfo(productId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
         
-        Map<String, Object> detailedInfo = new HashMap<>();
-        detailedInfo.put("product", product);
-        detailedInfo.put("nutritionInfo", nutritionInfo);
-        detailedInfo.put("ingredientCount", product.getRecipes().size());
-        detailedInfo.put("totalCalories", nutritionInfo.getCalories());
+        NutritionInfoDTO nutritionInfo = calculateProductNutritionInfo(productId);
         
-        return detailedInfo;
+        return productMapper.toDetailedResponseDTO(product, nutritionInfo);
+    }
+
+    public List<RecipeResponseDTO> getProductIngredients(Integer productId) {
+        
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+        
+        return product.getRecipes().stream()
+                .map(recipeMapper::toResponseDTO)
+                .toList();
     }
 }
