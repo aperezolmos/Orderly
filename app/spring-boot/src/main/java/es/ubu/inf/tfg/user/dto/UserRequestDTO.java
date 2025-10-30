@@ -1,8 +1,15 @@
 package es.ubu.inf.tfg.user.dto;
 
 import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
-import jakarta.validation.constraints.*;
-import lombok.*;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Set;
 
 @Data
@@ -11,36 +18,36 @@ import java.util.Set;
 @Builder
 public class UserRequestDTO {
    
-    @NotBlank(message = "El nombre de usuario es obligatorio", 
+    @NotBlank(message = "Username is required", 
                 groups = UserValidationGroups.OnCreate.class)
-    @Size(min = 3, max = 50, message = "El nombre de usuario debe tener entre 3 y 50 caracteres", 
-            groups = {UserValidationGroups.OnCreate.class, 
+    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters",
+            groups = {UserValidationGroups.OnCreate.class,
                         UserValidationGroups.OnUpdate.class})
     private String username;
 
-    @Size(max = 100, message = "El nombre no puede exceder 100 caracteres", 
+    @Size(max = 100, message = "First name cannot exceed 100 characters", 
             groups = {UserValidationGroups.OnCreate.class, 
                         UserValidationGroups.OnUpdate.class})
     private String firstName;
 
-    @Size(max = 100, message = "El apellido no puede exceder 100 caracteres", 
+    @Size(max = 100, message = "Last name cannot exceed 100 characters", 
             groups = {UserValidationGroups.OnCreate.class, 
                         UserValidationGroups.OnUpdate.class})
     private String lastName;
 
-    @NotBlank(message = "La contraseña es obligatoria", 
+    @NotBlank(message = "Password is required", 
                 groups = UserValidationGroups.OnCreate.class)
-    /*@Size(min = 4, message = "La contraseña debe tener al menos 4 caracteres", 
+    /*@Size(min = 4, message = "Password must be at least 4 characters", 
             groups = {UserValidationGroups.OnCreate.class, 
                         UserValidationGroups.OnPasswordChange.class})*/
     private String password;
 
-    @NotBlank(message = "Debe confirmar la contraseña", 
+    @NotBlank(message = "Password confirmation is required", 
                 groups = {UserValidationGroups.OnCreate.class, 
                             UserValidationGroups.OnPasswordChange.class})
     private String confirmPassword;
 
-    // Solo para edición propia
+    // Only required for OWN password change
     private String currentPassword;
 
     private Set<Integer> roleIds;
