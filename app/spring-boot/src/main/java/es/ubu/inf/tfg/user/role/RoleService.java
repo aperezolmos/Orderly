@@ -46,6 +46,11 @@ public class RoleService {
         return roleMapper.toResponseDTO(role);
     }
 
+    public Role findEntityByName(String name) {
+        return roleRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with name: " + name));
+    }
+
     public boolean existsById(Integer id) {
         return roleRepository.existsById(id);
     }
