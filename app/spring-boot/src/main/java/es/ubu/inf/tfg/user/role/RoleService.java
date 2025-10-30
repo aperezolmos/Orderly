@@ -2,10 +2,13 @@ package es.ubu.inf.tfg.user.role;
 
 import java.util.List;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
+import es.ubu.inf.tfg.user.role.dto.RoleRequestDTO;
+import es.ubu.inf.tfg.user.role.dto.RoleResponseDTO;
+import es.ubu.inf.tfg.user.role.mapper.RoleMapper;
+
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -17,56 +20,77 @@ import lombok.RequiredArgsConstructor;
 public class RoleService {
     
     private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
     
 
-    public List<Role> findAll() {
-        return roleRepository.findAll();
+    public List<RoleResponseDTO> findAll() {
+        return roleRepository.findAll().stream()
+                .map(roleMapper::toResponseDTO)
+                .toList();
     }
     
-    public Role findById(Integer id) {
+    public RoleResponseDTO findById(Integer id) {
+        Role role = roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
+        return roleMapper.toResponseDTO(role);
+    }
+
+    public Role findEntityById(Integer id) {
         return roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
     }
     
-    public Role findByName(String name) {
-        return roleRepository.findByName(name)
+    public RoleResponseDTO findByName(String name) {
+        Role role = roleRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with name: " + name));
+        return roleMapper.toResponseDTO(role);
+    }
+
+    public boolean existsById(Integer id) {
+        return roleRepository.existsById(id);
+    }
+
+    public boolean existsByName(String name) {
+        return roleRepository.existsByName(name);
     }
 
     // --------------------------------------------------------
     
-    public Role save(Role role) {
+    public RoleResponseDTO save(RoleRequestDTO roleRequest) {
         
-        if (roleRepository.existsByName(role.getName())) {
-            throw new IllegalArgumentException("Role with name '" + role.getName() + "'' already exists");
+        if (existsByName(roleRequest.getName())) {
+            throw new IllegalArgumentException("Role with name '" + roleRequest.getName() + "' already exists");
         }
-        return roleRepository.save(role);
+        
+        Role role = roleMapper.toEntity(roleRequest);
+        Role savedRole = roleRepository.save(role);
+        return roleMapper.toResponseDTO(savedRole);
     }
 
-    public Role update(Integer id, Role role) {
+    public RoleResponseDTO update(Integer id, RoleRequestDTO roleRequest) {
         
-        Role existingRole = findById(id);
+        Role existingRole = findEntityById(id);
 
-        if (role.getName() != null && !role.getName().equals(existingRole.getName())) {
-            if (roleRepository.existsByName(role.getName())) {
-                throw new IllegalArgumentException("Role with name '" + role.getName() + "'' already exists");
+        if (roleRequest.getName() != null && !roleRequest.getName().equals(existingRole.getName())) {
+            if (existsByName(roleRequest.getName())) {
+                throw new IllegalArgumentException("Role with name '" + roleRequest.getName() + "' already exists");
             }
-            existingRole.setName(role.getName());
+            existingRole.setName(roleRequest.getName());
         }
 
-        existingRole.setDescription(role.getDescription());
+        existingRole.setDescription(roleRequest.getDescription());
         
-        return roleRepository.save(existingRole);
+        Role updatedRole = roleRepository.save(existingRole);
+        return roleMapper.toResponseDTO(updatedRole);
     }
     
     public void delete(Integer id) {
         
-        Role role = findById(id);
-        try {
-            roleRepository.delete(role);
+        Role role = findEntityById(id);
+        
+        if (role.getUsers() != null && !role.getUsers().isEmpty()) {
+            throw new ResourceInUseException("Role", id, "User");
         }
-        catch (DataIntegrityViolationException e) {
-            throw new ResourceInUseException("Role", id);
-        }
+        roleRepository.delete(role);
     }
 }

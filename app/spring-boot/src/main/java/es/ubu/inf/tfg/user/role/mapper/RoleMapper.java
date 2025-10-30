@@ -11,7 +11,9 @@ import org.mapstruct.Mapping;
 public interface RoleMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "users", ignore = true)
     Role toEntity(RoleRequestDTO dto);
-    
+
+    @Mapping(target = "userCount", expression = "java(role.getUsers() != null ? role.getUsers().size() : 0)")
     RoleResponseDTO toResponseDTO(Role role);
 }

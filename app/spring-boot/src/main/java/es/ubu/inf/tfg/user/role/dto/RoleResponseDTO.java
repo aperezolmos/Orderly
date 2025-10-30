@@ -13,5 +13,5 @@ public class RoleResponseDTO {
     private Integer id;
     private String name;
     private String description;
-    //private Integer userCount;    // No se puede obtener al ser relacion unidireccional -> ver si sacarlo o no
+    private Integer userCount;
 }
