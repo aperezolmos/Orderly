@@ -147,7 +147,6 @@ public class ProductService {
     public NutritionInfoDTO calculateProductNutritionInfo(Integer productId) {
         
         Product product = findEntityById(productId);
-        
         NutritionInfo totalNutrition = NutritionInfo.builder().build();
         
         for (Recipe recipe : product.getRecipes()) {
@@ -160,7 +159,6 @@ public class ProductService {
     public ProductResponseDTO getProductDetailedInfo(Integer productId) {
         
         Product product = findEntityById(productId);
-        
         NutritionInfoDTO nutritionInfo = calculateProductNutritionInfo(productId);
         
         return productMapper.toDetailedResponseDTO(product, nutritionInfo);

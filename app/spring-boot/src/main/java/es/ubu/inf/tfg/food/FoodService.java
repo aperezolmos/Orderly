@@ -53,7 +53,7 @@ public class FoodService {
                 .toList();
     }
 
-    public List<FoodResponseDTO> findByNameContainingIgnoreCase(String namePart) {
+    public List<FoodResponseDTO> findByNameContaining(String namePart) {
         return foodRepository.findByNameContainingIgnoreCase(namePart).stream()
                 .map(foodMapper::toResponseDTO)
                 .toList();
