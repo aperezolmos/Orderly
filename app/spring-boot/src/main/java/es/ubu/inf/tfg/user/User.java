@@ -1,6 +1,7 @@
 package es.ubu.inf.tfg.user;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import es.ubu.inf.tfg.user.role.Role;
@@ -46,6 +47,36 @@ public class User {
     private Set<Role> roles;
 
     private LocalDateTime createdAt;
+
+    // --------------------------------------------------------
+
+    public void addRole(Role role) {
+        if (this.roles == null) {
+            this.roles = new HashSet<>();
+        }
+        this.roles.add(role);
+        if (role.getUsers() != null && !role.getUsers().contains(this)) {
+            role.getUsers().add(this);
+        }
+    }
+
+    public void removeRole(Role role) {
+        if (this.roles != null) {
+            this.roles.remove(role);
+        }
+        if (role.getUsers() != null) {
+            role.getUsers().remove(this);
+        }
+    }
+
+    public void clearRoles() {
+        if (this.roles != null) {
+            Set<Role> rolesToRemove = new HashSet<>(this.roles);
+            for (Role role : rolesToRemove) {
+                removeRole(role);
+            }
+        }
+    }
 
     // --------------------------------------------------------
 

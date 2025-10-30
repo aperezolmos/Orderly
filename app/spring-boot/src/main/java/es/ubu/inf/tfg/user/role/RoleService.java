@@ -1,11 +1,17 @@
 package es.ubu.inf.tfg.user.role;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.exception.ResourceInUseException;
+import es.ubu.inf.tfg.user.role.dto.RoleRequestDTO;
+import es.ubu.inf.tfg.user.role.dto.RoleResponseDTO;
+import es.ubu.inf.tfg.user.role.mapper.RoleMapper;
+
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -14,18 +20,39 @@ import lombok.RequiredArgsConstructor;
 public class RoleService {
     
     private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
     
 
-    public List<Role> findAll() {
-        return roleRepository.findAll();
+    public List<RoleResponseDTO> findAll() {
+        return roleRepository.findAll().stream()
+                .map(roleMapper::toResponseDTO)
+                .toList();
     }
     
-    public Optional<Role> findById(Integer id) {
-        return roleRepository.findById(id);
+    public RoleResponseDTO findById(Integer id) {
+        Role role = roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
+        return roleMapper.toResponseDTO(role);
+    }
+
+    public Role findEntityById(Integer id) {
+        return roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
     }
     
-    public Optional<Role> findByName(String name) {
-        return roleRepository.findByName(name);
+    public RoleResponseDTO findByName(String name) {
+        Role role = roleRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with name: " + name));
+        return roleMapper.toResponseDTO(role);
+    }
+
+    public Role findEntityByName(String name) {
+        return roleRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with name: " + name));
+    }
+
+    public boolean existsById(Integer id) {
+        return roleRepository.existsById(id);
     }
 
     public boolean existsByName(String name) {
@@ -34,41 +61,41 @@ public class RoleService {
 
     // --------------------------------------------------------
     
-    public Role save(Role role) {
-        if (existsByName(role.getName())) {
-            throw new IllegalArgumentException("Ya existe un rol con el nombre: " + role.getName());
+    public RoleResponseDTO save(RoleRequestDTO roleRequest) {
+        
+        if (existsByName(roleRequest.getName())) {
+            throw new IllegalArgumentException("Role with name '" + roleRequest.getName() + "' already exists");
         }
-        return roleRepository.save(role);
+        
+        Role role = roleMapper.toEntity(roleRequest);
+        Role savedRole = roleRepository.save(role);
+        return roleMapper.toResponseDTO(savedRole);
     }
 
-    public Role update(Integer id, Role role) {
+    public RoleResponseDTO update(Integer id, RoleRequestDTO roleRequest) {
         
-        Role existingRole = findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id));
-        
-        if (!existingRole.getName().equals(role.getName()) && existsByName(role.getName())) {
-            throw new IllegalArgumentException("Ya existe un rol con el nombre: " + role.getName());
+        Role existingRole = findEntityById(id);
+
+        if (roleRequest.getName() != null && !roleRequest.getName().equals(existingRole.getName())) {
+            if (existsByName(roleRequest.getName())) {
+                throw new IllegalArgumentException("Role with name '" + roleRequest.getName() + "' already exists");
+            }
+            existingRole.setName(roleRequest.getName());
         }
+
+        existingRole.setDescription(roleRequest.getDescription());
         
-        if (role.getName() != null) {
-            existingRole.setName(role.getName());
-        }
-        existingRole.setDescription(role.getDescription());
-        
-        return roleRepository.save(existingRole);
+        Role updatedRole = roleRepository.save(existingRole);
+        return roleMapper.toResponseDTO(updatedRole);
     }
     
     public void delete(Integer id) {
         
-        Role role = findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado con ID: " + id));
+        Role role = findEntityById(id);
         
-        /*if (!role.getUsers().isEmpty()) {
-            throw new IllegalStateException("No se puede eliminar el rol. Hay usuarios asignados a este rol.");
-        }*/
-        // TODO: ver cómo manejarlo cuando hay usuarios con el rol que se quiere eliminar
-        // se ha transformado la relación a unidireccional, así que no puede accederse a los usuarios desde rol
-        
+        if (role.getUsers() != null && !role.getUsers().isEmpty()) {
+            throw new ResourceInUseException("Role", id, "User");
+        }
         roleRepository.delete(role);
     }
 }

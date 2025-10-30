@@ -1,0 +1,81 @@
+package es.ubu.inf.tfg.food;
+
+import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
+import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
+import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+
+import jakarta.validation.Valid;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/foods")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
+public class FoodController {
+
+    private final FoodService foodService;
+    
+
+    @GetMapping
+    public ResponseEntity<List<FoodResponseDTO>> getAllFoods() {
+        return ResponseEntity.ok(foodService.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FoodResponseDTO> getFoodById(@PathVariable Integer id) {
+        return ResponseEntity.ok(foodService.findById(id));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<FoodResponseDTO>> searchFoods(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) FoodGroup foodGroup) {
+        
+        List<FoodResponseDTO> foods;
+        if (name != null) {
+            foods = foodService.findByNameContaining(name);
+        } else if (foodGroup != null) {
+            foods = foodService.findByFoodGroup(foodGroup);
+        } else {
+            foods = foodService.findAll();
+        }
+        return ResponseEntity.ok(foods);
+    }
+
+    @PostMapping
+    public ResponseEntity<FoodResponseDTO> createFood(@Valid @RequestBody FoodRequestDTO foodRequest) {
+        FoodResponseDTO createdFood = foodService.create(foodRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdFood);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FoodResponseDTO> updateFood(
+            @PathVariable Integer id, 
+            @Valid @RequestBody FoodRequestDTO foodRequest) {
+        FoodResponseDTO updatedFood = foodService.update(id, foodRequest);
+        return ResponseEntity.ok(updatedFood);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFood(@PathVariable Integer id) {
+        foodService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/exists")
+    public ResponseEntity<Boolean> checkFoodExists(@PathVariable Integer id) {
+        return ResponseEntity.ok(foodService.existsById(id));
+    }
+
+    @GetMapping("/name/{name}/exists")
+    public ResponseEntity<Boolean> checkFoodNameExists(@PathVariable String name) {
+        return ResponseEntity.ok(foodService.existsByName(name));
+    }
+}

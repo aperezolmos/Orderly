@@ -37,16 +37,12 @@ public class RecipeService {
                 + " and productId: " + productId));
     }
 
-    public List<Recipe> findByFood(Integer foodId) { // Que coja el id o directamente el Food? -> el método del repositorio ya busca por id automáticamente
-        Food food = new Food();
-        food.setId(foodId);
-        return recipeRepository.findByFood(food);
+    public List<Recipe> findByFood(Integer foodId) {
+        return recipeRepository.findByFoodId(foodId);
     }
 
     public List<Recipe> findByProduct(Integer productId) {
-        Product product = new Product();
-        product.setId(productId);
-        return recipeRepository.findByProduct(product);
+        return recipeRepository.findByProductId(productId);
     }
 
     // --------------------------------------------------------
@@ -57,8 +53,8 @@ public class RecipeService {
             throw new IllegalArgumentException("Quantity must be positive");
         }
 
-        Food food = foodService.findById(foodId);
-        Product product = productService.findById(productId);
+        Food food = foodService.findEntityById(foodId);
+        Product product = productService.findEntityById(productId);
 
         RecipeId recipeId = new RecipeId(foodId, productId);
         if (recipeRepository.existsById(recipeId)) {
@@ -97,12 +93,12 @@ public class RecipeService {
         recipeRepository.delete(recipe);
     }
 
-    public void deleteByFood(Food food) { // Que coja el id o directamente el Food?
-        recipeRepository.deleteByFood(food);
+    public void deleteByFood(Integer foodId) {
+        recipeRepository.deleteByFoodId(foodId);
     }
 
-    public void deleteByProduct(Product product) { 
-        recipeRepository.deleteByProduct(product);
+    public void deleteByProduct(Integer productId) { 
+        recipeRepository.deleteByProductId(productId);
     }
 
     // --------------------------------------------------------

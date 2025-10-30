@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.recipe.Recipe;
-import es.ubu.inf.tfg.recipe.RecipeId;
 
 import jakarta.persistence.*;
 
@@ -46,41 +44,6 @@ public class Product {
     private Set<Recipe> recipes = new HashSet<>();
     
     // --------------------------------------------------------
-
-    public void addRecipe(Recipe recipe) {
-        this.recipes.add(recipe);
-        recipe.setProduct(this);
-    }
-
-    public void addRecipe(Recipe recipe, Double quantity) {
-        recipe.setQuantity(quantity);
-        this.recipes.add(recipe);
-        recipe.setProduct(this);
-    }
-
-    public void addRecipeWithFood(Food food, Double quantity) {
-        Recipe recipe = Recipe.builder()
-            .id(new RecipeId(food.getId(), this.id))
-            .quantity(quantity)
-            .food(food)
-            .product(this)
-            .build();
-        
-        this.recipes.add(recipe);
-        food.getRecipes().add(recipe); // También actualizamos el otro lado
-    }
-
-    public void removeRecipe(Recipe recipe) {
-        this.recipes.remove(recipe);
-        recipe.setProduct(null);
-    }
-
-    public void clearRecipes() {
-        for (Recipe recipe : this.recipes) {
-            recipe.setProduct(null);
-        }
-        this.recipes.clear();
-    }
 
     @PrePersist
     protected void onCreate() {

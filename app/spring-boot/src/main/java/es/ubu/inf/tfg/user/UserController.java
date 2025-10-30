@@ -1,6 +1,7 @@
 package es.ubu.inf.tfg.user;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +13,11 @@ import es.ubu.inf.tfg.user.dto.UserResponseDTO;
 import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-@Validated
-@Slf4j
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     
     private final UserService userService;
@@ -32,69 +31,76 @@ public class UserController {
         
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Integer id) {
-        return userService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        UserResponseDTO user = userService.findById(id);
+        return ResponseEntity.ok(user);
     }
     
     @GetMapping("/username/{username}")
     public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) {
-        return userService.findByUsername(username)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        UserResponseDTO user = userService.findByUsername(username);
+        return ResponseEntity.ok(user);
     }
     
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(
             @Validated(UserValidationGroups.OnCreate.class) @RequestBody UserRequestDTO userRequest) {
-        try {
-            UserResponseDTO createdUser = userService.create(userRequest);
-            log.info("Usuario creado exitosamente con ID: {} y username: {}", 
-                        createdUser.getId(), createdUser.getUsername());
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        } 
-        catch (IllegalArgumentException e) {
-            log.error("Error al crear usuario - {}: {}", e.getClass().getSimpleName(), e.getMessage());
-            log.debug("Stack trace completo del error:", e);
-            return ResponseEntity.badRequest().build();
-        }
+        UserResponseDTO createdUser = userService.create(userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Integer id,
-            @Validated(UserValidationGroups.OnUpdate.class) @RequestBody UserRequestDTO userRequestDTO) {
-        try {
-            UserResponseDTO updatedUser = userService.update(id, userRequestDTO);
-            log.info("Usuario actualizado exitosamente con ID: {}", id);
-            return ResponseEntity.ok(updatedUser);
-        } 
-        catch (IllegalArgumentException e) {
-            log.error("Error al actualizar usuario con ID {} - {}: {}", 
-                     id, e.getClass().getSimpleName(), e.getMessage());
-            log.debug("Stack trace completo del error:", e);
-            return ResponseEntity.notFound().build();
-        }
+            @Validated(UserValidationGroups.OnUpdate.class) @RequestBody UserRequestDTO userRequest) {
+        UserResponseDTO updatedUser = userService.update(id, userRequest);
+        return ResponseEntity.ok(updatedUser);
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        try {
-            userService.delete(id);
-            log.info("Usuario eliminado exitosamente con ID: {}", id);
-            return ResponseEntity.noContent().build();
-        }
-        catch (IllegalArgumentException e) {
-            log.error("Error al eliminar usuario con ID {} - {}: {}", 
-                        id, e.getClass().getSimpleName(), e.getMessage());
-            log.debug("Stack trace completo del error:", e);
-            return ResponseEntity.notFound().build();
-        }
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-    
+
+    @GetMapping("/{id}/exists")
+    public ResponseEntity<Boolean> checkUserExists(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.existsById(id));
+    }
+
+    @GetMapping("/username/{username}/exists")
+    public ResponseEntity<Boolean> checkUsernameExists(@PathVariable String username) {
+        return ResponseEntity.ok(userService.existsByUsername(username));
+    }
+
     @GetMapping("/check-username")
     public ResponseEntity<Boolean> checkUsernameAvailability(@RequestParam String username) {
         boolean available = !userService.existsByUsername(username);
         return ResponseEntity.ok(available);
+    }
+
+    // --------------------------------------------------------
+
+    @PostMapping("/{userId}/roles/{roleId}")
+    public ResponseEntity<UserResponseDTO> addRoleToUser(
+            @PathVariable Integer userId,
+            @PathVariable Integer roleId) {
+        UserResponseDTO user = userService.addRoleToUser(userId, roleId);
+        return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping("/{userId}/roles/{roleId}")
+    public ResponseEntity<UserResponseDTO> removeRoleFromUser(
+            @PathVariable Integer userId,
+            @PathVariable Integer roleId) {
+        UserResponseDTO user = userService.removeRoleFromUser(userId, roleId);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{userId}/roles")
+    public ResponseEntity<UserResponseDTO> setUserRoles(
+            @PathVariable Integer userId,
+            @RequestBody Set<Integer> roleIds) {
+        UserResponseDTO user = userService.setUserRoles(userId, roleIds);
+        return ResponseEntity.ok(user);
     }
 }
