@@ -15,7 +15,7 @@
 \subsection{\textit{Sprint} 0}
 \label{subsec:A.2_sprint0}
 
-Duración: 18/09/2025 - 25/09/2025
+\underline{Duración}: 1 semana (18/09/2025 - 25/09/2025)
 
 Este primer \textit{sprint} abarca las tareas de investigación y definición inicial, enfocadas en determinar el alcance mínimo del proyecto, junto con las tecnologías y recursos a utilizar.
 
@@ -33,7 +33,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Análisis de integración con plataformas de \textit{delivery}:} Se investigó acerca de los requisitos necesarios para obtener claves de acceso a las APIs de distintas plataformas de \textit{delivery}. Se terminó por concluir que esta integración se pospondría para etapas más avanzadas del desarrollo, en caso de que se dispusiera del tiempo necesario.
 \end{itemize}
 
-\missingfigure{Lista de issues del sprint 0? O un gráfico de commits o burn down}
+\imagenConEtiqueta{img/apen_A/A2_sprint0_burndown.png}{Gráfico \textit{burndown} del Sprint 0}{A2_sprint0_burndown}
 
 \subsubsection{Revisión}
 
@@ -48,7 +48,7 @@ Se acordó, para el siguiente \textit{sprint}, comenzar el desarrollo de la apli
 \subsection{\textit{Sprint} 1}
 \label{subsec:A.2_sprint1}
 
-Duración: 25/09/2025 - 02/10/2025
+\underline{Duración}: 1 semana (25/09/2025 - 02/10/2025)
 
 Este \textit{sprint} se centró en crear la infraestructura inicial de la aplicación, añadiendo las dependencias y los archivos de configuración necesarios para levantar la aplicación \textit{Spring Boot}. Una vez creada, se empezó a implementar la gestión de usuarios y roles, definiendo las entidades y métodos pertinentes para, como mínimo, realizar operaciones CRUD sobre ellos.
 
@@ -66,7 +66,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Generación de pruebas de integración:} Se generaron pruebas básicas de integración para el repositorio y servicio de usuarios. Sirvieron para familiarizarse con los tipos de pruebas y anotaciones de \textit{Spring Boot}.
 \end{itemize}
 
-\missingfigure{Lista de issues del sprint 1? O un gráfico de commits o burn down}
+\imagenConEtiqueta{img/apen_A/A2_sprint1_burndown.png}{Gráfico \textit{burndown} del Sprint 1}{A2_sprint1_burndown}
 
 \subsubsection{Revisión}
 
@@ -77,7 +77,7 @@ Se acordó, para el siguiente \textit{sprint}, seguir implementando los aspectos
 \subsection{\textit{Sprint} 2}
 \label{subsec:A.2_sprint2}
 
-Duración: 02/10/2025 - 09/10/2025
+\underline{Duración}: 1 semana (02/10/2025 - 09/10/2025)
 
 Este \textit{sprint} se enfocó en expandir la funcionalidad de gestión de usuarios mediante la creación de formularios, como el de registro, edición o mantenimiento de usuarios (por parte de un administrador). También se empezaron a escribir los apéndices A y B de la documentación.
 
@@ -93,13 +93,48 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Primera definición de requisitos funcionales:} Aunque estos requisitos ya se tenían presentes desde el comienzo del proyecto, se redactó una primera versión de éstos en la documentación.
 \end{itemize}
 
-\missingfigure{Lista de issues del sprint 2? O un gráfico de commits o burn down}
+\imagenConEtiqueta{img/apen_A/A2_sprint2_burndown.png}{Gráfico \textit{burndown} del Sprint 2}{A2_sprint2_burndown}
 
 \subsubsection{Revisión}
 
 Al haber mostrado el funcionamiento de los \textit{endpoints} de la aplicación al tutor mediante \textit{Postman}, se propuso la posible generación de una \textbf{colección de solicitudes} completa, para adjuntar como archivo complementario en cada \textit{release}.
 
 Se acordó, para el siguiente \textit{sprint}, dejar a un lado la funcionalidad de usuarios y proseguir con la gestión de ingredientes y productos ofertados. 
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 3}
+\label{subsec:A.2_sprint3}
+
+\underline{Duración}: 2 semanas (09/10/2025 - 23/10/2025)
+
+En este \textit{sprint} se comenzó a desarrollar la gestión de los productos ofertados, tomando como referencia las clases existentes en <ref NutriMenu>\todo{Agregar ref}. También se finalizaron aspectos relacionados con la gestión de usuarios, que se consideraban necesarios de implementar lo antes posible. Inicialmente se planificó la duración para 1 semana, pero acabó alargándose debido a cuestiones personales. 
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/4?closed=1}{\textbf{Sprint 3}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Creación de las entidades \texttt{Food}, \texttt{Product} y \texttt{Recipe} \todo{Referencia a anexo C -> diseño de datos¿?}:} Se definieron las entidades JPA, basándose en los campos existentes en las clases de <ref NutriMenu>\todo{Agregar ref} y agregando nuevos. Se simplificaron considerablemente el código y la lógica relacionada con dichas entidades. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/51}{\#51}.
+	\item \textbf{Implementación de operaciones CRUD sobre alimentos y productos:} Se agregaron los repositorios y servicios necesarios para llevar a cabo estas funcionalidades. 
+	\item \textbf{Cálculo dinámico de la información nutricional:} Se simplificó enormemente la lógica original, logrando que los cálculos de información nutricional (ya sea para alimentos con cantidades particulares o para productos completos) sean dinámicos y \textbf{no se almacenen en la BBDD}. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/52}{\#52}.
+	\item \textbf{Transformación de la relación \texttt{User-Role} a \texttt{\char`@{}ManyToMany}:} Se modificó la asignación de roles, para que los usuarios pudieran tener más de uno, lo cual permite la creación de roles y funcionalidades más específicas. Se garantiza que, como mínimo, un usuario registrado tendrá \texttt{ROLE\_USER}.
+	\item \textbf{Refactorización de los DTOs de \texttt{User}:} Se redujo el número de DTOs para usuarios, fusionando todos en \texttt{UserRequestDTO}\todo{ref a apartado diseño datos?} y manejando las restricciones según formulario mediante \textbf{grupos de validación} (\textit{OnCreate}, \textit{OnUpdate}, etc.).
+	\item \textbf{Creación de un \texttt{UserDataInitializer}:} Este componente crea roles y un usuario por defecto en la aplicación.
+	\item \textbf{Definición de casos de uso para gestión de usuarios:} Se redactó una primera versión de casos de uso para esta funcionalidad, teniendo en cuenta las acciones que pueden realizar los usuarios según sus roles.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint3_burndown.png}{Gráfico \textit{burndown} del Sprint 3}{A2_sprint3_burndown}
+
+\subsubsection{Revisión}
+
+Se acordó plasmar las mejoras respecto al TFG anterior en el apartado de <Aspectos Relevantes?>\todo{Referencia cuando se haya añadido}, para reflejar el proceso de transformación seguido y las decisiones que llevaron a él.
+
+Respecto a la arquitectura de la aplicación, se le planteó al tutor el \textbf{cambio de la arquitectura actual} monolítica, por una \textbf{arquitectura SPA} con \textit{React}. Inicialmente, se había optado por usar \textit{Thymeleaf} como motor de plantillas, y gestionar las vistas de la aplicación mediante controladores web. Sin embargo, la generación de las plantillas HTML y los controladores específicos para cada acción (p. ej. \texttt{UserEditController} o \texttt{UsermanagementController}) resultaban un poco pesados y menos fáciles de escalar. Es por eso que se optó por la naturaleza reutilizable de los componentes de \textit{React} para, en primera instancia, definir de forma más simple las tablas de gestión CRUD para cada entidad (y muchas otras mejoras). \todo{Ref a apartado donde se detalle esto?}
+
+Debido a que la idea del cambio de arquitectura surgió durante el desarrollo del \textit{sprint}, hubo un \textit{issue} que se pospuso para futuras iteraciones, relacionado con la \textbf{internacionalización} de la aplicación. Esto es debido a que la implementación de dicha funcionalidad cambia por completo dependiendo de la arquitectura. Por lo tanto, se pospuso para cuando se disponga de un \textit{frontend} funcional.
+
+Se acordó enfocar el siguiente \textit{sprint} en la \textbf{migración a una arquitectura SPA con \textit{React}}, lo cual conlleva la refactorización de la aplicación \textit{Spring Boot} para que actúe como API REST.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
