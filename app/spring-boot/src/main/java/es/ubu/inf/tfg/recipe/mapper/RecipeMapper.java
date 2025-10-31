@@ -13,6 +13,6 @@ public interface RecipeMapper {
     @Mapping(target = "foodName", source = "food.name")
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productName", source = "product.name")
-    @Mapping(target = "nutritionInfo", expression = "java(recipe.calculateNutritionInfo())")
+    //@Mapping(target = "nutritionInfo", expression = "java(recipe.calculateNutritionInfo())")
     RecipeResponseDTO toResponseDTO(Recipe recipe);
 }

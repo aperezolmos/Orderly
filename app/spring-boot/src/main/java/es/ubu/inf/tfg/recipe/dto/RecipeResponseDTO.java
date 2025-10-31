@@ -17,5 +17,5 @@ public class RecipeResponseDTO {
     private Integer productId;
     private String productName;
     private Double quantity;
-    private NutritionInfoDTO nutritionInfo;
+    //private NutritionInfoDTO nutritionInfo;
 }

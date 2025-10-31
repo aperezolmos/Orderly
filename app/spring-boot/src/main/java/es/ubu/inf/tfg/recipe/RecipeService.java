@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.food.Food;
-import es.ubu.inf.tfg.food.FoodService;
+import es.ubu.inf.tfg.food.FoodRepository;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.product.Product;
-import es.ubu.inf.tfg.product.ProductService;
+import es.ubu.inf.tfg.product.ProductRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -23,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class RecipeService {
     
     private final RecipeRepository recipeRepository;
-    private final FoodService foodService;
-    private final ProductService productService;
+    private final FoodRepository foodRepository;
+    private final ProductRepository productRepository;
 
 
     public Recipe findById(RecipeId id) {
@@ -53,8 +53,10 @@ public class RecipeService {
             throw new IllegalArgumentException("Quantity must be positive");
         }
 
-        Food food = foodService.findEntityById(foodId);
-        Product product = productService.findEntityById(productId);
+        Food food = foodRepository.findById(foodId)
+                .orElseThrow(() -> new EntityNotFoundException("Food not found with id: " + foodId));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
 
         RecipeId recipeId = new RecipeId(foodId, productId);
         if (recipeRepository.existsById(recipeId)) {
