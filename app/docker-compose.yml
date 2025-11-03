@@ -24,11 +24,26 @@ services:
     env_file: .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:${MYSQL_DOCKER_PORT}/${MYSQL_DATABASE}
+    ports:
+      - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
     depends_on:
       db:
         condition: service_healthy
+  
+  react:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tfg-react
+    restart: always
+    env_file: .env
     ports:
-      - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
+      - "${REACT_LOCAL_PORT}:${REACT_DOCKER_PORT}"
+    depends_on:
+      - spring-boot
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   db_data:
