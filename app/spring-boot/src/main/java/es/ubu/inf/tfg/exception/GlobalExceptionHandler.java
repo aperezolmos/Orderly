@@ -24,6 +24,14 @@ public class GlobalExceptionHandler {
             ex.getMessage());
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return createErrorResponseEntity(
+            HttpStatus.BAD_REQUEST, 
+            "Authentication failed", 
+            ex.getMessage());
+    }
+
     @ExceptionHandler(ResourceInUseException.class)
     public ResponseEntity<ErrorResponse> handleResourceInUse(ResourceInUseException ex) {
         return createErrorResponseEntity(
