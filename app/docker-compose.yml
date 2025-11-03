@@ -29,6 +29,21 @@ services:
         condition: service_healthy
     ports:
       - "${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}"
+  
+  react:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tfg-react
+    restart: always
+    env_file: .env
+    ports:
+      - "${REACT_LOCAL_PORT}:${REACT_DOCKER_PORT}"
+    depends_on:
+      - spring-boot
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   db_data:
