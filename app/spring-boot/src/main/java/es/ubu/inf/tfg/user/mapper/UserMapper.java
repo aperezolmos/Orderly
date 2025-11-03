@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.user.mapper;
 
+import es.ubu.inf.tfg.auth.dto.RegisterRequestDTO;
 import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
@@ -9,24 +10,28 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
-@RequiredArgsConstructor
-@NoArgsConstructor(force = true)
 public abstract class UserMapper {
 
-    protected final PasswordEncoder passwordEncoder;
+    @Autowired
+    protected PasswordEncoder passwordEncoder;
 
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "roles", ignore = true)
-    @Mapping(target = "password", expression = "java(encodePassword(dto.getPassword()))")
+    @Mapping(target = "password", qualifiedByName = "encodePassword")
     public abstract User toEntity(UserRequestDTO dto);
+
+    @Mapping(target = "currentPassword", ignore = true)
+    @Mapping(target = "roleIds", ignore = true)
+    public abstract UserRequestDTO toRequestFromRegister(RegisterRequestDTO dto);
 
     @Mapping(target = "roleIds", expression = "java(mapRolesToIds(user.getRoles()))")
     @Mapping(target = "roleNames", expression = "java(mapRolesToNames(user.getRoles()))")
@@ -35,6 +40,7 @@ public abstract class UserMapper {
 
     // --------------------------------------------------------
 
+    @Named("encodePassword")
     protected String encodePassword(String password) {
         return password != null ? passwordEncoder.encode(password) : null;
     }
