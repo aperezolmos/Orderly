@@ -2,6 +2,8 @@ package es.ubu.inf.tfg.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -67,6 +70,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+
+        log.error("Error genérico no manejado: {}", ex.getMessage());
+        log.debug("Stack trace completo del error:", ex);
+
         return createErrorResponseEntity(
             HttpStatus.INTERNAL_SERVER_ERROR, 
             "Internal server error", 

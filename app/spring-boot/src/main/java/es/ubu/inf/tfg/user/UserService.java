@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.user;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -177,11 +178,11 @@ public class UserService {
     // --------------------------------------------------------
 
     private Set<Role> validateAndLoadRoles(Set<Integer> roleIds) {
-        if (roleIds == null || roleIds.isEmpty()) {
-            throw new IllegalArgumentException("At least one role must be assigned");
-        }
-
-        return roleIds.stream()
+        
+        Set<Integer> rolesToLoad = Optional.ofNullable(roleIds)
+                .orElse(Collections.emptySet());
+        
+        return rolesToLoad.stream()
                 .map(roleId -> roleService.findEntityById(roleId))
                 .collect(Collectors.toSet());
     }
