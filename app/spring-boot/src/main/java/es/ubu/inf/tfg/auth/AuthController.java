@@ -1,12 +1,14 @@
 package es.ubu.inf.tfg.auth;
 
 import es.ubu.inf.tfg.auth.dto.LoginRequestDTO;
+import es.ubu.inf.tfg.auth.dto.RegisterRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
 
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,11 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    //TODO: register
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody RegisterRequestDTO registerRequest) {
+        UserResponseDTO createdUser = authService.register(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
     
     @GetMapping("/status")
     public ResponseEntity<String> status() {

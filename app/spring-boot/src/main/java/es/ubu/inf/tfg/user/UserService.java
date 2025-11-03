@@ -1,6 +1,7 @@
 package es.ubu.inf.tfg.user;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,10 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with username: " + username));
         return userMapper.toResponseDTO(user);
+    }
+
+    public Optional<User> findEntityByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     public boolean existsById(Integer id) {

@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.user.mapper;
 
+import es.ubu.inf.tfg.auth.dto.RegisterRequestDTO;
 import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
@@ -27,6 +28,10 @@ public abstract class UserMapper {
     @Mapping(target = "roles", ignore = true)
     @Mapping(target = "password", expression = "java(encodePassword(dto.getPassword()))")
     public abstract User toEntity(UserRequestDTO dto);
+
+    @Mapping(target = "currentPassword", ignore = true)
+    @Mapping(target = "roleIds", ignore = true)
+    public abstract UserRequestDTO toRequestFromRegister(RegisterRequestDTO dto);
 
     @Mapping(target = "roleIds", expression = "java(mapRolesToIds(user.getRoles()))")
     @Mapping(target = "roleNames", expression = "java(mapRolesToNames(user.getRoles()))")
