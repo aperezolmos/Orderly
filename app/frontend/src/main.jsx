@@ -7,8 +7,8 @@ import App from './App.jsx'
 
 import './index.css'
 import '@mantine/core/styles.css'
-import '@mantine/notifications/styles.css'
-import '@mantine/modals/styles.css'
+// import '@mantine/notifications/styles.css'
+// import '@mantine/modals/styles.css'
 
 
 createRoot(document.getElementById('root')).render(
