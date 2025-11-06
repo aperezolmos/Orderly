@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Paper, Title, Text } from '@mantine/core';
 
+
 const AuthLayout = ({ 
   children, 
   title, 

@@ -5,9 +5,8 @@ import ProtectedRoute from './common/components/ProtectedRoute';
 
 
 const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
-//const Register = React.lazy(() => import('./modules/auth/pages/RegisterPage'));
+const Register = React.lazy(() => import('./modules/auth/pages/RegisterPage'));
 const Profile = React.lazy(() => import('./modules/auth/pages/ProfilePage'));
-const Dashboard = React.lazy(() => import('./Dashboard'));
 
 
 const AppRouter = () => {
@@ -25,7 +24,11 @@ const AppRouter = () => {
           {/* Public routes */}
           <Route
             path="/login"
-            element={!isAuthenticated ? <Login /> : <Navigate to="/profile" />}
+            element={!isAuthenticated ? <Login /> : <Navigate to="/profile" replace />}
+          />
+          <Route
+            path="/register"
+            element={!isAuthenticated ? <Register /> : <Navigate to="/profile" replace />}
           />
 
 
@@ -35,14 +38,6 @@ const AppRouter = () => {
             element={
               <ProtectedRoute>
                 <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
               </ProtectedRoute>
             }
           />
