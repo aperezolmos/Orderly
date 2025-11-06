@@ -1,23 +1,22 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { MantineProvider } from '@mantine/core'
-import { Notifications } from '@mantine/notifications'
-import { ModalsProvider } from '@mantine/modals'
-import App from './App.jsx'
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
+import './index.css';
 
-import './index.css'
-import '@mantine/core/styles.css'
-// import '@mantine/notifications/styles.css'
-// import '@mantine/modals/styles.css'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
+import App from './App.jsx';
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MantineProvider>
+    <MantineProvider withNormalizeCSS withGlobalStyles>
       <ModalsProvider>
         <Notifications />
         <App />
       </ModalsProvider>
     </MantineProvider>
-  </StrictMode>,
-)
+  </StrictMode>
+);
