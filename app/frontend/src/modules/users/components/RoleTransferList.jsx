@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Group, Badge, Paper, Title,
-         Text, ScrollArea, Stack, Divider } from '@mantine/core';
+         Text, ScrollArea, Stack } from '@mantine/core';
 import { IconX, IconPlus, IconShield } from '@tabler/icons-react';
 
-
-const RoleTransferList = ({
+const RoleTransferList = memo(({
   assignedRoles = [],
   availableRoles = [],
   onAddRole,
@@ -33,7 +32,7 @@ const RoleTransferList = ({
             {assignedRoles.length > 0 ? (
               assignedRoles.map((role) => (
                 <Badge
-                  key={role.id}
+                  key={`assigned-${role.id}`}
                   size="lg"
                   variant="filled"
                   color="blue"
@@ -41,7 +40,10 @@ const RoleTransferList = ({
                     <IconX 
                       size="0.8rem" 
                       style={{ cursor: 'pointer' }}
-                      onClick={() => !loading && onRemoveRole(role.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        !loading && onRemoveRole(role.id);
+                      }}
                     />
                   }
                   style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
@@ -62,7 +64,7 @@ const RoleTransferList = ({
           Total: {assignedRoles.length} roles
         </Text>
       </Paper>
-      
+
 
       {/* Available roles */}
       <Paper shadow="sm" p="md" withBorder style={{ flex: 1 }}>
@@ -82,7 +84,7 @@ const RoleTransferList = ({
             {availableRoles.length > 0 ? (
               availableRoles.map((role) => (
                 <Badge
-                  key={role.id}
+                  key={`available-${role.id}`}
                   size="lg"
                   variant="outline"
                   color="gray"
@@ -90,7 +92,10 @@ const RoleTransferList = ({
                     <IconPlus 
                       size="0.8rem" 
                       style={{ cursor: 'pointer' }}
-                      onClick={() => !loading && onAddRole(role)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        !loading && onAddRole(role);
+                      }}
                     />
                   }
                   style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
@@ -113,6 +118,8 @@ const RoleTransferList = ({
       </Paper>
     </Group>
   );
-};
+});
+
+RoleTransferList.displayName = 'RoleTransferList';
 
 export default RoleTransferList;

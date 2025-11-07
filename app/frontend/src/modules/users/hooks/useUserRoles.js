@@ -6,7 +6,7 @@ import { roleService } from '../../../services/backend/roleService';
 export const useUserRoles = (initialUserRoles = []) => {
   
   const [availableRoles, setAvailableRoles] = useState([]);
-  const [assignedRoles, setAssignedRoles] = useState(initialUserRoles);
+  const [assignedRoles, setAssignedRoles] = useState([]);
   const [loading, setLoading] = useState(false);
   
 
@@ -28,17 +28,24 @@ export const useUserRoles = (initialUserRoles = []) => {
   }, []);
 
   useEffect(() => {
-    loadAllRoles();
-  }, []);
+    const uniqueAssignedRoles = initialUserRoles.reduce((acc, role) => {
+      if (!acc.some(r => r.id === role.id)) {
+        acc.push(role);
+      }
+      return acc;
+    }, []);
+    
+    setAssignedRoles(uniqueAssignedRoles);
+  }, [JSON.stringify(initialUserRoles)]);
 
   useEffect(() => {
-    setAssignedRoles(initialUserRoles);
-  }, [JSON.stringify(initialUserRoles)]);
+    loadAllRoles();
+  }, [loadAllRoles]);
   
 
   // Add a role to the user
   const addRole = (role) => {
-    if (!assignedRoles.find(r => r.id === role.id)) {
+    if (!assignedRoles.some(r => r.id === role.id)) {
       setAssignedRoles(prev => [...prev, role]);
     }
   };
@@ -49,21 +56,11 @@ export const useUserRoles = (initialUserRoles = []) => {
   };
 
   // Get available roles (all roles - assigned)
-  const getAvailableRoles = () => {
+  const getAvailableRoles = useCallback(() => {
     return availableRoles.filter(availableRole => 
-      !assignedRoles.find(assignedRole => assignedRole.id === availableRole.id)
+      !assignedRoles.some(assignedRole => assignedRole.id === availableRole.id)
     );
-  };
-
-  // Get IDs of assigned roles (send to backend)
-  const getAssignedRoleIds = () => {
-    return assignedRoles.map(role => role.id);
-  };
-
-  // Reset to initial roles
-  const resetRoles = () => {
-    setAssignedRoles(initialUserRoles);
-  };
+  }, [availableRoles, assignedRoles]);
 
 
   return {
@@ -72,8 +69,8 @@ export const useUserRoles = (initialUserRoles = []) => {
     loading,
     addRole,
     removeRole,
-    getAssignedRoleIds,
-    resetRoles,
+    getAssignedRoleIds: () => assignedRoles.map(role => role.id),
+    resetRoles: () => setAssignedRoles(initialUserRoles),
     hasChanges: JSON.stringify(assignedRoles) !== JSON.stringify(initialUserRoles)
   };
 };

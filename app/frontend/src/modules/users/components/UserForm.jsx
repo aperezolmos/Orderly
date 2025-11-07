@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
          LoadingOverlay, Tabs, Alert, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle, IconUser, IconShield } from '@tabler/icons-react';
 import { userService } from '../../../services/backend/userService';
-import RoleTransferList from '../../../common/components/RoleTransferList';
+import RoleTransferList from './RoleTransferList';
 import { useUserRoles } from '../hooks/useUserRoles';
 
 
