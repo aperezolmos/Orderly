@@ -136,6 +136,36 @@ Debido a que la idea del cambio de arquitectura surgió durante el desarrollo de
 
 Se acordó enfocar el siguiente \textit{sprint} en la \textbf{migración a una arquitectura SPA con \textit{React}}, lo cual conlleva la refactorización de la aplicación \textit{Spring Boot} para que actúe como API REST.
 
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 4}
+\label{subsec:A.2_sprint4}
+
+\underline{Duración}: 2 semanas (23/10/2025 - 06/11/2025)
+
+Este \textit{sprint} se dedicó exclusivamente a la migración a \textit{React}. Se refactorizó el proyecto de \textit{Spring Boot} para convertirlo en API REST pura y se eliminaron las dependencias de \textit{Thymeleaf}. Se construyó el nuevo proyecto de \textit{React} y se reimplementaron las funcionalidades existentes hasta la fecha.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/5?closed=1}{\textbf{Sprint 4}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Investigación de mejores prácticas para la migración de arquitectura:} Abarcó el aprendizaje de las bases de \textit{React} y la selección de librerías útiles para el \textit{frontend}. También se investigó sobre las prácticas estándar para refactorizar la API de \textit{Spring Boot} y sobre los componentes necesarios para la comunicación entre ambos servicios.
+	\item \textbf{Refactorización del \textit{backend}:} Se completó la migración completa a un diseño RESTful, eliminando toda la infraestructura web y reescribiendo los servicios y controladores para operar mediante DTOs y peticiones HTTP. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/60}{\#60}.
+	\item \textbf{Configuración de la autenticación y CORS:} Se implementaron el servicio y controlador de autenticación (\textit{login} y registro) en la API y se configuró CORS para permitir la comunicación entre la API y el \textit{frontend} de \textit{React}, estableciendo sesiones \textit{stateless}.
+	\item \textbf{Creación del proyecto y contenedor \textit{Docker} para \textit{React}:} Para generar el proyecto inicial se utilizó la herramienta de construcción \textit{Vite}. \todo{Ref?} Se creó el \texttt{Dockerfile} para la construcción del contenedor y se agregó el servicio a \texttt{docker-compose.yml}.
+	\item \textbf{Implementación de la autenticación en \textit{React}:} Se creó un contexto de autenticación global para manejar el usuario de cada sesión. Se crearon las páginas para \textit{login} y registro de usuarios. 
+	\item \textbf{Implementación de la gestión de usuarios en \textit{React}:} Se reimplementaron las funcionalidades existentes acerca del manejo de usuarios y roles, junto con las interfaces asociadas. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/74}{\#74}.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint4_burndown.png}{Gráfico \textit{burndown} del Sprint 4}{A2_sprint4_burndown}
+
+\subsubsection{Revisión}
+
+Se acordó, para el siguiente \textit{sprint}, continuar con la creación de páginas de gestión para las entidades restantes (gestión de productos ofertados).
+
+\todo[inline]{Agregar más objetivos del sprint...}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Estudio de viabilidad}
