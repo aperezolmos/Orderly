@@ -1,28 +1,35 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
+import { LoadingOverlay, Text, Center } from '@mantine/core';
 
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, requiredRole = null }) => {
   
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-lg">Loading...</div>
-      </div>
+      <LoadingOverlay visible={true} />
     );
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-xl font-bold mb-4">Restricted access</h2>
-          <p>You must log in to access this page.</p>
-        </div>
-      </div>
-    );
+    return <Navigate to="/login" replace />;
+  }
+
+  if (requiredRole) {
+    const hasRequiredRole = user?.roleNames?.includes(requiredRole);
+    
+    if (!hasRequiredRole) {
+      return (
+        <Center style={{ height: '60vh' }}>
+          <Text color="red" size="xl" weight={500}>
+            Access Denied - Admin privileges required
+          </Text>
+        </Center>
+      );
+    }
   }
 
   return children;
