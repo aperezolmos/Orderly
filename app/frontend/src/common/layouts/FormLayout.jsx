@@ -16,7 +16,7 @@ const FormLayout = ({
   return (
     <ManagementLayout title={title} {...managementProps}>
       <div style={{ position: 'relative' }}>
-        <LoadingOverlay visible={loading} overlayBlur={2} />
+        <LoadingOverlay visible={loading} blur={2} />
         
         {error && (
           <Alert

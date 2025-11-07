@@ -36,7 +36,7 @@ const ProfilePage = () => {
         <Button
           variant="outline"
           color="red"
-          leftIcon={<IconLogout size="1rem" />}
+          leftSection={<IconLogout size="1rem" />}
           onClick={handleLogout}
         >
           Logout

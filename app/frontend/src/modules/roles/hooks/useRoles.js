@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect, useCallback } from 'react';
 import { roleService } from '../../../services/backend/roleService';
 import { notifications } from '@mantine/notifications';
 
@@ -10,7 +11,9 @@ export const useRoles = () => {
   const [error, setError] = useState(null);
   
 
-  const loadRoles = async () => {
+  const loadRoles = useCallback(async () => {
+    if (loading) return;
+    
     try {
       setLoading(true);
       setError(null);
@@ -28,7 +31,12 @@ export const useRoles = () => {
     finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadRoles();
+  }, []);
+  
 
   const createRole = async (roleData) => {
     try {
@@ -105,11 +113,6 @@ export const useRoles = () => {
       setLoading(false);
     }
   };
-
-
-  useEffect(() => {
-    loadRoles();
-  }, []);
 
 
   return {

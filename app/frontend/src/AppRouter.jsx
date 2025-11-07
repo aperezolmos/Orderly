@@ -16,6 +16,11 @@ const RoleList = React.lazy(() => import('./modules/roles/pages/RoleListPage'));
 const RoleCreate = React.lazy(() => import('./modules/roles/pages/RoleCreatePage'));
 const RoleEdit = React.lazy(() => import('./modules/roles/pages/RoleEditPage'));
 
+// User
+const UserList = React.lazy(() => import('./modules/users/pages/UserListPage'));
+const UserCreate = React.lazy(() => import('./modules/users/pages/UserCreatePage'));
+const UserEdit = React.lazy(() => import('./modules/users/pages/UserEditPage'));
+
 // --------------------------------------------------------
 
 
@@ -80,6 +85,31 @@ const AppRouter = () => {
               element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
                   <RoleEdit />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <UserList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users/new"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <UserCreate />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users/:id/edit"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <UserEdit />
                 </ProtectedRoute>
               }
             />

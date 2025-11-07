@@ -32,9 +32,7 @@ const RoleForm = ({
 
   // For loading data when the role changes
   useEffect(() => {
-    console.log('Role changed:', role);
     if (role) {
-      console.log('Setting form values:', role.name, role.description);
       setValues({
         name: role.name || '',
         description: role.description || '',

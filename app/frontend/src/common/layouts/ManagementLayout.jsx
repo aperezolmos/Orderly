@@ -41,7 +41,7 @@ const ManagementLayout = ({
           {showBackButton && (
             <Button
               variant="outline"
-              leftIcon={<IconArrowLeft size="1rem" />}
+              leftSection={<IconArrowLeft size="1rem" />}
               onClick={() => navigate(-1)}
             >
               Back
@@ -50,7 +50,7 @@ const ManagementLayout = ({
           
           {showCreateButton && (
             <Button
-              leftIcon={<IconPlus size="1rem" />}
+              leftSection={<IconPlus size="1rem" />}
               onClick={onCreateClick}
             >
               {createButtonLabel}
