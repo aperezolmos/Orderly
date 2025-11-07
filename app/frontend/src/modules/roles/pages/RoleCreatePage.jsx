@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { notifications } from '@mantine/notifications';
-import FormLayout from '../../../../common/layouts/FormLayout';
+import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
 import { useRoles } from '../hooks/useRoles';
 
@@ -14,13 +13,6 @@ const RoleCreatePage = () => {
 
   const handleSubmit = async (roleData) => {
     await createRole(roleData);
-
-    notifications.show({
-    title: 'Role Created',
-    message: 'Role has been created successfully',
-    color: 'green',
-    });
-    
     navigate('/roles', { replace: true });
   };
 

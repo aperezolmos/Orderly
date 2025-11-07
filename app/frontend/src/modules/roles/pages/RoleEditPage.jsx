@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
-import FormLayout from '../../../../common/layouts/FormLayout';
+import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
-import { roleService } from '../../../../services/backend/roleService';
+import { roleService } from '../../../services/backend/roleService';
+import { useRoles } from '../hooks/useRoles';
 
 
 const RoleEditPage = () => {
@@ -13,10 +14,10 @@ const RoleEditPage = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const { updateRole } = useRoles();
 
-  
+
   useEffect(() => {
     const loadRole = async () => {
       try {
@@ -41,19 +42,18 @@ const RoleEditPage = () => {
 
   const handleSubmit = async (roleData) => {
     try {
-      setSubmitting(true);
+      setLoading(true);
       setError(null);
       
-      await roleService.updateRole(parseInt(id), roleData);
-      
+      await updateRole(parseInt(id), roleData);
       navigate('/roles', { replace: true });
     } 
     catch (err) {
       setError(err.message);
-      throw err; // So that RoleForm knows there was an error
+      throw err;
     } 
     finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
@@ -100,7 +100,7 @@ const RoleEditPage = () => {
       <RoleForm
         role={role}
         onSubmit={handleSubmit}
-        loading={submitting}
+        loading={loading}
         submitLabel="Update Role"
       />
     </FormLayout>

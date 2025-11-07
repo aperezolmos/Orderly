@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { roleService } from '../../../../services/backend/roleService';
+import { roleService } from '../../../services/backend/roleService';
 import { notifications } from '@mantine/notifications';
 
 

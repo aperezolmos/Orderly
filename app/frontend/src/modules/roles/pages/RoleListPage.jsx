@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal,Button } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus, IconShield } from '@tabler/icons-react';
-import ManagementLayout from '../../../../common/layouts/ManagementLayout';
-import DataTable from '../../../../common/components/DataTable';
+import ManagementLayout from '../../../common/layouts/ManagementLayout';
+import DataTable from '../../../common/components/DataTable';
 import { useRoles } from '../hooks/useRoles';
 
 

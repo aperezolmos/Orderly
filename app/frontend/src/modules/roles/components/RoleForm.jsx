@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { TextInput, Textarea, Button, Group,LoadingOverlay } from '@mantine/core';
+import { TextInput, Textarea, Button, Group, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 
@@ -28,14 +28,26 @@ const RoleForm = ({
     },
   });
 
+  const { setValues } = form;
+
+  // For loading data when the role changes
   useEffect(() => {
+    console.log('Role changed:', role);
     if (role) {
-      form.setValues({
+      console.log('Setting form values:', role.name, role.description);
+      setValues({
         name: role.name || '',
         description: role.description || '',
       });
     }
-  }, [role, form]);
+    else {
+      // Reset for creation
+      setValues({
+        name: '',
+        description: '',
+      });
+    }
+  }, [role, setValues]);
 
   const handleSubmit = async (values) => {
     await onSubmit(values);
