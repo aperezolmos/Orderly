@@ -25,13 +25,16 @@ public class DiningTable {
 
     @Column(nullable = false, unique = true, length = 10)
     @ToString.Include
-    private String tableNumber;
+    private String name;
 
     @Column(nullable = false)
     private Integer capacity;
 
     @Column(length = 100)
     private String locationDescription;
+
+    @Builder.Default
+    private Boolean isAvailable = true;
     
     @Builder.Default
     private Boolean isActive = true;
