@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.food.mapper;
+package es.ubu.inf.tfg.food.dto.mapper;
 
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
@@ -13,10 +13,10 @@ import org.mapstruct.Mapping;
 public interface FoodMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "recipes", ignore = true)
+    @Mapping(target = "usages", ignore = true)
     Food toEntity(FoodRequestDTO dto);
 
-    @Mapping(target = "recipeCount", expression = "java(food.getRecipes().size())")
+    @Mapping(target = "recipeCount", expression = "java(food.getUsages().size())")
     FoodResponseDTO toResponseDTO(Food food);
 
     // --------------------------------------------------------

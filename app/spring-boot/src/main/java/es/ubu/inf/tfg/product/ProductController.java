@@ -1,8 +1,8 @@
 package es.ubu.inf.tfg.product;
 
+import es.ubu.inf.tfg.product.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
-import es.ubu.inf.tfg.recipe.dto.RecipeResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -31,11 +31,12 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> getProductById(
             @PathVariable Integer id,
-            @RequestParam(required = false, defaultValue = "false") Boolean detailed) {
+            @RequestParam(required = false, defaultValue = "false") Boolean detailed,
+            @RequestParam(required = false, defaultValue = "false") Boolean includeIngredients) {
         
         ProductResponseDTO product;
-        if (detailed) {
-            product = productService.getProductDetailedInfo(id);
+        if (detailed || includeIngredients) {
+            product = productService.getProductDetailedInfo(id, includeIngredients);
         } else {
             product = productService.findById(id);
         }
@@ -96,36 +97,38 @@ public class ProductController {
         return ResponseEntity.ok(productService.existsByFoodId(foodId));
     }
 
+
     // --------------------------------------------------------
+    // INGREDIENT ENDPOINTS
 
-    @PostMapping("/{productId}/foods/{foodId}")
-    public ResponseEntity<RecipeResponseDTO> addFoodToProduct(
+    @PostMapping("/{productId}/ingredients")
+    public ResponseEntity<IngredientResponseDTO> addIngredientToProduct(
+            @PathVariable Integer productId,
+            @RequestParam Integer foodId,
+            @RequestParam Double quantity) {
+        IngredientResponseDTO ingredient = productService.addIngredientToProduct(productId, foodId, quantity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredient);
+    }
+
+    @PutMapping("/{productId}/ingredients/{foodId}")
+    public ResponseEntity<IngredientResponseDTO> updateIngredientQuantity(
             @PathVariable Integer productId,
             @PathVariable Integer foodId,
             @RequestParam Double quantity) {
-        RecipeResponseDTO recipe = productService.addFoodToProduct(productId, foodId, quantity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(recipe);
+        IngredientResponseDTO ingredient = productService.updateIngredientQuantity(productId, foodId, quantity);
+        return ResponseEntity.ok(ingredient);
     }
 
-    @PutMapping("/{productId}/foods/{foodId}")
-    public ResponseEntity<RecipeResponseDTO> updateFoodQuantity(
-            @PathVariable Integer productId,
-            @PathVariable Integer foodId,
-            @RequestParam Double quantity) {
-        RecipeResponseDTO recipe = productService.updateFoodQuantityInProduct(productId, foodId, quantity);
-        return ResponseEntity.ok(recipe);
-    }
-
-    @DeleteMapping("/{productId}/foods/{foodId}")
-    public ResponseEntity<Void> removeFoodFromProduct(
+    @DeleteMapping("/{productId}/ingredients/{foodId}")
+    public ResponseEntity<Void> removeIngredientFromProduct(
             @PathVariable Integer productId,
             @PathVariable Integer foodId) {
-        productService.removeFoodFromProduct(productId, foodId);
+        productService.removeIngredientFromProduct(productId, foodId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{productId}/foods")
-    public ResponseEntity<List<RecipeResponseDTO>> getProductIngredients(@PathVariable Integer productId) {
+    @GetMapping("/{productId}/ingredients")
+    public ResponseEntity<List<IngredientResponseDTO>> getProductIngredients(@PathVariable Integer productId) {
         return ResponseEntity.ok(productService.getProductIngredients(productId));
     }
 }

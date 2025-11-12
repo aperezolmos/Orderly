@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
+import es.ubu.inf.tfg.food.dto.mapper.FoodMapper;
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
-import es.ubu.inf.tfg.food.mapper.FoodMapper;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -67,7 +66,9 @@ public class FoodService {
         return foodRepository.existsByName(name);
     }
 
+
     // --------------------------------------------------------
+    // CRUD METHODS
 
     public FoodResponseDTO create(FoodRequestDTO foodRequest) {
         
@@ -111,7 +112,7 @@ public class FoodService {
         
         Food food = findEntityById(id);
 
-        if (!food.getRecipes().isEmpty()) {
+        if (!food.getUsages().isEmpty()) {
             throw new ResourceInUseException("Food", id, "Product");
         }
         foodRepository.delete(food);
