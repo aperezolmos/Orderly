@@ -24,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) // TODO: @EqualsAndHashCode(callSuper = true) en las entidades hijas
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @SuperBuilder
 public abstract class Order {
@@ -47,13 +47,13 @@ public abstract class Order {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
+
+    @Builder.Default
+    @Column(precision = 10, scale = 2)
+    private BigDecimal totalPrice = BigDecimal.ZERO;
     
     @Column(length = 100)
     private String customerName;
-    
-    @Builder.Default
-    @Column(precision = 10, scale = 2)
-    private BigDecimal totalAmount = BigDecimal.ZERO;
     
     private String notes;
 
@@ -63,8 +63,8 @@ public abstract class Order {
     private List<OrderItem> items = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_id", nullable = false)
-    private User createdBy;
+    @JoinColumn(name = "employee_id", nullable = false)
+    private User employee;
 
 
     @Column(nullable = false, updatable = false)
@@ -82,10 +82,6 @@ public abstract class Order {
         if (orderNumber == null) {
             this.orderNumber = generateOrderNumber(createdAt);
         }
-
-        if (status == null){
-            status = OrderStatus.PENDING;
-        }
     }
 
     @PreUpdate
@@ -94,7 +90,7 @@ public abstract class Order {
     }
 
 
-    private String generateOrderNumber(LocalDateTime time) {
+    private String generateOrderNumber(LocalDateTime time) { //TODO: usar este formato o un num simple¿?
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
         String timestampPart = time.format(formatter);
         return "ORD-" + timestampPart;
