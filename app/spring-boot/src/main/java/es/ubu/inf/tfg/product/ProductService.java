@@ -5,15 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
+import es.ubu.inf.tfg.food.Food;
+import es.ubu.inf.tfg.food.FoodService;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
+import es.ubu.inf.tfg.product.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
-import es.ubu.inf.tfg.product.mapper.ProductMapper;
-import es.ubu.inf.tfg.recipe.Recipe;
-import es.ubu.inf.tfg.recipe.RecipeService;
-import es.ubu.inf.tfg.recipe.dto.RecipeResponseDTO;
-import es.ubu.inf.tfg.recipe.mapper.RecipeMapper;
+import es.ubu.inf.tfg.product.dto.mapper.IngredientMapper;
+import es.ubu.inf.tfg.product.dto.mapper.ProductMapper;
+import es.ubu.inf.tfg.product.ingredient.Ingredient;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,9 +27,9 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
     
     private final ProductRepository productRepository;
-    private final RecipeService recipeService;
+    private final FoodService foodService;
     private final ProductMapper productMapper;
-    private final RecipeMapper recipeMapper;
+    private final IngredientMapper ingredientMapper;
 
     
     public List<ProductResponseDTO> findAll() {
@@ -67,7 +68,7 @@ public class ProductService {
     }
 
     public List<ProductResponseDTO> findProductsByFood(Integer foodId) {
-        return productRepository.findByRecipes_FoodId(foodId).stream()
+        return productRepository.findByIngredients_FoodId(foodId).stream()
                 .map(productMapper::toResponseDTO)
                 .toList();
     }
@@ -81,10 +82,12 @@ public class ProductService {
     }
 
     public boolean existsByFoodId(Integer foodId) {
-        return productRepository.existsByRecipes_FoodId(foodId);
+        return productRepository.existsByIngredients_FoodId(foodId);
     }
 
+
     // --------------------------------------------------------
+    // CRUD METHODS
 
     public ProductResponseDTO create(ProductRequestDTO productRequest) {
         
@@ -122,54 +125,79 @@ public class ProductService {
         
         Product product = findEntityById(id);
 
-        if (!product.getRecipes().isEmpty()) {
+        if (!product.getIngredients().isEmpty()) {
             throw new ResourceInUseException("Product", id, "Food");
         }
         productRepository.delete(product);
     }
 
+
     // --------------------------------------------------------
+    // DOMAIN METHODS (ingredients)
 
-    public RecipeResponseDTO addFoodToProduct(Integer productId, Integer foodId, Double quantity) {
-        Recipe recipe = recipeService.create(productId, foodId, quantity);
-        return recipeMapper.toResponseDTO(recipe);
+    public IngredientResponseDTO addIngredientToProduct(Integer foodId, Integer productId, Double quantity) {
+        
+        Product product = findEntityById(productId);
+        Food food = foodService.findEntityById(foodId);
+        
+        Ingredient ingredient = product.addIngredient(food, quantity);
+        productRepository.save(product);
+        
+        return ingredientMapper.toResponseDTO(ingredient);
     }
 
-    public RecipeResponseDTO updateFoodQuantityInProduct(Integer productId, Integer foodId, Double newQuantity) {
-        Recipe recipe = recipeService.updateQuantity(productId, foodId, newQuantity);
-        return recipeMapper.toResponseDTO(recipe);
+    public IngredientResponseDTO updateIngredientQuantity(Integer foodId, Integer productId, Double newQuantity) {
+        
+        Product product = findEntityById(productId);
+        product.updateIngredientQuantity(foodId, newQuantity);
+        productRepository.save(product);
+        
+        // Retrieve the updated ingredient for the response DTO
+        Ingredient updatedIngredient = product.getIngredients().stream()
+                .filter(ing -> ing.getId().getFoodId().equals(foodId))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Ingredient not found for foodId: " + foodId
+                + " and productId: " + productId));
+                
+        return ingredientMapper.toResponseDTO(updatedIngredient);
     }
 
-    public void removeFoodFromProduct(Integer productId, Integer foodId) {
-        recipeService.delete(productId, foodId);
+    public void removeIngredientFromProduct(Integer foodId, Integer productId) {
+        
+        Product product = findEntityById(productId);
+        product.removeIngredient(foodId);
+        productRepository.save(product);
     }
+
+
+    // --------------------------------------------------------
+    // INFO
 
     public NutritionInfoDTO calculateProductNutritionInfo(Integer productId) {
         
         Product product = findEntityById(productId);
-        NutritionInfo totalNutrition = NutritionInfo.builder().build();
-        
-        for (Recipe recipe : product.getRecipes()) {
-            NutritionInfo recipeNutrition = recipe.calculateNutritionInfo();
-            totalNutrition = totalNutrition.add(recipeNutrition);
-        }
+        NutritionInfo totalNutrition = product.calculateTotalNutrition();
         return productMapper.toNutritionInfoDTO(totalNutrition);
     }
 
-    public ProductResponseDTO getProductDetailedInfo(Integer productId) {
+    public ProductResponseDTO getProductDetailedInfo(Integer productId, boolean includeIngredients) {
         
         Product product = findEntityById(productId);
         NutritionInfoDTO nutritionInfo = calculateProductNutritionInfo(productId);
         
-        return productMapper.toDetailedResponseDTO(product, nutritionInfo);
+        if (includeIngredients) {
+            return productMapper.toCompleteResponseDTO(product, nutritionInfo);
+        } 
+        else {
+            return productMapper.toNutritionalResponseDTO(product, nutritionInfo);
+        }
     }
 
-    public List<RecipeResponseDTO> getProductIngredients(Integer productId) {
+    public List<IngredientResponseDTO> getProductIngredients(Integer productId) {
         
         Product product = findEntityById(productId);
-        
-        return product.getRecipes().stream()
-                .map(recipeMapper::toResponseDTO)
+        return product.getIngredients().stream()
+                .map(ingredientMapper::toResponseDTO)
                 .toList();
     }
 }

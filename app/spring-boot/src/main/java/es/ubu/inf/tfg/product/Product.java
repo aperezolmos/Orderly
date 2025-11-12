@@ -70,7 +70,8 @@ public class Product {
         validateQuantityPositive(quantity);
         
         if (findIngredientById(new IngredientId(food.getId(), this.id)).isPresent()) {
-            throw new IllegalArgumentException("Ingredient already exists in product");
+            throw new IllegalArgumentException("Ingredient with foodId: " + food.getId()
+            + " already exists in product");
         }
         
         Ingredient ingredient = new Ingredient(food, this, quantity);
@@ -82,7 +83,8 @@ public class Product {
         validateQuantityPositive(newQuantity);
         
         Ingredient ingredient = findIngredientById(new IngredientId(foodId, this.id))
-                .orElseThrow(() -> new IllegalArgumentException("Ingredient not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Ingredient not found for foodId: " + foodId
+                + " and productId: " + this.id));
         
         ingredient.setQuantity(newQuantity);
     }
@@ -90,7 +92,8 @@ public class Product {
     public void removeIngredient(Integer foodId) {
         
         Ingredient ingredient = findIngredientById(new IngredientId(foodId, this.id))
-                .orElseThrow(() -> new IllegalArgumentException("Ingredient not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Ingredient not found for foodId: " + foodId
+                + " and productId: " + this.id));
         
         ingredient.remove();
     }
