@@ -8,7 +8,7 @@ import java.util.Set;
 
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
-import es.ubu.inf.tfg.recipe.Recipe;
+import es.ubu.inf.tfg.product.ingredient.Ingredient;
 
 import lombok.*;
 
@@ -37,7 +37,7 @@ public class Food {
     @ToString.Include
     private FoodGroup foodGroup;
 
-    private double servingWeightGrams;
+    private Double servingWeightGrams;
 
     //private String ingredientStatement; // campo 'nf_ingredient_statement' de Nutritionix
 
@@ -45,10 +45,11 @@ public class Food {
     private NutritionInfo nutritionInfo;
 
     //info sobre cuándo se actualizó por última vez desde nutritionix -> para cachear datos y reducir llamadas
+    
 
     @Builder.Default
     @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Recipe> recipes = new HashSet<>();
+    private Set<Ingredient> usages = new HashSet<>();
 
     // --------------------------------------------------------
 

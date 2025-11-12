@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.recipe;
+package es.ubu.inf.tfg.product.ingredient;
 
 import jakarta.persistence.Embeddable;
 
@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class RecipeId implements Serializable {
+public class IngredientId implements Serializable {
 
     private Integer foodId;
     
