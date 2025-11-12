@@ -1,6 +1,7 @@
 package es.ubu.inf.tfg.product.dto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 
@@ -23,4 +24,5 @@ public class ProductResponseDTO {
     private int ingredientCount;
     private NutritionInfoDTO totalNutrition;
     private Double totalCalories;
+    private Set<IngredientResponseDTO> ingredients;
 }
