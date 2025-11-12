@@ -135,7 +135,7 @@ public class ProductService {
     // --------------------------------------------------------
     // DOMAIN METHODS (ingredients)
 
-    public IngredientResponseDTO addIngredientToProduct(Integer foodId, Integer productId, Double quantity) {
+    public IngredientResponseDTO addIngredientToProduct(Integer productId, Integer foodId, Double quantity) {
         
         Product product = findEntityById(productId);
         Food food = foodService.findEntityById(foodId);
@@ -146,7 +146,7 @@ public class ProductService {
         return ingredientMapper.toResponseDTO(ingredient);
     }
 
-    public IngredientResponseDTO updateIngredientQuantity(Integer foodId, Integer productId, Double newQuantity) {
+    public IngredientResponseDTO updateIngredientQuantity(Integer productId, Integer foodId, Double newQuantity) {
         
         Product product = findEntityById(productId);
         product.updateIngredientQuantity(foodId, newQuantity);
@@ -162,7 +162,7 @@ public class ProductService {
         return ingredientMapper.toResponseDTO(updatedIngredient);
     }
 
-    public void removeIngredientFromProduct(Integer foodId, Integer productId) {
+    public void removeIngredientFromProduct(Integer productId, Integer foodId) {
         
         Product product = findEntityById(productId);
         product.removeIngredient(foodId);
