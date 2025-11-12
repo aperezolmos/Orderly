@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.user.mapper;
+package es.ubu.inf.tfg.user.dto.mapper;
 
 import es.ubu.inf.tfg.auth.dto.RegisterRequestDTO;
 import es.ubu.inf.tfg.user.User;

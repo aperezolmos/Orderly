@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.user.role.dto.RoleRequestDTO;
 import es.ubu.inf.tfg.user.role.dto.RoleResponseDTO;
-import es.ubu.inf.tfg.user.role.mapper.RoleMapper;
+import es.ubu.inf.tfg.user.role.dto.mapper.RoleMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -59,7 +59,9 @@ public class RoleService {
         return roleRepository.existsByName(name);
     }
 
+
     // --------------------------------------------------------
+    // CRUD METHODS
     
     public RoleResponseDTO save(RoleRequestDTO roleRequest) {
         
