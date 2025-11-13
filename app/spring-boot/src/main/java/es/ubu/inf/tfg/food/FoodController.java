@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class FoodController {
     
 
     @GetMapping
+    @PreAuthorize("hasAuthority('FOOD_VIEW_LIST')")
     public ResponseEntity<List<FoodResponseDTO>> getAllFoods() {
         return ResponseEntity.ok(foodService.findAll());
     }
@@ -50,12 +52,14 @@ public class FoodController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('FOOD_CREATE')")
     public ResponseEntity<FoodResponseDTO> createFood(@Valid @RequestBody FoodRequestDTO foodRequest) {
         FoodResponseDTO createdFood = foodService.create(foodRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFood);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('FOOD_EDIT')")
     public ResponseEntity<FoodResponseDTO> updateFood(
             @PathVariable Integer id, 
             @Valid @RequestBody FoodRequestDTO foodRequest) {
@@ -64,6 +68,7 @@ public class FoodController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('FOOD_DELETE')")
     public ResponseEntity<Void> deleteFood(@PathVariable Integer id) {
         foodService.delete(id);
         return ResponseEntity.noContent().build();

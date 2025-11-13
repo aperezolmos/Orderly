@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ProductController {
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('PRODUCT_VIEW_LIST')")
     public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
         return ResponseEntity.ok(productService.findAll());
     }
@@ -63,12 +65,14 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('PRODUCT_CREATE')")
     public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO productRequest) {
         ProductResponseDTO createdProduct = productService.create(productRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('PRODUCT_EDIT')")
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Integer id,
             @Valid @RequestBody ProductRequestDTO productRequest) {
@@ -77,6 +81,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('PRODUCT_DELETE')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
@@ -102,6 +107,7 @@ public class ProductController {
     // INGREDIENT ENDPOINTS
 
     @PostMapping("/{productId}/ingredients")
+    @PreAuthorize("hasAuthority('PRODUCT_EDIT') and hasAuthority('PRODUCT_EDIT_INGREDIENTS')")
     public ResponseEntity<IngredientResponseDTO> addIngredientToProduct(
             @PathVariable Integer productId,
             @RequestParam Integer foodId,
@@ -111,6 +117,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}/ingredients/{foodId}")
+    @PreAuthorize("hasAuthority('PRODUCT_EDIT') and hasAuthority('PRODUCT_EDIT_INGREDIENTS')")
     public ResponseEntity<IngredientResponseDTO> updateIngredientQuantity(
             @PathVariable Integer productId,
             @PathVariable Integer foodId,
@@ -120,6 +127,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}/ingredients/{foodId}")
+    @PreAuthorize("hasAuthority('PRODUCT_EDIT') and hasAuthority('PRODUCT_EDIT_INGREDIENTS')")
     public ResponseEntity<Void> removeIngredientFromProduct(
             @PathVariable Integer productId,
             @PathVariable Integer foodId) {
