@@ -1,8 +1,10 @@
 package es.ubu.inf.tfg.user.role;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import es.ubu.inf.tfg.user.User;
+import es.ubu.inf.tfg.user.role.permission.Permission;
 
 import jakarta.persistence.*;
 
@@ -29,9 +31,15 @@ public class Role {
     @ToString.Include
     private String name;
     
-    @Column(length = 255)
     private String description;
 
+    @Builder.Default
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Permission> permissions = new HashSet<>();
+
+
+    @Builder.Default
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
+    private Set<User> users = new HashSet<>();
 }
