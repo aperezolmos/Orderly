@@ -1,7 +1,7 @@
 package es.ubu.inf.tfg.security;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import es.ubu.inf.tfg.user.User;
+import es.ubu.inf.tfg.user.role.Role;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -19,8 +21,25 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<String> roleNames = user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet());
-        return roleNames.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        if (user.getRoles() != null) {
+            for (Role role : user.getRoles()) {
+                
+                // Authority by role
+                if (role.getName() != null) {
+                    authorities.add(new SimpleGrantedAuthority(role.getName()));
+                }
+                // Authorities by permissions contained in the role
+                if (role.getPermissions() != null) {
+                    role.getPermissions().stream()
+                        .map(Enum::name)
+                        .map(SimpleGrantedAuthority::new)
+                        .forEach(authorities::add);
+                }
+            }
+        }
+        return authorities;
     }
 
     @Override
