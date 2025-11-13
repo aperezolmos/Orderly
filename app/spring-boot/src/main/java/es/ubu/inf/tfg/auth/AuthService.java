@@ -7,7 +7,7 @@ import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.UserService;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
-import es.ubu.inf.tfg.user.mapper.UserMapper;
+import es.ubu.inf.tfg.user.dto.mapper.UserMapper;
 
 import jakarta.transaction.Transactional;
 

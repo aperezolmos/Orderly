@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.user.role.mapper;
+package es.ubu.inf.tfg.user.role.dto.mapper;
 
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.dto.RoleRequestDTO;

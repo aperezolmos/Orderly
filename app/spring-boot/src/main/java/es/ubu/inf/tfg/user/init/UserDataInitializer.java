@@ -1,6 +1,8 @@
 package es.ubu.inf.tfg.user.init;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,7 @@ import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.UserRepository;
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.RoleRepository;
+import es.ubu.inf.tfg.user.role.permission.Permission;
 
 import jakarta.transaction.Transactional;
 
@@ -56,6 +59,12 @@ public class UserDataInitializer implements CommandLineRunner {
                     .name(roleName)
                     .description(description)
                     .build();
+
+            if (adminRoleName.equals(roleName)) {
+                List<Permission> allPermissions = Arrays.asList(Permission.values());
+                role.setPermissions(allPermissions);
+                log.info("Assigned ALL permissions to role: {}", roleName);
+            }
             
             roleRepository.save(role);
             log.info("Created role: {}", roleName);

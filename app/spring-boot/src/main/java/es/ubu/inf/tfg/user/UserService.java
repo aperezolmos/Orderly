@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
-import es.ubu.inf.tfg.user.mapper.UserMapper;
+import es.ubu.inf.tfg.user.dto.mapper.UserMapper;
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.RoleService;
 
@@ -68,7 +68,9 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
+
     // --------------------------------------------------------
+    // CRUD METHODS
 
     public UserResponseDTO create(UserRequestDTO userRequest) {
         
@@ -130,8 +132,10 @@ public class UserService {
         User user = findEntityById(id);
         userRepository.delete(user);
     }
+    
 
     // --------------------------------------------------------
+    // DOMAIN METHODS (roles)
 
     public UserResponseDTO addRoleToUser(Integer userId, Integer roleId) {
         
@@ -174,6 +178,7 @@ public class UserService {
         User updatedUser = userRepository.save(user);
         return userMapper.toResponseDTO(updatedUser);
     }
+    
 
     // --------------------------------------------------------
 

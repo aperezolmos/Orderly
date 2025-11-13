@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
@@ -24,6 +25,7 @@ public class UserController {
     
 
     @GetMapping
+    @PreAuthorize("hasAuthority('USER_VIEW_LIST')")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         List<UserResponseDTO> users = userService.findAll();
         return ResponseEntity.ok(users);
@@ -42,6 +44,7 @@ public class UserController {
     }
     
     @PostMapping
+    @PreAuthorize("hasAuthority('USER_CREATE')")
     public ResponseEntity<UserResponseDTO> createUser(
             @Validated(UserValidationGroups.OnCreate.class) @RequestBody UserRequestDTO userRequest) {
         UserResponseDTO createdUser = userService.create(userRequest);
@@ -49,6 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER_EDIT_MYSELF') or hasAuthority('USER_EDIT_OTHERS')")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Integer id,
             @Validated(UserValidationGroups.OnUpdate.class) @RequestBody UserRequestDTO userRequest) {
@@ -57,6 +61,7 @@ public class UserController {
     }
     
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER_DELETE')")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
@@ -81,6 +86,7 @@ public class UserController {
     // --------------------------------------------------------
 
     @PostMapping("/{userId}/roles/{roleId}")
+    @PreAuthorize("hasAuthority('USER_EDIT_OTHERS') and hasAuthority('USER_EDIT_ROLES')")
     public ResponseEntity<UserResponseDTO> addRoleToUser(
             @PathVariable Integer userId,
             @PathVariable Integer roleId) {
@@ -89,6 +95,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/roles/{roleId}")
+    @PreAuthorize("hasAuthority('USER_EDIT_OTHERS') and hasAuthority('USER_EDIT_ROLES')")
     public ResponseEntity<UserResponseDTO> removeRoleFromUser(
             @PathVariable Integer userId,
             @PathVariable Integer roleId) {
@@ -97,6 +104,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/roles")
+    @PreAuthorize("hasAuthority('USER_EDIT_OTHERS') and hasAuthority('USER_EDIT_ROLES')")
     public ResponseEntity<UserResponseDTO> setUserRoles(
             @PathVariable Integer userId,
             @RequestBody Set<Integer> roleIds) {

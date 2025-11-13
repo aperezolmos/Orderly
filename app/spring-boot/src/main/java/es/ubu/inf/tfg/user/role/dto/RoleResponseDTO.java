@@ -1,5 +1,9 @@
 package es.ubu.inf.tfg.user.role.dto;
 
+import java.util.List;
+
+import es.ubu.inf.tfg.user.role.permission.Permission;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +18,5 @@ public class RoleResponseDTO {
     private String name;
     private String description;
     private Integer userCount;
+    private List<Permission> permissions;
 }
