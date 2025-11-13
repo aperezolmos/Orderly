@@ -1,6 +1,6 @@
 package es.ubu.inf.tfg.user.role.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import es.ubu.inf.tfg.user.role.permission.Permission;
 
@@ -18,5 +18,5 @@ public class RoleResponseDTO {
     private String name;
     private String description;
     private Integer userCount;
-    private Set<Permission> permissions;
+    private List<Permission> permissions;
 }

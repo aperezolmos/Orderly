@@ -8,6 +8,7 @@ import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.user.role.dto.RoleRequestDTO;
 import es.ubu.inf.tfg.user.role.dto.RoleResponseDTO;
 import es.ubu.inf.tfg.user.role.dto.mapper.RoleMapper;
+import es.ubu.inf.tfg.user.role.permission.Permission;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -99,5 +100,41 @@ public class RoleService {
             throw new ResourceInUseException("Role", id, "User");
         }
         roleRepository.delete(role);
+    }
+
+
+    // --------------------------------------------------------
+    // DOMAIN METHODS (permissions)
+
+    public RoleResponseDTO addPermission(Integer id, Permission permission) {
+        
+        Role role = findEntityById(id);
+        role.addPermission(permission);
+        
+        Role updatedRole = roleRepository.save(role);
+        return roleMapper.toResponseDTO(updatedRole);
+    }
+
+    public RoleResponseDTO removePermission(Integer id, Permission permission) {
+        
+        Role role = findEntityById(id);
+        role.removePermission(permission);
+
+        Role updatedRole = roleRepository.save(role);
+        return roleMapper.toResponseDTO(updatedRole);
+    }
+
+    public RoleResponseDTO setPermissions(Integer id, List<Permission> permissions) {
+        
+        Role role = findEntityById(id);
+        role.setPermissions(permissions);
+
+        Role updatedRole = roleRepository.save(role);
+        return roleMapper.toResponseDTO(updatedRole);
+    }
+
+    public boolean hasPermission(Integer id, Permission permission) {
+        Role role = findEntityById(id);
+        return role.getPermissions() != null && role.getPermissions().contains(permission);
     }
 }

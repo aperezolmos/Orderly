@@ -1,6 +1,6 @@
 package es.ubu.inf.tfg.user.role.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import es.ubu.inf.tfg.user.role.permission.Permission;
 
@@ -25,5 +25,5 @@ public class RoleRequestDTO {
     @Size(max = 255, message = "Description cannot exceed 255 characters")
     private String description;
 
-    private Set<Permission> permissions;
+    private List<Permission> permissions;
 }
