@@ -1,0 +1,154 @@
+package es.ubu.inf.tfg.reservation.diningTable;
+
+import es.ubu.inf.tfg.exception.ResourceInUseException;
+import es.ubu.inf.tfg.reservation.diningTable.dto.DiningTableRequestDTO;
+import es.ubu.inf.tfg.reservation.diningTable.dto.DiningTableResponseDTO;
+import es.ubu.inf.tfg.reservation.diningTable.dto.mapper.DiningTableMapper;
+
+import jakarta.persistence.EntityNotFoundException;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class DiningTableService {
+
+    private final DiningTableRepository diningTableRepository;
+    private final DiningTableMapper diningTableMapper;
+
+    
+    public List<DiningTableResponseDTO> findAll() {
+        return diningTableRepository.findAll().stream()
+                .map(diningTableMapper::toResponseDTO)
+                .toList();
+    }
+
+    public DiningTableResponseDTO findById(Integer id) {
+        DiningTable table = findEntityById(id);
+        return diningTableMapper.toResponseDTO(table);
+    }
+
+    public DiningTable findEntityById(Integer id) {
+        return diningTableRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Table not found with id: " + id));
+    }
+
+    public List<DiningTableResponseDTO> findAvailableTables() {
+        return diningTableRepository.findByIsActiveTrueAndIsAvailableTrue().stream()
+                .map(diningTableMapper::toResponseDTO)
+                .toList();
+    }
+
+    public List<DiningTableResponseDTO> findAvailableTablesByCapacity(Integer minCapacity) {
+        return diningTableRepository.findByIsActiveTrueAndIsAvailableTrueAndCapacityGreaterThanEqual(minCapacity).stream()
+                .map(diningTableMapper::toResponseDTO)
+                .toList();
+    }
+
+    public List<DiningTableResponseDTO> findActiveTables() {
+        return diningTableRepository.findByIsActiveTrue().stream()
+                .map(diningTableMapper::toResponseDTO)
+                .toList();
+    }
+
+    public boolean existsById(Integer id) {
+        return diningTableRepository.existsById(id);
+    }
+
+    public boolean existsByName(String name) {
+        return diningTableRepository.existsByName(name);
+    }
+
+
+    // --------------------------------------------------------
+    // CRUD METHODS
+    
+    public DiningTableResponseDTO create(DiningTableRequestDTO tableRequest) {
+        
+        if (existsByName(tableRequest.getName())) {
+            throw new IllegalArgumentException("Dining table with name '': " + tableRequest.getName() + "' already exists");
+        }
+
+        DiningTable table = diningTableMapper.toEntity(tableRequest);
+        DiningTable savedTable = diningTableRepository.save(table);
+        return diningTableMapper.toResponseDTO(savedTable);
+    }
+
+    public DiningTableResponseDTO update(Integer id, DiningTableRequestDTO tableRequest) {
+        
+        DiningTable existingTable = findEntityById(id);
+
+        if (tableRequest.getName() != null && !tableRequest.getName().equals(existingTable.getName())) {
+            if (existsByName(tableRequest.getName())) {
+                throw new IllegalArgumentException("Dining table with name '': " + tableRequest.getName() + "' already exists");
+            }
+            existingTable.setName(tableRequest.getName());
+        }
+
+        if (tableRequest.getCapacity() != null && tableRequest.getCapacity() > 0) {
+            existingTable.setCapacity(tableRequest.getCapacity());
+        }
+        if (tableRequest.getLocationDescription() != null) {
+            existingTable.setLocationDescription(tableRequest.getLocationDescription());
+        }
+
+        DiningTable updatedTable = diningTableRepository.save(existingTable);
+        return diningTableMapper.toResponseDTO(updatedTable);
+    }
+
+    public void delete(Integer id) {
+        
+        DiningTable table = findEntityById(id);
+
+        try {
+            diningTableRepository.delete(table);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new ResourceInUseException("DiningTable", id, "Reservation");
+        }
+    }
+
+
+    // --------------------------------------------------------
+    // STATE MANAGEMENT
+    
+    public DiningTableResponseDTO activateTable(Integer id) {
+        
+        DiningTable table = findEntityById(id);
+        table.setIsActive(true);
+        table.setIsAvailable(true);
+        
+        DiningTable updatedTable = diningTableRepository.save(table);
+        return diningTableMapper.toResponseDTO(updatedTable);
+    }
+
+    public DiningTableResponseDTO deactivateTable(Integer id) {
+        
+        DiningTable table = findEntityById(id);
+        table.setIsActive(false);
+        table.setIsAvailable(false);
+        
+        DiningTable updatedTable = diningTableRepository.save(table);
+        return diningTableMapper.toResponseDTO(updatedTable);
+    }
+
+    public DiningTableResponseDTO setTableAvailability(Integer id, Boolean available) {
+        
+        DiningTable table = findEntityById(id);
+        if (!table.getIsActive()) {
+            throw new IllegalArgumentException("Cannot change availability of an inactive table");
+        }
+        
+        table.setIsAvailable(available);
+        
+        DiningTable updatedTable = diningTableRepository.save(table);
+        return diningTableMapper.toResponseDTO(updatedTable);
+    }
+}

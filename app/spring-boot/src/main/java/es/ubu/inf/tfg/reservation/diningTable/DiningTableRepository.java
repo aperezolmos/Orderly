@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface DiningTableRepository extends JpaRepository<DiningTable, Integer> {
     Optional<DiningTable> findByName(String name);
     boolean existsByName(String name);
+    List<DiningTable> findByIsActiveTrue();
     List<DiningTable> findByIsActiveTrueAndIsAvailableTrue();
     List<DiningTable> findByIsActiveTrueAndIsAvailableTrueAndCapacityGreaterThanEqual(Integer minCapacity);
 }
