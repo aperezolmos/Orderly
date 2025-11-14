@@ -19,7 +19,7 @@ public class ProductRequestDTO {
     @Size(max = 100, message = "Name cannot exceed 100 characters")
     private String name;
 
-    @Size(max = 500, message = "Description cannot exceed 500 characters")
+    @Size(max = 255, message = "Description cannot exceed 255 characters")
     private String description;
 
     @PositiveOrZero(message = "Price cannot be negative")

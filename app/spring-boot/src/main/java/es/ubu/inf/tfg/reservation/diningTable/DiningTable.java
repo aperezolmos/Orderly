@@ -38,8 +38,10 @@ public class DiningTable {
     
     @Builder.Default
     private Boolean isActive = true;
+
     
     private LocalDateTime createdAt;
+    
 
     // --------------------------------------------------------
 
