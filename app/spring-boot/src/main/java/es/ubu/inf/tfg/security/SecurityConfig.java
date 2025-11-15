@@ -44,8 +44,10 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .httpBasic(httpBasic -> {})
             .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll() //TODO: temporal para desarrollo
+                .requestMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated()
             );
             
         return http.build();

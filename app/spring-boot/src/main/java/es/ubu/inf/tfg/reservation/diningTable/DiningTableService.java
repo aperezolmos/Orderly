@@ -40,6 +40,11 @@ public class DiningTableService {
                 .orElseThrow(() -> new EntityNotFoundException("Table not found with id: " + id));
     }
 
+    public DiningTable findAvailableTableById(Integer id) {
+        return diningTableRepository.findByIdAndIsAvailableTrueAndIsActiveTrue(id)
+                .orElseThrow(() -> new EntityNotFoundException("Table with id: " + id + " not found or not available"));
+    }
+
     public List<DiningTableResponseDTO> findAvailableTables() {
         return diningTableRepository.findByIsActiveTrueAndIsAvailableTrue().stream()
                 .map(diningTableMapper::toResponseDTO)
