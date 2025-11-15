@@ -28,9 +28,9 @@ public class Reservation {
     @ToString.Include
     private Integer id;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    @Builder.Default
     private ReservationStatus status = ReservationStatus.CONFIRMED;
 
     @Embedded
@@ -56,10 +56,6 @@ public class Reservation {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now().plusHours(2);
         this.updatedAt = this.createdAt;
-
-        if (status == null){
-            status = ReservationStatus.CONFIRMED;
-        }
     }
 
     @PreUpdate

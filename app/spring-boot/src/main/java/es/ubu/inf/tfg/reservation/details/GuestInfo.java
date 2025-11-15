@@ -32,6 +32,7 @@ public class GuestInfo {
     @Column(length = 500)
     private String specialRequests; // Allergies, preferences, etc.
     
+    
     // --------------------------------------------------------
 
     public String getFullName() {
