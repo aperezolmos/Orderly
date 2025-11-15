@@ -32,9 +32,6 @@ public class DiningTable {
 
     @Column(length = 100)
     private String locationDescription;
-
-    @Builder.Default
-    private Boolean isAvailable = true;
     
     @Builder.Default
     private Boolean isActive = true;

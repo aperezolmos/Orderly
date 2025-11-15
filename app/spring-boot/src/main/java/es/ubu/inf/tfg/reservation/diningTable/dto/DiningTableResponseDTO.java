@@ -16,7 +16,6 @@ public class DiningTableResponseDTO {
     private String name;
     private Integer capacity;
     private String locationDescription;
-    private Boolean isAvailable;
     private Boolean isActive;
     private LocalDateTime createdAt;
 }

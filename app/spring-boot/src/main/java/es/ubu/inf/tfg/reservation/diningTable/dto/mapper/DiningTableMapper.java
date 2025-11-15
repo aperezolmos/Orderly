@@ -13,7 +13,6 @@ public interface DiningTableMapper {
     
     // Request DTO to Entity
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "isAvailable", ignore = true)
     @Mapping(target = "isActive", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     DiningTable toEntity(DiningTableRequestDTO dto);
@@ -23,7 +22,6 @@ public interface DiningTableMapper {
 
     // Update entity from DTO
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "isAvailable", ignore = true)
     @Mapping(target = "isActive", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     void updateEntityFromDTO(DiningTableRequestDTO dto, @MappingTarget DiningTable entity);

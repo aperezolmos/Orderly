@@ -72,13 +72,12 @@ public class ReservationService {
     public ReservationResponseDTO create(ReservationRequestDTO reservationRequest) {
         
         validateReservationRequest(reservationRequest);
-        checkForSchedulingConflicts(reservationRequest);
+        checkForSchedulingConflicts(reservationRequest, null);
         
-        DiningTable table = diningTableService.findAvailableTableById(reservationRequest.getDiningTableId());
+        DiningTable table = diningTableService.findActiveTableById(reservationRequest.getDiningTableId());
         
         Reservation reservation = reservationMapper.toEntity(reservationRequest);
         reservation.setDiningTable(table);
-        diningTableService.setTableAvailability(table.getId(), false);
         
         Reservation savedReservation = reservationRepository.save(reservation);
         return reservationMapper.toResponseDTO(savedReservation);
@@ -104,14 +103,7 @@ public class ReservationService {
 
     public void delete(Integer id) {
         
-        Reservation reservation = findEntityById(id);
-        
-        if (reservation.getStatus() == ReservationStatus.CONFIRMED || 
-            reservation.getStatus() == ReservationStatus.SEATED) {
-            diningTableService.setTableAvailability(
-                reservation.getDiningTable().getId(), true);
-        }
-        
+        Reservation reservation = findEntityById(id);        
         reservationRepository.delete(reservation);
     }
 
@@ -125,9 +117,8 @@ public class ReservationService {
         ReservationStatus oldStatus = reservation.getStatus();
         
         validateStatusTransition(oldStatus, newStatus);
-        handleStatusChange(reservation, oldStatus, newStatus);
-        
         reservation.setStatus(newStatus);
+
         Reservation updatedReservation = reservationRepository.save(reservation);
         return reservationMapper.toResponseDTO(updatedReservation);
     }
@@ -159,10 +150,6 @@ public class ReservationService {
                 "Number of guests (" + reservationRequest.getNumberOfGuests() + 
                 ") exceeds table capacity (" + table.getCapacity() + ")");
         }
-    }
-
-    private void checkForSchedulingConflicts(ReservationRequestDTO reservationRequest) {
-        checkForSchedulingConflicts(reservationRequest, null);
     }
 
     private void checkForSchedulingConflicts(ReservationRequestDTO reservationRequest, Integer excludeReservationId) {
@@ -200,16 +187,6 @@ public class ReservationService {
         }
         if (newStatus == ReservationStatus.CONFIRMED && oldStatus != ReservationStatus.CONFIRMED) {
             throw new IllegalArgumentException("Cannot revert to CONFIRMED status");
-        }
-    }
-
-    private void handleStatusChange(Reservation reservation, ReservationStatus oldStatus, ReservationStatus newStatus) {
-        
-        if (newStatus == ReservationStatus.CANCELLED || newStatus == ReservationStatus.COMPLETED) {
-            diningTableService.setTableAvailability(reservation.getDiningTable().getId(), true);
-        }
-        if (newStatus == ReservationStatus.SEATED) {
-            diningTableService.setTableAvailability(reservation.getDiningTable().getId(), false);
         }
     }
 }

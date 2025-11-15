@@ -11,7 +11,6 @@ public interface DiningTableRepository extends JpaRepository<DiningTable, Intege
     Optional<DiningTable> findByName(String name);
     boolean existsByName(String name);
     List<DiningTable> findByIsActiveTrue();
-    List<DiningTable> findByIsActiveTrueAndIsAvailableTrue();
-    Optional<DiningTable> findByIdAndIsAvailableTrueAndIsActiveTrue(Integer id);
-    List<DiningTable> findByIsActiveTrueAndIsAvailableTrueAndCapacityGreaterThanEqual(Integer minCapacity);
+    List<DiningTable> findByIsActiveTrueAndCapacityGreaterThanEqual(Integer minCapacity);
+    Optional<DiningTable> findByIdAndIsActiveTrue(Integer id);
 }

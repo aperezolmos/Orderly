@@ -40,25 +40,19 @@ public class DiningTableService {
                 .orElseThrow(() -> new EntityNotFoundException("Table not found with id: " + id));
     }
 
-    public DiningTable findAvailableTableById(Integer id) {
-        return diningTableRepository.findByIdAndIsAvailableTrueAndIsActiveTrue(id)
-                .orElseThrow(() -> new EntityNotFoundException("Table with id: " + id + " not found or not available"));
-    }
-
-    public List<DiningTableResponseDTO> findAvailableTables() {
-        return diningTableRepository.findByIsActiveTrueAndIsAvailableTrue().stream()
-                .map(diningTableMapper::toResponseDTO)
-                .toList();
-    }
-
-    public List<DiningTableResponseDTO> findAvailableTablesByCapacity(Integer minCapacity) {
-        return diningTableRepository.findByIsActiveTrueAndIsAvailableTrueAndCapacityGreaterThanEqual(minCapacity).stream()
-                .map(diningTableMapper::toResponseDTO)
-                .toList();
+    public DiningTable findActiveTableById(Integer id) {
+        return diningTableRepository.findByIdAndIsActiveTrue(id)
+                .orElseThrow(() -> new EntityNotFoundException("Table with id: " + id + " not found or not active"));
     }
 
     public List<DiningTableResponseDTO> findActiveTables() {
         return diningTableRepository.findByIsActiveTrue().stream()
+                .map(diningTableMapper::toResponseDTO)
+                .toList();
+    }
+
+    public List<DiningTableResponseDTO> findActiveTablesByCapacity(Integer minCapacity) {
+        return diningTableRepository.findByIsActiveTrueAndCapacityGreaterThanEqual(minCapacity).stream()
                 .map(diningTableMapper::toResponseDTO)
                 .toList();
     }
@@ -78,7 +72,7 @@ public class DiningTableService {
     public DiningTableResponseDTO create(DiningTableRequestDTO tableRequest) {
         
         if (existsByName(tableRequest.getName())) {
-            throw new IllegalArgumentException("Dining table with name '': " + tableRequest.getName() + "' already exists");
+            throw new IllegalArgumentException("Dining table with name: '" + tableRequest.getName() + "' already exists");
         }
 
         DiningTable table = diningTableMapper.toEntity(tableRequest);
@@ -92,7 +86,7 @@ public class DiningTableService {
 
         if (tableRequest.getName() != null && !tableRequest.getName().equals(existingTable.getName())) {
             if (existsByName(tableRequest.getName())) {
-                throw new IllegalArgumentException("Dining table with name '': " + tableRequest.getName() + "' already exists");
+                throw new IllegalArgumentException("Dining table with name: '" + tableRequest.getName() + "' already exists");
             }
             existingTable.setName(tableRequest.getName());
         }
@@ -100,9 +94,7 @@ public class DiningTableService {
         if (tableRequest.getCapacity() != null && tableRequest.getCapacity() > 0) {
             existingTable.setCapacity(tableRequest.getCapacity());
         }
-        if (tableRequest.getLocationDescription() != null) {
-            existingTable.setLocationDescription(tableRequest.getLocationDescription());
-        }
+        existingTable.setLocationDescription(tableRequest.getLocationDescription());
 
         DiningTable updatedTable = diningTableRepository.save(existingTable);
         return diningTableMapper.toResponseDTO(updatedTable);
@@ -128,7 +120,6 @@ public class DiningTableService {
         
         DiningTable table = findEntityById(id);
         table.setIsActive(true);
-        table.setIsAvailable(true);
         
         DiningTable updatedTable = diningTableRepository.save(table);
         return diningTableMapper.toResponseDTO(updatedTable);
@@ -138,20 +129,6 @@ public class DiningTableService {
         
         DiningTable table = findEntityById(id);
         table.setIsActive(false);
-        table.setIsAvailable(false);
-        
-        DiningTable updatedTable = diningTableRepository.save(table);
-        return diningTableMapper.toResponseDTO(updatedTable);
-    }
-
-    public DiningTableResponseDTO setTableAvailability(Integer id, Boolean available) {
-        
-        DiningTable table = findEntityById(id);
-        if (!table.getIsActive()) {
-            throw new IllegalArgumentException("Cannot change availability of an inactive table");
-        }
-        
-        table.setIsAvailable(available);
         
         DiningTable updatedTable = diningTableRepository.save(table);
         return diningTableMapper.toResponseDTO(updatedTable);

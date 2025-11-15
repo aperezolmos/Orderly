@@ -29,24 +29,18 @@ public class DiningTableController {
         return ResponseEntity.ok(diningTableService.findAll());
     }
 
-    @GetMapping("/available")
+    @GetMapping("/active")
     //@PreAuthorize("hasAuthority('TABLE_VIEW_LIST')") //TODO: ver si es necesario el permiso
     public ResponseEntity<List<DiningTableResponseDTO>> getAvailableTables(
             @RequestParam(required = false) Integer capacity) {
         
         List<DiningTableResponseDTO> tables;
         if (capacity != null) {
-            tables = diningTableService.findAvailableTablesByCapacity(capacity);
+            tables = diningTableService.findActiveTablesByCapacity(capacity);
         } else {
-            tables = diningTableService.findAvailableTables();
+            tables = diningTableService.findActiveTables();
         }
         return ResponseEntity.ok(tables);
-    }
-
-    @GetMapping("/active")
-    @PreAuthorize("hasAuthority('TABLE_VIEW_LIST')")
-    public ResponseEntity<List<DiningTableResponseDTO>> getActiveTables() {
-        return ResponseEntity.ok(diningTableService.findActiveTables());
     }
 
     @GetMapping("/{id}")
@@ -81,16 +75,6 @@ public class DiningTableController {
     @PreAuthorize("hasAuthority('TABLE_EDIT')")
     public ResponseEntity<DiningTableResponseDTO> deactivateTable(@PathVariable Integer id) {
         DiningTableResponseDTO updatedTable = diningTableService.deactivateTable(id);
-        return ResponseEntity.ok(updatedTable);
-    }
-
-    @PatchMapping("/{id}/availability")
-    @PreAuthorize("hasAuthority('TABLE_EDIT')")
-    public ResponseEntity<DiningTableResponseDTO> setTableAvailability(
-            @PathVariable Integer id,
-            @RequestParam Boolean available) {
-        
-        DiningTableResponseDTO updatedTable = diningTableService.setTableAvailability(id, available);
         return ResponseEntity.ok(updatedTable);
     }
 
