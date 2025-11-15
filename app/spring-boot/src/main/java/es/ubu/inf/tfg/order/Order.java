@@ -36,12 +36,12 @@ public abstract class Order {
     @ToString.Include
     private Integer id;
 
-    @Column(name = "order_number", unique = true, length = 20)
+    @Column(nullable = false, unique = true, length = 20)
     @ToString.Include
     private String orderNumber;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "order_type", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     @ToString.Include
     private OrderType orderType;
 
@@ -59,13 +59,13 @@ public abstract class Order {
     private String notes;
 
 
-    @Builder.Default
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> items = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
     private User employee;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
 
 
     @Column(nullable = false, updatable = false)
@@ -89,6 +89,10 @@ public abstract class Order {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now().plusHours(2);
+
+        if (orderNumber == null) {
+            this.orderNumber = generateOrderNumber(updatedAt);
+        }
     }
 
 

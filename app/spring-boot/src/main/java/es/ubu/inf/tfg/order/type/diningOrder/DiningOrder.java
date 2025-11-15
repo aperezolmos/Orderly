@@ -1,5 +1,6 @@
-package es.ubu.inf.tfg.order;
+package es.ubu.inf.tfg.order.type.diningOrder;
 
+import es.ubu.inf.tfg.order.Order;
 import es.ubu.inf.tfg.reservation.diningTable.DiningTable;
 
 import jakarta.persistence.*;

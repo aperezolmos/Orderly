@@ -1,4 +1,6 @@
-package es.ubu.inf.tfg.order;
+package es.ubu.inf.tfg.order.type.barOrder;
+
+import es.ubu.inf.tfg.order.Order;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
