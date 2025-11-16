@@ -17,7 +17,6 @@ public class OrderItemResponseDTO {
     private Integer id;
     private Integer productId;
     private String productName;
-    //TODO: orderId?
     private Integer quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;

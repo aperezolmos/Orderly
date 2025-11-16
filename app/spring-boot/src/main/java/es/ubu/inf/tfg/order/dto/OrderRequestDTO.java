@@ -6,7 +6,6 @@ import es.ubu.inf.tfg.order.orderItem.dto.OrderItemRequestDTO;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -37,6 +36,5 @@ public abstract class OrderRequestDTO {
     private Integer employeeId;
 
     @Valid
-    //@NotEmpty(message = "Order must have at least one item")
     private List<OrderItemRequestDTO> items;
 }
