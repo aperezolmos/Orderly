@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import es.ubu.inf.tfg.order.details.OrderStatus;
 import es.ubu.inf.tfg.order.orderItem.OrderItem;
+import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.user.User;
 
 import jakarta.persistence.*;

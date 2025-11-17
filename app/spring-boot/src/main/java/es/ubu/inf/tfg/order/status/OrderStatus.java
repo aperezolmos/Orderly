@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.order.details;
+package es.ubu.inf.tfg.order.status;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
