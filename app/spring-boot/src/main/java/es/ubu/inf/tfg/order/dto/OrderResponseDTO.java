@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import es.ubu.inf.tfg.order.details.OrderStatus;
-import es.ubu.inf.tfg.order.details.OrderType;
 import es.ubu.inf.tfg.order.orderItem.dto.OrderItemResponseDTO;
 
 import lombok.AllArgsConstructor;
@@ -20,12 +19,14 @@ import lombok.experimental.SuperBuilder;
 public abstract class OrderResponseDTO {
     private Integer id;
     private String orderNumber;
-    private OrderType orderType;
+    private String orderType;
     private OrderStatus status;
     private BigDecimal totalAmount;
     private String customerName;
     private String notes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer employeeId;
+    private String employeeName;
     private List<OrderItemResponseDTO> items;
 }

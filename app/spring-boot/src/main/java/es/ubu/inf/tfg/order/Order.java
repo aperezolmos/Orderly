@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 import es.ubu.inf.tfg.order.details.OrderStatus;
-import es.ubu.inf.tfg.order.details.OrderType;
 import es.ubu.inf.tfg.order.orderItem.OrderItem;
 import es.ubu.inf.tfg.user.User;
 
@@ -39,11 +38,6 @@ public abstract class Order {
     @Column(nullable = false, unique = true, length = 20)
     @ToString.Include
     private String orderNumber;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(insertable = false, updatable = false)
-    @ToString.Include
-    private OrderType orderType;
 
     @Builder.Default
     @Enumerated(EnumType.STRING)

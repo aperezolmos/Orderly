@@ -60,6 +60,16 @@ public class OrderItem {
         }
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        if (totalPrice == null && unitPrice != null) {
+            calculateTotalPrice();
+        }
+    }
+
+
+    // --------------------------------------------------------
+
     public void setQuantity(Integer newQuantity) {
         if (newQuantity != null && newQuantity > 0) {
             this.quantity = newQuantity;
