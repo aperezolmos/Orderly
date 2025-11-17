@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.order.orderItem;
 import java.math.BigDecimal;
 
 import es.ubu.inf.tfg.order.Order;
+import es.ubu.inf.tfg.order.orderItem.status.OrderItemStatus;
 import es.ubu.inf.tfg.product.Product;
 
 import jakarta.persistence.*;

@@ -2,8 +2,7 @@ package es.ubu.inf.tfg.order.orderItem.dto;
 
 import java.math.BigDecimal;
 
-import es.ubu.inf.tfg.order.orderItem.OrderItemStatus;
-
+import es.ubu.inf.tfg.order.orderItem.status.OrderItemStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OrderItemResponseDTO {
     private Integer id;
+    private OrderItemStatus status;
     private Integer productId;
     private String productName;
     private Integer quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;
-    private OrderItemStatus status;
 }
