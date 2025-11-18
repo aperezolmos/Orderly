@@ -1,6 +1,5 @@
 package es.ubu.inf.tfg.order.type.diningOrder;
 
-import es.ubu.inf.tfg.order.dto.OrderResponseDTO;
 import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.order.type.diningOrder.dto.DiningOrderResponseDTO;
 import es.ubu.inf.tfg.order.type.diningOrder.dto.mapper.DiningOrderMapper;
@@ -23,6 +22,12 @@ public class DiningOrderService {
     private final DiningOrderMapper diningOrderMapper;
 
 
+    public List<DiningOrderResponseDTO> findAll() {
+        return diningOrderRepository.findAll().stream()
+                .map(diningOrderMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<DiningOrderResponseDTO> findByTableId(Integer tableId) {
         return diningOrderRepository.findByTableId(tableId).stream()
                 .map(diningOrderMapper::toResponseDTO)
@@ -41,13 +46,13 @@ public class DiningOrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrderResponseDTO> findByEmployeeId(Integer employeeId) {
+    public List<DiningOrderResponseDTO> findByEmployeeId(Integer employeeId) {
         return diningOrderRepository.findByEmployeeId(employeeId).stream()
                 .map(diningOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<OrderResponseDTO> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end) {
+    public List<DiningOrderResponseDTO> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end) {
         return diningOrderRepository.findByCreatedAtBetween(start, end).stream()
                 .map(diningOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());

@@ -1,6 +1,5 @@
 package es.ubu.inf.tfg.order.type.barOrder;
 
-import es.ubu.inf.tfg.order.dto.OrderResponseDTO;
 import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.order.type.barOrder.dto.BarOrderResponseDTO;
 import es.ubu.inf.tfg.order.type.barOrder.dto.mapper.BarOrderMapper;
@@ -23,6 +22,12 @@ public class BarOrderService {
     private final BarOrderMapper barOrderMapper;
 
 
+    public List<BarOrderResponseDTO> findAll() {
+        return barOrderRepository.findAll().stream()
+                .map(barOrderMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<BarOrderResponseDTO> findByDrinksOnly(Boolean drinksOnly) {
         return barOrderRepository.findByDrinksOnly(drinksOnly).stream()
                 .map(barOrderMapper::toResponseDTO)
@@ -41,13 +46,13 @@ public class BarOrderService {
                 .collect(Collectors.toList());
     }
 
-    public List<OrderResponseDTO> findByEmployeeId(Integer employeeId) {
+    public List<BarOrderResponseDTO> findByEmployeeId(Integer employeeId) {
         return barOrderRepository.findByEmployeeId(employeeId).stream()
                 .map(barOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<OrderResponseDTO> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end) {
+    public List<BarOrderResponseDTO> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end) {
         return barOrderRepository.findByCreatedAtBetween(start, end).stream()
                 .map(barOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());
