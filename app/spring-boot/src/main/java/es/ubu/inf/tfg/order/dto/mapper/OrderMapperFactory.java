@@ -53,4 +53,15 @@ public class OrderMapperFactory {
         }
         throw new IllegalArgumentException("Unknown Order type: " + order.getClass().getSimpleName());
     }
+
+    public void updateEntityFromDTO(OrderRequestDTO dto, Order order) {
+        if (dto instanceof BarOrderRequestDTO barDTO && order instanceof BarOrder barOrder) {
+            barOrderMapper.updateEntityFromDTO(barDTO, barOrder);
+        }
+        else if (dto instanceof DiningOrderRequestDTO diningDTO && order instanceof DiningOrder diningOrder) {
+            diningOrderMapper.updateEntityFromDTO(diningDTO, diningOrder);
+        }
+        throw new IllegalArgumentException("Unknown Order DTO type: " + dto.getClass().getSimpleName()
+            + " or Order type: " + order.getClass().getSimpleName());
+    }
 }

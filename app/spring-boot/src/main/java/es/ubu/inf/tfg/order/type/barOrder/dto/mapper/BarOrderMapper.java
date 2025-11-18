@@ -8,9 +8,12 @@ import es.ubu.inf.tfg.order.type.barOrder.dto.BarOrderResponseDTO;
 import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.UserService;
 
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring", uses = {OrderItemMapper.class})
@@ -43,7 +46,19 @@ public abstract class BarOrderMapper {
     public abstract BarOrderResponseDTO toDetailedResponseDTO(BarOrder entity);
 
     
-    //TODO: update entity from request dto?
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "status", ignore = true) 
+    @Mapping(target = "totalAmount", ignore = true)
+    @Mapping(target = "employee", source = "dto.employeeId")
+    @Mapping(target = "items", ignore = true)
+    @Mapping(target = "customerName", source = "dto.customerName",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+    @Mapping(target = "notes", source = "dto.notes",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+    public abstract void updateEntityFromDTO(BarOrderRequestDTO dto, @MappingTarget BarOrder entity);
 
 
     // --------------------------------------------------------

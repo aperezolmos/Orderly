@@ -9,7 +9,6 @@ import es.ubu.inf.tfg.order.status.OrderStatus;
 
 import es.ubu.inf.tfg.product.Product;
 import es.ubu.inf.tfg.product.ProductService;
-import es.ubu.inf.tfg.user.UserService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -32,7 +31,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapperFactory orderMapperFactory;
     private final ProductService productService;
-    private final UserService userService;
 
 
     public List<OrderResponseDTO> findAll() {
@@ -101,7 +99,7 @@ public class OrderService {
             throw new IllegalArgumentException("Cannot modify a " + existingOrder.getStatus() + " order");
         }
         
-        updateOrderBasicInfo(existingOrder, orderRequest);
+        orderMapperFactory.updateEntityFromDTO(orderRequest, existingOrder);
         updateOrderItems(existingOrder, orderRequest.getItems());
         
         Order updatedOrder = orderRepository.save(existingOrder);
@@ -183,22 +181,6 @@ public class OrderService {
             for (OrderItem item : order.getItems()) {
                 item.setOrder(order);
             }
-        }
-    }
-    
-    private void updateOrderBasicInfo(Order order, OrderRequestDTO orderRequest) {
-        
-        if (orderRequest.getCustomerName() != null) {
-            order.setCustomerName(orderRequest.getCustomerName());
-        }
-        
-        if (orderRequest.getNotes() != null) {
-            order.setNotes(orderRequest.getNotes());
-        }
-        
-        if (orderRequest.getEmployeeId() != null && 
-            !orderRequest.getEmployeeId().equals(order.getEmployee().getId())) {
-            order.setEmployee(userService.findEntityById(orderRequest.getEmployeeId()));
         }
     }
 
