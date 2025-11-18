@@ -15,19 +15,23 @@ import lombok.*;
 @Builder
 public class ReservationDetails {
     
+    private static final Integer DEFAULT_DURATION_MINUTES = 120;
+
+
     @Column(nullable = false)
     private Integer numberOfGuests;
     
     @Column(nullable = false)
     private LocalDateTime reservationDateTime;
     
-    private Integer estimatedDurationMinutes;
+    @Builder.Default
+    private Integer estimatedDurationMinutes = DEFAULT_DURATION_MINUTES;
     
     
     // --------------------------------------------------------
     
     public LocalDateTime calculateEstimatedEndTime() {
         return reservationDateTime.plusMinutes(estimatedDurationMinutes != null ? 
-               estimatedDurationMinutes : 120); // Default 2 hours
+               estimatedDurationMinutes : DEFAULT_DURATION_MINUTES);
     }
 }

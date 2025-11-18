@@ -34,6 +34,7 @@ public class Food {
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @ToString.Include
     private FoodGroup foodGroup;
 

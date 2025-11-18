@@ -95,7 +95,7 @@ public class ReservationService {
         validateReservationRequest(reservationRequest);
         checkForSchedulingConflicts(reservationRequest, id);
         
-        updateReservationDetails(existingReservation, reservationRequest);
+        reservationMapper.updateEntityFromDTO(reservationRequest, existingReservation);
         
         Reservation updatedReservation = reservationRepository.save(existingReservation);
         return reservationMapper.toResponseDTO(updatedReservation);
@@ -109,7 +109,7 @@ public class ReservationService {
 
 
     // --------------------------------------------------------
-    // STATE MANAGEMENT
+    // STATUS MANAGEMENT
     
     public ReservationResponseDTO updateStatus(Integer id, ReservationStatus newStatus) {
         
@@ -138,20 +138,6 @@ public class ReservationService {
 
     // --------------------------------------------------------
     
-    private void validateReservationRequest(ReservationRequestDTO reservationRequest) {
-        
-        if (reservationRequest.getReservationDateTime().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new IllegalArgumentException("Reservation date must be in the future");
-        }
-        
-        DiningTable table = diningTableService.findEntityById(reservationRequest.getDiningTableId());
-        if (reservationRequest.getNumberOfGuests() > table.getCapacity()) {
-            throw new IllegalArgumentException(
-                "Number of guests (" + reservationRequest.getNumberOfGuests() + 
-                ") exceeds table capacity (" + table.getCapacity() + ")");
-        }
-    }
-
     private void checkForSchedulingConflicts(ReservationRequestDTO reservationRequest, Integer excludeReservationId) {
         
         LocalDateTime startTime = reservationRequest.getReservationDateTime();
@@ -176,8 +162,18 @@ public class ReservationService {
         }
     }
 
-    private void updateReservationDetails(Reservation reservation, ReservationRequestDTO reservationRequest) {
-        reservationMapper.updateEntityFromDTO(reservationRequest, reservation);
+    private void validateReservationRequest(ReservationRequestDTO reservationRequest) {
+        
+        if (reservationRequest.getReservationDateTime().isBefore(LocalDateTime.now().plusHours(2))) {
+            throw new IllegalArgumentException("Reservation date must be in the future");
+        }
+        
+        DiningTable table = diningTableService.findEntityById(reservationRequest.getDiningTableId());
+        if (reservationRequest.getNumberOfGuests() > table.getCapacity()) {
+            throw new IllegalArgumentException(
+                "Number of guests (" + reservationRequest.getNumberOfGuests() + 
+                ") exceeds table capacity (" + table.getCapacity() + ")");
+        }
     }
 
     private void validateStatusTransition(ReservationStatus oldStatus, ReservationStatus newStatus) {

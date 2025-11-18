@@ -114,7 +114,7 @@ public class DiningTableService {
 
 
     // --------------------------------------------------------
-    // STATE MANAGEMENT
+    // STATUS MANAGEMENT
     
     public DiningTableResponseDTO activateTable(Integer id) {
         

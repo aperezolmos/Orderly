@@ -27,6 +27,7 @@ public class SecurityAuthorizationService {
         Authentication auth = getCurrentAuthentication();
         return auth != null ? auth.getName() : null;
     }
+    
 
     // --------------------------------------------------------
     

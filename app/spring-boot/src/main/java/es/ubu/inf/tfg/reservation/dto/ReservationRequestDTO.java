@@ -41,8 +41,7 @@ public class ReservationRequestDTO {
     @Future(message = "Reservation must be for a future date")
     private LocalDateTime reservationDateTime;
 
-    @Builder.Default
     @Min(value = 30, message = "Minimum duration is 30 minutes")
     @Max(value = 240, message = "Maximum duration is 4 hours")
-    private Integer estimatedDurationMinutes = 120;
+    private Integer estimatedDurationMinutes;
 }

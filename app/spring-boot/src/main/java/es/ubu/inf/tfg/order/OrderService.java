@@ -114,7 +114,7 @@ public class OrderService {
 
 
     // --------------------------------------------------------
-    // STATE MANAGEMENT
+    // STATUS MANAGEMENT
     
     public OrderResponseDTO updateStatus(Integer id, OrderStatus newStatus) {
         

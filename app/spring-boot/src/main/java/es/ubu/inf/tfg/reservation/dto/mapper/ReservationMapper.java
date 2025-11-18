@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.reservation.dto.mapper;
 import java.time.LocalDateTime;
 
 import es.ubu.inf.tfg.reservation.Reservation;
+import es.ubu.inf.tfg.reservation.details.ReservationDetails;
 import es.ubu.inf.tfg.reservation.diningTable.DiningTable;
 import es.ubu.inf.tfg.reservation.dto.ReservationRequestDTO;
 import es.ubu.inf.tfg.reservation.dto.ReservationResponseDTO;
@@ -15,7 +16,7 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface ReservationMapper {
     
-    // Request DTO to Entity
+    
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "guestInfo.firstName", source = "guestFirstName")
@@ -30,7 +31,7 @@ public interface ReservationMapper {
     @Mapping(target = "updatedAt", ignore = true)
     Reservation toEntity(ReservationRequestDTO dto);
 
-    // Entity to Response DTO
+    
     @Mapping(target = "guestFirstName", source = "guestInfo.firstName")
     @Mapping(target = "guestLastName", source = "guestInfo.lastName")
     @Mapping(target = "guestPhone", source = "guestInfo.phone")
@@ -43,7 +44,7 @@ public interface ReservationMapper {
     @Mapping(target = "diningTableName", source = "diningTable.name")
     ReservationResponseDTO toResponseDTO(Reservation entity);
 
-    // Update entity from DTO
+    
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "diningTable", ignore = true)
@@ -65,13 +66,11 @@ public interface ReservationMapper {
         if (diningTableId == null) {
             return null;
         }
-        DiningTable diningTable = new DiningTable();
-        diningTable.setId(diningTableId);
-        return diningTable;
+        return DiningTable.builder().id(diningTableId).build();
     }
 
     @Named("calculateEndTime")
-    default LocalDateTime calculateEndTime(es.ubu.inf.tfg.reservation.details.ReservationDetails details) {
+    default LocalDateTime calculateEndTime(ReservationDetails details) {
         return details != null ? details.calculateEstimatedEndTime() : null;
     }
 }

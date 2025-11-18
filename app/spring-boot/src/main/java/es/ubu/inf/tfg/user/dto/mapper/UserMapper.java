@@ -26,15 +26,25 @@ public abstract class UserMapper {
     @Mapping(target = "password", qualifiedByName = "encodePassword")
     public abstract User toEntity(UserRequestDTO dto);
 
+    
     @Mapping(target = "currentPassword", ignore = true)
     @Mapping(target = "roleIds", ignore = true)
     public abstract UserRequestDTO toRequestFromRegister(RegisterRequestDTO dto);
 
+    
     @Mapping(target = "roleIds", expression = "java(mapRolesToIds(user.getRoles()))")
     @Mapping(target = "roleNames", expression = "java(mapRolesToNames(user.getRoles()))")
     @Mapping(target = "roleCount", expression = "java(user.getRoles() != null ? user.getRoles().size() : 0)")
     public abstract UserResponseDTO toResponseDTO(User user);
 
+    
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    public abstract void updateUserFromDTO(UserRequestDTO dto, @MappingTarget User user);
+
+    
     // --------------------------------------------------------
 
     @Named("encodePassword")
@@ -55,13 +65,4 @@ public abstract class UserMapper {
                 .map(Role::getName)
                 .collect(Collectors.toSet());
     }
-
-    // --------------------------------------------------------
-
-    // Method for partial update (ignore password if null)
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "roles", ignore = true)
-    public abstract void updateUserFromDTO(UserRequestDTO dto, @MappingTarget User user);
 }

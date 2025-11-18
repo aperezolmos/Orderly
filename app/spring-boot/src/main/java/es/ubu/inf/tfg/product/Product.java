@@ -49,6 +49,7 @@ public class Product {
     
     private LocalDateTime updatedAt;
     
+    
     // --------------------------------------------------------
 
     @PrePersist
@@ -61,6 +62,7 @@ public class Product {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now().plusHours(2); ; 
     }
+
 
     // --------------------------------------------------------
 
@@ -107,7 +109,9 @@ public class Product {
         }
         return total;
     }
-    
+
+
+    // --------------------------------------------------------
 
     private Optional<Ingredient> findIngredientById(IngredientId ingredientId) {
         return ingredients.stream()
