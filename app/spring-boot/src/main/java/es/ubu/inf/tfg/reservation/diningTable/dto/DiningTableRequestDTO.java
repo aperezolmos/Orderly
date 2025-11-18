@@ -21,7 +21,7 @@ public class DiningTableRequestDTO {
     private String name;
 
     @NotNull(message = "Capacity is required")
-    @Min(value = 1, message = "Capacity should be greater than 1")
+    @Min(value = 1, message = "Capacity must be at least 1")
     private Integer capacity;
 
     @Size(max = 100, message = "Location description cannot exceed 100 characters")

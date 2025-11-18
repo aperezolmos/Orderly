@@ -1,4 +1,6 @@
-package es.ubu.inf.tfg.order;
+package es.ubu.inf.tfg.order.type.barOrder;
+
+import es.ubu.inf.tfg.order.Order;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -19,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class BarOrder extends Order {
 
+    @Builder.Default
     @ToString.Exclude
-    private Boolean drinksOnly;
+    private Boolean drinksOnly = false;
 }
