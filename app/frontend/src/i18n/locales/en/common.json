@@ -22,6 +22,12 @@
     "actions": "Actions",
     "dashboard": "Dashboard"
   },
+  "language": {
+    "select": "Select Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "change": "Change language"
+  },
   "validation": {
     "required": "This field is required",
     "minLength": "Minimum {{count}} characters required"

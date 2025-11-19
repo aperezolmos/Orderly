@@ -22,6 +22,12 @@
     "actions": "Acciones",
     "dashboard": "Panel"
   },
+  "language": {
+    "select": "Seleccionar Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
+    "change": "Cambiar idioma"
+  },
   "validation": {
     "required": "Este campo es obligatorio",
     "minLength": "Mínimo {{count}} caracteres requeridos"
