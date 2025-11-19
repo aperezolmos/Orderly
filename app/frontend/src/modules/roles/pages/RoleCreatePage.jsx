@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
 import { useRoles } from '../hooks/useRoles';
+import { useTranslation } from 'react-i18next';
 
 
 const RoleCreatePage = () => {
   
   const navigate = useNavigate();
   const { createRole, loading } = useRoles();
-
+  const { t } = useTranslation(['common', 'roles']);
 
   const handleSubmit = async (roleData) => {
     await createRole(roleData);
@@ -17,14 +18,14 @@ const RoleCreatePage = () => {
   };
 
   const breadcrumbs = [
-    { title: 'Roles', href: '/roles' },
-    { title: 'Create Role', href: '/roles/new' }
+    { title: t('roles:management.list'), href: '/roles' },
+    { title: t('roles:management.create'), href: '/roles/new' }
   ];
 
 
   return (
     <FormLayout
-      title="Create New Role"
+      title={t('roles:management.create')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}
@@ -32,7 +33,7 @@ const RoleCreatePage = () => {
       <RoleForm
         onSubmit={handleSubmit}
         loading={loading}
-        submitLabel="Create Role"
+        submitLabel={t('roles:form.create')}
       />
     </FormLayout>
   );

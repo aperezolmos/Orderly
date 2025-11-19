@@ -9,13 +9,13 @@ const resources = {
   en: {
     common: () => import('./locales/en/common.json'),
     auth: () => import('./locales/en/auth.json'),
-    // roles: () => import('./locales/en/roles.json'),
+    roles: () => import('./locales/en/roles.json'),
     // users: () => import('./locales/en/users.json'),
   },
   es: {
     common: () => import('./locales/es/common.json'),
     auth: () => import('./locales/es/auth.json'),
-    // roles: () => import('./locales/es/roles.json'),
+    roles: () => import('./locales/es/roles.json'),
     // users: () => import('./locales/es/users.json'),
   },
 };

@@ -6,6 +6,7 @@ import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
 import { roleService } from '../../../services/backend/roleService';
 import { useRoles } from '../hooks/useRoles';
+import { useTranslation } from 'react-i18next';
 
 
 const RoleEditPage = () => {
@@ -16,7 +17,7 @@ const RoleEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { updateRole } = useRoles();
-
+  const { t } = useTranslation(['common', 'roles']);
 
   useEffect(() => {
     const loadRole = async () => {
@@ -58,8 +59,8 @@ const RoleEditPage = () => {
   };
 
   const breadcrumbs = [
-    { title: 'Roles', href: '/roles' },
-    { title: `Edit Role #${id}`, href: `/roles/${id}/edit` }
+    { title: t('roles:management.list'), href: '/roles' },
+    { title: t('roles:management.edit'), href: `/roles/${id}/edit` }
   ];
 
 
@@ -67,7 +68,7 @@ const RoleEditPage = () => {
   if (error && !loading) {
     return (
       <FormLayout
-        title="Edit Role"
+        title={t('roles:management.edit')}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -75,12 +76,12 @@ const RoleEditPage = () => {
       >
         <Alert 
           icon={<IconAlertCircle size="1rem" />} 
-          title="Error loading role" 
+          title={t('roles:errors.loadError')} 
           color="red"
         >
-          <Text mb="md">Could not load role with ID: {id}</Text>
+          <Text mb="md">{t('roles:errors.notFound', { id })}</Text>
           <Text size="sm" color="dimmed">
-            The role may have been deleted or you may not have permission to access it.
+            {t('roles:errors.notFoundDetails')}
           </Text>
         </Alert>
       </FormLayout>
@@ -90,7 +91,7 @@ const RoleEditPage = () => {
 
   return (
     <FormLayout
-      title={`Edit Role #${id}`}
+      title={t('roles:management.edit')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}
@@ -101,7 +102,7 @@ const RoleEditPage = () => {
         role={role}
         onSubmit={handleSubmit}
         loading={loading}
-        submitLabel="Update Role"
+        submitLabel={t('roles:form.update')}
       />
     </FormLayout>
   );

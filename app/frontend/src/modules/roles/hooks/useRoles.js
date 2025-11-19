@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { roleService } from '../../../services/backend/roleService';
 import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
 
 
 export const useRoles = () => {
@@ -9,6 +10,7 @@ export const useRoles = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { t } = useTranslation(['common', 'roles']);
   
 
   const loadRoles = useCallback(async () => {
@@ -23,7 +25,7 @@ export const useRoles = () => {
     catch (err) {
       setError(err.message);
       notifications.show({
-        title: 'Error loading roles',
+        title: t('roles:notifications.loadError'),
         message: err.message,
         color: 'red',
       });
@@ -44,15 +46,15 @@ export const useRoles = () => {
       const newRole = await roleService.createRole(roleData);
       setRoles(prev => [...prev, newRole]);
       notifications.show({
-        title: 'Success',
-        message: 'Role created successfully',
+        title: t('common:app.success'),
+        message: t('roles:notifications.createSuccess'),
         color: 'green',
       });
       return newRole;
     } 
     catch (err) {
       notifications.show({
-        title: 'Error creating role',
+        title: t('roles:notifications.createError'),
         message: err.message,
         color: 'red',
       });
@@ -71,15 +73,15 @@ export const useRoles = () => {
         role.id === id ? updatedRole : role
       ));
       notifications.show({
-        title: 'Success',
-        message: 'Role updated successfully',
+        title: t('common:app.success'),
+        message: t('roles:notifications.updateSuccess'),
         color: 'green',
       });
       return updatedRole;
     } 
     catch (err) {
       notifications.show({
-        title: 'Error updating role',
+        title: t('roles:notifications.updateError'),
         message: err.message,
         color: 'red',
       });
@@ -96,14 +98,14 @@ export const useRoles = () => {
       await roleService.deleteRole(id);
       setRoles(prev => prev.filter(role => role.id !== id));
       notifications.show({
-        title: 'Success',
-        message: 'Role deleted successfully',
+        title: t('common:app.success'),
+        message: t('roles:notifications.deleteSuccess'),
         color: 'green',
       });
     } 
     catch (err) {
       notifications.show({
-        title: 'Error deleting role',
+        title: t('roles:notifications.deleteError'),
         message: err.message,
         color: 'red',
       });
