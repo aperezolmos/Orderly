@@ -3,6 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './context/useAuth';
 import ProtectedRoute from './common/components/ProtectedRoute';
 import ErrorBoundary from './common/components/ErrorBoundary';
+import { useTranslation } from 'react-i18next';
+
+
+// Internationalized loading component
+const LoadingFallback = () => {
+  const { t } = useTranslation('common');
+  return <div>{t('app.loading')}</div>;
+};
 
 
 // ------- PAGES ------------------------------------------
@@ -33,13 +41,13 @@ const AppRouter = () => {
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingFallback />;
   }
 
   return (
     <Router>
       <ErrorBoundary>
-        <React.Suspense fallback={<div>Loading...</div>}>
+        <React.Suspense fallback={<LoadingFallback />}>
           <Routes>
             {/* Public routes */}
             <Route
@@ -126,7 +134,6 @@ const AppRouter = () => {
           </Routes>
         </React.Suspense>
       </ErrorBoundary>
-      
     </Router>
   );
 };

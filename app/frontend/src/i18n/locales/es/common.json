@@ -1,0 +1,47 @@
+{
+  "app": {
+    "title": "Mi Aplicación",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "Operación completada exitosamente",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "confirm": "Confirmar",
+    "back": "Volver"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "profile": "Perfil",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "users": "Usuarios",
+    "roles": "Roles",
+    "actions": "Acciones",
+    "dashboard": "Panel"
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "minLength": "Mínimo {{count}} caracteres requeridos"
+  },
+  "data": {
+    "noData": "No se encontraron datos",
+    "loading": "Cargando datos...",
+    "error": "Error cargando datos"
+  },
+  "error": {
+    "boundary": {
+      "title": "Algo salió mal",
+      "message": "Ocurrió un error al renderizar este componente",
+      "reload": "Recargar Página"
+    },
+    "accessDenied": "Acceso Denegado - Se requieren privilegios de administrador"
+  },
+  "form": {
+    "submit": "Enviar",
+    "reset": "Restablecer",
+    "optional": "Opcional"
+  }
+}
