@@ -1,7 +1,8 @@
 import React from 'react';
-import { TextInput, PasswordInput, Button, Group,Alert } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Group, Alert } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 
 const LoginForm = ({ 
@@ -11,14 +12,17 @@ const LoginForm = ({
   onClearError 
 }) => {
   
+  const { t } = useTranslation(['common', 'auth']);
+
+
   const form = useForm({
     initialValues: {
       username: '',
       password: '',
     },
     validate: {
-      username: (value) => !value.trim() ? 'Username is required' : null,
-      password: (value) => !value ? 'Password is required' : null,
+      username: (value) => !value.trim() ? t('auth:validation.usernameRequired') : null,
+      password: (value) => !value ? t('auth:validation.passwordRequired') : null,
     },
   });
 
@@ -32,7 +36,7 @@ const LoginForm = ({
       {error && (
         <Alert
           icon={<IconAlertCircle size="1rem" />}
-          title="Error"
+          title={t('common:error.generic')}
           color="red"
           mb="md"
           withCloseButton
@@ -43,16 +47,16 @@ const LoginForm = ({
       )}
 
       <TextInput
-        label="Username"
-        placeholder="Your username"
+        label={t('auth:login.username')}
+        placeholder={t('auth:login.username')}
         required
         {...form.getInputProps('username')}
         disabled={loading}
       />
 
       <PasswordInput
-        label="Password"
-        placeholder="Your password"
+        label={t('auth:login.password')}
+        placeholder={t('auth:login.password')}
         required
         mt="md"
         {...form.getInputProps('password')}
@@ -65,7 +69,7 @@ const LoginForm = ({
           loading={loading}
           disabled={loading}
         >
-          Sign in
+          {t('auth:login.submit')}
         </Button>
       </Group>
     </form>

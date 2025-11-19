@@ -5,12 +5,15 @@ import { useAuth } from '../../../context/useAuth';
 import { notifications } from '@mantine/notifications';
 import AuthLayout from '../components/AuthLayout';
 import LoginForm from '../components/LoginForm';
+import { useTranslation } from 'react-i18next';
 
 
 const LoginPage = () => {
   
   const { login, error, clearError, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation(['common', 'auth']);
+
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -22,8 +25,8 @@ const LoginPage = () => {
     try {
       await login(values.username, values.password);
       notifications.show({
-        title: 'Welcome!',
-        message: 'Login successful',
+        title: t('common:app.success'),
+        message: t('auth:login.success'),
         color: 'green',
       });
       navigate('/profile', { replace: true });
@@ -36,7 +39,7 @@ const LoginPage = () => {
   const registerLink = (
     <Link to="/register" style={{ textDecoration: 'none' }}>
       <Text component="span" color="blue" weight={500}>
-        Create account
+        {t('auth:register.submit')}
       </Text>
     </Link>
   );
@@ -44,8 +47,8 @@ const LoginPage = () => {
 
   return (
     <AuthLayout
-      title="Welcome back!"
-      subtitle="Don't have an account?"
+      title={t('auth:login.title')}
+      subtitle={t('auth:login.registerPrompt')}
       linkComponent={registerLink}
     >
       <div style={{ position: 'relative' }}>
@@ -60,7 +63,7 @@ const LoginPage = () => {
 
         <Text size="sm" color="dimmed" mt="md" align="center">
           <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
-            Forgot your password?
+            {t('auth:login.forgotPassword')}
           </Link>
         </Text>
       </div>

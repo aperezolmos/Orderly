@@ -1,23 +1,18 @@
 import React from 'react';
 import { useAuth } from '../../../context/useAuth';
-import {
-  Container,
-  Title,
-  Text,
-  Group,
-  Badge,
-  Button,
-  Card,
-  SimpleGrid,
-} from '@mantine/core';
+import { Container, Title, Text, Group, Badge,
+         Button, Card, SimpleGrid } from '@mantine/core';
 import { IconUser, IconLogout, IconShield } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const ProfilePage = () => {
   
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation(['common', 'auth']);
+
 
   const handleLogout = async () => {
     await logout();
@@ -32,14 +27,14 @@ const ProfilePage = () => {
   return (
     <Container size="lg" py="xl">
       <Group position="apart" mb="xl">
-        <Title order={1}>User Profile</Title>
+        <Title order={1}>{t('auth:profile.title')}</Title>
         <Button
           variant="outline"
           color="red"
           leftSection={<IconLogout size="1rem" />}
           onClick={handleLogout}
         >
-          Logout
+          {t('common:navigation.logout')}
         </Button>
       </Group>
 
@@ -48,9 +43,9 @@ const ProfilePage = () => {
           <Group mb="md">
             <IconUser size="2rem" />
             <div>
-              <Text weight={500}>Personal Information</Text>
+              <Text weight={500}>{t('auth:profile.personalInfo')}</Text>
               <Text size="sm" color="dimmed">
-                Basic user details
+                {t('auth:profile.basicDetails')}
               </Text>
             </div>
           </Group>
@@ -76,7 +71,7 @@ const ProfilePage = () => {
 
           {user.createdAt && (
             <Group position="apart">
-              <Text weight={500}>Member since:</Text>
+              <Text weight={500}>{t('auth:profile.memberSince')}</Text>
               <Text>{new Date(user.createdAt).toLocaleDateString()}</Text>
             </Group>
           )}
@@ -86,14 +81,14 @@ const ProfilePage = () => {
           <Group mb="md">
             <IconShield size="2rem" />
             <div>
-              <Text weight={500}>Roles & Permissions</Text>
+              <Text weight={500}>{t('auth:profile.rolesPermissions')}</Text>
               <Text size="sm" color="dimmed">
-                User roles in the system
+                {t('auth:profile.userRoles')}
               </Text>
             </div>
           </Group>
 
-          <Text weight={500} mb="sm">Assigned Roles:</Text>
+          <Text weight={500} mb="sm">{t('auth:profile.assignedRoles')}</Text>
           <Group spacing="xs">
             {user.roleNames && user.roleNames.length > 0 ? (
               user.roleNames.map((role, index) => (
@@ -103,13 +98,13 @@ const ProfilePage = () => {
               ))
             ) : (
               <Text color="dimmed" size="sm">
-                No roles assigned
+                {t('auth:profile.noRoles')}
               </Text>
             )}
           </Group>
 
           <Text size="sm" color="dimmed" mt="md">
-            Total roles: {user.roleCount || 0}
+            {t('auth:profile.totalRoles', { count: user.roleCount || 0 })}
           </Text>
         </Card>
       </SimpleGrid>

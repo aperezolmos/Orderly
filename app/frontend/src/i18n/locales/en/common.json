@@ -3,7 +3,7 @@
     "title": "My Application",
     "loading": "Loading...",
     "error": "An error occurred",
-    "success": "Operation completed successfully",
+    "success": "Success",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
