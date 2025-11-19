@@ -5,6 +5,7 @@ import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
 import { userService } from '../../../services/backend/userService';
+import { useTranslation } from 'react-i18next';
 
 
 const UserEditPage = () => {
@@ -15,7 +16,8 @@ const UserEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-
+  const { t } = useTranslation(['common', 'users']);
+  
 
   useEffect(() => {
     const loadUser = async () => {
@@ -58,14 +60,14 @@ const UserEditPage = () => {
   };
 
   const breadcrumbs = [
-    { title: 'Users', href: '/users' },
-    { title: `Edit User #${id}`, href: `/users/${id}/edit` }
+    { title: t('users:management.list'), href: '/users' },
+    { title: t('users:management.edit'), href: `/users/${id}/edit` }
   ];
 
   if (error && !loading) {
     return (
       <FormLayout
-        title="Edit User"
+        title={t('users:management.edit')}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -73,12 +75,12 @@ const UserEditPage = () => {
       >
         <Alert 
           icon={<IconAlertCircle size="1rem" />} 
-          title="Error loading user" 
+          title={t('users:errors.loadError')} 
           color="red"
         >
-          <Text mb="md">Could not load user with ID: {id}</Text>
+          <Text mb="md">{t('users:errors.notFound', { id })}</Text>
           <Text size="sm" color="dimmed">
-            The user may have been deleted or you may not have permission to access it.
+            {t('users:errors.notFoundDetails')}
           </Text>
         </Alert>
       </FormLayout>
@@ -88,7 +90,7 @@ const UserEditPage = () => {
 
   return (
     <FormLayout
-      title={`Edit User #${id}`}
+      title={t('users:management.edit')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}
@@ -99,7 +101,7 @@ const UserEditPage = () => {
         user={user}
         onSubmit={handleSubmit}
         loading={submitting}
-        submitLabel="Update User"
+        submitLabel={t('users:form.update')}
         showRoleManagement={true}
       />
     </FormLayout>

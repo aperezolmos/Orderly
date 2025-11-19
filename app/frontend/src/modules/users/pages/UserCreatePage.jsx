@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
 import { useUsers } from '../hooks/useUsers';
+import { useTranslation } from 'react-i18next';
 
 
 const UserCreatePage = () => {
+  
   const navigate = useNavigate();
   const { createUser, loading: createLoading } = useUsers();
   const [error, setError] = useState(null);
+  const { t } = useTranslation(['common', 'users']);
 
 
   const handleSubmit = async (userData) => {
@@ -23,14 +26,14 @@ const UserCreatePage = () => {
   };
 
   const breadcrumbs = [
-    { title: 'Users', href: '/users' },
-    { title: 'Create User', href: '/users/new' }
+    { title: t('users:management.list'), href: '/users' },
+    { title: t('users:management.create'), href: '/users/new' }
   ];
 
 
   return (
     <FormLayout
-      title="Create New User"
+      title={t('users:management.create')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={createLoading}
@@ -40,7 +43,7 @@ const UserCreatePage = () => {
       <UserForm
         onSubmit={handleSubmit}
         loading={createLoading}
-        submitLabel="Create User"
+        submitLabel={t('users:form.create')}
         showRoleManagement={true}
       />
     </FormLayout>

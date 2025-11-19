@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { userService } from '../../../services/backend/userService';
 import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
 
 
 export const useUsers = () => {
@@ -8,6 +10,7 @@ export const useUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { t } = useTranslation(['common', 'users']);
   
 
   const loadUsers = async () => {
@@ -20,7 +23,7 @@ export const useUsers = () => {
     catch (err) {
       setError(err.message);
       notifications.show({
-        title: 'Error loading users',
+        title: t('users:notifications.loadError'),
         message: err.message,
         color: 'red',
       });
@@ -36,15 +39,15 @@ export const useUsers = () => {
       const newUser = await userService.createUser(userData);
       setUsers(prev => [...prev, newUser]);
       notifications.show({
-        title: 'Success',
-        message: 'User created successfully',
+        title: t('common:app.success'),
+        message: t('users:notifications.createSuccess'),
         color: 'green',
       });
       return newUser;
     } 
     catch (err) {
       notifications.show({
-        title: 'Error creating user',
+        title: t('users:notifications.createError'),
         message: err.message,
         color: 'red',
       });
@@ -63,15 +66,15 @@ export const useUsers = () => {
         user.id === id ? updatedUser : user
       ));
       notifications.show({
-        title: 'Success',
-        message: 'User updated successfully',
+        title: t('common:app.success'),
+        message: t('users:notifications.updateSuccess'),
         color: 'green',
       });
       return updatedUser;
     } 
     catch (err) {
       notifications.show({
-        title: 'Error updating user',
+        title: t('users:notifications.updateError'),
         message: err.message,
         color: 'red',
       });
@@ -88,14 +91,14 @@ export const useUsers = () => {
       await userService.deleteUser(id);
       setUsers(prev => prev.filter(user => user.id !== id));
       notifications.show({
-        title: 'Success',
-        message: 'User deleted successfully',
+        title: t('common:app.success'),
+        message: t('users:notifications.deleteSuccess'),
         color: 'green',
       });
     } 
     catch (err) {
       notifications.show({
-        title: 'Error deleting user',
+        title: t('users:notifications.deleteError'),
         message: err.message,
         color: 'red',
       });
@@ -114,15 +117,15 @@ export const useUsers = () => {
         user.id === userId ? updatedUser : user
       ));
       notifications.show({
-        title: 'Success',
-        message: 'User roles updated successfully',
+        title: t('common:app.success'),
+        message: t('users:notifications.rolesUpdateSuccess'),
         color: 'green',
       });
       return updatedUser;
     } 
     catch (err) {
       notifications.show({
-        title: 'Error updating user roles',
+        title: t('users:notifications.rolesUpdateError'),
         message: err.message,
         color: 'red',
       });

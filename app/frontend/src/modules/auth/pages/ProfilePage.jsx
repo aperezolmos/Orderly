@@ -51,20 +51,20 @@ const ProfilePage = () => {
           </Group>
 
           <Group position="apart" mb="xs">
-            <Text weight={500}>Username:</Text>
+            <Text weight={500}>{t('auth:register.username')}</Text>
             <Text>{user.username}</Text>
           </Group>
 
           {user.firstName && (
             <Group position="apart" mb="xs">
-              <Text weight={500}>First Name:</Text>
+              <Text weight={500}>{t('auth:register.firstName')}</Text>
               <Text>{user.firstName}</Text>
             </Group>
           )}
 
           {user.lastName && (
             <Group position="apart" mb="xs">
-              <Text weight={500}>Last Name:</Text>
+              <Text weight={500}>{t('auth:register.lastName')}</Text>
               <Text>{user.lastName}</Text>
             </Group>
           )}
