@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
          LoadingOverlay, Tabs, Alert, Text } from '@mantine/core';
@@ -7,7 +6,7 @@ import { IconAlertCircle, IconUser, IconShield } from '@tabler/icons-react';
 import { userService } from '../../../services/backend/userService';
 import RoleTransferList from '../../roles/components/RoleTransferList';
 import { useUserRoles } from '../hooks/useUserRoles';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const UserForm = ({
@@ -18,7 +17,7 @@ const UserForm = ({
   showRoleManagement = true
 }) => {
   
-  const { t } = useTranslation(['common', 'users']);
+  const { t } = useTranslationWithLoading(['common', 'users']);
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [checkingUsername, setCheckingUsername] = useState(false);
 

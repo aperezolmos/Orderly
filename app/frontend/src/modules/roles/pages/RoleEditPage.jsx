@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Text, Alert } from '@mantine/core';
+import { Text, Alert, Box, LoadingOverlay } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
 import { roleService } from '../../../services/backend/roleService';
 import { useRoles } from '../hooks/useRoles';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RoleEditPage = () => {
@@ -17,8 +17,9 @@ const RoleEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { updateRole } = useRoles();
-  const { t } = useTranslation(['common', 'roles']);
+  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'roles']);
 
+  
   useEffect(() => {
     const loadRole = async () => {
       try {
@@ -40,6 +41,22 @@ const RoleEditPage = () => {
       loadRole();
     }
   }, [id]);
+
+
+  if (!ready || isNamespaceLoading) {
+    return (
+      <FormLayout
+        title={t('common:app.loading')}
+        breadcrumbs={[]}
+        showBackButton={true}
+      >
+        <Box style={{ height: '200px', position: 'relative' }}>
+          <LoadingOverlay visible={true} />
+        </Box>
+      </FormLayout>
+    );
+  }
+
 
   const handleSubmit = async (roleData) => {
     try {

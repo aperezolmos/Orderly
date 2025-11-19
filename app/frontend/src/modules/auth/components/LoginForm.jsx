@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInput, PasswordInput, Button, Group, Alert } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const LoginForm = ({ 
@@ -12,7 +12,7 @@ const LoginForm = ({
   onClearError 
 }) => {
   
-  const { t } = useTranslation(['common', 'auth']);
+  const { t } = useTranslationWithLoading(['common', 'auth']);
 
 
   const form = useForm({

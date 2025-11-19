@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback } from 'react';
 import { roleService } from '../../../services/backend/roleService';
 import { notifications } from '@mantine/notifications';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 export const useRoles = () => {
@@ -10,7 +9,7 @@ export const useRoles = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { t } = useTranslation(['common', 'roles']);
+  const { t } = useTranslationWithLoading(['common', 'roles']);
   
 
   const loadRoles = useCallback(async () => {

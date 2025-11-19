@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { TextInput, Textarea, Button, Group, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RoleForm = ({ 
@@ -11,7 +11,7 @@ const RoleForm = ({
   submitLabel = "Create Role"
 }) => {
   
-  const { t } = useTranslation(['common', 'roles']);
+  const { t } = useTranslationWithLoading(['common', 'roles']);
 
 
   const form = useForm({

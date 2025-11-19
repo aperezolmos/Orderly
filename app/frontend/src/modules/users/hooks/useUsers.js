@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { userService } from '../../../services/backend/userService';
 import { notifications } from '@mantine/notifications';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 export const useUsers = () => {
@@ -10,7 +9,7 @@ export const useUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { t } = useTranslation(['common', 'users']);
+  const { t } = useTranslationWithLoading(['common', 'users']);
   
 
   const loadUsers = async () => {

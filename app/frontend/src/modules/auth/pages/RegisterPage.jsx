@@ -4,14 +4,14 @@ import { Text } from '@mantine/core';
 import { useAuth } from '../../../context/useAuth';
 import AuthLayout from '../components/AuthLayout';
 import RegisterForm from '../components/RegisterForm';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RegisterPage = () => {
   
   const { register, error, clearError, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation(['common', 'auth']);
+  const { t } = useTranslationWithLoading(['common', 'auth']);
 
   useEffect(() => {
     if (isAuthenticated) {

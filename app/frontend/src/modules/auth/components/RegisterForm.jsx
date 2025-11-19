@@ -3,7 +3,7 @@ import { TextInput, PasswordInput, Button, Group, Alert, LoadingOverlay, Box, Te
 import { useForm } from '@mantine/form';
 import { IconAlertCircle, IconCheck, IconX } from '@tabler/icons-react';
 import { userService } from '../../../services/backend/userService';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RegisterForm = ({ 
@@ -13,7 +13,7 @@ const RegisterForm = ({
   onClearError 
 }) => {
   
-  const { t } = useTranslation(['common', 'auth']);
+  const { t } = useTranslationWithLoading(['common', 'auth']);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
 

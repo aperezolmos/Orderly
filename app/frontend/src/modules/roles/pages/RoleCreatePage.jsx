@@ -1,16 +1,32 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Box, LoadingOverlay } from '@mantine/core';
 import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
 import { useRoles } from '../hooks/useRoles';
-import { useTranslation } from 'react-i18next';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RoleCreatePage = () => {
   
   const navigate = useNavigate();
   const { createRole, loading } = useRoles();
-  const { t } = useTranslation(['common', 'roles']);
+  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'roles']);
+
+  
+  if (!ready || isNamespaceLoading) {
+    return (
+      <FormLayout
+        title={t('common:app.loading')}
+        breadcrumbs={[]}
+        showBackButton={true}
+      >
+        <Box style={{ height: '200px', position: 'relative' }}>
+          <LoadingOverlay visible={true} />
+        </Box>
+      </FormLayout>
+    );
+  }
 
   const handleSubmit = async (roleData) => {
     await createRole(roleData);

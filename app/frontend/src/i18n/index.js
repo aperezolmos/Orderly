@@ -39,6 +39,8 @@ i18n
     
     react: {
       useSuspense: true,
+      bindI18n: 'languageChanged loaded',
+      bindI18nStore: 'added removed',
     },
     
     resources: {},
@@ -48,20 +50,20 @@ i18n
 // Dynamically load namespaces
 const loadNamespace = async (lng, ns) => {
   const cacheKey = `${lng}:${ns}`;
+  if (loadedNamespaces.has(cacheKey)) return true;
   
-  if (loadedNamespaces.has(cacheKey)) {
-    return;
-  }
-
   try {
     if (resources[lng]?.[ns]) {
       const module = await resources[lng][ns]();
       i18n.addResourceBundle(lng, ns, module.default);
       loadedNamespaces.add(cacheKey);
+      return true;
     }
+    return false;
   } 
   catch (error) {
     console.warn(`Could not load namespace ${ns} for language ${lng}:`, error);
+    return false;
   }
 };
 
@@ -78,8 +80,22 @@ preloadEssentialNamespaces(i18n.language);
 
 
 // Listen for language changes to load necessary namespaces
-i18n.on('languageChanged', (lng) => {
-  preloadEssentialNamespaces(lng);
+i18n.on('languageChanged', async (lng) => {
+  await preloadEssentialNamespaces(lng);
+
+  // Trigger event for React to re-render
+  i18n.emit('loaded');
 });
+
+
+// Utility for hooks/components
+export const ensureNamespaceLoaded = async (ns) => {
+  const currentLng = i18n.language;
+  return await loadNamespace(currentLng, ns);
+};
+
+export const isNamespaceLoaded = (ns) => {
+  return loadedNamespaces.has(`${i18n.language}:${ns}`);
+};
 
 export default i18n;
