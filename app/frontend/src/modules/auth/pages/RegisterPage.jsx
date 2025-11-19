@@ -4,12 +4,14 @@ import { Text } from '@mantine/core';
 import { useAuth } from '../../../context/useAuth';
 import AuthLayout from '../components/AuthLayout';
 import RegisterForm from '../components/RegisterForm';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RegisterPage = () => {
   
   const { register, error, clearError, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslationWithLoading(['common', 'auth']);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -29,15 +31,16 @@ const RegisterPage = () => {
   const loginLink = (
     <Link to="/login" style={{ textDecoration: 'none' }}>
       <Text component="span" color="blue" weight={500}>
-        Sign in
+        {t('auth:login.submit')}
       </Text>
     </Link>
   );
 
+
   return (
     <AuthLayout
-      title="Create Account"
-      subtitle="Already have an account?"
+      title={t('auth:register.title')}
+      subtitle={t('auth:register.loginPrompt')}
       linkComponent={loginLink}
     >
       <RegisterForm

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, ActionIcon, Group, Text } from '@mantine/core';
 import { IconEdit, IconTrash, IconDots } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
 
 const DataTable = ({
@@ -12,6 +13,9 @@ const DataTable = ({
   loading = false
 }) => {
   
+  const { t } = useTranslation('common');
+
+
   const rows = data.map((item) => (
     <tr key={item.id}>
       {columns.map((column) => (
@@ -52,7 +56,7 @@ const DataTable = ({
           {columns.map((column) => (
             <th key={column.key}>{column.title}</th>
           ))}
-          {actions && <th style={{ width: '100px' }}>Actions</th>}
+          {actions && <th style={{ width: '100px' }}>{t('navigation.actions')}</th>}
         </tr>
       </thead>
       <tbody>
@@ -60,10 +64,10 @@ const DataTable = ({
           <tr>
             <td colSpan={columns.length + (actions ? 1 : 0)}>
               <Text align="center" color="dimmed" py="xl">
-                No data found
+                {t('data.noData')}
               </Text>
             </td>
-  </tr>
+          </tr>
         )}
       </tbody>
     </Table>

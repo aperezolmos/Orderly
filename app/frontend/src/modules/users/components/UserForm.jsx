@@ -1,12 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
          LoadingOverlay, Tabs, Alert, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle, IconUser, IconShield } from '@tabler/icons-react';
 import { userService } from '../../../services/backend/userService';
-import RoleTransferList from './RoleTransferList';
+import RoleTransferList from '../../roles/components/RoleTransferList';
 import { useUserRoles } from '../hooks/useUserRoles';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const UserForm = ({
@@ -17,6 +17,7 @@ const UserForm = ({
   showRoleManagement = true
 }) => {
   
+  const { t } = useTranslationWithLoading(['common', 'users']);
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [checkingUsername, setCheckingUsername] = useState(false);
 
@@ -48,28 +49,28 @@ const UserForm = ({
     },
     validate: {
       username: (value) => {
-        if (!value) return 'Username is required';
-        if (value.length < 3) return 'Username must be at least 3 characters';
-        if (value.length > 50) return 'Username cannot exceed 50 characters';
-        if (!usernameAvailable) return 'Username is already taken';
+        if (!value) return t('users:validation.usernameRequired');
+        if (value.length < 3) return t('users:validation.usernameMinLength');
+        if (value.length > 50) return t('users:validation.usernameMaxLength');
+        if (!usernameAvailable) return t('auth:validation.usernameTaken');
         return null;
       },
       password: (value) => {
-        if (!user && !value) return 'Password is required';
-        if (value && value.length < 4) return 'Password must be at least 4 characters';
+        if (!user && !value) return t('users:validation.passwordRequired');
+        if (value && value.length < 4) return t('users:validation.passwordMinLength');
         return null;
       },
       confirmPassword: (value, values) => {
-        if (!user && !value) return 'Please confirm password';
-        if (value !== values.password) return 'Passwords do not match';
+        if (!user && !value) return t('users:validation.confirmPasswordRequired');
+        if (value !== values.password) return t('users:validation.passwordsMatch');
         return null;
       },
       firstName: (value) => {
-        if (value && value.length > 100) return 'First name cannot exceed 100 characters';
+        if (value && value.length > 100) return t('users:validation.firstNameMaxLength');
         return null;
       },
       lastName: (value) => {
-        if (value && value.length > 100) return 'Last name cannot exceed 100 characters';
+        if (value && value.length > 100) return t('users:validation.lastNameMaxLength');
         return null;
       },
     },
@@ -144,38 +145,38 @@ const UserForm = ({
       <Tabs defaultValue="basic">
         <Tabs.List>
           <Tabs.Tab value="basic" icon={<IconUser size="0.8rem" />}>
-            Basic Information
+            {t('users:form.basicInfo')}
           </Tabs.Tab>
           {showRoleManagement && (
             <Tabs.Tab value="roles" icon={<IconShield size="0.8rem" />}>
-              Role Management
+              {t('users:form.roleManagement')}
             </Tabs.Tab>
           )}
         </Tabs.List>
 
         <Tabs.Panel value="basic" pt="xs">
           <TextInput
-            label="Username"
-            placeholder="Enter username"
+            label={t('users:form.username')}
+            placeholder={t('users:form.usernamePlaceholder')}
             required
             maxLength={50}
             {...form.getInputProps('username')}
             onBlur={(e) => checkUsernameAvailability(e.target.value)}
             error={form.errors.username}
-            rightSection={checkingUsername ? <div>Checking...</div> : null}
+            rightSection={checkingUsername ? <div>{t('auth:register.checkingUsername')}</div> : null}
             mb="md"
           />
 
           <Group grow mb="md">
             <TextInput
-              label="First Name"
-              placeholder="Enter first name"
+              label={t('users:form.firstName')}
+              placeholder={t('users:form.firstNamePlaceholder')}
               maxLength={100}
               {...form.getInputProps('firstName')}
             />
             <TextInput
-              label="Last Name"
-              placeholder="Enter last name"
+              label={t('users:form.lastName')}
+              placeholder={t('users:form.lastNamePlaceholder')}
               maxLength={100}
               {...form.getInputProps('lastName')}
             />
@@ -183,14 +184,14 @@ const UserForm = ({
 
           <Group grow mb="xl">
             <PasswordInput
-              label={user ? "New Password (leave blank to keep current)" : "Password"}
-              placeholder="Enter password"
+              label={user ? t('users:form.newPassword') : t('users:form.password')}
+              placeholder={t('users:form.passwordPlaceholder')}
               required={!user}
               {...form.getInputProps('password')}
             />
             <PasswordInput
-              label="Confirm Password"
-              placeholder="Confirm password"
+              label={t('users:form.confirmPassword')}
+              placeholder={t('users:form.confirmPasswordPlaceholder')}
               required={!user}
               {...form.getInputProps('confirmPassword')}
             />
@@ -199,7 +200,7 @@ const UserForm = ({
           {user && (
             <Alert icon={<IconAlertCircle size="1rem" />} color="blue" mb="md">
               <Text size="sm">
-                Leave password fields blank to keep the current password.
+                {t('users:form.passwordInfo')}
               </Text>
             </Alert>
           )}
@@ -218,7 +219,7 @@ const UserForm = ({
             {rolesHaveChanges && (
               <Alert color="yellow" mt="md">
                 <Text size="sm">
-                  Role changes will be saved when you submit the form.
+                  {t('users:form.roleChanges')}
                 </Text>
               </Alert>
             )}

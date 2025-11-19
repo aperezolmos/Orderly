@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Text, Alert } from '@mantine/core';
+import { Text, Alert, Box, LoadingOverlay } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
 import { userService } from '../../../services/backend/userService';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const UserEditPage = () => {
@@ -15,7 +16,8 @@ const UserEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-
+  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'users']);
+  
 
   useEffect(() => {
     const loadUser = async () => {
@@ -39,6 +41,22 @@ const UserEditPage = () => {
     }
   }, [id]);
 
+
+  if (!ready || isNamespaceLoading) {
+    return (
+      <FormLayout
+        title="Loading..."
+        breadcrumbs={[]}
+        showBackButton={true}
+      >
+        <Box style={{ height: '200px', position: 'relative' }}>
+          <LoadingOverlay visible={true} />
+        </Box>
+      </FormLayout>
+    );
+  }
+
+
   const handleSubmit = async (userData) => {
     try {
       setSubmitting(true);
@@ -58,14 +76,14 @@ const UserEditPage = () => {
   };
 
   const breadcrumbs = [
-    { title: 'Users', href: '/users' },
-    { title: `Edit User #${id}`, href: `/users/${id}/edit` }
+    { title: t('users:management.list'), href: '/users' },
+    { title: t('users:management.edit'), href: `/users/${id}/edit` }
   ];
 
   if (error && !loading) {
     return (
       <FormLayout
-        title="Edit User"
+        title={t('users:management.edit')}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -73,12 +91,12 @@ const UserEditPage = () => {
       >
         <Alert 
           icon={<IconAlertCircle size="1rem" />} 
-          title="Error loading user" 
+          title={t('users:errors.loadError')} 
           color="red"
         >
-          <Text mb="md">Could not load user with ID: {id}</Text>
+          <Text mb="md">{t('users:errors.notFound', { id })}</Text>
           <Text size="sm" color="dimmed">
-            The user may have been deleted or you may not have permission to access it.
+            {t('users:errors.notFoundDetails')}
           </Text>
         </Alert>
       </FormLayout>
@@ -88,7 +106,7 @@ const UserEditPage = () => {
 
   return (
     <FormLayout
-      title={`Edit User #${id}`}
+      title={t('users:management.edit')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}
@@ -99,7 +117,7 @@ const UserEditPage = () => {
         user={user}
         onSubmit={handleSubmit}
         loading={submitting}
-        submitLabel="Update User"
+        submitLabel={t('users:form.update')}
         showRoleManagement={true}
       />
     </FormLayout>

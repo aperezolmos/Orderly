@@ -1,0 +1,57 @@
+{
+  "management": {
+    "title": "Gestión de Roles",
+    "create": "Crear Nuevo Rol",
+    "edit": "Editar Rol",
+    "list": "Roles"
+  },
+  "form": {
+    "name": "Nombre del Rol",
+    "namePlaceholder": "Ingrese nombre del rol",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Ingrese descripción del rol",
+    "create": "Crear Rol",
+    "update": "Actualizar Rol",
+    "nameRequired": "El nombre es obligatorio",
+    "nameMaxLength": "El nombre no puede exceder 50 caracteres",
+    "descriptionMaxLength": "La descripción no puede exceder 255 caracteres"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Nombre",
+    "description": "Descripción",
+    "users": "Usuarios",
+    "noDescription": "Sin descripción",
+    "newRole": "Nuevo Rol"
+  },
+  "transferList": {
+    "assigned": "Roles Asignados",
+    "available": "Roles Disponibles",
+    "currentRoles": "Roles actuales del usuario (clic para eliminar)",
+    "clickToAssign": "Clic para asignar al usuario",
+    "noRolesAssigned": "No hay roles asignados",
+    "noAvailableRoles": "No hay roles disponibles",
+    "total": "Total: {{count}} roles",
+    "availableCount": "Disponibles: {{count}} roles"
+  },
+  "notifications": {
+    "createSuccess": "Rol creado exitosamente",
+    "updateSuccess": "Rol actualizado exitosamente",
+    "deleteSuccess": "Rol eliminado exitosamente",
+    "loadError": "Error cargando roles",
+    "createError": "Error creando rol",
+    "updateError": "Error actualizando rol",
+    "deleteError": "Error eliminando rol"
+  },
+  "deleteModal": {
+    "title": "Confirmar Eliminación",
+    "message": "¿Estás seguro de que quieres eliminar el rol \"{{name}}\"? Esta acción no se puede deshacer",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "errors": {
+    "loadError": "Error cargando rol",
+    "notFound": "No se pudo cargar el rol con ID: {{id}}",
+    "notFoundDetails": "El rol puede haber sido eliminado o no tienes permiso para acceder a él"
+  }
+}

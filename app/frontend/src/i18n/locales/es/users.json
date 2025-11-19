@@ -1,0 +1,71 @@
+{
+  "management": {
+    "title": "Gestión de Usuarios",
+    "create": "Crear Nuevo Usuario",
+    "edit": "Editar Usuario",
+    "list": "Usuarios"
+  },
+  "form": {
+    "username": "Usuario",
+    "usernamePlaceholder": "Ingrese usuario",
+    "firstName": "Nombre",
+    "firstNamePlaceholder": "Ingrese nombre",
+    "lastName": "Apellido",
+    "lastNamePlaceholder": "Ingrese apellido",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingrese contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "confirmPasswordPlaceholder": "Confirmar contraseña",
+    "newPassword": "Nueva Contraseña (dejar en blanco para mantener la actual)",
+    "create": "Crear Usuario",
+    "update": "Actualizar Usuario",
+    "basicInfo": "Información Básica",
+    "roleManagement": "Gestión de Roles",
+    "passwordInfo": "Deja los campos de contraseña en blanco para mantener la contraseña actual",
+    "roleChanges": "Los cambios de roles se guardarán cuando envíes el formulario"
+  },
+  "list": {
+    "id": "ID",
+    "username": "Usuario",
+    "fullName": "Nombre Completo",
+    "roles": "Roles",
+    "created": "Creado",
+    "newUser": "Nuevo Usuario",
+    "notSpecified": "No especificado",
+    "noRoles": "Sin roles"
+  },
+  "validation": {
+    "usernameRequired": "El usuario es obligatorio",
+    "usernameMinLength": "El usuario debe tener al menos 3 caracteres",
+    "usernameMaxLength": "El usuario no puede exceder 50 caracteres",
+    "firstNameMaxLength": "El nombre no puede exceder 100 caracteres",
+    "lastNameMaxLength": "El apellido no puede exceder 100 caracteres",
+    "passwordRequired": "La contraseña es obligatoria",
+    "passwordMinLength": "La contraseña debe tener al menos 4 caracteres",
+    "confirmPasswordRequired": "Por favor confirma la contraseña",
+    "passwordsMatch": "Las contraseñas no coinciden"
+  },
+  "notifications": {
+    "createSuccess": "Usuario creado exitosamente",
+    "updateSuccess": "Usuario actualizado exitosamente",
+    "deleteSuccess": "Usuario eliminado exitosamente",
+    "loadError": "Error cargando usuarios",
+    "createError": "Error creando usuario",
+    "updateError": "Error actualizando usuario",
+    "deleteError": "Error eliminando usuario",
+    "rolesUpdateSuccess": "Roles del usuario actualizados exitosamente",
+    "rolesUpdateError": "Error actualizando roles del usuario"
+  },
+  "deleteModal": {
+    "title": "Confirmar Eliminación de Usuario",
+    "message": "¿Estás seguro de que quieres eliminar al usuario \"{{username}}\"? Esta acción no se puede deshacer",
+    "adminWarning": "Advertencia: Este usuario tiene privilegios de administrador",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "errors": {
+    "loadError": "Error cargando usuario",
+    "notFound": "No se pudo cargar el usuario con ID: {{id}}",
+    "notFoundDetails": "El usuario puede haber sido eliminado o no tienes permiso para acceder a él"
+  }
+}

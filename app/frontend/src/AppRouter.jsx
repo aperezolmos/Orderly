@@ -3,6 +3,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from './context/useAuth';
 import ProtectedRoute from './common/components/ProtectedRoute';
 import ErrorBoundary from './common/components/ErrorBoundary';
+import MainLayout from './common/layouts/MainLayout';
+import { useTranslation } from 'react-i18next';
+
+
+// Internationalized loading component
+const LoadingFallback = () => {
+  const { t } = useTranslation('common');
+  return <div>{t('app.loading')}</div>;
+};
 
 
 // ------- PAGES ------------------------------------------
@@ -27,28 +36,48 @@ const UserEdit = React.lazy(() => import('./modules/users/pages/UserEditPage'));
 //TODO: role_admin constante?
 
 
-const AppRouter = () => {
+// Wrapper component for pages that need layout
+const WithLayout = ({ children }) => (
+  <MainLayout>
+    {children}
+  </MainLayout>
+);
 
+// Wrapper for auth pages (without layout)
+const WithoutLayout = ({ children }) => (
+  <>{children}</>
+);
+
+
+const AppRouter = () => {
+  
   const { isAuthenticated, loading } = useAuth();
 
-
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingFallback />;
   }
 
   return (
     <Router>
       <ErrorBoundary>
-        <React.Suspense fallback={<div>Loading...</div>}>
+        <React.Suspense fallback={<LoadingFallback />}>
           <Routes>
             {/* Public routes */}
             <Route
               path="/login"
-              element={!isAuthenticated ? <Login /> : <Navigate to="/profile" replace />}
+              element={
+                !isAuthenticated ? 
+                <WithoutLayout><Login /></WithoutLayout> : 
+                <Navigate to="/profile" replace />
+              }
             />
             <Route
               path="/register"
-              element={!isAuthenticated ? <Register /> : <Navigate to="/profile" replace />}
+              element={
+                !isAuthenticated ? 
+                <WithoutLayout><Register /></WithoutLayout> : 
+                <Navigate to="/profile" replace />
+              }
             />
 
 
@@ -57,7 +86,9 @@ const AppRouter = () => {
               path="/profile"
               element={
                 <ProtectedRoute>
-                  <Profile />
+                  <WithLayout>
+                    <Profile />
+                  </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -68,7 +99,9 @@ const AppRouter = () => {
               path="/roles"
               element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <RoleList />
+                  <WithLayout>
+                    <RoleList />
+                  </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -76,7 +109,9 @@ const AppRouter = () => {
               path="/roles/new"
               element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <RoleCreate />
+                  <WithLayout>
+                    <RoleCreate />
+                  </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -84,7 +119,9 @@ const AppRouter = () => {
               path="/roles/:id/edit"
               element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <RoleEdit />
+                  <WithLayout>
+                    <RoleEdit />
+                  </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -93,7 +130,9 @@ const AppRouter = () => {
               path="/users"
               element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <UserList />
+                  <WithLayout>
+                    <UserList />
+                  </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -101,7 +140,9 @@ const AppRouter = () => {
               path="/users/new"
               element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <UserCreate />
+                  <WithLayout>
+                    <UserCreate />
+                  </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -109,7 +150,9 @@ const AppRouter = () => {
               path="/users/:id/edit"
               element={
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <UserEdit />
+                  <WithLayout>
+                    <UserEdit />
+                  </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -122,11 +165,17 @@ const AppRouter = () => {
             />
 
             {/* 404 route */}
-            <Route path="*" element={<div>Page not found</div>} />
+            <Route 
+              path="*" 
+              element={
+                <WithLayout>
+                  <div>Page not found</div>
+                </WithLayout>
+              } 
+            />
           </Routes>
         </React.Suspense>
       </ErrorBoundary>
-      
     </Router>
   );
 };

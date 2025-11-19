@@ -1,0 +1,57 @@
+{
+  "management": {
+    "title": "Role Management",
+    "create": "Create New Role",
+    "edit": "Edit Role",
+    "list": "Roles"
+  },
+  "form": {
+    "name": "Role Name",
+    "namePlaceholder": "Enter role name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter role description",
+    "create": "Create Role",
+    "update": "Update Role",
+    "nameRequired": "Name is required",
+    "nameMaxLength": "Name cannot exceed 50 characters",
+    "descriptionMaxLength": "Description cannot exceed 255 characters"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Name",
+    "description": "Description",
+    "users": "Users",
+    "noDescription": "No description",
+    "newRole": "New Role"
+  },
+  "transferList": {
+    "assigned": "Assigned Roles",
+    "available": "Available Roles",
+    "currentRoles": "Current user roles (click to remove)",
+    "clickToAssign": "Click to assign to user",
+    "noRolesAssigned": "No roles assigned",
+    "noAvailableRoles": "No available roles",
+    "total": "Total: {{count}} roles",
+    "availableCount": "Available: {{count}} roles"
+  },
+  "notifications": {
+    "createSuccess": "Role created successfully",
+    "updateSuccess": "Role updated successfully",
+    "deleteSuccess": "Role deleted successfully",
+    "loadError": "Error loading roles",
+    "createError": "Error creating role",
+    "updateError": "Error updating role",
+    "deleteError": "Error deleting role"
+  },
+  "deleteModal": {
+    "title": "Confirm Deletion",
+    "message": "Are you sure you want to delete role \"{{name}}\"? This action cannot be undone",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "errors": {
+    "loadError": "Error loading role",
+    "notFound": "Could not load role with ID: {{id}}",
+    "notFoundDetails": "The role may have been deleted or you may not have permission to access it"
+  }
+}

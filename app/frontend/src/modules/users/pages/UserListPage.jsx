@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  Group, Text, Modal, Button, Badge } from '@mantine/core';
+import { Group, Text, Modal, Button, Badge, Box, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus, IconUser, IconEdit, IconTrash } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useUsers } from '../hooks/useUsers';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const UserListPage = () => {
@@ -14,6 +15,21 @@ const UserListPage = () => {
   const { users, loading, deleteUser } = useUsers();
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'users']);
+
+  
+  if (!ready || isNamespaceLoading) {
+    return (
+      <ManagementLayout
+        title={t('common:app.loading')}
+        breadcrumbs={[]}
+      >
+        <Box style={{ height: '200px', position: 'relative' }}>
+          <LoadingOverlay visible={true} />
+        </Box>
+      </ManagementLayout>
+    );
+  }
   
 
   const handleEdit = (user) => {
@@ -36,12 +52,12 @@ const UserListPage = () => {
   const columns = [
     {
       key: 'id',
-      title: 'ID',
+      title: t('users:list.id'),
       render: (user) => <Text weight={500}>#{user.id}</Text>
     },
     {
       key: 'username',
-      title: 'Username',
+      title: t('users:list.username'),
       render: (user) => (
         <Group>
           <IconUser size="1rem" />
@@ -51,17 +67,17 @@ const UserListPage = () => {
     },
     {
       key: 'name',
-      title: 'Full Name',
+      title: t('users:list.fullName'),
       render: (user) => (
         <Text>
           {[user.firstName, user.lastName].filter(Boolean).join(' ') || 
-           <Text color="dimmed" fs="italic">Not specified</Text>}
+           <Text color="dimmed" fs="italic">{t('users:list.notSpecified')}</Text>}
         </Text>
       )
     },
     {
       key: 'roles',
-      title: 'Roles',
+      title: t('users:list.roles'),
       render: (user) => (
         <Group spacing="xs">
           {user.roleNames && user.roleNames.length > 0 ? (
@@ -72,7 +88,7 @@ const UserListPage = () => {
             ))
           ) : (
             <Text size="sm" color="dimmed" fs="italic">
-              No roles
+              {t('users:list.noRoles')}
             </Text>
           )}
         </Group>
@@ -80,7 +96,7 @@ const UserListPage = () => {
     },
     {
       key: 'createdAt',
-      title: 'Created',
+      title: t('users:list.created'),
       render: (user) => (
         <Text size="sm">
           {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
@@ -93,10 +109,10 @@ const UserListPage = () => {
   return (
     <>
       <ManagementLayout
-        title="User Management"
-        breadcrumbs={[{ title: 'Users', href: '/users' }]}
+        title={t('users:management.title')}
+        breadcrumbs={[{ title: t('users:management.list'), href: '/users' }]}
         showCreateButton={true}
-        createButtonLabel="New User"
+        createButtonLabel={t('users:list.newUser')}
         onCreateClick={() => navigate('/users/new')}
       >
         <DataTable
@@ -111,26 +127,25 @@ const UserListPage = () => {
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title="Confirm User Deletion"
+        title={t('users:deleteModal.title')}
         size="sm"
       >
         <Text mb="md">
-          Are you sure you want to delete user "{userToDelete?.username}"? 
-          This action cannot be undone.
+          {t('users:deleteModal.message', { username: userToDelete?.username })}
         </Text>
         
         {userToDelete?.roleNames?.includes('ROLE_ADMIN') && (
           <Text size="sm" color="red" mb="md">
-            Warning: This user has admin privileges.
+            {t('users:deleteModal.adminWarning')}
           </Text>
         )}
         
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            Cancel
+            {t('users:deleteModal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            Delete
+            {t('users:deleteModal.confirm')}
           </Button>
         </Group>
       </Modal>

@@ -1,0 +1,53 @@
+{
+  "app": {
+    "title": "My Application",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "confirm": "Confirm",
+    "back": "Back"
+  },
+  "navigation": {
+    "home": "Home",
+    "profile": "Profile",
+    "login": "Login",
+    "logout": "Logout",
+    "users": "Users",
+    "roles": "Roles",
+    "actions": "Actions",
+    "dashboard": "Dashboard"
+  },
+  "language": {
+    "select": "Select Language",
+    "english": "English",
+    "spanish": "Spanish",
+    "change": "Change language"
+  },
+  "validation": {
+    "required": "This field is required",
+    "minLength": "Minimum {{count}} characters required"
+  },
+  "data": {
+    "noData": "No data found",
+    "loading": "Loading data...",
+    "error": "Error loading data"
+  },
+  "error": {
+    "boundary": {
+      "title": "Something went wrong",
+      "message": "An error occurred while rendering this component",
+      "reload": "Reload Page"
+    },
+    "accessDenied": "Access Denied - Admin privileges required"
+  },
+  "form": {
+    "submit": "Submit",
+    "reset": "Reset",
+    "optional": "Optional"
+  }
+}

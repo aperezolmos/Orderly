@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { TextInput, Textarea, Button, Group, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RoleForm = ({ 
@@ -10,6 +11,9 @@ const RoleForm = ({
   submitLabel = "Create Role"
 }) => {
   
+  const { t } = useTranslationWithLoading(['common', 'roles']);
+
+
   const form = useForm({
     initialValues: {
       name: '',
@@ -17,12 +21,12 @@ const RoleForm = ({
     },
     validate: {
       name: (value) => {
-        if (!value) return 'Name is required';
-        if (value.length > 50) return 'Name cannot exceed 50 characters';
+        if (!value) return t('roles:form.nameRequired');
+        if (value.length > 50) return t('roles:form.nameMaxLength');
         return null;
       },
       description: (value) => {
-        if (value && value.length > 255) return 'Description cannot exceed 255 characters';
+        if (value && value.length > 255) return t('roles:form.descriptionMaxLength');
         return null;
       },
     },
@@ -57,8 +61,8 @@ const RoleForm = ({
       <LoadingOverlay visible={loading} />
       
       <TextInput
-        label="Role Name"
-        placeholder="Enter role name"
+        label={t('roles:form.name')}
+        placeholder={t('roles:form.namePlaceholder')}
         required
         maxLength={50}
         {...form.getInputProps('name')}
@@ -66,8 +70,8 @@ const RoleForm = ({
       />
 
       <Textarea
-        label="Description"
-        placeholder="Enter role description"
+        label={t('roles:form.description')}
+        placeholder={t('roles:form.descriptionPlaceholder')}
         maxLength={255}
         autosize
         minRows={3}

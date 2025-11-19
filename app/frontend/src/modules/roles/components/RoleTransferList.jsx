@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
-import { Group, Badge, Paper, Title,
-         Text, ScrollArea, Stack } from '@mantine/core';
+import { Group, Badge, Paper, Title, Text, ScrollArea, Stack } from '@mantine/core';
 import { IconX, IconPlus, IconShield } from '@tabler/icons-react';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+
 
 const RoleTransferList = memo(({
   assignedRoles = [],
@@ -11,6 +12,9 @@ const RoleTransferList = memo(({
   loading = false
 }) => {
   
+  const { t } = useTranslationWithLoading(['common', 'roles']);
+
+
   return (
     <Group grow align="flex-start" spacing="xl">
       
@@ -19,12 +23,12 @@ const RoleTransferList = memo(({
         <Title order={4} mb="md">
           <Group spacing="xs">
             <IconShield size="1.2rem" />
-            Assigned Roles
+            {t('roles:transferList.assigned')}
           </Group>
         </Title>
         
         <Text size="sm" color="dimmed" mb="md">
-          Current user roles (click to remove)
+          {t('roles:transferList.currentRoles')}
         </Text>
 
         <ScrollArea.Autosize mah={300}>
@@ -54,14 +58,14 @@ const RoleTransferList = memo(({
               ))
             ) : (
               <Text size="sm" color="dimmed" fs="italic">
-                No roles assigned
+                {t('roles:transferList.noRolesAssigned')}
               </Text>
             )}
           </Stack>
         </ScrollArea.Autosize>
         
         <Text size="xs" color="dimmed" mt="sm">
-          Total: {assignedRoles.length} roles
+          {t('roles:transferList.total', { count: assignedRoles.length })}
         </Text>
       </Paper>
 
@@ -71,12 +75,12 @@ const RoleTransferList = memo(({
         <Title order={4} mb="md">
           <Group spacing="xs">
             <IconShield size="1.2rem" />
-            Available Roles
+            {t('roles:transferList.available')}
           </Group>
         </Title>
         
         <Text size="sm" color="dimmed" mb="md">
-          Click to assign to user
+          {t('roles:transferList.clickToAssign')}
         </Text>
 
         <ScrollArea.Autosize mah={300}>
@@ -106,14 +110,14 @@ const RoleTransferList = memo(({
               ))
             ) : (
               <Text size="sm" color="dimmed" fs="italic">
-                No available roles
+                {t('roles:transferList.noAvailableRoles')}
               </Text>
             )}
           </Stack>
         </ScrollArea.Autosize>
         
         <Text size="xs" color="dimmed" mt="sm">
-          Available: {availableRoles.length} roles
+          {t('roles:transferList.availableCount', { count: availableRoles.length })}
         </Text>
       </Paper>
     </Group>

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal,Button } from '@mantine/core';
+import { Group, Text, Modal, Button, LoadingOverlay, Box } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus, IconShield } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useRoles } from '../hooks/useRoles';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
 const RoleListPage = () => {
@@ -14,6 +15,21 @@ const RoleListPage = () => {
   const { roles, loading, deleteRole } = useRoles();
   const [roleToDelete, setRoleToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'roles']);
+
+
+  if (!ready || isNamespaceLoading) {
+    return (
+      <ManagementLayout
+        title={t('common:app.loading')}
+        breadcrumbs={[]}
+      >
+        <Box style={{ height: '200px', position: 'relative' }}>
+          <LoadingOverlay visible={true} />
+        </Box>
+      </ManagementLayout>
+    );
+  }
 
   const handleEdit = (role) => {
     navigate(`/roles/${role.id}/edit`);
@@ -35,12 +51,12 @@ const RoleListPage = () => {
   const columns = [
     {
       key: 'id',
-      title: 'ID',
+      title: t('roles:list.id'),
       render: (role) => <Text weight={500}>#{role.id}</Text>
     },
     {
       key: 'name',
-      title: 'Name',
+      title: t('roles:list.name'),
       render: (role) => (
         <Group>
           <IconShield size="1rem" />
@@ -50,12 +66,12 @@ const RoleListPage = () => {
     },
     {
       key: 'description',
-      title: 'Description',
-      render: (role) => role.description || <Text color="dimmed">No description</Text>
+      title: t('roles:list.description'),
+      render: (role) => role.description || <Text color="dimmed">{t('roles:list.noDescription')}</Text>
     },
     {
       key: 'userCount',
-      title: 'Users',
+      title: t('roles:list.users'),
       render: (role) => (
         <Text weight={500} color={role.userCount > 0 ? 'blue' : 'dimmed'}>
           {role.userCount || 0}
@@ -68,10 +84,10 @@ const RoleListPage = () => {
   return (
     <>
       <ManagementLayout
-        title="Role Management"
-        breadcrumbs={[{ title: 'Roles', href: '/roles' }]}
+        title={t('roles:management.title')}
+        breadcrumbs={[{ title: t('roles:management.list'), href: '/roles' }]}
         showCreateButton={true}
-        createButtonLabel="New Role"
+        createButtonLabel={t('roles:list.newRole')}
         onCreateClick={() => navigate('/roles/new')}
       >
         <DataTable
@@ -86,20 +102,19 @@ const RoleListPage = () => {
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title="Confirm Deletion"
+        title={t('roles:deleteModal.title')}
         size="sm"
       >
         <Text mb="md">
-          Are you sure you want to delete role "{roleToDelete?.name}"? 
-          This action cannot be undone.
+          {t('roles:deleteModal.message', { name: roleToDelete?.name })}
         </Text>
         
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            Cancel
+            {t('roles:deleteModal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            Delete
+            {t('roles:deleteModal.confirm')}
           </Button>
         </Group>
       </Modal>
