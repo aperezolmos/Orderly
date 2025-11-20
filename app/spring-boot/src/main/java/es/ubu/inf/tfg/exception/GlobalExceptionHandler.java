@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
             Map<String, String> details) {
 
         ErrorResponse error = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now().plusHours(2))
+                .timestamp(LocalDateTime.now())
                 .status(status.value())
                 .error(errorTitle)
                 .message(message)

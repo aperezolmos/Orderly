@@ -44,6 +44,6 @@ public class DiningTable {
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now().plusHours(2); 
+        this.createdAt = LocalDateTime.now(); 
     }
 }

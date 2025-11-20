@@ -35,7 +35,7 @@ public abstract class Order {
     @ToString.Include
     private Integer id;
 
-    @Column(nullable = false, unique = true, length = 20)
+    @Column(nullable = false, unique = true, length = 30)
     @ToString.Include
     private String orderNumber;
 
@@ -72,7 +72,7 @@ public abstract class Order {
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now().plusHours(2);
+        this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
         
         if (orderNumber == null) {
@@ -82,7 +82,7 @@ public abstract class Order {
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now().plusHours(2);
+        this.updatedAt = LocalDateTime.now();
 
         if (orderNumber == null) {
             this.orderNumber = generateOrderNumber(updatedAt);
@@ -115,10 +115,12 @@ public abstract class Order {
     }
 
     public void calculateTotalAmount() {
-        this.totalAmount = items.stream()
-                .map(OrderItem::getTotalPrice)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (items != null) {
+           this.totalAmount = items.stream()
+                    .map(OrderItem::getTotalPrice)
+                    .filter(Objects::nonNull)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add); 
+        }
     }
 
 

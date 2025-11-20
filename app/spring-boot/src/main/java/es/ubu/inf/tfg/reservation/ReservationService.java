@@ -164,7 +164,7 @@ public class ReservationService {
 
     private void validateReservationRequest(ReservationRequestDTO reservationRequest) {
         
-        if (reservationRequest.getReservationDateTime().isBefore(LocalDateTime.now().plusHours(2))) {
+        if (reservationRequest.getReservationDateTime().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Reservation date must be in the future");
         }
         

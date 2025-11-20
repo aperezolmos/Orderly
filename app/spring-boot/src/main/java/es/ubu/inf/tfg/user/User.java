@@ -82,6 +82,6 @@ public class User {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now().plusHours(2);
+        createdAt = LocalDateTime.now();
     }
 }

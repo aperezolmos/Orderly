@@ -54,12 +54,12 @@ public class Reservation {
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now().plusHours(2);
+        this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now().plusHours(2);
+        this.updatedAt = LocalDateTime.now();
     }
 }
