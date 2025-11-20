@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.user.role;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -136,5 +137,11 @@ public class RoleService {
     public boolean hasPermission(Integer id, Permission permission) {
         Role role = findEntityById(id);
         return role.getPermissions() != null && role.getPermissions().contains(permission);
+    }
+
+    public List<String> getAllPermissions() {
+        return Arrays.stream(Permission.values())
+                .map(Enum::name)
+                .toList();
     }
 }
