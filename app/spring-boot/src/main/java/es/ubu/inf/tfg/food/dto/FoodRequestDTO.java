@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class FoodRequestDTO {
     
     @NotBlank(message = "Name is required")
-    @Size(max = 100, message = "Name cannot exceed 100 characters")
+    @Size(max = 100, message = "Name cannot exceed {max} characters")
     private String name;
 
     @NotNull(message = "Food group is required")

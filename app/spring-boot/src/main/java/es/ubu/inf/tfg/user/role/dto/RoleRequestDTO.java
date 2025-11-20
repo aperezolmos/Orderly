@@ -19,10 +19,10 @@ import lombok.NoArgsConstructor;
 public class RoleRequestDTO {
 
     @NotBlank(message = "Role name is required")
-    @Size(max = 50, message = "Name cannot exceed 50 characters")
+    @Size(max = 50, message = "Name cannot exceed {max} characters")
     private String name;
 
-    @Size(max = 255, message = "Description cannot exceed 255 characters")
+    @Size(max = 255, message = "Description cannot exceed {max} characters")
     private String description;
 
     private List<Permission> permissions;

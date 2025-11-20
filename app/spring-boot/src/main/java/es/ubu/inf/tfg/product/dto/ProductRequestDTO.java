@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 public class ProductRequestDTO {
 
     @NotBlank(message = "Name is required")
-    @Size(max = 100, message = "Name cannot exceed 100 characters")
+    @Size(max = 100, message = "Name cannot exceed {max} characters")
     private String name;
 
-    @Size(max = 255, message = "Description cannot exceed 255 characters")
+    @Size(max = 255, message = "Description cannot exceed {max} characters")
     private String description;
 
     @PositiveOrZero(message = "Price cannot be negative")

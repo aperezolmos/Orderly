@@ -2,7 +2,6 @@ package es.ubu.inf.tfg.reservation.details;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotBlank;
 
 import lombok.*;
 
@@ -16,12 +15,10 @@ import lombok.*;
 @Builder
 public class GuestInfo {
     
-    @NotBlank
     @Column(nullable = false, length = 100)
     @ToString.Include
     private String firstName;
     
-    @NotBlank
     @Column(nullable = false, length = 100)
     private String lastName;
     
