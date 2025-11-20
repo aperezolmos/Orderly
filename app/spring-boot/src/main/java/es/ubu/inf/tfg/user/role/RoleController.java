@@ -80,6 +80,12 @@ public class RoleController {
     // --------------------------------------------------------
     // PERMISSION ENDPOINTS
 
+    @GetMapping("/permissions")
+    @PreAuthorize("hasAuthority('ROLE_VIEW_LIST')")
+    public ResponseEntity<List<String>> getAllPermissions() {
+        return ResponseEntity.ok(roleService.getAllPermissions());
+    }
+
     @PostMapping("/{id}/permissions/{permission}")
     @PreAuthorize("hasAuthority('ROLE_EDIT')")
     public ResponseEntity<RoleResponseDTO> addPermissionToRole(

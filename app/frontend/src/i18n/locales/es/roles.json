@@ -14,7 +14,10 @@
     "update": "Actualizar Rol",
     "nameRequired": "El nombre es obligatorio",
     "nameMaxLength": "El nombre no puede exceder 50 caracteres",
-    "descriptionMaxLength": "La descripción no puede exceder 255 caracteres"
+    "descriptionMaxLength": "La descripción no puede exceder 255 caracteres",
+    "basicInfo": "Información básica",
+    "permissions": "Permisos",
+    "permissionsHelp": "Selecciona los permisos que tendrá este rol"
   },
   "list": {
     "id": "ID",

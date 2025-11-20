@@ -64,5 +64,23 @@ export const roleService = {
     catch (error) {
       return handleApiError(error);
     }
-  }
+  },
+
+  getAllPermissions: async () => {
+    try {
+      return await apiClient.get('/roles/permissions');
+    } 
+    catch (error) {
+      return handleApiError(error);
+    }
+  },
+
+  setRolePermissions: async (roleId, permissions) => {
+    try {
+      return await apiClient.put(`/roles/${roleId}/permissions`, permissions);
+    } 
+    catch (error) {
+      return handleApiError(error);
+    }
+  },
 };
