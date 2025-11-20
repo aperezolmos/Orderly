@@ -88,6 +88,7 @@ public class RoleService {
         }
 
         existingRole.setDescription(roleRequest.getDescription());
+        existingRole.setPermissions(roleRequest.getPermissions());
         
         Role updatedRole = roleRepository.save(existingRole);
         return roleMapper.toResponseDTO(updatedRole);

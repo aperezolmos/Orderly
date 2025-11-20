@@ -14,7 +14,10 @@
     "update": "Update Role",
     "nameRequired": "Name is required",
     "nameMaxLength": "Name cannot exceed 50 characters",
-    "descriptionMaxLength": "Description cannot exceed 255 characters"
+    "descriptionMaxLength": "Description cannot exceed 255 characters",
+    "basicInfo": "Basic Information",
+    "permissions": "Permissions",
+    "permissionsHelp": "Select the permissions for this role"
   },
   "list": {
     "id": "ID",
