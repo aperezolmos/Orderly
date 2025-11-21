@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.user.role.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import es.ubu.inf.tfg.user.role.permission.Permission;
@@ -17,6 +18,8 @@ public class RoleResponseDTO {
     private Integer id;
     private String name;
     private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Integer userCount;
     private List<Permission> permissions;
 }

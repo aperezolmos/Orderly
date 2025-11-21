@@ -47,6 +47,15 @@ public class GlobalExceptionHandler {
             "You don't have permission to access this resource");
     }
 
+    @ExceptionHandler(PredefinedRoleDeletionException.class)
+    public ResponseEntity<ErrorResponse> handlePredefinedRoleDeletion(PredefinedRoleDeletionException ex) {
+        
+        return createErrorResponseEntity(
+            HttpStatus.FORBIDDEN, 
+            "Resource protected", 
+            ex.getMessage());
+    }
+
     @ExceptionHandler(ResourceInUseException.class)
     public ResponseEntity<ErrorResponse> handleResourceInUse(ResourceInUseException ex) {
         return createErrorResponseEntity(

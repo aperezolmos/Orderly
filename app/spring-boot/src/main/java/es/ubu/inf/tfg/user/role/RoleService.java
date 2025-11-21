@@ -3,8 +3,10 @@ package es.ubu.inf.tfg.user.role;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.exception.PredefinedRoleDeletionException;
 import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.user.role.dto.RoleRequestDTO;
 import es.ubu.inf.tfg.user.role.dto.RoleResponseDTO;
@@ -23,6 +25,12 @@ public class RoleService {
     
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
+
+    @Value("${DEFAULT_ADMIN_ROLE:ROLE_ADMIN}")
+    private String adminRoleName;
+
+    @Value("${DEFAULT_USER_ROLE:ROLE_USER}")
+    private String userRoleName;
     
 
     public List<RoleResponseDTO> findAll() {
@@ -34,7 +42,7 @@ public class RoleService {
     public RoleResponseDTO findById(Integer id) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
-        return roleMapper.toResponseDTO(role);
+        return roleMapper.toDetailedResponseDTO(role);
     }
 
     public Role findEntityById(Integer id) {
@@ -45,7 +53,7 @@ public class RoleService {
     public RoleResponseDTO findByName(String name) {
         Role role = roleRepository.findByName(name)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with name: " + name));
-        return roleMapper.toResponseDTO(role);
+        return roleMapper.toDetailedResponseDTO(role);
     }
 
     public Role findEntityByName(String name) {
@@ -97,7 +105,11 @@ public class RoleService {
     public void delete(Integer id) {
         
         Role role = findEntityById(id);
-        
+
+        if (role.getName().equals(adminRoleName) || role.getName().equals(userRoleName)) {
+            throw new PredefinedRoleDeletionException(role.getName());
+        }
+
         if (role.getUsers() != null && !role.getUsers().isEmpty()) {
             throw new ResourceInUseException("Role", id, "User");
         }
@@ -114,7 +126,7 @@ public class RoleService {
         role.addPermission(permission);
         
         Role updatedRole = roleRepository.save(role);
-        return roleMapper.toResponseDTO(updatedRole);
+        return roleMapper.toDetailedResponseDTO(updatedRole);
     }
 
     public RoleResponseDTO removePermission(Integer id, Permission permission) {
@@ -123,7 +135,7 @@ public class RoleService {
         role.removePermission(permission);
 
         Role updatedRole = roleRepository.save(role);
-        return roleMapper.toResponseDTO(updatedRole);
+        return roleMapper.toDetailedResponseDTO(updatedRole);
     }
 
     public RoleResponseDTO setPermissions(Integer id, List<Permission> permissions) {
@@ -132,7 +144,7 @@ public class RoleService {
         role.setPermissions(permissions);
 
         Role updatedRole = roleRepository.save(role);
-        return roleMapper.toResponseDTO(updatedRole);
+        return roleMapper.toDetailedResponseDTO(updatedRole);
     }
 
     public boolean hasPermission(Integer id, Permission permission) {

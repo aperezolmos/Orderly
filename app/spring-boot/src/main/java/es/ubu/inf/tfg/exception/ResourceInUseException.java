@@ -4,7 +4,7 @@ public class ResourceInUseException extends RuntimeException {
     
     public ResourceInUseException(String resourceType, Object resourceId, String referencingResourceType) {
         super(String.format(
-            "Cannot delete the %s resource with ID %s because it is currently referenced by one or more %s entities.",
+            "Cannot delete the %s resource with ID %s because it is currently referenced by one or more %s entities",
             resourceType,
             resourceId.toString(),
             referencingResourceType));
