@@ -12,7 +12,7 @@ public class InvalidCredentialsException extends RuntimeException {
         super(message);
     }
 
-    public InvalidCredentialsException(String message, Throwable cause){
+    public InvalidCredentialsException(String message, Throwable cause) {
         super(message, cause);
     }
 }

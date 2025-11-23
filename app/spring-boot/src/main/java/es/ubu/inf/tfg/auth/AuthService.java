@@ -38,6 +38,10 @@ public class AuthService {
     }
 
     public UserResponseDTO register(RegisterRequestDTO registerRequest) {
+        
+        if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
+        }
         UserRequestDTO userRequest = userMapper.toRequestFromRegister(registerRequest);
         return userService.create(userRequest);
     }

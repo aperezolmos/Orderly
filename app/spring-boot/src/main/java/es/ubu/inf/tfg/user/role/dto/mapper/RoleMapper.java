@@ -8,12 +8,20 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface RoleMapper {
+public abstract class RoleMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "users", ignore = true)
-    Role toEntity(RoleRequestDTO dto);
+    public abstract Role toEntity(RoleRequestDTO dto);
+
 
     @Mapping(target = "userCount", expression = "java(role.getUsers() != null ? role.getUsers().size() : 0)")
-    RoleResponseDTO toResponseDTO(Role role);
+    @Mapping(target = "permissions", ignore = true)
+    public abstract RoleResponseDTO toResponseDTO(Role role);
+
+
+    @Mapping(target = "userCount", expression = "java(role.getUsers() != null ? role.getUsers().size() : 0)")
+    public abstract RoleResponseDTO toDetailedResponseDTO(Role role);
 }

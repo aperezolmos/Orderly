@@ -5,13 +5,13 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
-import es.ubu.inf.tfg.user.dto.validation.UserValidationGroups;
+
+import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,16 +46,16 @@ public class UserController {
     @PostMapping
     @PreAuthorize("hasAuthority('USER_CREATE')")
     public ResponseEntity<UserResponseDTO> createUser(
-            @Validated(UserValidationGroups.OnCreate.class) @RequestBody UserRequestDTO userRequest) {
+            @Valid @RequestBody UserRequestDTO userRequest) {
         UserResponseDTO createdUser = userService.create(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER_EDIT_MYSELF') or hasAuthority('USER_EDIT_OTHERS')")
+    @PreAuthorize("hasAnyAuthority('USER_EDIT_MYSELF', 'USER_EDIT_OTHERS')")
     public ResponseEntity<UserResponseDTO> updateUser(
             @PathVariable Integer id,
-            @Validated(UserValidationGroups.OnUpdate.class) @RequestBody UserRequestDTO userRequest) {
+            @Valid @RequestBody UserRequestDTO userRequest) {
         UserResponseDTO updatedUser = userService.update(id, userRequest);
         return ResponseEntity.ok(updatedUser);
     }
@@ -83,7 +83,9 @@ public class UserController {
         return ResponseEntity.ok(available);
     }
 
+
     // --------------------------------------------------------
+    // ROLE ENDPOINTS
 
     @PostMapping("/{userId}/roles/{roleId}")
     @PreAuthorize("hasAuthority('USER_EDIT_OTHERS') and hasAuthority('USER_EDIT_ROLES')")

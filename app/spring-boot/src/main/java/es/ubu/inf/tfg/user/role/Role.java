@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.user.role;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +45,25 @@ public class Role {
     @Builder.Default
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
+
+
+    private LocalDateTime createdAt; 
+    
+    private LocalDateTime updatedAt;
+    
+    
+    // --------------------------------------------------------
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now(); 
+    }
 
 
     // --------------------------------------------------------

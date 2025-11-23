@@ -21,9 +21,10 @@ public abstract class UserMapper {
 
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "password", qualifiedByName = "encodePassword")
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     public abstract User toEntity(UserRequestDTO dto);
 
     
@@ -38,19 +39,18 @@ public abstract class UserMapper {
     public abstract UserResponseDTO toResponseDTO(User user);
 
     
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", 
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "password", qualifiedByName = "encodePassword",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "roles", ignore = true)
-    public abstract void updateUserFromDTO(UserRequestDTO dto, @MappingTarget User user);
+    public abstract void updateEntityFromDTO(UserRequestDTO dto, @MappingTarget User user);
 
-    
+
     // --------------------------------------------------------
-
-    @Named("encodePassword")
-    protected String encodePassword(String password) {
-        return password != null ? passwordEncoder.encode(password) : null;
-    }
 
     protected Set<Integer> mapRolesToIds(Set<Role> roles) {
         if (roles == null) return Set.of();
@@ -64,5 +64,13 @@ public abstract class UserMapper {
         return roles.stream()
                 .map(Role::getName)
                 .collect(Collectors.toSet());
+    }
+
+    @Named("encodePassword")
+    protected String encodePassword(String password) {
+        if (password == null || password.isEmpty()) {
+            return null;
+        }
+        return passwordEncoder.encode(password);
     }
 }
