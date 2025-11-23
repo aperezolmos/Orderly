@@ -7,8 +7,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.ubu.inf.tfg.security.SecurityAuthorizationService;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
 import es.ubu.inf.tfg.user.dto.mapper.UserMapper;
@@ -28,6 +31,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final SecurityAuthorizationService securityAuthorizationService;
 
     @Value("${DEFAULT_USER_ROLE:ROLE_USER}")
     private String defaultUserRole;
@@ -77,12 +82,11 @@ public class UserService {
         if (existsByUsername(userRequest.getUsername())) {
             throw new IllegalArgumentException("Username '" + userRequest.getUsername() + "' is already in use");
         }
-
-        if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
-            throw new IllegalArgumentException("Passwords do not match");
+        if (userRequest.getPassword() == null || userRequest.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Password is required");
         }
 
-        Set<Role> roles = validateAndLoadRoles(userRequest.getRoleIds());
+        Set<Role> roles = loadRoles(userRequest.getRoleIds());
         
         // Granted role by default
         Role userRole = roleService.findEntityByName(defaultUserRole); 
@@ -98,30 +102,26 @@ public class UserService {
     public UserResponseDTO update(Integer id, UserRequestDTO userRequest) {
         
         User existingUser = findEntityById(id);
+        String authenticatedUsername = securityAuthorizationService.getCurrentUsername();
+        boolean isSelfEdit = existingUser.getUsername().equals(authenticatedUsername);
 
-        // Update username if changed and not already taken
+        if (!isSelfEdit && !securityAuthorizationService.currentUserHasAuthority("USER_EDIT_OTHERS")) {
+            throw new AccessDeniedException("You do not have permission to edit other users");
+        }
+
         if (userRequest.getUsername() != null && !userRequest.getUsername().equals(existingUser.getUsername())) {
             if (existsByUsername(userRequest.getUsername())) {
                 throw new IllegalArgumentException("Username '" + userRequest.getUsername() + "' is already in use");
             }
         }
 
-        // Update basic fields
-        userMapper.updateUserFromDTO(userRequest, existingUser);
-
-        // Handle password update if provided -> mapper already encodes it
-        if (userRequest.getPassword() != null && !userRequest.getPassword().isBlank()) {
-            if (!userRequest.getPassword().equals(userRequest.getConfirmPassword())) {
-                throw new IllegalArgumentException("Passwords do not match");
-            }
-        }
+        // Update basic fields (excluding roles)
+        checkCurrentPasswordRequired(userRequest, existingUser, isSelfEdit);
+        userMapper.updateEntityFromDTO(userRequest, existingUser);
 
         // Update roles if provided
         if (userRequest.getRoleIds() != null && !userRequest.getRoleIds().isEmpty()) {
-            Set<Role> roles = validateAndLoadRoles(userRequest.getRoleIds());
-            Role userRole = roleService.findEntityByName(defaultUserRole);
-            roles.add(userRole);
-            existingUser.setRoles(roles);
+            setUserRoles(id, userRequest.getRoleIds());
         }
 
         User updatedUser = userRepository.save(existingUser);
@@ -129,6 +129,7 @@ public class UserService {
     }
 
     public void delete(Integer id) {
+        
         User user = findEntityById(id);
         userRepository.delete(user);
     }
@@ -163,7 +164,7 @@ public class UserService {
         
         User user = findEntityById(userId);
 
-        Set<Role> roles = validateAndLoadRoles(roleIds);
+        Set<Role> roles = loadRoles(roleIds);
         
         // Keep roles in sync (bidirectional)
         user.clearRoles();
@@ -182,7 +183,7 @@ public class UserService {
 
     // --------------------------------------------------------
 
-    private Set<Role> validateAndLoadRoles(Set<Integer> roleIds) {
+    private Set<Role> loadRoles(Set<Integer> roleIds) {
         
         Set<Integer> rolesToLoad = Optional.ofNullable(roleIds)
                 .orElse(Collections.emptySet());
@@ -190,5 +191,19 @@ public class UserService {
         return rolesToLoad.stream()
                 .map(roleId -> roleService.findEntityById(roleId))
                 .collect(Collectors.toSet());
+    }
+
+    private void checkCurrentPasswordRequired(UserRequestDTO userRequest, User existingUser, boolean isSelfEdit) {
+        
+        if (userRequest.getPassword() != null && !userRequest.getPassword().isBlank()) {
+            if (isSelfEdit) { 
+                if (userRequest.getCurrentPassword() == null || userRequest.getCurrentPassword().isBlank()) {
+                    throw new IllegalArgumentException("Current password is required to change your password");
+                }
+                if (!passwordEncoder.matches(userRequest.getCurrentPassword(), existingUser.getPassword())) {
+                    throw new IllegalArgumentException("Current password is incorrect");
+                }
+            }
+        }
     }
 }
