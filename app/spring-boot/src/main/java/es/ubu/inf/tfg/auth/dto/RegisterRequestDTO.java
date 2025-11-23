@@ -23,7 +23,7 @@ public class RegisterRequestDTO {
     private String lastName;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 4, message = "Password must be at least {min} characters")
+    @Size(min = 4, max = 30, message = "Password must be between {min} and {max} characters")
     private String password;
 
     @NotBlank(message = "Password confirmation is required")

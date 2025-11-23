@@ -37,8 +37,9 @@ public class User {
     @Column(length = 100)
     private String lastName;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 70)
     private String password;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -46,7 +47,25 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+
     private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+
+    // --------------------------------------------------------
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now(); 
+    }
+
 
     // --------------------------------------------------------
 
@@ -76,12 +95,5 @@ public class User {
                 removeRole(role);
             }
         }
-    }
-
-    // --------------------------------------------------------
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
     }
 }

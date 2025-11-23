@@ -17,8 +17,9 @@ public class UserResponseDTO {
     private String username;
     private String firstName;
     private String lastName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private Set<Integer> roleIds;
     private Set<String> roleNames;
     private Integer roleCount;
-    private LocalDateTime createdAt;
 }
