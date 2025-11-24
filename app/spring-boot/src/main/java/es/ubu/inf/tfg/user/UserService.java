@@ -45,8 +45,7 @@ public class UserService {
     }
     
     public UserResponseDTO findById(Integer id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+        User user = findEntityById(id);
         return userMapper.toResponseDTO(user);
     }
 
@@ -79,12 +78,10 @@ public class UserService {
 
     public UserResponseDTO create(UserRequestDTO userRequest) {
         
-        if (existsByUsername(userRequest.getUsername())) {
-            throw new IllegalArgumentException("Username '" + userRequest.getUsername() + "' is already in use");
-        }
         if (userRequest.getPassword() == null || userRequest.getPassword().isBlank()) {
             throw new IllegalArgumentException("Password is required");
         }
+        checkUsernameExists(userRequest.getUsername());
 
         Set<Role> roles = loadRoles(userRequest.getRoleIds());
         
@@ -108,11 +105,8 @@ public class UserService {
         if (!isSelfEdit && !securityAuthorizationService.currentUserHasAuthority("USER_EDIT_OTHERS")) {
             throw new AccessDeniedException("You do not have permission to edit other users");
         }
-
         if (userRequest.getUsername() != null && !userRequest.getUsername().equals(existingUser.getUsername())) {
-            if (existsByUsername(userRequest.getUsername())) {
-                throw new IllegalArgumentException("Username '" + userRequest.getUsername() + "' is already in use");
-            }
+            checkUsernameExists(userRequest.getUsername());
         }
 
         // Update basic fields (excluding roles)
@@ -191,6 +185,12 @@ public class UserService {
         return rolesToLoad.stream()
                 .map(roleId -> roleService.findEntityById(roleId))
                 .collect(Collectors.toSet());
+    }
+
+    private void checkUsernameExists(String username) {
+        if (existsByUsername(username)) {
+            throw new IllegalArgumentException("Username '" + username + "' is already in use");
+        }
     }
 
     private void checkCurrentPasswordRequired(UserRequestDTO userRequest, User existingUser, boolean isSelfEdit) {

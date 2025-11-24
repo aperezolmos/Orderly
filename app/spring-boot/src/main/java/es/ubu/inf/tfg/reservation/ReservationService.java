@@ -74,10 +74,7 @@ public class ReservationService {
         validateReservationRequest(reservationRequest);
         checkForSchedulingConflicts(reservationRequest, null);
         
-        DiningTable table = diningTableService.findActiveTableById(reservationRequest.getDiningTableId());
-        
         Reservation reservation = reservationMapper.toEntity(reservationRequest);
-        reservation.setDiningTable(table);
         
         Reservation savedReservation = reservationRepository.save(reservation);
         return reservationMapper.toResponseDTO(savedReservation);

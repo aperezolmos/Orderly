@@ -40,8 +40,7 @@ public class RoleService {
     }
     
     public RoleResponseDTO findById(Integer id) {
-        Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
+        Role role = findEntityById(id);
         return roleMapper.toDetailedResponseDTO(role);
     }
 
@@ -51,8 +50,7 @@ public class RoleService {
     }
     
     public RoleResponseDTO findByName(String name) {
-        Role role = roleRepository.findByName(name)
-                .orElseThrow(() -> new EntityNotFoundException("Role not found with name: " + name));
+        Role role = findEntityByName(name);
         return roleMapper.toDetailedResponseDTO(role);
     }
 
@@ -75,11 +73,9 @@ public class RoleService {
     
     public RoleResponseDTO save(RoleRequestDTO roleRequest) {
         
-        if (existsByName(roleRequest.getName())) {
-            throw new IllegalArgumentException("Role with name '" + roleRequest.getName() + "' already exists");
-        }
-        
+        checkRoleNameExists(roleRequest.getName());
         Role role = roleMapper.toEntity(roleRequest);
+
         Role savedRole = roleRepository.save(role);
         return roleMapper.toResponseDTO(savedRole);
     }
@@ -89,9 +85,7 @@ public class RoleService {
         Role existingRole = findEntityById(id);
 
         if (roleRequest.getName() != null && !roleRequest.getName().equals(existingRole.getName())) {
-            if (existsByName(roleRequest.getName())) {
-                throw new IllegalArgumentException("Role with name '" + roleRequest.getName() + "' already exists");
-            }
+            checkRoleNameExists(roleRequest.getName());
             existingRole.setName(roleRequest.getName());
         }
 
@@ -156,5 +150,14 @@ public class RoleService {
         return Arrays.stream(Permission.values())
                 .map(Enum::name)
                 .toList();
+    }
+
+
+    // --------------------------------------------------------
+
+    private void checkRoleNameExists(String roleName) {
+        if (existsByName(roleName)) {
+            throw new IllegalArgumentException("Role with name '" + roleName + "' already exists");
+        }
     }
 }
