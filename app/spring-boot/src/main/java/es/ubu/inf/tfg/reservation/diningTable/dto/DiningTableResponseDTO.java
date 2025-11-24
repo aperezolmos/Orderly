@@ -18,4 +18,5 @@ public class DiningTableResponseDTO {
     private String locationDescription;
     private Boolean isActive;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

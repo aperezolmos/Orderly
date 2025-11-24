@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import es.ubu.inf.tfg.reservation.Reservation;
 import es.ubu.inf.tfg.reservation.details.ReservationDetails;
 import es.ubu.inf.tfg.reservation.diningTable.DiningTable;
+import es.ubu.inf.tfg.reservation.diningTable.DiningTableService;
 import es.ubu.inf.tfg.reservation.dto.ReservationRequestDTO;
 import es.ubu.inf.tfg.reservation.dto.ReservationResponseDTO;
 
@@ -12,10 +13,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")
-public interface ReservationMapper {
+public abstract class ReservationMapper {
     
+    @Autowired
+    protected DiningTableService diningTableService;
+
     
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
@@ -29,7 +34,7 @@ public interface ReservationMapper {
     @Mapping(target = "diningTable", source = "diningTableId")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    Reservation toEntity(ReservationRequestDTO dto);
+    public abstract Reservation toEntity(ReservationRequestDTO dto);
 
     
     @Mapping(target = "guestFirstName", source = "guestInfo.firstName")
@@ -42,12 +47,12 @@ public interface ReservationMapper {
     @Mapping(target = "estimatedEndTime", source = "reservationDetails", qualifiedByName = "calculateEndTime")
     @Mapping(target = "diningTableId", source = "diningTable.id")
     @Mapping(target = "diningTableName", source = "diningTable.name")
-    ReservationResponseDTO toResponseDTO(Reservation entity);
+    public abstract ReservationResponseDTO toResponseDTO(Reservation entity);
 
     
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
-    @Mapping(target = "diningTable", ignore = true)
+    @Mapping(target = "diningTable", source = "diningTableId")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "guestInfo.firstName", source = "guestFirstName")
@@ -57,20 +62,18 @@ public interface ReservationMapper {
     @Mapping(target = "reservationDetails.numberOfGuests", source = "numberOfGuests")
     @Mapping(target = "reservationDetails.reservationDateTime", source = "reservationDateTime")
     @Mapping(target = "reservationDetails.estimatedDurationMinutes", source = "estimatedDurationMinutes")
-    void updateEntityFromDTO(ReservationRequestDTO dto, @MappingTarget Reservation entity);
+    public abstract void updateEntityFromDTO(ReservationRequestDTO dto, @MappingTarget Reservation entity);
 
 
     // --------------------------------------------------------
 
-    default DiningTable mapDiningTableId(Integer diningTableId) {
-        if (diningTableId == null) {
-            return null;
-        }
-        return DiningTable.builder().id(diningTableId).build();
+    protected DiningTable mapDiningTableId(Integer diningTableId) {
+        if (diningTableId == null) return null;
+        return diningTableService.findActiveTableById(diningTableId);
     }
 
     @Named("calculateEndTime")
-    default LocalDateTime calculateEndTime(ReservationDetails details) {
+    protected LocalDateTime calculateEndTime(ReservationDetails details) {
         return details != null ? details.calculateEstimatedEndTime() : null;
     }
 }

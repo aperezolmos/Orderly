@@ -28,6 +28,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserServiceUnitTest {
 
+    @InjectMocks
+    private UserService userService;
+
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -38,9 +41,7 @@ class UserServiceUnitTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private SecurityAuthorizationService securityAuthorizationService;
-
-    @InjectMocks
-    private UserService userService;
+    
 
     private static final Integer USER_ID = 1;
     private static final String USERNAME = "testuser";

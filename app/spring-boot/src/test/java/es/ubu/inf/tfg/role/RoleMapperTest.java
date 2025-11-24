@@ -4,28 +4,26 @@ import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.role.Role;
 import es.ubu.inf.tfg.user.role.dto.RoleRequestDTO;
 import es.ubu.inf.tfg.user.role.dto.RoleResponseDTO;
-import es.ubu.inf.tfg.user.role.dto.mapper.RoleMapper;
+import es.ubu.inf.tfg.user.role.dto.mapper.RoleMapperImpl;
 import es.ubu.inf.tfg.user.role.permission.Permission;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class) 
 class RoleMapperTest {
 
-    @Autowired
-    private RoleMapper roleMapper;
+    @InjectMocks
+    private RoleMapperImpl roleMapper;
 
-    private RoleRequestDTO roleRequestDTO;
-    private Role roleEntity;
-    private Role roleEntityWithUsers;
 
     private static final Integer ROLE_ID = 1;
     private static final String ROLE_NAME = "TEST_ROLE";
@@ -33,6 +31,10 @@ class RoleMapperTest {
     private static final LocalDateTime CREATED_AT = LocalDateTime.now().minusDays(1);
     private static final LocalDateTime UPDATED_AT = LocalDateTime.now();
     private static final Integer USER_COUNT = 2;
+
+    private RoleRequestDTO roleRequestDTO;
+    private Role roleEntity;
+    private Role roleEntityWithUsers;
 
 
     @BeforeEach

@@ -45,10 +45,10 @@ public class Reservation {
     private DiningTable diningTable;
 
 
-    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
 
     // --------------------------------------------------------
 

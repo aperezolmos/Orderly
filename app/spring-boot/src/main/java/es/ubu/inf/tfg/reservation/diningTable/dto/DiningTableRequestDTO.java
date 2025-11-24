@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 public class DiningTableRequestDTO {
     
     @NotBlank(message = "Name is required")
-    @Size(max = 10, message = "Name cannot exceed 10 characters")
+    @Size(max = 10, message = "Name cannot exceed {max} characters")
     private String name;
 
     @NotNull(message = "Capacity is required")
-    @Min(value = 1, message = "Capacity must be at least 1")
+    @Min(value = 1, message = "Capacity must be at least {value}")
     private Integer capacity;
 
-    @Size(max = 100, message = "Location description cannot exceed 100 characters")
+    @Size(max = 100, message = "Location description cannot exceed {max} characters")
     private String locationDescription;
 }

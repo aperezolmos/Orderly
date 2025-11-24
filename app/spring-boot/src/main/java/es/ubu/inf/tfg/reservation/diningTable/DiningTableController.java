@@ -30,7 +30,7 @@ public class DiningTableController {
     }
 
     @GetMapping("/active")
-    //@PreAuthorize("hasAuthority('TABLE_VIEW_LIST')") //TODO: ver si es necesario el permiso
+    @PreAuthorize("hasAuthority('TABLE_VIEW_LIST')")
     public ResponseEntity<List<DiningTableResponseDTO>> getAvailableTables(
             @RequestParam(required = false) Integer capacity) {
         
@@ -46,6 +46,11 @@ public class DiningTableController {
     @GetMapping("/{id}")
     public ResponseEntity<DiningTableResponseDTO> getTableById(@PathVariable Integer id) {
         return ResponseEntity.ok(diningTableService.findById(id));
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<DiningTableResponseDTO> getTableByName(@PathVariable String name) {
+        return ResponseEntity.ok(diningTableService.findByName(name));
     }
 
     @PostMapping

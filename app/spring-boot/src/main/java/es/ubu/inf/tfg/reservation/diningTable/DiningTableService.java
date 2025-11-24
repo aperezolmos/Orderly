@@ -40,6 +40,12 @@ public class DiningTableService {
                 .orElseThrow(() -> new EntityNotFoundException("Table not found with id: " + id));
     }
 
+    public DiningTableResponseDTO findByName(String name) {
+        DiningTable table = diningTableRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException("Table not found with name: " + name));
+        return diningTableMapper.toResponseDTO(table);
+    }
+
     public DiningTable findActiveTableById(Integer id) {
         return diningTableRepository.findByIdAndIsActiveTrue(id)
                 .orElseThrow(() -> new EntityNotFoundException("Table with id: " + id + " not found or not active"));
@@ -71,11 +77,9 @@ public class DiningTableService {
     
     public DiningTableResponseDTO create(DiningTableRequestDTO tableRequest) {
         
-        if (existsByName(tableRequest.getName())) {
-            throw new IllegalArgumentException("Dining table with name: '" + tableRequest.getName() + "' already exists");
-        }
-
+        checkTableNameExists(tableRequest.getName());
         DiningTable table = diningTableMapper.toEntity(tableRequest);
+
         DiningTable savedTable = diningTableRepository.save(table);
         return diningTableMapper.toResponseDTO(savedTable);
     }
@@ -85,9 +89,7 @@ public class DiningTableService {
         DiningTable existingTable = findEntityById(id);
 
         if (tableRequest.getName() != null && !tableRequest.getName().equals(existingTable.getName())) {
-            if (existsByName(tableRequest.getName())) {
-                throw new IllegalArgumentException("Dining table with name: '" + tableRequest.getName() + "' already exists");
-            }
+            checkTableNameExists(tableRequest.getName());
             existingTable.setName(tableRequest.getName());
         }
 
@@ -132,5 +134,14 @@ public class DiningTableService {
         
         DiningTable updatedTable = diningTableRepository.save(table);
         return diningTableMapper.toResponseDTO(updatedTable);
+    }
+
+
+    // --------------------------------------------------------
+
+    private void checkTableNameExists(String tableName) {
+        if (existsByName(tableName)) {
+            throw new IllegalArgumentException("Dining table with name: '" + tableName + "' already exists");
+        }
     }
 }

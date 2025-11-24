@@ -38,6 +38,7 @@ public class ReservationController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAuthority('RESERVATION_VIEW_LIST')")
     public ResponseEntity<List<ReservationResponseDTO>> searchReservations(
             @RequestParam(required = false) ReservationStatus status,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,

@@ -30,17 +30,14 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class RoleServiceTest {
 
+    @InjectMocks
+    private RoleService roleService;
+
     @Mock
     private RoleRepository roleRepository;
     @Mock
     private RoleMapper roleMapper;
-
-    @InjectMocks
-    private RoleService roleService;
-
-    private Role roleEntity;
-    private RoleRequestDTO roleRequestDTO;
-    private RoleResponseDTO roleResponseDTO;
+    
 
     private static final Integer ROLE_ID_1 = 1;
     private static final Integer ROLE_ID_2 = 2;
@@ -51,6 +48,10 @@ class RoleServiceTest {
     private static final LocalDateTime UPDATED_AT = LocalDateTime.now();
     private static final String ADMIN_ROLE = "ROLE_ADMIN";
     private static final String USER_ROLE = "ROLE_USER";
+
+    private Role roleEntity;
+    private RoleRequestDTO roleRequestDTO;
+    private RoleResponseDTO roleResponseDTO;
 
 
     @BeforeEach
