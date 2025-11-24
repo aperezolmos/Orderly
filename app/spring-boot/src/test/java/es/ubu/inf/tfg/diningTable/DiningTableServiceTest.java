@@ -26,16 +26,17 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class DiningTableServiceTest {
 
+    @InjectMocks
+    private DiningTableService diningTableService;
+
     @Mock
     private DiningTableRepository diningTableRepository;
     @Mock
     private DiningTableMapper diningTableMapper;
-
-    @InjectMocks
-    private DiningTableService diningTableService;
+    
 
     private static final Integer TABLE_ID = 1;
-    private static final String TABLE_NAME = "Table1";
+    private static final String TABLE_NAME = "T-01";
     private static final Integer TABLE_CAPACITY = 4;
     private static final String LOCATION_DESC = "Next to window";
     private static final Boolean IS_ACTIVE = true;

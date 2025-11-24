@@ -3,38 +3,40 @@ package es.ubu.inf.tfg.diningTable;
 import es.ubu.inf.tfg.reservation.diningTable.DiningTable;
 import es.ubu.inf.tfg.reservation.diningTable.dto.DiningTableRequestDTO;
 import es.ubu.inf.tfg.reservation.diningTable.dto.DiningTableResponseDTO;
-import es.ubu.inf.tfg.reservation.diningTable.dto.mapper.DiningTableMapper;
+import es.ubu.inf.tfg.reservation.diningTable.dto.mapper.DiningTableMapperImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class) 
 class DiningTableMapperTest {
 
-    @Autowired
-    private DiningTableMapper diningTableMapper;
+    @InjectMocks
+    private DiningTableMapperImpl diningTableMapper;
+
 
     private static final Integer TABLE_ID = 1;
-    private static final String TABLE_NAME = "Table1";
+    private static final String TABLE_NAME = "T-01";
     private static final Integer TABLE_CAPACITY = 4;
     private static final String LOCATION_DESC = "Next to window";
     private static final Boolean IS_ACTIVE = true;
     private static final LocalDateTime CREATED_AT = LocalDateTime.now().minusDays(1);
     private static final LocalDateTime UPDATED_AT = LocalDateTime.now();
 
-    private DiningTableRequestDTO tableRequestDTO;
+    private DiningTableRequestDTO requestDTO;
     private DiningTable diningTableEntity;
 
     @BeforeEach
     void setUp() {
         
-        tableRequestDTO = DiningTableRequestDTO.builder()
+        requestDTO = DiningTableRequestDTO.builder()
                 .name(TABLE_NAME)
                 .capacity(TABLE_CAPACITY)
                 .locationDescription(LOCATION_DESC)
@@ -57,7 +59,7 @@ class DiningTableMapperTest {
     @Test
     void toEntity_FromValidDTO_ShouldMapCorrectly() {
         
-        DiningTable entity = diningTableMapper.toEntity(tableRequestDTO);
+        DiningTable entity = diningTableMapper.toEntity(requestDTO);
 
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isNull();

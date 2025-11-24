@@ -18,11 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserServiceIntegrationTest {
 
     @Autowired
+    private UserService userService;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private UserService userService;
+    
 
     private static final String TEST_USERNAME = "testusername";
     private static final String TEST_PASSWORD = "testpassword";

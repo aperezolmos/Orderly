@@ -3,13 +3,15 @@ package es.ubu.inf.tfg.user;
 import es.ubu.inf.tfg.auth.dto.RegisterRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
-import es.ubu.inf.tfg.user.dto.mapper.UserMapper;
+import es.ubu.inf.tfg.user.dto.mapper.UserMapperImpl;
 import es.ubu.inf.tfg.user.role.Role;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -17,14 +19,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class) 
 class UserMapperTest {
 
-    @Autowired
-    private UserMapper userMapper;
+    @InjectMocks
+    private UserMapperImpl userMapper;
 
-    @Autowired
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     private static final Integer USER_ID = 1;
@@ -32,7 +35,7 @@ class UserMapperTest {
     private static final String FIRST_NAME = "Test";
     private static final String LAST_NAME = "User";
     private static final String PASSWORD = "password123";
-    private static final String ENCODED_PASSWORD = "$2a$10$encodedpasswordhash";
+    private static final String ENCODED_PASSWORD = "$2a$10$encodedpassword";
     private static final LocalDateTime CREATED_AT = LocalDateTime.now().minusDays(1);
     private static final LocalDateTime UPDATED_AT = LocalDateTime.now();
     
@@ -41,6 +44,7 @@ class UserMapperTest {
     private static final Integer ROLE_COUNT = 2;
     private static final String NEW_USERNAME = "newusername";
     private static final String NEW_PASSWORD = "newpassword";
+    private static final String NEW_ENCODED_PASSWORD = "$2a$10$newencodedpassword";
     private static final String NEW_FIRST_NAME = "newfirstname";
     private static final String NEW_LAST_NAME = "newlastname";
 
@@ -52,7 +56,7 @@ class UserMapperTest {
 
     @BeforeEach
     void setUp() {
-        
+
         userRequestDTO = UserRequestDTO.builder()
                 .username(USERNAME)
                 .firstName(FIRST_NAME)
@@ -62,7 +66,6 @@ class UserMapperTest {
                 .roleIds(new HashSet<>(Arrays.asList(1, 2)))
                 .build();
 
-        
         registerRequestDTO = new RegisterRequestDTO();
         registerRequestDTO.setUsername(USERNAME);
         registerRequestDTO.setFirstName(FIRST_NAME);
@@ -70,7 +73,6 @@ class UserMapperTest {
         registerRequestDTO.setPassword(PASSWORD);
         registerRequestDTO.setConfirmPassword(PASSWORD);
 
-        
         userEntity = User.builder()
                 .id(USER_ID)
                 .username(USERNAME)
@@ -103,6 +105,8 @@ class UserMapperTest {
 
     @Test
     void toEntity_FromValidDTO_ShouldMapCorrectly() {
+
+        when(passwordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
         
         User user = userMapper.toEntity(userRequestDTO);
 
@@ -110,8 +114,7 @@ class UserMapperTest {
         assertThat(user.getUsername()).isEqualTo(USERNAME);
         assertThat(user.getFirstName()).isEqualTo(FIRST_NAME);
         assertThat(user.getLastName()).isEqualTo(LAST_NAME);
-        assertThat(user.getPassword()).isNotEqualTo(PASSWORD); // Should be encoded
-        assertThat(passwordEncoder.matches(PASSWORD, user.getPassword())).isTrue();
+        assertThat(user.getPassword()).isEqualTo(ENCODED_PASSWORD);
         assertThat(user.getRoles()).isNull();
         assertThat(user.getCreatedAt()).isNull();
         assertThat(user.getUpdatedAt()).isNull();
@@ -197,6 +200,8 @@ class UserMapperTest {
 
     @Test
     void updateEntityFromDTO_WithValidDTO_ShouldUpdateNonNullFields() {
+
+        when(passwordEncoder.encode(NEW_PASSWORD)).thenReturn(NEW_ENCODED_PASSWORD);
         
         UserRequestDTO updateDTO = UserRequestDTO.builder()
                 .username(NEW_USERNAME)
@@ -222,8 +227,7 @@ class UserMapperTest {
         assertThat(existingUser.getUsername()).isEqualTo(NEW_USERNAME);
         assertThat(existingUser.getFirstName()).isEqualTo(NEW_FIRST_NAME);
         assertThat(existingUser.getLastName()).isEqualTo(NEW_LAST_NAME);
-        assertThat(existingUser.getPassword()).isNotEqualTo(ENCODED_PASSWORD);
-        assertThat(passwordEncoder.matches(NEW_PASSWORD, existingUser.getPassword())).isTrue();
+        assertThat(existingUser.getPassword()).isEqualTo(NEW_ENCODED_PASSWORD);
         assertThat(existingUser.getCreatedAt()).isEqualTo(CREATED_AT);
         assertThat(existingUser.getUpdatedAt()).isEqualTo(UPDATED_AT);
         assertThat(existingUser.getRoles()).isEmpty();
