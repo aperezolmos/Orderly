@@ -3,29 +3,21 @@ package es.ubu.inf.tfg.food.dto.mapper;
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
-import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
-import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
+import es.ubu.inf.tfg.food.nutritionInfo.dto.mapper.NutritionInfoMapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
-public interface FoodMapper {
+@Mapper(componentModel = "spring", uses = {NutritionInfoMapper.class})
+public abstract class FoodMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "usages", ignore = true)
-    Food toEntity(FoodRequestDTO dto);
+    public abstract Food toEntity(FoodRequestDTO dto);
 
-    @Mapping(target = "recipeCount", expression = "java(food.getUsages().size())")
-    FoodResponseDTO toResponseDTO(Food food);
 
-    // --------------------------------------------------------
-
-    @Mapping(target = "salt", ignore = true)
-    @Mapping(target = "saturatedFats", ignore = true)
-    @Mapping(target = "minerals", ignore = true)
-    @Mapping(target = "vitamins", ignore = true)
-    NutritionInfo toNutritionInfoEntity(NutritionInfoDTO dto);
-
-    NutritionInfoDTO toNutritionInfoDTO(NutritionInfo entity);
+    @Mapping(target = "recipeCount", expression = "java(food.getUsages() != null ? food.getUsages().size() : 0)")
+    public abstract FoodResponseDTO toResponseDTO(Food food);
 }

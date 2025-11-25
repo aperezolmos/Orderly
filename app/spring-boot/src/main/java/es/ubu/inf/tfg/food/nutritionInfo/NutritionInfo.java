@@ -9,15 +9,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Embeddable
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Builder
 public class NutritionInfo {
 
@@ -58,6 +58,7 @@ public class NutritionInfo {
 
     @Embedded
     private Vitamins vitamins;
+
 
     // --------------------------------------------------------
     
