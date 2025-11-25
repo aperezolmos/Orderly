@@ -50,7 +50,7 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<List<ProductResponseDTO>> searchProducts( 
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) Integer foodId) {
         
         List<ProductResponseDTO> products;

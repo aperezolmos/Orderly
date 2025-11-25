@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.product.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class ProductResponseDTO {
     private Integer id;
     private String name;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int ingredientCount;

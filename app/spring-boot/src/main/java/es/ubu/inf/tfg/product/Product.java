@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.product;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class Product {
 
     private String description;
 
-    private Double price; // TODO: precio fijo? o precio por unidad/por peso?
+    private BigDecimal price; // TODO: precio fijo? o precio por unidad/por peso?
 
 
     @Builder.Default

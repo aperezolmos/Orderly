@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.product;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
     Optional<Product> findByName(String name);
     boolean existsByName(String name);
     List<Product> findByNameContainingIgnoreCase(String namePart);
-    List<Product> findByPriceLessThanEqual(Double maxPrice);
+    List<Product> findByPriceLessThanEqual(BigDecimal maxPrice);
 
     @Query("SELECT i FROM Product p JOIN p.ingredients i WHERE p.id = :productId AND i.food.id = :foodId")
     Optional<Ingredient> findIngredientByProductIdAndFoodId(@Param("productId") Integer productId, @Param("foodId") Integer foodId);

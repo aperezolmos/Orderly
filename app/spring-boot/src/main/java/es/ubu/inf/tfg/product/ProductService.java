@@ -66,7 +66,7 @@ public class ProductService {
                 .toList();
     }
 
-    public List<ProductResponseDTO> findByMaxPrice(Double maxPrice) {
+    public List<ProductResponseDTO> findByMaxPrice(BigDecimal maxPrice) {
         return productRepository.findByPriceLessThanEqual(maxPrice).stream()
                 .map(productMapper::toResponseDTO)
                 .toList();
@@ -114,7 +114,7 @@ public class ProductService {
         
         existingProduct.setDescription(productRequest.getDescription());
         
-        if (productRequest.getPrice() >= 0) {
+        if (productRequest.getPrice().compareTo(BigDecimal.ZERO) >= 0) {
             existingProduct.setPrice(productRequest.getPrice());
         }
         
