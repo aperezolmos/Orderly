@@ -1,5 +1,8 @@
 package es.ubu.inf.tfg.food.dto;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 
@@ -16,7 +19,9 @@ public class FoodResponseDTO {
     private Integer id;
     private String name;
     private FoodGroup foodGroup;
-    private double servingWeightGrams;
+    private BigDecimal servingWeightGrams;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Integer recipeCount;
     private NutritionInfoDTO nutritionInfo;
-    private int recipeCount;
 }

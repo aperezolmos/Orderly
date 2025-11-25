@@ -1,8 +1,11 @@
 package es.ubu.inf.tfg.food.dto;
 
+import java.math.BigDecimal;
+
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -27,8 +30,8 @@ public class FoodRequestDTO {
     private FoodGroup foodGroup;
 
     @Positive(message = "Serving weight must be positive")
-    private double servingWeightGrams;
+    private BigDecimal servingWeightGrams;
 
-    @NotNull(message = "Nutrition information is required")
+    @Valid
     private NutritionInfoDTO nutritionInfo;
 }

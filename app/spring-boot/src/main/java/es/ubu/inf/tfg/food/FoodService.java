@@ -31,8 +31,7 @@ public class FoodService {
     }
 
     public FoodResponseDTO findById(Integer id) {
-        Food food = foodRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Food not found with id: " + id));
+        Food food = findEntityById(id);
         return foodMapper.toResponseDTO(food);
     }
 
@@ -73,11 +72,9 @@ public class FoodService {
 
     public FoodResponseDTO create(FoodRequestDTO foodRequest) {
         
-        if (existsByName(foodRequest.getName())) {
-            throw new IllegalArgumentException("Food with name '" + foodRequest.getName() + "' already exists");
-        }
-
+        checkFoodNameExists(foodRequest.getName());
         Food food = foodMapper.toEntity(foodRequest);
+
         Food savedFood = foodRepository.save(food);
         return foodMapper.toResponseDTO(savedFood);
     }
@@ -87,23 +84,10 @@ public class FoodService {
         Food existingFood = findEntityById(id);
 
         if (foodRequest.getName() != null && !foodRequest.getName().equals(existingFood.getName())) {
-            if (existsByName(foodRequest.getName())) {
-                throw new IllegalArgumentException("Food with name '" + foodRequest.getName() + "' already exists");
-            }
-            existingFood.setName(foodRequest.getName());
-        }
-
-        if (foodRequest.getFoodGroup() != null) {
-            existingFood.setFoodGroup(foodRequest.getFoodGroup());
+            checkFoodNameExists(foodRequest.getName());
         }
         
-        if (foodRequest.getServingWeightGrams() > 0) {
-            existingFood.setServingWeightGrams(foodRequest.getServingWeightGrams());
-        }
-        
-        if (foodRequest.getNutritionInfo() != null) {
-            existingFood.setNutritionInfo(foodMapper.toNutritionInfoEntity(foodRequest.getNutritionInfo()));
-        }
+        foodMapper.updateEntityFromDTO(foodRequest, existingFood);
 
         Food updatedFood = foodRepository.save(existingFood);
         return foodMapper.toResponseDTO(updatedFood);
@@ -117,5 +101,14 @@ public class FoodService {
             throw new ResourceInUseException("Food", id, "Product");
         }
         foodRepository.delete(food);
+    }
+
+
+    // --------------------------------------------------------
+
+    private void checkFoodNameExists(String foodName) {
+        if (existsByName(foodName)) {
+            throw new IllegalArgumentException("Food with name '" + foodName + "' already exists");
+        }
     }
 }
