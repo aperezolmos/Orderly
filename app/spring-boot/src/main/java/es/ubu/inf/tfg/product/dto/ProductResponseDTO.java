@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientResponseDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,5 @@ public class ProductResponseDTO {
     private LocalDateTime updatedAt;
     private int ingredientCount;
     private NutritionInfoDTO totalNutrition;
-    private Double totalCalories;
     private Set<IngredientResponseDTO> ingredients;
 }

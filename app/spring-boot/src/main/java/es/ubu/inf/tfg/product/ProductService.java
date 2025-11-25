@@ -8,15 +8,18 @@ import org.springframework.stereotype.Service;
 import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.FoodService;
+
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
+import es.ubu.inf.tfg.food.nutritionInfo.dto.mapper.NutritionInfoMapper;
 
-import es.ubu.inf.tfg.product.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
-import es.ubu.inf.tfg.product.dto.mapper.IngredientMapper;
 import es.ubu.inf.tfg.product.dto.mapper.ProductMapper;
+
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientResponseDTO;
+import es.ubu.inf.tfg.product.ingredient.dto.mapper.IngredientMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -29,9 +32,10 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
     
     private final ProductRepository productRepository;
-    private final FoodService foodService;
     private final ProductMapper productMapper;
+    private final FoodService foodService;
     private final IngredientMapper ingredientMapper;
+    private final NutritionInfoMapper nutritionInfoMapper;
 
     
     public List<ProductResponseDTO> findAll() {
@@ -178,7 +182,7 @@ public class ProductService {
         
         Product product = findEntityById(productId);
         NutritionInfo totalNutrition = product.calculateTotalNutrition();
-        return productMapper.toNutritionInfoDTO(totalNutrition);
+        return nutritionInfoMapper.toDTO(totalNutrition);
     }
 
     public ProductResponseDTO getProductDetailedInfo(Integer productId, boolean includeIngredients) {

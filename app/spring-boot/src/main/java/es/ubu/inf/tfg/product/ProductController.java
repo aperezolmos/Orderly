@@ -1,8 +1,9 @@
 package es.ubu.inf.tfg.product;
 
-import es.ubu.inf.tfg.product.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientRequestDTO;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -77,6 +78,7 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Integer id,
             @Valid @RequestBody ProductRequestDTO productRequest) {
+        
         ProductResponseDTO updatedProduct = productService.update(id, productRequest);
         return ResponseEntity.ok(updatedProduct);
     }
@@ -111,9 +113,10 @@ public class ProductController {
     @PreAuthorize("hasAuthority('PRODUCT_EDIT') and hasAuthority('PRODUCT_EDIT_INGREDIENTS')")
     public ResponseEntity<IngredientResponseDTO> addIngredientToProduct(
             @PathVariable Integer productId,
-            @RequestParam Integer foodId,
-            @RequestParam BigDecimal quantity) {
-        IngredientResponseDTO ingredient = productService.addIngredientToProduct(productId, foodId, quantity);
+            @Valid @RequestBody IngredientRequestDTO ingredientRequest) {
+        
+        IngredientResponseDTO ingredient = productService.addIngredientToProduct(productId,
+            ingredientRequest.getFoodId(), ingredientRequest.getQuantityInGrams());
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredient);
     }
 
@@ -123,6 +126,7 @@ public class ProductController {
             @PathVariable Integer productId,
             @PathVariable Integer foodId,
             @RequestParam BigDecimal quantity) {
+        
         IngredientResponseDTO ingredient = productService.updateIngredientQuantity(productId, foodId, quantity);
         return ResponseEntity.ok(ingredient);
     }
@@ -132,6 +136,7 @@ public class ProductController {
     public ResponseEntity<Void> removeIngredientFromProduct(
             @PathVariable Integer productId,
             @PathVariable Integer foodId) {
+        
         productService.removeIngredientFromProduct(productId, foodId);
         return ResponseEntity.noContent().build();
     }

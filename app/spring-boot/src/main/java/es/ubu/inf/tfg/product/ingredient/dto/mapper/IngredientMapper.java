@@ -1,7 +1,7 @@
-package es.ubu.inf.tfg.product.dto.mapper;
+package es.ubu.inf.tfg.product.ingredient.dto.mapper;
 
-import es.ubu.inf.tfg.product.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientResponseDTO;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

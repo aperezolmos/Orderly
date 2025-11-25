@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.product.dto;
+package es.ubu.inf.tfg.product.ingredient.dto;
 
 import java.math.BigDecimal;
 
