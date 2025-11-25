@@ -15,7 +15,7 @@ import lombok.*;
 @ToString
 public class IngredientId implements Serializable {
 
-    private Integer foodId;
-    
     private Integer productId;
+
+    private Integer foodId;
 }

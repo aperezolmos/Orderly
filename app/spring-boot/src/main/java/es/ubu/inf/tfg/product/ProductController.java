@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -111,7 +112,7 @@ public class ProductController {
     public ResponseEntity<IngredientResponseDTO> addIngredientToProduct(
             @PathVariable Integer productId,
             @RequestParam Integer foodId,
-            @RequestParam Double quantity) {
+            @RequestParam BigDecimal quantity) {
         IngredientResponseDTO ingredient = productService.addIngredientToProduct(productId, foodId, quantity);
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredient);
     }
@@ -121,7 +122,7 @@ public class ProductController {
     public ResponseEntity<IngredientResponseDTO> updateIngredientQuantity(
             @PathVariable Integer productId,
             @PathVariable Integer foodId,
-            @RequestParam Double quantity) {
+            @RequestParam BigDecimal quantity) {
         IngredientResponseDTO ingredient = productService.updateIngredientQuantity(productId, foodId, quantity);
         return ResponseEntity.ok(ingredient);
     }

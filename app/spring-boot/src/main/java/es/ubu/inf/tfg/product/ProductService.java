@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.FoodService;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
+
 import es.ubu.inf.tfg.product.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
@@ -39,8 +41,7 @@ public class ProductService {
     }
 
     public ProductResponseDTO findById(Integer id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+        Product product = findEntityById(id);
         return productMapper.toResponseDTO(product);
     }
 
@@ -91,11 +92,9 @@ public class ProductService {
 
     public ProductResponseDTO create(ProductRequestDTO productRequest) {
         
-        if (existsByName(productRequest.getName())) {
-            throw new IllegalArgumentException("Product with name '" + productRequest.getName() + "' already exists");
-        }
-        
+        checkProductNameExists(productRequest.getName());
         Product product = productMapper.toEntity(productRequest);
+
         Product savedProduct = productRepository.save(product);
         return productMapper.toResponseDTO(savedProduct);
     }
@@ -105,9 +104,7 @@ public class ProductService {
         Product existingProduct = findEntityById(id);
         
         if (productRequest.getName() != null && !productRequest.getName().equals(existingProduct.getName())) {
-            if (existsByName(productRequest.getName())) {
-                throw new IllegalArgumentException("Product with name '" + productRequest.getName() + "' already exists");
-            }
+            checkProductNameExists(productRequest.getName());
             existingProduct.setName(productRequest.getName());
         }
         
@@ -135,38 +132,42 @@ public class ProductService {
     // --------------------------------------------------------
     // DOMAIN METHODS (ingredients)
 
-    public IngredientResponseDTO addIngredientToProduct(Integer productId, Integer foodId, Double quantity) {
+    public IngredientResponseDTO addIngredientToProduct(Integer productId, Integer foodId, BigDecimal quantity) {
         
+        validateQuantityPositive(quantity);
+
         Product product = findEntityById(productId);
         Food food = foodService.findEntityById(foodId);
-        
-        Ingredient ingredient = product.addIngredient(food, quantity);
+
+        if (existsIngredientById(productId, foodId)) {
+            throw new IllegalArgumentException("Ingredient with productId: " + productId + " and foodId: "
+                + foodId + " already exists");
+        }
+
+        // Internally ensures bidirectional consistency and collection updates
+        Ingredient ingredient = new Ingredient(product, food, quantity);
         productRepository.save(product);
         
         return ingredientMapper.toResponseDTO(ingredient);
     }
 
-    public IngredientResponseDTO updateIngredientQuantity(Integer productId, Integer foodId, Double newQuantity) {
+    public IngredientResponseDTO updateIngredientQuantity(Integer productId, Integer foodId, BigDecimal newQuantity) {
         
+        validateQuantityPositive(newQuantity);
+
+        Ingredient ingredient = findIngredientById(productId, foodId);
         Product product = findEntityById(productId);
-        product.updateIngredientQuantity(foodId, newQuantity);
+
+        ingredient.setQuantity(newQuantity);
         productRepository.save(product);
-        
-        // Retrieve the updated ingredient for the response DTO
-        Ingredient updatedIngredient = product.getIngredients().stream()
-                .filter(ing -> ing.getId().getFoodId().equals(foodId))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Ingredient not found for foodId: " + foodId
-                + " and productId: " + productId));
                 
-        return ingredientMapper.toResponseDTO(updatedIngredient);
+        return ingredientMapper.toResponseDTO(ingredient);
     }
 
     public void removeIngredientFromProduct(Integer productId, Integer foodId) {
-        
-        Product product = findEntityById(productId);
-        product.removeIngredient(foodId);
-        productRepository.save(product);
+
+        Ingredient ingredient = findIngredientById(productId, foodId);
+        ingredient.remove();
     }
 
 
@@ -199,5 +200,30 @@ public class ProductService {
         return product.getIngredients().stream()
                 .map(ingredientMapper::toResponseDTO)
                 .toList();
+    }
+
+
+    // --------------------------------------------------------
+
+    private void checkProductNameExists(String productName) {
+        if (existsByName(productName)) {
+            throw new IllegalArgumentException("Product with name '" + productName + "' already exists");
+        }
+    }
+
+    private void validateQuantityPositive(BigDecimal quantity){
+        if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Quantity must be positive");
+        }
+    }
+
+    private Ingredient findIngredientById(Integer productId, Integer foodId) {
+        return productRepository.findIngredientByProductIdAndFoodId(productId, foodId)
+                .orElseThrow(() -> new EntityNotFoundException("Ingredient not found for productId: "
+                + productId + " and foodId: " + foodId));
+    }
+
+    private boolean existsIngredientById(Integer productId, Integer foodId) {
+        return productRepository.existsIngredientByProductIdAndFoodId(productId, foodId);
     }
 }
