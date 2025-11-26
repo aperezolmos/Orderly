@@ -46,7 +46,7 @@ public class Food {
     
 
     @Builder.Default
-    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "food")
     private Set<Ingredient> usages = new HashSet<>();
 
 

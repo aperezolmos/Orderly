@@ -8,10 +8,7 @@ import org.springframework.stereotype.Service;
 import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.FoodService;
-
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
-import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
-import es.ubu.inf.tfg.food.nutritionInfo.dto.mapper.NutritionInfoMapper;
 
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
@@ -35,7 +32,6 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final FoodService foodService;
     private final IngredientMapper ingredientMapper;
-    private final NutritionInfoMapper nutritionInfoMapper;
 
     
     public List<ProductResponseDTO> findAll() {
@@ -178,17 +174,16 @@ public class ProductService {
     // --------------------------------------------------------
     // INFO
 
-    public NutritionInfoDTO calculateProductNutritionInfo(Integer productId) {
+    public NutritionInfo calculateProductNutritionInfo(Integer productId) {
         
         Product product = findEntityById(productId);
-        NutritionInfo totalNutrition = product.calculateTotalNutrition();
-        return nutritionInfoMapper.toDTO(totalNutrition);
+        return product.calculateTotalNutrition();
     }
 
     public ProductResponseDTO getProductDetailedInfo(Integer productId, boolean includeIngredients) {
         
         Product product = findEntityById(productId);
-        NutritionInfoDTO nutritionInfo = calculateProductNutritionInfo(productId);
+        NutritionInfo nutritionInfo = calculateProductNutritionInfo(productId);
         
         if (includeIngredients) {
             return productMapper.toCompleteResponseDTO(product, nutritionInfo);

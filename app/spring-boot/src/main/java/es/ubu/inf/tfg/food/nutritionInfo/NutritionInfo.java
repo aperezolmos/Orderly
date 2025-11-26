@@ -53,11 +53,13 @@ public class NutritionInfo {
     @Column(precision=6, scale=2)
     private BigDecimal sugars = BigDecimal.ZERO;
  
+    @Builder.Default
     @Embedded
-    private Minerals minerals;
+    private Minerals minerals = Minerals.builder().build();
 
+    @Builder.Default
     @Embedded
-    private Vitamins vitamins;
+    private Vitamins vitamins = Vitamins.builder().build();
 
 
     // --------------------------------------------------------

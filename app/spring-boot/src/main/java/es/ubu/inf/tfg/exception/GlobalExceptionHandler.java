@@ -100,6 +100,7 @@ public class GlobalExceptionHandler {
             "Internal server error", 
             "An unexpected error occurred");
     }
+    
 
     // --------------------------------------------------------
 
