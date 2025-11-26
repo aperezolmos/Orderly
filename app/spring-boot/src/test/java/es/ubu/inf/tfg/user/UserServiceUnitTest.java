@@ -162,7 +162,6 @@ class UserServiceUnitTest {
     void create_UserWithBlankPassword_ShouldThrowException() {
         
         userRequestDTO.setPassword("   ");
-        when(userRepository.existsByUsername(USERNAME)).thenReturn(false);
 
         assertThatThrownBy(() -> userService.create(userRequestDTO))
                 .isInstanceOf(IllegalArgumentException.class)

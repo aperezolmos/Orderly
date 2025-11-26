@@ -5,15 +5,15 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Embeddable
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Builder
 public class Vitamins {
     
@@ -55,7 +55,8 @@ public class Vitamins {
 
     @Builder.Default
     @Column(precision=10, scale=4)
-    private BigDecimal vitaminB12 = BigDecimal.ZERO;   
+    private BigDecimal vitaminB12 = BigDecimal.ZERO;
+       
     
     // --------------------------------------------------------
     

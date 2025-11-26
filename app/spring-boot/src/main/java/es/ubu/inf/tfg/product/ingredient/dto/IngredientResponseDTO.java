@@ -1,4 +1,6 @@
-package es.ubu.inf.tfg.product.dto;
+package es.ubu.inf.tfg.product.ingredient.dto;
+
+import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class IngredientResponseDTO {
     private Integer foodId;
     private String foodName;
-    private Double quantityInGrams;
+    private BigDecimal quantityInGrams;
 }

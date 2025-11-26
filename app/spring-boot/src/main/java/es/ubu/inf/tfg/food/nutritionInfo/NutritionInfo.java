@@ -9,15 +9,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Embeddable
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Builder
 public class NutritionInfo {
 
@@ -53,11 +53,14 @@ public class NutritionInfo {
     @Column(precision=6, scale=2)
     private BigDecimal sugars = BigDecimal.ZERO;
  
+    @Builder.Default
     @Embedded
-    private Minerals minerals;
+    private Minerals minerals = Minerals.builder().build();
 
+    @Builder.Default
     @Embedded
-    private Vitamins vitamins;
+    private Vitamins vitamins = Vitamins.builder().build();
+
 
     // --------------------------------------------------------
     

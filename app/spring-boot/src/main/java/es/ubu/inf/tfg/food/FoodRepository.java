@@ -14,6 +14,4 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
     boolean existsByName(String name);
     List<Food> findByFoodGroup(FoodGroup foodGroup);
     List<Food> findByNameContainingIgnoreCase(String namePart);
-
-    //++ encontrar todos los alimentos cuya fecha de actualización sea mayor que cierto valor -> para ver si necesitan ser actualizados
 }

@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.food;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,28 +39,45 @@ public class Food {
     @ToString.Include
     private FoodGroup foodGroup;
 
-    private Double servingWeightGrams;
-
-    //private String ingredientStatement; // campo 'nf_ingredient_statement' de Nutritionix
+    private BigDecimal servingWeightGrams;
 
     @Embedded
     private NutritionInfo nutritionInfo;
-
-    //info sobre cuándo se actualizó por última vez desde nutritionix -> para cachear datos y reducir llamadas
     
 
     @Builder.Default
-    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "food")
     private Set<Ingredient> usages = new HashSet<>();
+
+
+    private LocalDateTime createdAt; 
+    
+    private LocalDateTime updatedAt;
+    
+    
+    // --------------------------------------------------------
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now(); 
+        this.updatedAt = this.createdAt;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now(); 
+    }
+    
 
     // --------------------------------------------------------
 
-    public NutritionInfo getNutritionInfoForQuantity(Double quantityInGrams) {
+    public NutritionInfo getNutritionInfoForQuantity(BigDecimal quantityInGrams) {
         
-        if (quantityInGrams == null || quantityInGrams <= 0) {
+        if ((quantityInGrams == null || quantityInGrams.compareTo(BigDecimal.ZERO) <= 0) ||
+            (this.servingWeightGrams == null || this.servingWeightGrams.compareTo(BigDecimal.ZERO) <= 0)) {
             return NutritionInfo.builder().build();
         }
-        BigDecimal factor = BigDecimal.valueOf(quantityInGrams / this.servingWeightGrams);
+        BigDecimal factor = quantityInGrams.divide(this.servingWeightGrams);
         return this.nutritionInfo.multiplyByFactor(factor);
     }
 }

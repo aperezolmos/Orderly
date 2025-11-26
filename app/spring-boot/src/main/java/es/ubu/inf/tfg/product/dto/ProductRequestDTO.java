@@ -1,5 +1,7 @@
 package es.ubu.inf.tfg.product.dto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -23,5 +25,5 @@ public class ProductRequestDTO {
     private String description;
 
     @PositiveOrZero(message = "Price cannot be negative")
-    private Double price;
+    private BigDecimal price;
 }

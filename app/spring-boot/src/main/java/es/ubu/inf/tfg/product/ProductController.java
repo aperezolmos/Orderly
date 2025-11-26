@@ -1,8 +1,9 @@
 package es.ubu.inf.tfg.product;
 
-import es.ubu.inf.tfg.product.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientRequestDTO;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientResponseDTO;
 
 import jakarta.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -48,7 +50,7 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<List<ProductResponseDTO>> searchProducts( 
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) Integer foodId) {
         
         List<ProductResponseDTO> products;
@@ -76,6 +78,7 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Integer id,
             @Valid @RequestBody ProductRequestDTO productRequest) {
+        
         ProductResponseDTO updatedProduct = productService.update(id, productRequest);
         return ResponseEntity.ok(updatedProduct);
     }
@@ -110,9 +113,10 @@ public class ProductController {
     @PreAuthorize("hasAuthority('PRODUCT_EDIT') and hasAuthority('PRODUCT_EDIT_INGREDIENTS')")
     public ResponseEntity<IngredientResponseDTO> addIngredientToProduct(
             @PathVariable Integer productId,
-            @RequestParam Integer foodId,
-            @RequestParam Double quantity) {
-        IngredientResponseDTO ingredient = productService.addIngredientToProduct(productId, foodId, quantity);
+            @Valid @RequestBody IngredientRequestDTO ingredientRequest) {
+        
+        IngredientResponseDTO ingredient = productService.addIngredientToProduct(productId,
+            ingredientRequest.getFoodId(), ingredientRequest.getQuantityInGrams());
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredient);
     }
 
@@ -121,7 +125,8 @@ public class ProductController {
     public ResponseEntity<IngredientResponseDTO> updateIngredientQuantity(
             @PathVariable Integer productId,
             @PathVariable Integer foodId,
-            @RequestParam Double quantity) {
+            @RequestParam BigDecimal quantity) {
+        
         IngredientResponseDTO ingredient = productService.updateIngredientQuantity(productId, foodId, quantity);
         return ResponseEntity.ok(ingredient);
     }
@@ -131,6 +136,7 @@ public class ProductController {
     public ResponseEntity<Void> removeIngredientFromProduct(
             @PathVariable Integer productId,
             @PathVariable Integer foodId) {
+        
         productService.removeIngredientFromProduct(productId, foodId);
         return ResponseEntity.noContent().build();
     }

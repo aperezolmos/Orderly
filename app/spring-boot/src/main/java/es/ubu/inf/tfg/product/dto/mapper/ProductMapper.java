@@ -1,43 +1,39 @@
 package es.ubu.inf.tfg.product.dto.mapper;
 
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
-import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
+import es.ubu.inf.tfg.food.nutritionInfo.dto.mapper.NutritionInfoMapper;
 import es.ubu.inf.tfg.product.Product;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
 
+import es.ubu.inf.tfg.product.ingredient.dto.mapper.IngredientMapper;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {IngredientMapper.class})
-public interface ProductMapper {
+@Mapper(componentModel = "spring", uses = {IngredientMapper.class, NutritionInfoMapper.class})
+public abstract class ProductMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "ingredients", ignore = true)
-    Product toEntity(ProductRequestDTO dto);
+    public abstract Product toEntity(ProductRequestDTO dto);
 
-    // Basic DTO without ingredients - For listing
-    @Mapping(target = "ingredientCount", expression = "java(product.getIngredients().size())")
+    
     @Mapping(target = "totalNutrition", ignore = true)
-    @Mapping(target = "totalCalories", ignore = true)
-    @Mapping(target = "ingredients", ignore = true)
-    ProductResponseDTO toResponseDTO(Product product);
-
-    // Detailed DTO with nutritional information but NO ingredients
     @Mapping(target = "ingredientCount", expression = "java(product.getIngredients().size())")
-    @Mapping(target = "totalNutrition", source = "nutritionInfo")
-    @Mapping(target = "totalCalories", source = "nutritionInfo.calories")
     @Mapping(target = "ingredients", ignore = true)
-    ProductResponseDTO toNutritionalResponseDTO(Product product, NutritionInfoDTO nutritionInfo);
+    public abstract ProductResponseDTO toResponseDTO(Product product);
 
-    // Complete DTO: Nutritional information + Ingredients
-    @Mapping(target = "ingredientCount", expression = "java(product.getIngredients().size())")
+    
     @Mapping(target = "totalNutrition", source = "nutritionInfo")
-    @Mapping(target = "totalCalories", source = "nutritionInfo.calories")
-    ProductResponseDTO toCompleteResponseDTO(Product product, NutritionInfoDTO nutritionInfo);
+    @Mapping(target = "ingredientCount", expression = "java(product.getIngredients().size())")
+    @Mapping(target = "ingredients", ignore = true)
+    public abstract ProductResponseDTO toNutritionalResponseDTO(Product product, NutritionInfo nutritionInfo);
 
-
-    NutritionInfoDTO toNutritionInfoDTO(NutritionInfo nutritionInfo);
+    
+    @Mapping(target = "totalNutrition", source = "nutritionInfo")
+    @Mapping(target = "ingredientCount", expression = "java(product.getIngredients().size())")
+    public abstract ProductResponseDTO toCompleteResponseDTO(Product product, NutritionInfo nutritionInfo);
 }
