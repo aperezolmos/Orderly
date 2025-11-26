@@ -24,6 +24,7 @@ public class OrderController {
     
     private final OrderService orderService;
     private final OrderItemService orderItemService;
+    
 
     @GetMapping
     @PreAuthorize("hasAuthority('ORDER_VIEW_LIST')")
@@ -36,19 +37,21 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findById(id));
     }
 
+    @GetMapping("/orderNumber/{orderNumber}")
+    public ResponseEntity<OrderResponseDTO> getOrderByNumber(@PathVariable String orderNumber) {
+        return ResponseEntity.ok(orderService.findByOrderNumber(orderNumber));
+    }   
+
     @GetMapping("/search")
     @PreAuthorize("hasAuthority('ORDER_VIEW_LIST')")
     public ResponseEntity<List<OrderResponseDTO>> searchOrders(
-            @RequestParam(required = false) String orderNumber,
             @RequestParam(required = false) OrderStatus status,
             @RequestParam(required = false) Integer employeeId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since) {
         
         List<OrderResponseDTO> orders;
         
-        if (orderNumber != null) {
-            orders = orderService.findByOrderNumber(orderNumber);
-        } else if (status != null) {
+        if (status != null) {
             orders = orderService.findByStatus(status);
         } else if (employeeId != null) {
             orders = orderService.findByEmployeeId(employeeId);
@@ -62,10 +65,11 @@ public class OrderController {
     }
 
     @PatchMapping("/{id}/status")
-    @PreAuthorize("hasAnyAuthority('ORDER_EDIT', 'ORDER_BAR_EDIT', 'ORDER_DINING_EDIT')") //TODO: cambiar?
+    @PreAuthorize("hasAnyAuthority('ORDER_EDIT', 'ORDER_BAR_EDIT', 'ORDER_DINING_EDIT')")
     public ResponseEntity<OrderResponseDTO> updateOrderStatus(
             @PathVariable Integer id,
             @RequestParam OrderStatus status) {
+        
         OrderResponseDTO updatedOrder = orderService.updateStatus(id, status);
         return ResponseEntity.ok(updatedOrder);
     }
@@ -99,6 +103,7 @@ public class OrderController {
             @PathVariable Integer orderId,
             @RequestParam Integer productId,
             @RequestParam Integer quantity) {
+        
         OrderResponseDTO updatedOrder = orderService.addItemToOrder(orderId, productId, quantity);
         return ResponseEntity.ok(updatedOrder);
     }
@@ -108,6 +113,7 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> removeItemFromOrder(
             @PathVariable Integer orderId,
             @PathVariable Integer itemId) {
+        
         OrderResponseDTO updatedOrder = orderService.removeItemFromOrder(orderId, itemId);
         return ResponseEntity.ok(updatedOrder);
     }
@@ -132,6 +138,7 @@ public class OrderController {
     public ResponseEntity<OrderItemResponseDTO> updateOrderItemStatus(
             @PathVariable Integer id,
             @RequestParam OrderItemStatus status) {
+        
         OrderItemResponseDTO updatedItem = orderItemService.updateStatus(id, status);
         return ResponseEntity.ok(updatedItem);
     }

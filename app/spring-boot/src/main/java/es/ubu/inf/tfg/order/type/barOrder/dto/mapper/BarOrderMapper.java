@@ -8,6 +8,8 @@ import es.ubu.inf.tfg.order.type.barOrder.dto.BarOrderResponseDTO;
 import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.UserService;
 
+import jakarta.persistence.DiscriminatorValue;
+
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -33,14 +35,14 @@ public abstract class BarOrderMapper {
     public abstract BarOrder toEntity(BarOrderRequestDTO dto);
 
 
-    @Mapping(target = "orderType", ignore = true, qualifiedByName = "mapEntityToOrderType")
+    @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
     @Mapping(target = "employeeName", source = "employee.firstName")
     @Mapping(target = "items", ignore = true)
     public abstract BarOrderResponseDTO toResponseDTO(BarOrder entity);
 
 
-    @Mapping(target = "orderType", ignore = true, qualifiedByName = "mapEntityToOrderType")
+    @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
     @Mapping(target = "employeeName", source = "employee.firstName")
     public abstract BarOrderResponseDTO toDetailedResponseDTO(BarOrder entity);
@@ -58,18 +60,21 @@ public abstract class BarOrderMapper {
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     @Mapping(target = "notes", source = "dto.notes",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+    @Mapping(target = "drinksOnly", source = "dto.drinksOnly", 
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
     public abstract void updateEntityFromDTO(BarOrderRequestDTO dto, @MappingTarget BarOrder entity);
 
 
     // --------------------------------------------------------
 
-    @Named("mapEntityToOrderType")
-    protected String mapOrderType(BarOrder entity) {
-        return "BAR"; 
-    }
-
     protected User mapEmployeeIdToUser(Integer employeeId) {
         if (employeeId == null) return null;
         return userService.findEntityById(employeeId); 
+    }
+
+    @Named("mapEntityToOrderType")
+    protected String mapOrderType(BarOrder entity) {
+        //DiningOrder.class.getAnnotation(DiscriminatorValue.class).value();
+        return BarOrder.class.getAnnotation(DiscriminatorValue.class).value(); 
     }
 }

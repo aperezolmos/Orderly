@@ -41,7 +41,7 @@ public class OrderService {
 
     public OrderResponseDTO findById(Integer id) {
         Order order = findEntityById(id);
-        return orderMapperFactory.toResponseDTO(order);
+        return orderMapperFactory.toDetailedResponseDTO(order);
     }
 
     public Order findEntityById(Integer id) {
@@ -49,10 +49,10 @@ public class OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
     }
 
-    public List<OrderResponseDTO> findByOrderNumber(String orderNumber) {
-        return orderRepository.findByOrderNumber(orderNumber).stream()
-                .map(orderMapperFactory::toResponseDTO)
-                .collect(Collectors.toList());
+    public OrderResponseDTO findByOrderNumber(String orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with number: " + orderNumber));
+        return orderMapperFactory.toDetailedResponseDTO(order);
     }
 
     public List<OrderResponseDTO> findByStatus(OrderStatus status) {

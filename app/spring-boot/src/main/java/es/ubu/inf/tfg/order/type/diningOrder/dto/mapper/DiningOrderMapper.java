@@ -10,6 +10,8 @@ import es.ubu.inf.tfg.reservation.diningTable.DiningTableService;
 import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.UserService;
 
+import jakarta.persistence.DiscriminatorValue;
+
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -39,7 +41,7 @@ public abstract class DiningOrderMapper {
     public abstract DiningOrder toEntity(DiningOrderRequestDTO dto);
 
 
-    @Mapping(target = "orderType", ignore = true, qualifiedByName = "mapEntityToOrderType")
+    @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
     @Mapping(target = "employeeName", source = "employee.firstName")
     @Mapping(target = "tableId", source = "table.id")
@@ -48,7 +50,7 @@ public abstract class DiningOrderMapper {
     public abstract DiningOrderResponseDTO toResponseDTO(DiningOrder entity);
 
 
-    @Mapping(target = "orderType", ignore = true, qualifiedByName = "mapEntityToOrderType")
+    @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
     @Mapping(target = "employeeName", source = "employee.firstName")
     @Mapping(target = "tableId", source = "table.id")
@@ -74,11 +76,6 @@ public abstract class DiningOrderMapper {
 
     // --------------------------------------------------------
 
-    @Named("mapEntityToOrderType")
-    protected String mapOrderType(DiningOrder entity) {
-        return "DINING";
-    }
-
     protected User mapEmployeeIdToUser(Integer employeeId) {
         if (employeeId == null) return null;
         return userService.findEntityById(employeeId); 
@@ -87,5 +84,10 @@ public abstract class DiningOrderMapper {
     protected DiningTable mapTableIdToDiningTable(Integer tableId) {
         if (tableId == null) return null;
         return diningTableService.findEntityById(tableId);
+    }
+
+    @Named("mapEntityToOrderType")
+    protected String mapOrderType(DiningOrder entity) {
+        return DiningOrder.class.getAnnotation(DiscriminatorValue.class).value();
     }
 }
