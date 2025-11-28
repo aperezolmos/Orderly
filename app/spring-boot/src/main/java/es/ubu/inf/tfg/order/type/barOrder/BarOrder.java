@@ -21,6 +21,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class BarOrder extends Order {
 
+    @Builder.Default
     @ToString.Exclude
-    private Boolean drinksOnly;
+    private Boolean drinksOnly = false;
 }

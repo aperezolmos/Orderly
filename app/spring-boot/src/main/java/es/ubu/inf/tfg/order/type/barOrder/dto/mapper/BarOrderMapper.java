@@ -60,8 +60,6 @@ public abstract class BarOrderMapper {
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     @Mapping(target = "notes", source = "dto.notes",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
-    @Mapping(target = "drinksOnly", source = "dto.drinksOnly", 
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
     public abstract void updateEntityFromDTO(BarOrderRequestDTO dto, @MappingTarget BarOrder entity);
 
 
@@ -74,7 +72,6 @@ public abstract class BarOrderMapper {
 
     @Named("mapEntityToOrderType")
     protected String mapOrderType(BarOrder entity) {
-        //DiningOrder.class.getAnnotation(DiscriminatorValue.class).value();
         return BarOrder.class.getAnnotation(DiscriminatorValue.class).value(); 
     }
 }
