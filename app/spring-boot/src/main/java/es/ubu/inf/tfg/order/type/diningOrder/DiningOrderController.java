@@ -94,6 +94,7 @@ public class DiningOrderController {
     public ResponseEntity<OrderResponseDTO> updateDiningOrder(
             @PathVariable Integer id,
             @Valid @RequestBody DiningOrderRequestDTO orderRequest) {
+        
         OrderResponseDTO updatedOrder = orderService.update(id, orderRequest);
         return ResponseEntity.ok(updatedOrder);
     }

@@ -45,9 +45,9 @@ public abstract class OrderItemMapper {
     @AfterMapping
     protected void setOrderItemUnitPrice(@MappingTarget OrderItem orderItem) {
         if (orderItem != null) {
-            if (orderItem.getProduct() != null && orderItem.getUnitPrice() == null) {
-                orderItem.setUnitPrice(new BigDecimal(orderItem.getProduct()
-                    .getPrice().toString()));
+            if (orderItem.getProduct() != null &&
+                    orderItem.getUnitPrice().compareTo(BigDecimal.ZERO) == 0) {
+                orderItem.setUnitPrice(orderItem.getProduct().getPrice());
             }
         }
     }

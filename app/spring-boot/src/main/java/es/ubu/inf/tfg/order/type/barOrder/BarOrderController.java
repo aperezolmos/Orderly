@@ -88,6 +88,7 @@ public class BarOrderController {
     public ResponseEntity<OrderResponseDTO> updateBarOrder(
             @PathVariable Integer id,
             @Valid @RequestBody BarOrderRequestDTO orderRequest) {
+        
         OrderResponseDTO updatedOrder = orderService.update(id, orderRequest);
         return ResponseEntity.ok(updatedOrder);
     }

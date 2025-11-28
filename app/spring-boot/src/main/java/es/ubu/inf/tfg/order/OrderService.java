@@ -19,8 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +44,7 @@ public class OrderService {
 
     public OrderResponseDTO findById(Integer id) {
         Order order = findEntityById(id);
-        return orderMapperFactory.toResponseDTO(order);
+        return orderMapperFactory.toDetailedResponseDTO(order);
     }
 
     public Order findEntityById(Integer id) {
@@ -49,10 +52,10 @@ public class OrderService {
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + id));
     }
 
-    public List<OrderResponseDTO> findByOrderNumber(String orderNumber) {
-        return orderRepository.findByOrderNumber(orderNumber).stream()
-                .map(orderMapperFactory::toResponseDTO)
-                .collect(Collectors.toList());
+    public OrderResponseDTO findByOrderNumber(String orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with number: " + orderNumber));
+        return orderMapperFactory.toDetailedResponseDTO(order);
     }
 
     public List<OrderResponseDTO> findByStatus(OrderStatus status) {
@@ -94,10 +97,8 @@ public class OrderService {
     public OrderResponseDTO update(Integer id, OrderRequestDTO orderRequest) {
         
         Order existingOrder = findEntityById(id);
-
-        if (existingOrder.getStatus() == OrderStatus.CANCELLED || existingOrder.getStatus() == OrderStatus.PAID) {
-            throw new IllegalArgumentException("Cannot modify a " + existingOrder.getStatus() + " order");
-        }
+        
+        validateStatusTransition(existingOrder.getStatus());
         
         orderMapperFactory.updateEntityFromDTO(orderRequest, existingOrder);
         updateOrderItems(existingOrder, orderRequest.getItems());
@@ -120,7 +121,7 @@ public class OrderService {
         
         Order order = findEntityById(id);
         
-        validateStatusTransition(order.getStatus(), newStatus);
+        validateStatusTransition(order.getStatus());
         order.setStatus(newStatus);
         
         Order updated = orderRepository.save(order);
@@ -143,7 +144,10 @@ public class OrderService {
         
         Order order = findEntityById(orderId);
         Product product = productService.findEntityById(productId);
+
+        validateStatusTransition(order.getStatus());
         
+        if (order.getItems() == null) order.setItems(new ArrayList<>());
         createOrderItem(order, product, quantity);
         
         Order updated = orderRepository.save(order);
@@ -153,6 +157,8 @@ public class OrderService {
     public OrderResponseDTO removeItemFromOrder(Integer orderId, Integer itemId) {
         
         Order order = findEntityById(orderId);
+
+        validateStatusTransition(order.getStatus());
         
         OrderItem itemToRemove = order.getItems().stream()
                 .filter(item -> item.getId().equals(itemId))
@@ -169,8 +175,7 @@ public class OrderService {
 
     // --------------------------------------------------------
     
-    private void validateStatusTransition(OrderStatus oldStatus, OrderStatus newStatus) {
-        
+    private void validateStatusTransition(OrderStatus oldStatus) {
         if (oldStatus == OrderStatus.CANCELLED || oldStatus == OrderStatus.PAID) {
             throw new IllegalArgumentException("Cannot change status of a " + oldStatus + " order");
         }
@@ -188,7 +193,9 @@ public class OrderService {
         
         if (newItems == null) return;
 
-        Map<Integer, OrderItem> existingItemsMap = order.getItems().stream()
+        Map<Integer, OrderItem> existingItemsMap = Optional.ofNullable(order.getItems())
+            .orElseGet(Collections::emptyList)
+            .stream()
             .collect(Collectors.toMap(
                 item -> item.getProduct().getId(), 
                 item -> item

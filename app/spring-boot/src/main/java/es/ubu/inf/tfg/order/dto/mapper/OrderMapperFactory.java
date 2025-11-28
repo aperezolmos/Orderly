@@ -61,7 +61,9 @@ public class OrderMapperFactory {
         else if (dto instanceof DiningOrderRequestDTO diningDTO && order instanceof DiningOrder diningOrder) {
             diningOrderMapper.updateEntityFromDTO(diningDTO, diningOrder);
         }
-        throw new IllegalArgumentException("Unknown Order DTO type: " + dto.getClass().getSimpleName()
+        else {
+            throw new IllegalArgumentException("Unknown Order DTO type: " + dto.getClass().getSimpleName()
             + " or Order type: " + order.getClass().getSimpleName());
+        }
     }
 }

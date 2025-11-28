@@ -36,11 +36,13 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity = 1;
     
+    @Builder.Default
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal unitPrice;
+    private BigDecimal unitPrice = BigDecimal.ZERO;
     
+    @Builder.Default
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,16 +58,12 @@ public class OrderItem {
 
     @PrePersist
     protected void onCreate() {
-        if (totalPrice == null && unitPrice != null) {
-            calculateTotalPrice();
-        }
+        calculateTotalPrice();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        if (totalPrice == null && unitPrice != null) {
-            calculateTotalPrice();
-        }
+        calculateTotalPrice();
     }
 
 
@@ -83,9 +81,22 @@ public class OrderItem {
         }
     }
 
+    public void setOrder(Order order) {
+        if (this.order != null) {
+            this.order.getItems().remove(this);
+        }
+        this.order = order;
+        if (order != null && !order.getItems().contains(this)) {
+            order.getItems().add(this);
+        }
+    }
+
     public void calculateTotalPrice() {
-        if (unitPrice != null && quantity > 0) {
+        if (unitPrice.compareTo(BigDecimal.ZERO) > 0 && quantity > 0) {
             this.totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
+        } 
+        else {
+            this.totalPrice = BigDecimal.ZERO;
         }
     }
 }
