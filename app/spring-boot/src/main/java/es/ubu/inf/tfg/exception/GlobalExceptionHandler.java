@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -53,6 +54,14 @@ public class GlobalExceptionHandler {
         return createErrorResponseEntity(
             HttpStatus.FORBIDDEN, 
             "Resource protected", 
+            ex.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        return createErrorResponseEntity(
+            HttpStatus.CONFLICT, 
+            "Database constraint violation", 
             ex.getMessage());
     }
 
