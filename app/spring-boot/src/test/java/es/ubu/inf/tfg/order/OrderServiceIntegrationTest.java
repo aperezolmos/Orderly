@@ -317,12 +317,14 @@ class OrderServiceIntegrationTest {
         
         BarOrderRequestDTO request1 = BarOrderRequestDTO.builder()
                 .orderType(ORDER_TYPE_BAR)
+                .orderNumber("ORD-XX1")
                 .customerName(PENDING_CUSTOMER_NAME)
                 .employeeId(employee.getId())
                 .build();
 
         BarOrderRequestDTO request2 = BarOrderRequestDTO.builder()
                 .orderType(ORDER_TYPE_BAR)
+                .orderNumber("ORD-XX2")
                 .customerName(IN_PROGRESS_CUSTOMER_NAME)
                 .employeeId(employee.getId())
                 .build();
