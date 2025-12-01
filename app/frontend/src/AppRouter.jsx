@@ -30,6 +30,11 @@ const UserList = React.lazy(() => import('./modules/users/pages/UserListPage'));
 const UserCreate = React.lazy(() => import('./modules/users/pages/UserCreatePage'));
 const UserEdit = React.lazy(() => import('./modules/users/pages/UserEditPage'));
 
+// Foods
+const FoodList = React.lazy(() => import('./modules/foods/pages/FoodListPage'));
+const FoodCreate = React.lazy(() => import('./modules/foods/pages/FoodCreatePage'));
+const FoodEdit = React.lazy(() => import('./modules/foods/pages/FoodEditPage'));
+
 // Dining Tables
 const DiningTableList = React.lazy(() => import('./modules/diningTables/pages/DiningTableListPage'));
 const DiningTableCreate = React.lazy(() => import('./modules/diningTables/pages/DiningTableCreatePage'));
@@ -161,6 +166,37 @@ const AppRouter = () => {
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
                   <WithLayout>
                     <UserEdit />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/foods"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <FoodList />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/foods/new"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <FoodCreate />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/foods/:id/edit"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <FoodEdit />
                   </WithLayout>
                 </ProtectedRoute>
               }

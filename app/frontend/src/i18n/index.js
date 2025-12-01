@@ -13,6 +13,7 @@ const resources = {
     users: () => import('./locales/en/users.json'),
     diningTables: () => import('./locales/en/diningTables.json'),
     reservations: () => import('./locales/en/reservations.json'),
+    foods: () => import('./locales/en/foods.json'),
   },
   es: {
     common: () => import('./locales/es/common.json'),
@@ -21,6 +22,7 @@ const resources = {
     users: () => import('./locales/es/users.json'),
     diningTables: () => import('./locales/es/diningTables.json'),
     reservations: () => import('./locales/es/reservations.json'),
+    foods: () => import('./locales/es/foods.json'),
   },
 };
 

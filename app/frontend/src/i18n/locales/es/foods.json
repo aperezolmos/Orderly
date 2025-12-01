@@ -1,0 +1,94 @@
+{
+  "management": {
+    "title": "Gestión de Alimentos",
+    "create": "Crear Nuevo Alimento",
+    "edit": "Editar Alimento",
+    "list": "Alimentos"
+  },
+  "form": {
+    "basicInfo": "Información Básica",
+    "nutritionInfo": "Información Nutricional",
+    "minerals": "Minerales",
+    "vitamins": "Vitaminas",
+    "name": "Nombre",
+    "namePlaceholder": "Ingrese nombre del alimento",
+    "foodGroup": "Grupo Alimenticio",
+    "foodGroupPlaceholder": "Seleccione grupo alimenticio",
+    "servingWeightGrams": "Peso por Ración (g)",
+    "servingWeightPlaceholder": "ej. 100",
+    "create": "Crear Alimento",
+    "update": "Actualizar Alimento",
+    "calories": "Calorías",
+    "carbohydrates": "Carbohidratos",
+    "fats": "Grasas",
+    "fiber": "Fibra",
+    "protein": "Proteína",
+    "salt": "Sal",
+    "saturatedFats": "Grasas Saturadas",
+    "sugars": "Azúcares",
+    "calcium": "Calcio",
+    "iron": "Hierro",
+    "magnesium": "Magnesio",
+    "phosphorus": "Fósforo",
+    "potassium": "Potasio",
+    "selenium": "Selenio",
+    "sodium": "Sodio",
+    "zinc": "Zinc",
+    "vitaminA": "Vitamina A",
+    "vitaminC": "Vitamina C",
+    "vitaminD": "Vitamina D",
+    "vitaminE": "Vitamina E",
+    "vitaminB1": "Vitamina B1",
+    "vitaminB2": "Vitamina B2",
+    "vitaminB3": "Vitamina B3",
+    "vitaminB6": "Vitamina B6",
+    "vitaminB9": "Vitamina B9",
+    "vitaminB12": "Vitamina B12"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Nombre",
+    "foodGroup": "Grupo",
+    "servingWeightGrams": "Ración (g)",
+    "created": "Creado",
+    "newFood": "Nuevo Alimento"
+  },
+  "foodGroups": {
+    "DAIRY": "Lácteos",
+    "PROTEINS": "Proteínas",
+    "FRUIT": "Fruta",
+    "VEGETABLES": "Verduras",
+    "GRAINS": "Cereales",
+    "FATS": "Grasas",
+    "LEGUMES": "Legumbres",
+    "COMBINATION": "Combinación de alimentos",
+    "NOT_APPLICABLE": "No aplica"
+  },
+  "validation": {
+    "nameRequired": "El nombre es obligatorio",
+    "nameMaxLength": "El nombre no puede exceder 100 caracteres",
+    "foodGroupRequired": "El grupo alimenticio es obligatorio",
+    "servingWeightRequired": "El peso por ración es obligatorio",
+    "servingWeightPositive": "El peso por ración debe ser positivo"
+  },
+  "notifications": {
+    "createSuccess": "Alimento creado exitosamente",
+    "updateSuccess": "Alimento actualizado exitosamente",
+    "deleteSuccess": "Alimento eliminado exitosamente",
+    "loadError": "Error cargando alimentos",
+    "createError": "Error creando alimento",
+    "updateError": "Error actualizando alimento",
+    "deleteError": "Error eliminando alimento"
+  },
+  "deleteModal": {
+    "title": "Confirmar Eliminación de Alimento",
+    "message": "¿Estás seguro de que quieres eliminar el alimento \"{{name}}\"? Esta acción no se puede deshacer",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "errors": {
+    "loadError": "Error cargando alimento",
+    "notFound": "No se pudo cargar el alimento con ID: {{id}}",
+    "notFoundDetails": "El alimento puede haber sido eliminado o no tienes permiso para acceder a él"
+  }
+}
