@@ -34,6 +34,11 @@ const UserEdit = React.lazy(() => import('./modules/users/pages/UserEditPage'));
 const DiningTableList = React.lazy(() => import('./modules/diningTables/pages/DiningTableListPage'));
 const DiningTableCreate = React.lazy(() => import('./modules/diningTables/pages/DiningTableCreatePage'));
 const DiningTableEdit = React.lazy(() => import('./modules/diningTables/pages/DiningTableEditPage'));
+
+// Reservations
+const ReservationList = React.lazy(() => import('./modules/reservations/pages/ReservationListPage'));
+const ReservationCreate = React.lazy(() => import('./modules/reservations/pages/ReservationCreatePage'));
+const ReservationEdit = React.lazy(() => import('./modules/reservations/pages/ReservationEditPage'));
 // --------------------------------------------------------
 
 
@@ -187,6 +192,37 @@ const AppRouter = () => {
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
                   <WithLayout>
                     <DiningTableEdit />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/reservations"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ReservationList />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reservations/new"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ReservationCreate />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reservations/:id/edit"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ReservationEdit />
                   </WithLayout>
                 </ProtectedRoute>
               }

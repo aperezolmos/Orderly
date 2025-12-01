@@ -18,6 +18,7 @@
     "@mantine/form": "^8.3.6",
     "@mantine/notifications": "^8.3.6",
     "@mantine/modals": "^8.3.6",
+    "@mantine/dates": "^8.3.9",
     "@emotion/react": "^11.14.0",
     "@tabler/icons-react": "^3.35.0",
     "i18next": "^25.6.2",

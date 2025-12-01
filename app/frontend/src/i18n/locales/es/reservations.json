@@ -1,0 +1,76 @@
+{
+  "management": {
+    "title": "Gestión de Reservas",
+    "create": "Crear Reserva",
+    "edit": "Editar Reserva",
+    "list": "Reservas"
+  },
+  "form": {
+    "basicInfo": "Información Básica",
+    "guestInfo": "Datos del Comensal",
+    "diningTable": "Mesa",
+    "diningTablePlaceholder": "Selecciona una mesa",
+    "noTables": "No hay mesas activas disponibles",
+    "numberOfGuests": "Nº de Comensales",
+    "numberOfGuestsPlaceholder": "Introduce el número de comensales",
+    "reservationDateTime": "Fecha y Hora de la Reserva",
+    "reservationDateTimePlaceholder": "Selecciona fecha y hora",
+    "estimatedDurationMinutes": "Duración Estimada (minutos)",
+    "estimatedDurationMinutesPlaceholder": "Introduce duración (30-240)",
+    "guestFirstName": "Nombre del Comensal",
+    "guestFirstNamePlaceholder": "Introduce el nombre",
+    "guestLastName": "Apellido del Comensal",
+    "guestLastNamePlaceholder": "Introduce el apellido",
+    "guestPhone": "Teléfono del Comensal",
+    "guestPhonePlaceholder": "Introduce el teléfono",
+    "guestSpecialRequests": "Peticiones Especiales",
+    "guestSpecialRequestsPlaceholder": "Alergias, preferencias, etc.",
+    "create": "Crear Reserva",
+    "update": "Actualizar Reserva"
+  },
+  "list": {
+    "id": "ID",
+    "diningTable": "Mesa",
+    "status": "Estado",
+    "guest": "Comensal",
+    "numberOfGuests": "Comensales",
+    "reservationDateTime": "Fecha y Hora",
+    "newReservation": "Nueva Reserva"
+  },
+  "status": {
+    "CONFIRMED": "Confirmada",
+    "SEATED": "Sentado",
+    "COMPLETED": "Completada",
+    "CANCELLED": "Cancelada"
+  },
+  "validation": {
+    "tableRequired": "La mesa es obligatoria",
+    "guestsMin": "Debe haber al menos 1 comensal",
+    "dateRequired": "La fecha y hora son obligatorias",
+    "durationRange": "La duración debe estar entre 30 y 240 minutos",
+    "guestFirstNameRequired": "El nombre del comensal es obligatorio",
+    "guestLastNameRequired": "El apellido del comensal es obligatorio",
+    "guestPhoneRequired": "El teléfono del comensal es obligatorio",
+    "specialRequestsMaxLength": "Las peticiones especiales no pueden exceder 500 caracteres"
+  },
+  "notifications": {
+    "createSuccess": "Reserva creada exitosamente",
+    "updateSuccess": "Reserva actualizada exitosamente",
+    "deleteSuccess": "Reserva eliminada exitosamente",
+    "loadError": "Error cargando reservas",
+    "createError": "Error creando reserva",
+    "updateError": "Error actualizando reserva",
+    "deleteError": "Error eliminando reserva"
+  },
+  "deleteModal": {
+    "title": "Confirmar Eliminación de Reserva",
+    "message": "¿Estás seguro de que quieres eliminar la reserva #{{id}}? Esta acción no se puede deshacer",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "errors": {
+    "loadError": "Error cargando reserva",
+    "notFound": "No se pudo cargar la reserva con ID: {{id}}",
+    "notFoundDetails": "La reserva puede haber sido eliminada o no tienes permiso para acceder a ella"
+  }
+}
