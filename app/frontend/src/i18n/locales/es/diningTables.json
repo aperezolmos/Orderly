@@ -1,0 +1,56 @@
+{
+  "management": {
+    "title": "Gestión de Mesas",
+    "create": "Crear Nueva Mesa",
+    "edit": "Editar Mesa",
+    "list": "Mesas"
+  },
+  "form": {
+    "name": "Nombre de la Mesa",
+    "namePlaceholder": "Ingrese nombre de la mesa",
+    "capacity": "Capacidad",
+    "capacityPlaceholder": "Ingrese capacidad",
+    "locationDescription": "Descripción de ubicación",
+    "locationDescriptionPlaceholder": "Ingrese ubicación (opcional)",
+    "create": "Crear Mesa",
+    "update": "Actualizar Mesa"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Nombre",
+    "capacity": "Capacidad",
+    "locationDescription": "Ubicación",
+    "isActive": "Activa",
+    "active": "Activa",
+    "inactive": "Inactiva",
+    "created": "Creada",
+    "newTable": "Nueva Mesa",
+    "noLocation": "Sin ubicación"
+  },
+  "validation": {
+    "nameRequired": "El nombre de la mesa es obligatorio",
+    "nameMaxLength": "El nombre de la mesa no puede exceder 10 caracteres",
+    "capacityMin": "La capacidad debe ser al menos 1",
+    "locationMaxLength": "La descripción de ubicación no puede exceder 100 caracteres"
+  },
+  "notifications": {
+    "createSuccess": "Mesa creada exitosamente",
+    "updateSuccess": "Mesa actualizada exitosamente",
+    "deleteSuccess": "Mesa eliminada exitosamente",
+    "loadError": "Error cargando mesas",
+    "createError": "Error creando mesa",
+    "updateError": "Error actualizando mesa",
+    "deleteError": "Error eliminando mesa"
+  },
+  "deleteModal": {
+    "title": "Confirmar Eliminación de Mesa",
+    "message": "¿Estás seguro de que quieres eliminar la mesa \"{{name}}\"? Esta acción no se puede deshacer",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "errors": {
+    "loadError": "Error cargando mesa",
+    "notFound": "No se pudo cargar la mesa con ID: {{id}}",
+    "notFoundDetails": "La mesa puede haber sido eliminada o no tienes permiso para acceder a ella"
+  }
+}

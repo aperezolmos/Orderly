@@ -1,0 +1,56 @@
+{
+  "management": {
+    "title": "Dining Table Management",
+    "create": "Create New Table",
+    "edit": "Edit Table",
+    "list": "Dining Tables"
+  },
+  "form": {
+    "name": "Table Name",
+    "namePlaceholder": "Enter table name",
+    "capacity": "Capacity",
+    "capacityPlaceholder": "Enter capacity",
+    "locationDescription": "Location description",
+    "locationDescriptionPlaceholder": "Enter location (optional)",
+    "create": "Create Table",
+    "update": "Update Table"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Name",
+    "capacity": "Capacity",
+    "locationDescription": "Location",
+    "isActive": "Active",
+    "active": "Active",
+    "inactive": "Inactive",
+    "created": "Created",
+    "newTable": "New Table",
+    "noLocation": "No location"
+  },
+  "validation": {
+    "nameRequired": "Table name is required",
+    "nameMaxLength": "Table name cannot exceed 10 characters",
+    "capacityMin": "Capacity must be at least 1",
+    "locationMaxLength": "Location description cannot exceed 100 characters"
+  },
+  "notifications": {
+    "createSuccess": "Table created successfully",
+    "updateSuccess": "Table updated successfully",
+    "deleteSuccess": "Table deleted successfully",
+    "loadError": "Error loading tables",
+    "createError": "Error creating table",
+    "updateError": "Error updating table",
+    "deleteError": "Error deleting table"
+  },
+  "deleteModal": {
+    "title": "Confirm Table Deletion",
+    "message": "Are you sure you want to delete table \"{{name}}\"? This action cannot be undone",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "errors": {
+    "loadError": "Error loading table",
+    "notFound": "Could not load table with ID: {{id}}",
+    "notFoundDetails": "The table may have been deleted or you may not have permission to access it"
+  }
+}
