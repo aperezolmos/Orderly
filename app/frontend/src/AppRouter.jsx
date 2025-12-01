@@ -20,16 +20,25 @@ const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
 const Register = React.lazy(() => import('./modules/auth/pages/RegisterPage'));
 const Profile = React.lazy(() => import('./modules/auth/pages/ProfilePage'));
 
-// Role
+// Roles
 const RoleList = React.lazy(() => import('./modules/roles/pages/RoleListPage'));
 const RoleCreate = React.lazy(() => import('./modules/roles/pages/RoleCreatePage'));
 const RoleEdit = React.lazy(() => import('./modules/roles/pages/RoleEditPage'));
 
-// User
+// Users
 const UserList = React.lazy(() => import('./modules/users/pages/UserListPage'));
 const UserCreate = React.lazy(() => import('./modules/users/pages/UserCreatePage'));
 const UserEdit = React.lazy(() => import('./modules/users/pages/UserEditPage'));
 
+// Dining Tables
+const DiningTableList = React.lazy(() => import('./modules/diningTables/pages/DiningTableListPage'));
+const DiningTableCreate = React.lazy(() => import('./modules/diningTables/pages/DiningTableCreatePage'));
+const DiningTableEdit = React.lazy(() => import('./modules/diningTables/pages/DiningTableEditPage'));
+
+// Reservations
+const ReservationList = React.lazy(() => import('./modules/reservations/pages/ReservationListPage'));
+const ReservationCreate = React.lazy(() => import('./modules/reservations/pages/ReservationCreatePage'));
+const ReservationEdit = React.lazy(() => import('./modules/reservations/pages/ReservationEditPage'));
 // --------------------------------------------------------
 
 
@@ -152,6 +161,68 @@ const AppRouter = () => {
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
                   <WithLayout>
                     <UserEdit />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/tables"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <DiningTableList />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tables/new"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <DiningTableCreate />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tables/:id/edit"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <DiningTableEdit />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/reservations"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ReservationList />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reservations/new"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ReservationCreate />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reservations/:id/edit"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ReservationEdit />
                   </WithLayout>
                 </ProtectedRoute>
               }

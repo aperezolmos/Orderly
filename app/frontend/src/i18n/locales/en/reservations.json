@@ -1,0 +1,76 @@
+{
+  "management": {
+    "title": "Reservation Management",
+    "create": "Create Reservation",
+    "edit": "Edit Reservation",
+    "list": "Reservations"
+  },
+  "form": {
+    "basicInfo": "Basic Info",
+    "guestInfo": "Guest Info",
+    "diningTable": "Dining Table",
+    "diningTablePlaceholder": "Select a table",
+    "noTables": "No active tables available",
+    "numberOfGuests": "Number of Guests",
+    "numberOfGuestsPlaceholder": "Enter number of guests",
+    "reservationDateTime": "Reservation Date & Time",
+    "reservationDateTimePlaceholder": "Select date and time",
+    "estimatedDurationMinutes": "Estimated Duration (minutes)",
+    "estimatedDurationMinutesPlaceholder": "Enter duration (30-240)",
+    "guestFirstName": "Guest First Name",
+    "guestFirstNamePlaceholder": "Enter guest's first name",
+    "guestLastName": "Guest Last Name",
+    "guestLastNamePlaceholder": "Enter guest's last name",
+    "guestPhone": "Guest Phone",
+    "guestPhonePlaceholder": "Enter guest's phone",
+    "guestSpecialRequests": "Special Requests",
+    "guestSpecialRequestsPlaceholder": "Allergies, preferences, etc.",
+    "create": "Create Reservation",
+    "update": "Update Reservation"
+  },
+  "list": {
+    "id": "ID",
+    "diningTable": "Table",
+    "status": "Status",
+    "guest": "Guest",
+    "numberOfGuests": "Guests",
+    "reservationDateTime": "Date & Time",
+    "newReservation": "New Reservation"
+  },
+  "status": {
+    "CONFIRMED": "Confirmed",
+    "SEATED": "Seated",
+    "COMPLETED": "Completed",
+    "CANCELLED": "Cancelled"
+  },
+  "validation": {
+    "tableRequired": "Table is required",
+    "guestsMin": "At least 1 guest",
+    "dateRequired": "Date and time required",
+    "durationRange": "Duration must be between 30 and 240 minutes",
+    "guestFirstNameRequired": "Guest's first name required",
+    "guestLastNameRequired": "Guest's last name required",
+    "guestPhoneRequired": "Guest's phone required",
+    "specialRequestsMaxLength": "Special requests cannot exceed 500 characters"
+  },
+  "notifications": {
+    "createSuccess": "Reservation created successfully",
+    "updateSuccess": "Reservation updated successfully",
+    "deleteSuccess": "Reservation deleted successfully",
+    "loadError": "Error loading reservations",
+    "createError": "Error creating reservation",
+    "updateError": "Error updating reservation",
+    "deleteError": "Error deleting reservation"
+  },
+  "deleteModal": {
+    "title": "Confirm Reservation Deletion",
+    "message": "Are you sure you want to delete reservation #{{id}}? This action cannot be undone",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "errors": {
+    "loadError": "Error loading reservation",
+    "notFound": "Could not load reservation with ID: {{id}}",
+    "notFoundDetails": "The reservation may have been deleted or you may not have permission to access it"
+  }
+}

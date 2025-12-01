@@ -11,12 +11,16 @@ const resources = {
     auth: () => import('./locales/en/auth.json'),
     roles: () => import('./locales/en/roles.json'),
     users: () => import('./locales/en/users.json'),
+    diningTables: () => import('./locales/en/diningTables.json'),
+    reservations: () => import('./locales/en/reservations.json'),
   },
   es: {
     common: () => import('./locales/es/common.json'),
     auth: () => import('./locales/es/auth.json'),
     roles: () => import('./locales/es/roles.json'),
     users: () => import('./locales/es/users.json'),
+    diningTables: () => import('./locales/es/diningTables.json'),
+    reservations: () => import('./locales/es/reservations.json'),
   },
 };
 
