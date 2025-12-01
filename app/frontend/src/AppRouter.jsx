@@ -35,6 +35,12 @@ const FoodList = React.lazy(() => import('./modules/foods/pages/FoodListPage'));
 const FoodCreate = React.lazy(() => import('./modules/foods/pages/FoodCreatePage'));
 const FoodEdit = React.lazy(() => import('./modules/foods/pages/FoodEditPage'));
 
+// Products
+const ProductList = React.lazy(() => import('./modules/products/pages/ProductListPage'));
+const ProductView = React.lazy(() => import('./modules/products/pages/ProductViewPage'));
+const ProductCreate = React.lazy(() => import('./modules/products/pages/ProductCreatePage'));
+const ProductEdit = React.lazy(() => import('./modules/products/pages/ProductEditPage'));
+
 // Dining Tables
 const DiningTableList = React.lazy(() => import('./modules/diningTables/pages/DiningTableListPage'));
 const DiningTableCreate = React.lazy(() => import('./modules/diningTables/pages/DiningTableCreatePage'));
@@ -197,6 +203,47 @@ const AppRouter = () => {
                 <ProtectedRoute requiredRole="ROLE_ADMIN">
                   <WithLayout>
                     <FoodEdit />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ProductList />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products/:id/view"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ProductView />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products/new"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ProductCreate />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products/:id/edit"
+              element={
+                <ProtectedRoute requiredRole="ROLE_ADMIN">
+                  <WithLayout>
+                    <ProductEdit />
                   </WithLayout>
                 </ProtectedRoute>
               }

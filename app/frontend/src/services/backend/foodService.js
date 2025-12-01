@@ -56,5 +56,10 @@ export const foodService = {
     catch (error) {
       return handleApiError(error);
     }
+  },
+
+  searchFoods: async (name) => {
+    const res = await apiClient.get(`/foods/search?name=${encodeURIComponent(name)}`);
+    return res.data;
   }
 };

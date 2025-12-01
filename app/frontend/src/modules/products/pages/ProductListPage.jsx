@@ -1,0 +1,131 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Group, Text, Modal, Button, Box, LoadingOverlay } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import ManagementLayout from '../../../common/layouts/ManagementLayout';
+import DataTable from '../../../common/components/DataTable';
+import { useProducts } from '../hooks/useProducts';
+import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+
+
+const ProductListPage = () => {
+  
+  const navigate = useNavigate();
+  const { products, loading, deleteProduct } = useProducts();
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'products']);
+
+
+  if (!ready || isNamespaceLoading) {
+    return (
+      <ManagementLayout
+        title={t('common:app.loading')}
+        breadcrumbs={[]}
+      >
+        <Box style={{ height: '200px', position: 'relative' }}>
+          <LoadingOverlay visible={true} />
+        </Box>
+      </ManagementLayout>
+    );
+  }
+
+  const handleEdit = (product) => {
+    navigate(`/products/${product.id}/edit`);
+  };
+
+  const handleView = (product) => {
+    navigate(`/products/${product.id}/view`);
+  };
+
+  const handleDelete = (product) => {
+    setProductToDelete(product);
+    openDeleteModal();
+  };
+
+  const confirmDelete = async () => {
+    if (productToDelete) {
+      await deleteProduct(productToDelete.id);
+      closeDeleteModal();
+      setProductToDelete(null);
+    }
+  };
+
+  const columns = [
+    {
+      key: 'id',
+      title: t('products:list.id'),
+      render: (product) => <Text weight={500}>#{product.id}</Text>
+    },
+    {
+      key: 'name',
+      title: t('products:list.name'),
+      render: (product) => (
+        <Button variant="subtle" onClick={() => handleView(product)}>
+          {product.name}
+        </Button>
+      )
+    },
+    {
+      key: 'price',
+      title: t('products:list.price'),
+      render: (product) => <Text>{product.price} €</Text>
+    },
+    {
+      key: 'ingredientCount',
+      title: t('products:list.ingredientCount'),
+      render: (product) => <Text>{product.ingredientCount}</Text>
+    },
+    {
+      key: 'createdAt',
+      title: t('products:list.created'),
+      render: (product) => (
+        <Text size="sm">
+          {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : 'N/A'}
+        </Text>
+      )
+    }
+  ];
+  
+
+  return (
+    <>
+      <ManagementLayout
+        title={t('products:management.title')}
+        breadcrumbs={[{ title: t('products:management.list'), href: '/products' }]}
+        showCreateButton={true}
+        createButtonLabel={t('products:list.newProduct')}
+        onCreateClick={() => navigate('/products/new')}
+      >
+        <DataTable
+          columns={columns}
+          data={products}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          loading={loading}
+        />
+      </ManagementLayout>
+
+      <Modal
+        opened={deleteModalOpened}
+        onClose={closeDeleteModal}
+        title={t('products:deleteModal.title')}
+        size="sm"
+      >
+        <Text mb="md">
+          {t('products:deleteModal.message', { name: productToDelete?.name })}
+        </Text>
+        <Group position="right">
+          <Button variant="outline" onClick={closeDeleteModal}>
+            {t('products:deleteModal.cancel')}
+          </Button>
+          <Button color="red" onClick={confirmDelete} loading={loading}>
+            {t('products:deleteModal.confirm')}
+          </Button>
+        </Group>
+      </Modal>
+    </>
+  );
+};
+
+export default ProductListPage;
