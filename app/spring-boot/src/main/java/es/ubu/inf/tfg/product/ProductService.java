@@ -1,7 +1,9 @@
 package es.ubu.inf.tfg.product;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
 import es.ubu.inf.tfg.product.dto.mapper.ProductMapper;
 
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientRequestDTO;
 import es.ubu.inf.tfg.product.ingredient.dto.IngredientResponseDTO;
 import es.ubu.inf.tfg.product.ingredient.dto.mapper.IngredientMapper;
 
@@ -95,6 +98,10 @@ public class ProductService {
         checkProductNameExists(productRequest.getName());
         Product product = productMapper.toEntity(productRequest);
 
+        if (productRequest.getIngredients() != null) {
+            setProductIngredients(product, productRequest.getIngredients());
+        }
+
         Product savedProduct = productRepository.save(product);
         return productMapper.toResponseDTO(savedProduct);
     }
@@ -114,6 +121,10 @@ public class ProductService {
             existingProduct.setPrice(productRequest.getPrice());
         }
         
+        if (productRequest.getIngredients() != null) {
+            setProductIngredients(existingProduct, productRequest.getIngredients());
+        }
+
         Product updatedProduct = productRepository.save(existingProduct);
         return productMapper.toResponseDTO(updatedProduct);
     }
@@ -133,19 +144,10 @@ public class ProductService {
     // DOMAIN METHODS (ingredients)
 
     public IngredientResponseDTO addIngredientToProduct(Integer productId, Integer foodId, BigDecimal quantity) {
-        
-        validateQuantityPositive(quantity);
 
         Product product = findEntityById(productId);
-        Food food = foodService.findEntityById(foodId);
 
-        if (existsIngredientById(productId, foodId)) {
-            throw new IllegalArgumentException("Ingredient with productId: " + productId + " and foodId: "
-                + foodId + " already exists");
-        }
-
-        // Internally ensures bidirectional consistency and collection updates
-        Ingredient ingredient = new Ingredient(product, food, quantity);
+        Ingredient ingredient = createIngredient(product, foodId, quantity);
         productRepository.save(product);
         
         return ingredientMapper.toResponseDTO(ingredient);
@@ -213,6 +215,36 @@ public class ProductService {
     private void validateQuantityPositive(BigDecimal quantity){
         if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Quantity must be positive");
+        }
+    }
+
+    private Ingredient createIngredient(Product product, Integer foodId, BigDecimal quantity) {
+        
+        validateQuantityPositive(quantity);
+        Food food = foodService.findEntityById(foodId);
+
+        if (existsIngredientById(product.getId(), foodId)) {
+            throw new IllegalArgumentException("Ingredient with productId: " + product.getId() + " and foodId: "
+                + foodId + " already exists");
+        }
+
+        // Internally ensures bidirectional consistency and collection updates
+        return new Ingredient(product, food, quantity);
+    }
+
+    private void setProductIngredients(Product product, Set<IngredientRequestDTO> ingredients) {
+        
+        if (product.getIngredients() != null) {
+            product.clearIngredients();
+        }
+        else {
+            product.setIngredients(new HashSet<>());
+        }
+
+        if (ingredients != null && !ingredients.isEmpty()) {
+            for (IngredientRequestDTO dto : ingredients) {
+                createIngredient(product, dto.getFoodId(), dto.getQuantityInGrams());
+            }
         }
     }
 
