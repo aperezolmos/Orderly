@@ -57,11 +57,10 @@ export const productService = {
 
   addIngredient: async (productId, foodId, quantityInGrams) => {
     try {
-      const res = await apiClient.post(`/products/${productId}/ingredients`, {
+      return await apiClient.post(`/products/${productId}/ingredients`, {
         foodId,
         quantityInGrams,
       });
-      return res.data;
     }
     catch (error) {
       return handleApiError(error);

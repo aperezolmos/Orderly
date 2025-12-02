@@ -50,8 +50,7 @@ export const foodService = {
 
   checkFoodNameAvailability: async (name) => {
     try {
-      const res = await apiClient.get(`/foods/name/${encodeURIComponent(name)}/exists`);
-      return !res.data;
+      return !await apiClient.get(`/foods/name/${encodeURIComponent(name)}/exists`);
     }
     catch (error) {
       return handleApiError(error);
@@ -59,7 +58,6 @@ export const foodService = {
   },
 
   searchFoods: async (name) => {
-    const res = await apiClient.get(`/foods/search?name=${encodeURIComponent(name)}`);
-    return res.data;
+    return await apiClient.get(`/foods/search?name=${encodeURIComponent(name)}`);
   }
 };

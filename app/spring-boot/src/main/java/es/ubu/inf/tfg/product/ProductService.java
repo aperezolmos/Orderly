@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.FoodService;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
@@ -134,7 +133,7 @@ public class ProductService {
         Product product = findEntityById(id);
 
         if (!product.getIngredients().isEmpty()) {
-            throw new ResourceInUseException("Product", id, "Food");
+            product.clearIngredients();
         }
         productRepository.delete(product);
     }
