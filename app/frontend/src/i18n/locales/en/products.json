@@ -1,0 +1,70 @@
+{
+  "management": {
+    "title": "Product Management",
+    "create": "Create New Product",
+    "edit": "Edit Product",
+    "view": "View Product",
+    "list": "Products"
+  },
+  "form": {
+    "basicInfo": "Basic Information",
+    "ingredients": "Ingredients",
+    "name": "Name",
+    "namePlaceholder": "Enter product name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description",
+    "price": "Price",
+    "pricePlaceholder": "Enter price",
+    "create": "Create Product",
+    "update": "Update Product",
+    "edit": "Edit Product"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Name",
+    "price": "Price",
+    "ingredientCount": "Ingredients",
+    "created": "Created",
+    "newProduct": "New Product"
+  },
+  "validation": {
+    "nameRequired": "Name is required",
+    "nameMaxLength": "Name cannot exceed 100 characters",
+    "descriptionMaxLength": "Description cannot exceed 255 characters",
+    "priceRequired": "Price is required",
+    "priceNonNegative": "Price cannot be negative"
+  },
+  "notifications": {
+    "createSuccess": "Product created successfully",
+    "updateSuccess": "Product updated successfully",
+    "deleteSuccess": "Product deleted successfully",
+    "loadError": "Error loading products",
+    "createError": "Error creating product",
+    "updateError": "Error updating product",
+    "deleteError": "Error deleting product"
+  },
+  "deleteModal": {
+    "title": "Confirm Product Deletion",
+    "message": "Are you sure you want to delete product \"{{name}}\"? This action cannot be undone",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "errors": {
+    "loadError": "Error loading product",
+    "notFound": "Could not load product with ID: {{id}}",
+    "notFoundDetails": "The product may have been deleted or you may not have permission to access it"
+  },
+  "ingredients": {
+    "title": "Ingredients",
+    "searchFood": "Search food by name...",
+    "add": "Add",
+    "food": "Food",
+    "quantity": "Quantity (g)",
+    "actions": "Actions",
+    "noIngredients": "No ingredients added",
+    "edit": "Edit"
+  },
+  "nutrition": {
+    "title": "Total Nutrition Information"
+  }
+}

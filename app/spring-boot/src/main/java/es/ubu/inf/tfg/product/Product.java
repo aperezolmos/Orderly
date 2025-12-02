@@ -63,9 +63,17 @@ public class Product {
 
 
     // --------------------------------------------------------
+
+    public void clearIngredients() {
+        if (ingredients != null) {
+            Set<Ingredient> toRemove = new HashSet<>(ingredients);
+            for (Ingredient ingredient : toRemove) {
+                ingredient.remove();
+            }
+        }
+    }
     
     public NutritionInfo calculateTotalNutrition() {
-        
         NutritionInfo total = NutritionInfo.builder().build();
         for (Ingredient ingredient : ingredients) {
             NutritionInfo ingredientNutrition = ingredient.calculateNutritionInfo();

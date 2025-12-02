@@ -1,6 +1,5 @@
 package es.ubu.inf.tfg.product;
 
-import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.FoodService;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
@@ -254,13 +253,12 @@ class ProductServiceUnitTest {
     }
 
     @Test
-    void delete_ProductWithIngredients_ShouldThrowResourceInUseException() {
+    void delete_ProductWithIngredients_ShouldDelete() {
 
         when(productRepository.findById(PRODUCT_ID)).thenReturn(Optional.of(productEntity));
 
-        assertThatThrownBy(() -> productService.delete(PRODUCT_ID))
-                .isInstanceOf(ResourceInUseException.class)
-                .hasMessageContaining("Product")
-                .hasMessageContaining("Food");
+        productService.delete(PRODUCT_ID);
+
+        verify(productRepository).delete(productEntity);
     }
 }

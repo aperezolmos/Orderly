@@ -1,0 +1,70 @@
+{
+  "management": {
+    "title": "Gestión de Productos",
+    "create": "Crear Nuevo Producto",
+    "edit": "Editar Producto",
+    "view": "Ver Producto",
+    "list": "Productos"
+  },
+  "form": {
+    "basicInfo": "Información Básica",
+    "ingredients": "Ingredientes",
+    "name": "Nombre",
+    "namePlaceholder": "Ingrese nombre del producto",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Ingrese descripción",
+    "price": "Precio",
+    "pricePlaceholder": "Ingrese precio",
+    "create": "Crear Producto",
+    "update": "Actualizar Producto",
+    "edit": "Editar Producto"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Nombre",
+    "price": "Precio",
+    "ingredientCount": "Ingredientes",
+    "created": "Creado",
+    "newProduct": "Nuevo Producto"
+  },
+  "validation": {
+    "nameRequired": "El nombre es obligatorio",
+    "nameMaxLength": "El nombre no puede exceder 100 caracteres",
+    "descriptionMaxLength": "La descripción no puede exceder 255 caracteres",
+    "priceRequired": "El precio es obligatorio",
+    "priceNonNegative": "El precio no puede ser negativo"
+  },
+  "notifications": {
+    "createSuccess": "Producto creado exitosamente",
+    "updateSuccess": "Producto actualizado exitosamente",
+    "deleteSuccess": "Producto eliminado exitosamente",
+    "loadError": "Error cargando productos",
+    "createError": "Error creando producto",
+    "updateError": "Error actualizando producto",
+    "deleteError": "Error eliminando producto"
+  },
+  "deleteModal": {
+    "title": "Confirmar Eliminación de Producto",
+    "message": "¿Estás seguro de que quieres eliminar el producto \"{{name}}\"? Esta acción no se puede deshacer",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "errors": {
+    "loadError": "Error cargando producto",
+    "notFound": "No se pudo cargar el producto con ID: {{id}}",
+    "notFoundDetails": "El producto puede haber sido eliminado o no tienes permiso para acceder a él"
+  },
+  "ingredients": {
+    "title": "Ingredientes",
+    "searchFood": "Buscar alimento por nombre...",
+    "add": "Añadir",
+    "food": "Alimento",
+    "quantity": "Cantidad (g)",
+    "actions": "Acciones",
+    "noIngredientes": "No hay ingredientes añadidos",
+    "edit": "Editar"
+  },
+  "nutrition": {
+    "title": "Información Nutricional Total"
+  }
+}

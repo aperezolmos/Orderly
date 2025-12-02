@@ -1,0 +1,94 @@
+{
+  "management": {
+    "title": "Food Management",
+    "create": "Create New Food",
+    "edit": "Edit Food",
+    "list": "Foods"
+  },
+  "form": {
+    "basicInfo": "Basic Information",
+    "nutritionInfo": "Nutrition Information",
+    "minerals": "Minerals",
+    "vitamins": "Vitamins",
+    "name": "Name",
+    "namePlaceholder": "Enter food name",
+    "foodGroup": "Food Group",
+    "foodGroupPlaceholder": "Select food group",
+    "servingWeightGrams": "Serving Weight (g)",
+    "servingWeightPlaceholder": "e.g. 100",
+    "create": "Create Food",
+    "update": "Update Food",
+    "calories": "Calories",
+    "carbohydrates": "Carbohydrates",
+    "fats": "Fats",
+    "fiber": "Fiber",
+    "protein": "Protein",
+    "salt": "Salt",
+    "saturatedFats": "Saturated Fats",
+    "sugars": "Sugars",
+    "calcium": "Calcium",
+    "iron": "Iron",
+    "magnesium": "Magnesium",
+    "phosphorus": "Phosphorus",
+    "potassium": "Potassium",
+    "selenium": "Selenium",
+    "sodium": "Sodium",
+    "zinc": "Zinc",
+    "vitaminA": "Vitamin A",
+    "vitaminC": "Vitamin C",
+    "vitaminD": "Vitamin D",
+    "vitaminE": "Vitamin E",
+    "vitaminB1": "Vitamin B1",
+    "vitaminB2": "Vitamin B2",
+    "vitaminB3": "Vitamin B3",
+    "vitaminB6": "Vitamin B6",
+    "vitaminB9": "Vitamin B9",
+    "vitaminB12": "Vitamin B12"
+  },
+  "list": {
+    "id": "ID",
+    "name": "Name",
+    "foodGroup": "Food Group",
+    "servingWeightGrams": "Serving (g)",
+    "created": "Created",
+    "newFood": "New Food"
+  },
+  "foodGroups": {
+    "DAIRY": "Dairy",
+    "PROTEINS": "Proteins",
+    "FRUIT": "Fruit",
+    "VEGETABLES": "Vegetables",
+    "GRAINS": "Grains",
+    "FATS": "Fats",
+    "LEGUMES": "Legumes",
+    "COMBINATION": "Food combination",
+    "NOT_APPLICABLE": "Not applicable"
+  },
+  "validation": {
+    "nameRequired": "Name is required",
+    "nameMaxLength": "Name cannot exceed 100 characters",
+    "foodGroupRequired": "Food group is required",
+    "servingWeightRequired": "Serving weight is required",
+    "servingWeightPositive": "Serving weight must be positive"
+  },
+  "notifications": {
+    "createSuccess": "Food created successfully",
+    "updateSuccess": "Food updated successfully",
+    "deleteSuccess": "Food deleted successfully",
+    "loadError": "Error loading foods",
+    "createError": "Error creating food",
+    "updateError": "Error updating food",
+    "deleteError": "Error deleting food"
+  },
+  "deleteModal": {
+    "title": "Confirm Food Deletion",
+    "message": "Are you sure you want to delete food \"{{name}}\"? This action cannot be undone",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "errors": {
+    "loadError": "Error loading food",
+    "notFound": "Could not load food with ID: {{id}}",
+    "notFoundDetails": "The food may have been deleted or you may not have permission to access it"
+  }
+}

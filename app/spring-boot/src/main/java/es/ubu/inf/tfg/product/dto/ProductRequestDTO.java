@@ -1,7 +1,11 @@
 package es.ubu.inf.tfg.product.dto;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
+import es.ubu.inf.tfg.product.ingredient.dto.IngredientRequestDTO;
+
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -26,4 +30,7 @@ public class ProductRequestDTO {
 
     @PositiveOrZero(message = "Price cannot be negative")
     private BigDecimal price;
+
+    @Valid
+    private Set<IngredientRequestDTO> ingredients;
 }
