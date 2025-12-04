@@ -50,6 +50,11 @@ const DiningTableEdit = React.lazy(() => import('./modules/diningTables/pages/Di
 const ReservationList = React.lazy(() => import('./modules/reservations/pages/ReservationListPage'));
 const ReservationCreate = React.lazy(() => import('./modules/reservations/pages/ReservationCreatePage'));
 const ReservationEdit = React.lazy(() => import('./modules/reservations/pages/ReservationEditPage'));
+
+// Orders
+const OrdersDashboardPage = React.lazy(() => import('./modules/orders/pages/OrderDashboardPage'));
+
+
 // --------------------------------------------------------
 
 
@@ -109,6 +114,15 @@ const AppRouter = () => {
                   <WithLayout>
                     <Profile />
                   </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute>
+                  <WithoutLayout><OrdersDashboardPage /></WithoutLayout>
                 </ProtectedRoute>
               }
             />
