@@ -50,6 +50,12 @@ public class DiningOrderController {
         return ResponseEntity.ok(orders);
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ORDER_DINING_VIEW_LIST')")
+    public ResponseEntity<DiningOrderResponseDTO> getDiningOrderById(@PathVariable Integer id) {
+        return ResponseEntity.ok(diningOrderService.findById(id));
+    }
+
     @GetMapping("/employee/{employeeId}")
     @PreAuthorize("hasAuthority('ORDER_DINING_VIEW_LIST')")
     public ResponseEntity<List<DiningOrderResponseDTO>> getDiningOrdersByEmployee(@PathVariable Integer employeeId) {

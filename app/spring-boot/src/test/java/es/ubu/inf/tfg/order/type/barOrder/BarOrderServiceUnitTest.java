@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.order.type.barOrder;
 import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.order.type.barOrder.dto.BarOrderResponseDTO;
 import es.ubu.inf.tfg.order.type.barOrder.dto.mapper.BarOrderMapper;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,6 +72,27 @@ class BarOrderServiceUnitTest {
         assertThat(result).containsExactly(responseDTO);
         verify(barOrderRepository).findAll();
         verify(barOrderMapper).toResponseDTO(barOrder);
+    }
+
+    @Test
+    void findById_ExistingBarOrder_ShouldReturnMappedDTO() {
+        when(barOrderRepository.findById(ORDER_ID)).thenReturn(java.util.Optional.of(barOrder));
+        when(barOrderMapper.toDetailedResponseDTO(barOrder)).thenReturn(responseDTO);
+
+        BarOrderResponseDTO result = barOrderService.findById(ORDER_ID);
+
+        assertThat(result).isEqualTo(responseDTO);
+        verify(barOrderRepository).findById(ORDER_ID);
+        verify(barOrderMapper).toDetailedResponseDTO(barOrder);
+    }
+
+    @Test
+    void findById_NonExistingBarOrder_ShouldThrowException() {
+        when(barOrderRepository.findById(ORDER_ID)).thenReturn(java.util.Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> barOrderService.findById(ORDER_ID))
+            .isInstanceOf(EntityNotFoundException.class)
+            .hasMessageContaining("BarOrder not found with id: " + ORDER_ID);
     }
 
     @Test

@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.order.type.diningOrder;
 import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.order.type.diningOrder.dto.DiningOrderResponseDTO;
 import es.ubu.inf.tfg.order.type.diningOrder.dto.mapper.DiningOrderMapper;
+import jakarta.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,6 +71,27 @@ class DiningOrderServiceUnitTest {
         assertThat(result).containsExactly(responseDTO);
         verify(diningOrderRepository).findAll();
         verify(diningOrderMapper).toResponseDTO(diningOrder);
+    }
+
+    @Test
+    void findById_ExistingDiningOrder_ShouldReturnMappedDTO() {
+        when(diningOrderRepository.findById(ORDER_ID)).thenReturn(java.util.Optional.of(diningOrder));
+        when(diningOrderMapper.toDetailedResponseDTO(diningOrder)).thenReturn(responseDTO);
+
+        DiningOrderResponseDTO result = diningOrderService.findById(ORDER_ID);
+
+        assertThat(result).isEqualTo(responseDTO);
+        verify(diningOrderRepository).findById(ORDER_ID);
+        verify(diningOrderMapper).toDetailedResponseDTO(diningOrder);
+    }
+
+    @Test
+    void findById_NonExistingDiningOrder_ShouldThrowException() {
+        when(diningOrderRepository.findById(ORDER_ID)).thenReturn(java.util.Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> diningOrderService.findById(ORDER_ID))
+            .isInstanceOf(EntityNotFoundException.class)
+            .hasMessageContaining("DiningOrder not found with id: " + ORDER_ID);
     }
 
     @Test

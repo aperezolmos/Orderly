@@ -314,7 +314,12 @@ class OrderServiceUnitTest {
         when(orderRepository.save(order)).thenReturn(order);
         when(orderMapperFactory.toDetailedResponseDTO(order)).thenReturn(orderResponseDTO);
 
-        OrderResponseDTO result = orderService.addItemToOrder(ORDER_ID, PRODUCT_ID, QUANTITY_DEFAULT);
+        OrderItemRequestDTO itemRequest = OrderItemRequestDTO.builder()
+            .productId(PRODUCT_ID)
+            .quantity(QUANTITY_DEFAULT)
+            .build();
+
+        OrderResponseDTO result = orderService.addItemToOrder(ORDER_ID, itemRequest);
 
         assertThat(result).isEqualTo(orderResponseDTO);
         verify(order).addItem(any(OrderItem.class));
@@ -330,7 +335,12 @@ class OrderServiceUnitTest {
         when(productService.findEntityById(PRODUCT_ID)).thenReturn(product);
         when(order.getStatus()).thenReturn(OrderStatus.PAID);
 
-        assertThatThrownBy(() -> orderService.addItemToOrder(ORDER_ID, PRODUCT_ID, QUANTITY_DEFAULT))
+        OrderItemRequestDTO itemRequest = OrderItemRequestDTO.builder()
+            .productId(PRODUCT_ID)
+            .quantity(QUANTITY_DEFAULT)
+            .build();
+
+        assertThatThrownBy(() -> orderService.addItemToOrder(ORDER_ID, itemRequest))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining(EXPECTED_MESSAGE);
     }

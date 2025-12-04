@@ -140,15 +140,15 @@ public class OrderService {
     // --------------------------------------------------------
     // DOMAIN METHODS (order items)
     
-    public OrderResponseDTO addItemToOrder(Integer orderId, Integer productId, Integer quantity) {
+    public OrderResponseDTO addItemToOrder(Integer orderId, OrderItemRequestDTO itemRequest) {
         
         Order order = findEntityById(orderId);
-        Product product = productService.findEntityById(productId);
+        Product product = productService.findEntityById(itemRequest.getProductId());
 
         validateStatusTransition(order.getStatus());
         
         if (order.getItems() == null) order.setItems(new ArrayList<>());
-        createOrderItem(order, product, quantity);
+        createOrderItem(order, product, itemRequest.getQuantity());
         
         Order updated = orderRepository.save(order);
         return orderMapperFactory.toDetailedResponseDTO(updated);
