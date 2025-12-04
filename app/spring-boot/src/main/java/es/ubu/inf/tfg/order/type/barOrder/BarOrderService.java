@@ -4,6 +4,8 @@ import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.order.type.barOrder.dto.BarOrderResponseDTO;
 import es.ubu.inf.tfg.order.type.barOrder.dto.mapper.BarOrderMapper;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +28,12 @@ public class BarOrderService {
         return barOrderRepository.findAll().stream()
                 .map(barOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public BarOrderResponseDTO findById(Integer id) {
+        BarOrder barOrder = barOrderRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("BarOrder not found with id: " + id));
+        return barOrderMapper.toDetailedResponseDTO(barOrder);
     }
 
     public List<BarOrderResponseDTO> findByDrinksOnly(Boolean drinksOnly) {

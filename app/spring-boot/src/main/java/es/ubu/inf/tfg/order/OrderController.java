@@ -2,6 +2,7 @@ package es.ubu.inf.tfg.order;
 
 import es.ubu.inf.tfg.order.dto.OrderResponseDTO;
 import es.ubu.inf.tfg.order.orderItem.OrderItemService;
+import es.ubu.inf.tfg.order.orderItem.dto.OrderItemRequestDTO;
 import es.ubu.inf.tfg.order.orderItem.dto.OrderItemResponseDTO;
 import es.ubu.inf.tfg.order.orderItem.status.OrderItemStatus;
 import es.ubu.inf.tfg.order.status.OrderStatus;
@@ -101,10 +102,9 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('ORDER_EDIT', 'ORDER_BAR_EDIT', 'ORDER_DINING_EDIT')")
     public ResponseEntity<OrderResponseDTO> addItemToOrder(
             @PathVariable Integer orderId,
-            @RequestParam Integer productId,
-            @RequestParam Integer quantity) {
+            @RequestBody OrderItemRequestDTO itemRequest) {
         
-        OrderResponseDTO updatedOrder = orderService.addItemToOrder(orderId, productId, quantity);
+        OrderResponseDTO updatedOrder = orderService.addItemToOrder(orderId, itemRequest);
         return ResponseEntity.ok(updatedOrder);
     }
 

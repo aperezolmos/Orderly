@@ -50,6 +50,12 @@ public class BarOrderController {
         return ResponseEntity.ok(orders);
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ORDER_BAR_VIEW_LIST')")
+    public ResponseEntity<BarOrderResponseDTO> getBarOrderById(@PathVariable Integer id) {
+        return ResponseEntity.ok(barOrderService.findById(id));
+    }
+
     @GetMapping("/employee/{employeeId}")
     @PreAuthorize("hasAuthority('ORDER_BAR_VIEW_LIST')")
     public ResponseEntity<List<BarOrderResponseDTO>> getBarOrdersByEmployee(@PathVariable Integer employeeId) {

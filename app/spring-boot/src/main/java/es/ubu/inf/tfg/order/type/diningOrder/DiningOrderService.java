@@ -4,6 +4,8 @@ import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.order.type.diningOrder.dto.DiningOrderResponseDTO;
 import es.ubu.inf.tfg.order.type.diningOrder.dto.mapper.DiningOrderMapper;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +28,12 @@ public class DiningOrderService {
         return diningOrderRepository.findAll().stream()
                 .map(diningOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public DiningOrderResponseDTO findById(Integer id) {
+        DiningOrder diningOrder = diningOrderRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("DiningOrder not found with id: " + id));
+        return diningOrderMapper.toDetailedResponseDTO(diningOrder);
     }
 
     public List<DiningOrderResponseDTO> findByTableId(Integer tableId) {

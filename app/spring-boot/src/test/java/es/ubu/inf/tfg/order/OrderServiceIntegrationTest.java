@@ -1,6 +1,7 @@
 package es.ubu.inf.tfg.order;
 
 import es.ubu.inf.tfg.order.dto.OrderResponseDTO;
+import es.ubu.inf.tfg.order.orderItem.dto.OrderItemRequestDTO;
 import es.ubu.inf.tfg.order.orderItem.dto.OrderItemResponseDTO;
 import es.ubu.inf.tfg.order.status.OrderStatus;
 import es.ubu.inf.tfg.order.type.barOrder.BarOrder;
@@ -175,8 +176,17 @@ class OrderServiceIntegrationTest {
 
         OrderResponseDTO result = orderService.create(requestDTO);
 
-        orderService.addItemToOrder(result.getId(), product1.getId(), BEER_QUANTITY);
-        orderService.addItemToOrder(result.getId(), product2.getId(), BURGER_QUANTITY);
+        OrderItemRequestDTO beerItemDTO = OrderItemRequestDTO.builder()
+            .productId(product1.getId())
+            .quantity(BEER_QUANTITY)
+            .build();
+        OrderItemRequestDTO burgerItemDTO = OrderItemRequestDTO.builder()
+            .productId(product2.getId())
+            .quantity(BURGER_QUANTITY)
+            .build();
+
+        orderService.addItemToOrder(result.getId(), beerItemDTO);
+        orderService.addItemToOrder(result.getId(), burgerItemDTO);
 
         OrderResponseDTO updatedOrder = orderService.findById(result.getId());
         assertThat(updatedOrder.getTotalAmount()).isEqualByComparingTo(EXPECTED_TOTAL);
@@ -237,7 +247,13 @@ class OrderServiceIntegrationTest {
                 .build();
 
         OrderResponseDTO createdOrder = orderService.create(createDTO);
-        orderService.addItemToOrder(createdOrder.getId(), product1.getId(), 2);
+
+        OrderItemRequestDTO itemDTO = OrderItemRequestDTO.builder()
+            .productId(product1.getId())
+            .quantity(2)
+            .build();
+        orderService.addItemToOrder(createdOrder.getId(), itemDTO);
+        
         List<OrderItemResponseDTO> originalItems = createdOrder.getItems();
 
         BarOrderRequestDTO updateDTO = BarOrderRequestDTO.builder()
@@ -292,8 +308,17 @@ class OrderServiceIntegrationTest {
 
         OrderResponseDTO createdOrder = orderService.create(requestDTO);
 
-        orderService.addItemToOrder(createdOrder.getId(), product1.getId(), BEER_QUANTITY);
-        orderService.addItemToOrder(createdOrder.getId(), product2.getId(), BURGER_QUANTITY);
+        OrderItemRequestDTO beerItemDTO = OrderItemRequestDTO.builder()
+            .productId(product1.getId())
+            .quantity(BEER_QUANTITY)
+            .build();
+        OrderItemRequestDTO burgerItemDTO = OrderItemRequestDTO.builder()
+            .productId(product2.getId())
+            .quantity(BURGER_QUANTITY)
+            .build();
+
+        orderService.addItemToOrder(createdOrder.getId(), beerItemDTO);
+        orderService.addItemToOrder(createdOrder.getId(), burgerItemDTO);
 
         OrderResponseDTO orderWithItems = orderService.findById(createdOrder.getId());
         Integer itemIdToRemove = orderWithItems.getItems().stream()
