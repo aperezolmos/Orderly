@@ -1,0 +1,52 @@
+.order-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.order-details-paper,
+.products-paper,
+.pending-orders-paper,
+.stats-paper {
+  height: 100%;
+  min-height: 400px;
+  transition: transform 0.2s;
+}
+
+.order-details-paper:hover,
+.products-paper:hover,
+.pending-orders-paper:hover,
+.stats-paper:hover {
+  transform: translateY(-2px);
+}
+
+.product-card {
+  height: 180px;
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    height: 160px;
+  }
+}
+
+/* Estilos para la tabla de pedidos */
+.order-details table {
+  width: 100%;
+}
+
+.order-details table th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}
+
+/* Estilos para la paginación */
+.mantine-Pagination-control {
+  border-radius: 8px;
+}
+
+/* Estilos para los badges de estado */
+.mantine-Badge {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}

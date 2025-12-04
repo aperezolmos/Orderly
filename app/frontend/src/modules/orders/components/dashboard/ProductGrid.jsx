@@ -34,7 +34,7 @@ const ProductGrid = () => {
       </Group>
       <Grid gutter="md">
         {products.map((product) => (
-          <Grid.Col key={product.id} span={{ base: 6, sm: 4, md: 3, lg: 2.4 }}>
+          <Grid.Col key={product.id} span={{ base: 6, sm: 4, md: 3, lg: 3 }}>
             <ProductCard
               product={product}
               onSelect={() => addProductToOrder(product)}

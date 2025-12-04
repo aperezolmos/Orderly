@@ -1,5 +1,7 @@
 import { Grid, Container, Paper, Title, Group, Space, Text } from '@mantine/core';
+import { IconListCheck, IconChefHat } from '@tabler/icons-react';
 import ProductGrid from '../components/dashboard/ProductGrid';
+import OrderDashboardSection from '../components/dashboard/OrderDashboardSection';
 
 
 const OrderDashboardPage = () => {
@@ -11,7 +13,11 @@ const OrderDashboardPage = () => {
         {/* Left section: ORDERS */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
           <Paper shadow="md" p="md" withBorder>
-            <Text size="sm" c="dimmed">Pedidos - Se implementará luego</Text>
+            <Group mb="md">
+              <IconChefHat size={24} />
+              <Title order={2}>Gestión de pedidos</Title>
+            </Group>
+            <OrderDashboardSection />
           </Paper>
         </Grid.Col>
 
@@ -19,7 +25,10 @@ const OrderDashboardPage = () => {
         {/* Right section: PRODUCTS */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
           <Paper shadow="md" p="md" withBorder>
-            <Title order={2} mb="md">Productos Disponibles</Title>
+            <Group mb="md">
+              <IconListCheck size={24} />
+              <Title order={2}>Productos disponibles</Title>
+            </Group>
             <ProductGrid />
           </Paper>
         </Grid.Col>
