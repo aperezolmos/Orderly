@@ -59,7 +59,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 \begin{itemize}
 	\item \textbf{Creación del proyecto \textit{Spring Boot}:} Se configuró un proyecto base con las dependencias listadas en <agregar ref>\todo{Agregar ref de apartado dependencias}.
 	\item \textbf{Generación del \texttt{docker-compose.yml}:} Se creó dicho archivo para orquestar los contenedores de \textit{MySQL} y \textit{Spring Boot}. La imagen de la aplicación \textit{Spring Boot} se creó a partir de su propio \texttt{Dockerfile}. Se añadió un archivo de inicialización de la base de datos y se comprobó que ambos servicios podían comunicarse entre sí.
-	\item \textbf{Creación de las entidades \texttt{User} y \texttt{Role} \todo{Referencia a anexo C -> diseño de datos¿?}:} Se definieron las entidades JPA y las tablas SQL del archivo de inicialización. Se estableció inicialmente que los usuarios solo puedan tener un rol. En iteraciones futuras, se agregará la funcionalidad de tener múltiples roles.
+	\item \textbf{Creación de las entidades \texttt{User} y \texttt{Role}\todo{Referencia a anexo C -> diseño de datos¿?}:} Se definieron las entidades JPA y las tablas SQL del archivo de inicialización. Se estableció inicialmente que los usuarios solo puedan tener un rol. En iteraciones futuras, se agregará la funcionalidad de tener múltiples roles.
 	\item \textbf{Implementación de operaciones CRUD sobre usuarios y roles:} Se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades.
 	\item \textbf{Configuración de \textit{Spring Security}:} Se adaptaron las entidades \texttt{User} para poder autenticarse en la aplicación mediante \textit{Spring Security} y controlar el acceso a cada \textit{endpoint} según los roles.
 	\item \textbf{Creación de formulario de \textit{login} básico:} Un inicio de sesión mediante usuario y contraseña, en el que se muestran mensajes descriptivos en caso de error.
@@ -115,7 +115,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 \subsubsection{Objetivos}
 
 \begin{itemize}
-	\item \textbf{Creación de las entidades \texttt{Food}, \texttt{Product} y \texttt{Recipe} \todo{Referencia a anexo C -> diseño de datos¿?}:} Se definieron las entidades JPA, basándose en los campos existentes en las clases de <ref NutriMenu>\todo{Agregar ref} y agregando nuevos. Se simplificaron considerablemente el código y la lógica relacionada con dichas entidades. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/51}{\#51}.
+	\item \textbf{Creación de las entidades \texttt{Food}, \texttt{Product} y \texttt{Recipe}\todo{Referencia a anexo C -> diseño de datos¿?}:} Se definieron las entidades JPA, basándose en los campos existentes en las clases de <ref NutriMenu>\todo{Agregar ref} y agregando nuevos. Se simplificaron considerablemente el código y la lógica relacionada con dichas entidades. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/51}{\#51}.
 	\item \textbf{Implementación de operaciones CRUD sobre alimentos y productos:} Se agregaron los repositorios y servicios necesarios para llevar a cabo estas funcionalidades. 
 	\item \textbf{Cálculo dinámico de la información nutricional:} Se simplificó enormemente la lógica original, logrando que los cálculos de información nutricional (ya sea para alimentos con cantidades particulares o para productos completos) sean dinámicos y \textbf{no se almacenen en la BBDD}. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/52}{\#52}.
 	\item \textbf{Transformación de la relación \texttt{User-Role} a \texttt{\char`@{}ManyToMany}:} Se modificó la asignación de roles, para que los usuarios pudieran tener más de uno, lo cual permite la creación de roles y funcionalidades más específicas. Se garantiza que, como mínimo, un usuario registrado tendrá \texttt{ROLE\_USER}.
@@ -165,6 +165,35 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 Se acordó, para el siguiente \textit{sprint}, continuar con la creación de páginas de gestión para las entidades restantes (gestión de productos ofertados).
 
 \todo[inline]{Agregar más objetivos del sprint...}
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 5}
+\label{subsec:A.2_sprint5}
+
+\underline{Duración}: 2 semanas (06/11/2025 - 20/11/2025)
+
+En este \textit{sprint} se implementaron en la API los módulos de gestión de reservas de mesas y gestión de pedidos, finalizando con ello la creación de entidades JPA y componentes \textit{Spring Boot}. También se introdujo la granularidad de ``permiso'' a la gestión de roles y se internacionalizó la aplicación \textit{React} para los idiomas inglés y español.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/6?closed=1}{\textbf{Sprint 5}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Creación de las entidades \texttt{DiningTable} y \texttt{Reservation}\todo{Referencia a anexo C -> diseño de datos¿?}:} Se definieron las entidades JPA para el módulo de gestión de reservas. 
+	\item \textbf{Implementación de operaciones CRUD sobre mesas y reservas:} Se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Los detalles de negocio se especifican en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/93}{\#93}.
+	\item \textbf{Creación de las entidades \texttt{Order}, \texttt{OrderItem}, \texttt{BarOrder} y \linebreak\texttt{DiningOrder}\todo{Referencia a anexo C -> diseño de datos¿?}:} Aprovechando la existencia de varios ``tipos'' de pedidos, se implementó una jerarquía de \textbf{herencia}, la cual se detalla en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/80}{\#80}.
+	\item \textbf{Implementación de operaciones CRUD sobre pedidos:} Se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Se creó una factoría para elegir \textit{mapper} según el tipo de pedido que llegase a la solicitud, sin que los componentes conozcan dicho tipo. El controlador general se utiliza para consultas sobre todas las entidades y gestión de ítems. Los controladores particulares se utilizan para consultas y operaciones CRUD por cada tipo, más eficientes. \todo{Escribir descripción PR y referenciar aquí}
+	\item \textbf{Implementación de lógica de permisos para cada rol:} Se creó un enumerado \texttt{Permission}\todo{Referencia a anexo C -> diseño de datos¿?}, el cual alberga todos los permisos de la aplicación. A la entidad \texttt{Role} se le añadió una colección de permisos y se crearon métodos, \textit{endpoints} y componentes \textit{React} para manejarlos. Esto permite la creación de roles personalizados y un manejo más preciso de las acciones a realizar en la aplicación. Los cambios se explican con más detalle en los \textit{pull requests} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/81}{\#81} y \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/96}{\#96}.
+	\item \textbf{Internacionalización del \textit{frontend React}:} Se sustituyeron todas las cadenas \textit{hardcodeadas} por referencias a archivos JSON con cadenas traducidas (\textit{namespaces}). También se creó un componente para cambiar el idioma dinámicamente desde la aplicación.
+	\item \textbf{Refactorización de \texttt{Recipe} a \texttt{Ingredient}:} La entidad \texttt{Recipe}, utilizada como tabla de unión entre \texttt{Food} y \texttt{Product}, pasó a denominarse \texttt{Ingredient}. También se eliminaron su repositorio y servicio particulares, trasladando la responsabilidad de su manejo a \texttt{Product}. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/79}{\#79}.
+\end{itemize}
+
+%\imagenConEtiqueta{img/apen_A/A2_sprint5_burndown.png}{Gráfico \textit{burndown} del Sprint 5}{A2_sprint5_burndown}
+
+\subsubsection{Revisión}
+
+\todo[inline]{Redactar...}
 
 %---------------------------------------------------------------
 
