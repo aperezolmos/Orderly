@@ -166,6 +166,35 @@ Se acordó, para el siguiente \textit{sprint}, continuar con la creación de pá
 
 \todo[inline]{Agregar más objetivos del sprint...}
 
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 6}
+\label{subsec:A.2_sprint6}
+
+\underline{Duración}: 2 semanas (20/11/2025 - 04/12/2025)
+
+Este \textit{sprint} se utilizó para aplicar unas últimas mejoras a la API REST y desarrollar tests que comprueben el correcto funcionamiento de los servicios que ofrece. También se implementaron las interfaces de gestión restantes de las entidades añadidas en el anterior \textit{sprint}. En general, se preparó la aplicación para su primer \textbf{\textit{release}}. \todo{si se hace un apartado sobre ello, referenciarlo aquí}
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/7?closed=1}{\textbf{Sprint 6}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Refactorización, limpieza y mejora de aspectos puntuales en la API:} Se ``estandarizó'' la API \textit{Spring Boot} para que las entidades y componentes fuesen uniformes, consistentes y que siguieran un patrón similar. Entre las modificaciones se encuentran la incorporación de campos de auditoría (\texttt{createdAt} y \texttt{updatedAt}), la simplificación y eliminación de algunos métodos, la refactorización de los \textit{mappers} para aprovechar mejor la lógica de conversiones, etc.
+	\item \textbf{Creación de pruebas unitarias para \textit{mappers}:} Al tener lógica personalizada, se hacía necesario probar los \textit{mappers} generados por \textit{Mapstruct}, para comprobar que la conversión DTO $\leftrightarrow$ Entidad funciona de la manera esperada. Como los comportamientos de los componentes involucrados son fáciles de simular, se utilizó \textit{Mockito} para generar las pruebas, puesto que proporciona tests muy rápidos y aislamiento completo.
+	\item \textbf{Creación de pruebas unitarias para servicios:} Se probó la lógica de negocio (validaciones, excepciones lanzadas, métodos de consulta) de todas las entidades existentes en la API. Se utilizó \textit{Mockito} por su rapidez y aislamiento.
+	\item \textbf{Creación de pruebas de integración para servicios:} Se crearon pruebas con dependencias reales utilizando \texttt{\char`@{}SpringBootTest} y transaccionalidad, para probar la \textbf{persistencia}, relaciones entre entidades y conflictos que solo se dan en casos ``reales''. Estas pruebas de integración son más lentas puesto que necesitan cargar todo el contexto \textit{Spring}. Al ser más costosas, solo se crearon en entidades más complejas o que ``gestionan a otras'' (normalmente, las \textbf{entidades propietarias} de la relación).
+	\item \textbf{Implementación de la gestión de productos en \textit{React}:} Se crearon páginas y componentes para visualizar listados, crear, editar y eliminar alimentos y productos, junto con su información nutricional. Se reutilizaron los componentes y \textit{layouts} de gestión creados anteriormente. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/107}{\#107}.
+	\item \textbf{Implementación de la gestión de reservas en \textit{React}:} De igual forma, se crearon páginas y componentes para gestión básica con operaciones CRUD sobre mesas y reservas. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/106}{\#106}.
+	\item \textbf{Creación de \textit{dashboard} para gestionar pedidos:} Se creó una vista general que muestra tanto un listado de pedidos pendientes como un listado de productos ofertados. Se permite añadir productos al pedido actual haciendo \textit{click} en ellos y se permite alternar entre pedidos de bar o comedor.
+\end{itemize}
+
+%\imagenConEtiqueta{img/apen_A/A2_sprint6_burndown.png}{Gráfico \textit{burndown} del Sprint 6}{A2_sprint6_burndown}
+
+\subsubsection{Revisión}
+
+\todo[inline]{Redactar...}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Estudio de viabilidad}
