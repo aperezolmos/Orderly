@@ -162,9 +162,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 \subsubsection{Revisión}
 
-Se acordó, para el siguiente \textit{sprint}, continuar con la creación de páginas de gestión para las entidades restantes (gestión de productos ofertados).
-
-\todo[inline]{Agregar más objetivos del sprint...}
+Se acordó, para el siguiente \textit{sprint}, continuar con la creación de páginas de gestión para las entidades restantes (gestión de productos ofertados). También se propuso ir avanzando con el resto de módulos que quedaban por implementar (pedidos, reservas de mesas), con el objetivo de ir cada vez centrando más el foco en el desarrollo \textit{React} y poder dejar la API acabada en su primera versión.
 
 %---------------------------------------------------------------
 
@@ -189,11 +187,11 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Refactorización de \texttt{Recipe} a \texttt{Ingredient}:} La entidad \texttt{Recipe}, utilizada como tabla de unión entre \texttt{Food} y \texttt{Product}, pasó a denominarse \texttt{Ingredient}. También se eliminaron su repositorio y servicio particulares, trasladando la responsabilidad de su manejo a \texttt{Product}. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/79}{\#79}.
 \end{itemize}
 
-%\imagenConEtiqueta{img/apen_A/A2_sprint5_burndown.png}{Gráfico \textit{burndown} del Sprint 5}{A2_sprint5_burndown}
+\imagenConEtiqueta{img/apen_A/A2_sprint5_burndown.png}{Gráfico \textit{burndown} del Sprint 5}{A2_sprint5_burndown}
 
 \subsubsection{Revisión}
 
-\todo[inline]{Redactar...}
+Se acordó, para el siguiente \textit{sprint}, generar una colección de \textbf{tests} para asegurar que la API REST funciona correctamente, antes de pasar el enfoque del desarrollo a \textit{React}. Una vez probada, se deberían generar las interfaces de gestión para las entidades restantes, de manera que se dispusiera de una primera versión de la aplicación (aún sin mucha lógica incorporada, pero que permitiese gestionar las entidades involucradas).
 
 %---------------------------------------------------------------
 
@@ -202,7 +200,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 \underline{Duración}: 2 semanas (20/11/2025 - 04/12/2025)
 
-Este \textit{sprint} se utilizó para aplicar unas últimas mejoras a la API REST y desarrollar tests que comprueben el correcto funcionamiento de los servicios que ofrece. También se implementaron las interfaces de gestión restantes de las entidades añadidas en el anterior \textit{sprint}. En general, se preparó la aplicación para su primer \textbf{\textit{release}}. \todo{si se hace un apartado sobre ello, referenciarlo aquí}
+Este \textit{sprint} se utilizó para aplicar unas últimas mejoras a la API REST y desarrollar tests que comprueben el correcto funcionamiento de los servicios que ofrece. También se implementaron las interfaces de gestión restantes de las entidades añadidas en el anterior \textit{sprint}.
 
 Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/7?closed=1}{\textbf{Sprint 6}}
 
@@ -218,11 +216,13 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Creación de \textit{dashboard} para gestionar pedidos:} Se creó una vista general que muestra tanto un listado de pedidos pendientes como un listado de productos ofertados. Se permite añadir productos al pedido actual haciendo \textit{click} en ellos y se permite alternar entre pedidos de bar o comedor.
 \end{itemize}
 
-%\imagenConEtiqueta{img/apen_A/A2_sprint6_burndown.png}{Gráfico \textit{burndown} del Sprint 6}{A2_sprint6_burndown}
+\imagenConEtiqueta{img/apen_A/A2_sprint6_burndown.png}{Gráfico \textit{burndown} del Sprint 6}{A2_sprint6_burndown}
 
 \subsubsection{Revisión}
 
-\todo[inline]{Redactar...}
+Habiendo implementado las páginas de gestión principales y probado el comportamiento de la API, se acordó preparar la aplicación para su primer \textbf{\textit{release}}. Para ello, se propuso implementar los componentes faltantes para lograr una navegación fluida entre las páginas existentes (mediante un \textit{navbar}) y asegurar el correcto manejo de excepciones y errores que puedan producirse. También deberán corregirse los errores pendientes del \textit{dashboard} de pedidos.
+
+Como añadidos futuros, para una siguiente versión de la API, se propuso la generación de \textbf{menús}. Actualmente se ``añaden'' los ítems individualmente al pedido, pero podría haber un conjunto de productos que constituya un menú, con un precio fijado y características particulares. Esto haría que fuese necesario añadir un campo de ``tipo'' a la entidad \texttt{Product}, para saber si se trata de un primer plato, postre, bebida, etc. También se propuso un filtrado por tipos o características de productos desde el \textit{dashboard} de pedidos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
