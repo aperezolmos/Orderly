@@ -1,10 +1,116 @@
 \apendice{Especificación de diseño}
 
+%patrones: lombok patron Builder
+
 \section{Introducción}
+
+\todo[inline]{Redactar introducción general}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Diseño de datos}
 
+\todo[inline]{Intro muy breve}
+\todo{Tablas con atributos? o mencionar algún atributo relevante al menos}
+\todo[inline]{Relación IS-A en el diagrama -> editar}
+
+\subsection{Modelo conceptual}
+
+A continuación, se procede a listar las \textbf{entidades} que conforman la aplicación y a describir brevemente su propósito. %Las relaciones se describirán en...<ref modelos detallados>?
+
+\begin{itemize}
+	\item \textbf{Usuario (\texttt{User}):} Se trata de un empleado que utiliza la aplicación. Dispone de credenciales para ingresar en ella y tiene roles que determinan su comportamiento dentro del sistema.
+	\item \textbf{Rol (\texttt{Role}):}  Agrupa un conjunto de permisos (\texttt{Permission}). Controla las acciones y el acceso a los recursos que un usuario puede tener en la aplicación.
+	\begin{itemize}
+		\item El enumerado \texttt{Permission} define todas las acciones que pueden ser autorizadas en el sistema. Los permisos se organizan por áreas funcionales (pedidos, mesas, reservas, etc.).
+	\end{itemize}
+	\item \textbf{Alimento (\texttt{Food}):} Representa un alimento ``base'' o materia prima básica (p. ej. \textit{``Lechuga''}, \textit{``Pollo''}), con una información nutricional asociada.
+	\item \textbf{Producto (\texttt{Product}):} Se trata de un plato de comida o producto ofertado (p. ej. \textit{``Ensalada César''}) en el local, el cual se compone de varios alimentos y tiene un precio asociado.
+	\item \textbf{Ingrediente (\texttt{Ingredient}):} Representa la relación \textit{muchos a muchos} entre \texttt{Food} y \texttt{Product}. Contiene un atributo que determina la cantidad (en gramos) de un alimento que está presente en un producto determinado.
+	\item \textbf{Mesa (\texttt{DiningTable}):} Representa una mesa física del restaurante, que puede reservarse y desde la que se puede realizar un pedido.
+	\item \textbf{Reserva (\texttt{Reservation}):} Contiene información sobre la reserva de una mesa de comedor, los datos del huésped que la realizó y la fecha, entre otros.
+	\item \textbf{Pedido (\texttt{Order}):} Se trata de una comanda que se le hace a un empleado, esto es, uno o varios productos que se piden para ser consumidos y que suman un precio total. Se trata de una entidad ``padre'' que alberga los campos comunes entre tipos de pedidos. Se verá con mayor detalle en la subsección ``\textit{\nameref{subsec:C.2_ModelosDetallados}}''.
+	\item \textbf{Pedido de bar (\texttt{BarOrder}):} Es un pedido que se realiza en la barra del bar y puede estar compuesto solo por bebidas (por lo que no sería necesario prepararlo en la cocina).
+	\item \textbf{Pedido de comedor (\texttt{DiningOrder}):} Es una comanda que se realiza desde el comedor, por lo que tendrá una mesa asociada a la que llevar los platos.
+	\item \textbf{Línea de pedido (\texttt{OrderItem}):} Representa un ítem de cada pedido, que se conforma por un producto y una cantidad de dicho producto. Constituye un porcentaje del precio total del pedido.
+\end{itemize}
+
+Cabe destacar que todas las entidades disponen de campos de auditoría (\texttt{createdAt} y \texttt{updatedAt}) para rastrear automáticamente la creación y última modificación de cada registro. %...con el objetivo de...?
+
+\todo[inline]{mención breve de métodos de dominio para consistencia bidireccional? o va en otro apartado}
+
+\imagenConEtiqueta{img/apen_C/C2_modeloEER_Conceptual.png}{Diagrama EER conceptual}{C2_modeloEER_Conceptual}
+
+% En la figura <ref> se puede... \todo{referencia a EER -> siglas -> pie de página?}
+
+%---------------------------------------------------------------
+
+\subsection{Modelos detallados}
+\label{subsec:C.2_ModelosDetallados}
+
+% Debido a que se pueden distinguir varios \textit{``módulos''} en los que se divide la aplicación dependiendo de la funcionalidad que se abarque, se procede a mostrar un diagrama Entidad\-Relación
+
+\subsubsection{Modelo para gestión de usuarios y roles}
+
+\imagenConEtiqueta{img/apen_C/C2_modeloEER_Usuarios.png}{Diagrama EER para módulo de usuarios y roles}{C2_modeloEER_Conceptual}
+
+Este módulo controla el acceso al sistema y los permisos del personal del restaurante. Las relaciones involucradas son:
+
+\begin{itemize}
+	\item \texttt{User} $\leftrightarrow$ \texttt{Role}: Relación \texttt{\char`@{}ManyToMany} (N:M) bidireccional, lo que implica que un usuario puede tener varios roles y que un rol puede pertenecer a varios usuarios. Esta relación se implementa mediante la tabla \texttt{user\_roles}, la cual \textbf{no es una entidad JPA}, puesto que solo almacena claves foráneas y no tiene lógica de negocio.
+	\item \texttt{Role} $\rightarrow$ \texttt{Permission}: No se trata de una ``relación'' como tal, al no ser \texttt{Permission} una entidad\todo{incluir?}. La lista de permisos de un rol es una colección de elementos (\texttt{\char`@{}ElementCollection}) del enumerado \texttt{Permission} (1:N), lo que se traduce en una tabla separada \texttt{role\_permissions}. Esta tabla \textbf{no es una entidad JPA} porque solo sirve para almacenar relaciones simples sin atributos extra.
+	\item \texttt{Order} $\rightarrow$ \texttt{User}: Relación \texttt{\char`@{}ManyToOne} (N:1), puesto que cada pedido está asociado a un empleado que lo crea o gestiona. La \textbf{unidireccionalidad} desde \texttt{Order} hacia \texttt{User} implica que los usuarios \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos asociados a ellos.
+\end{itemize}
+%-------------------------------
+\subsubsection{Modelo para gestión de alimentos y productos}
+
+\imagenConEtiqueta{img/apen_C/C2_modeloEER_Productos.png}{Diagrama EER para módulo de alimentos y productos}{C2_modeloEER_Productos}
+
+Este módulo gestiona el catálogo de productos del restaurante y su composición en ingredientes, permitiendo calcular información nutricional automáticamente. Las relaciones involucradas son:
+
+\begin{itemize}
+	\item \texttt{Product} $\leftrightarrow$ \texttt{Ingredient} $\leftrightarrow$ \texttt{Food}: Relación \texttt{\char`@{}ManyToMany} (N:M) implementada como dos relaciones (1:N) bidireccionales a través de la entidad intermedia \texttt{Ingredient}, la cual registra la cantidad en gramos. 
+	\begin{itemize}
+		\item La entidad \texttt{Ingredient} posee una \textbf{clave compuesta y derivada} (\texttt{\char`@{}EmbeddedId})\todo{ref a web explicandolo?}, la cual se forma mediante las claves de \texttt{Food} y \texttt{Product}.
+	\end{itemize}
+	\item \texttt{OrderItem} $\rightarrow$ \texttt{Product}: Relación \texttt{\char`@{}ManyToOne} (N:1) que vincula pedidos con productos, registrando cantidad, precio unitario y total. La \textbf{unidireccionalidad} desde \texttt{OrderItem} hacia \texttt{Product} implica que los productos \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos a los que han sido añadidos.
+\end{itemize}
+
+Respecto a la \textbf{información nutricional} que almacena un alimento, cabe destacar el uso de \textbf{objetos embebidos} (\texttt{\char`@{}Embeddable})\todo{ref a web explicandolo?} para almacenar los datos en una sola tabla \texttt{foods}, pero manteniendo una separación entre clases: \texttt{NutritionInfo}, \texttt{Minerals} y \texttt{Vitamins}. Esto permite la reutilización, encapsulación y cálculo de operaciones matemáticas particulares. Se explica con más detalle en \revisionC{<ref>}.\todo{ref a apartado de mejoras respecto de nutrimenu}
+%-------------------------------
+\subsubsection{Modelo para gestión de reservas de mesas}
+
+\imagenConEtiqueta{img/apen_C/C2_modeloEER_Reservas.png}{Diagrama EER para módulo de reservas de mesas}{C2_modeloEER_Reservas}
+
+Este módulo permite gestionar las mesas del comedor y asignar reservas para fechas futuras. Las relaciones involucradas son:
+
+\begin{itemize}
+	\item \texttt{Reservation} $\rightarrow$ \texttt{DiningTable}: Relación \texttt{\char`@{}ManyToOne} (N:1), la cual define que una reserva debe llevar una mesa asociada y que una mesa puede tener múltiples reservas en distintas fechas. La \textbf{unidireccionalidad} implica que una mesa \textbf{no conoce} su historial de reservas, puesto que sobrecargaría demasiado la entidad.
+	\item \texttt{DiningOrder} $\rightarrow$ \texttt{DiningTable}: Relación \texttt{\char`@{}ManyToOne} (N:1), puesto que un pedido de comedor debe estar vinculado a una mesa en particular y una mesa tendrá un historial de pedidos pasados (que no conoce directamente, al ser una relación \textbf{unidireccional}).
+\end{itemize}
+
+En este módulo también hay presencia de \textbf{clases embebidas} para almacenar detalles de una reserva \texttt{ReservationDetails}, (como el número de comensales, fecha y hora) e información del cliente \texttt{GuestInfo} (como el nombre y teléfono de contacto) en distintas clases, manteniendo la tabla unificada \texttt{reservations}.
+%-------------------------------
+\subsubsection{Modelo para gestión de pedidos}
+
+\imagenConEtiqueta{img/apen_C/C2_modeloEER_Pedidos.png}{Diagrama EER para módulo de pedidos}{C2_modeloEER_Pedidos}
+
+En este módulo se anotan las comandas realizadas al restaurante, que pueden hacerse desde la barra del bar o desde el comedor. Una comanda se compone de una serie de productos, cada uno con su cantidad y precio de venta asociados, que se manejan en conjunto y tienen un precio total. Las relaciones involucradas son:
+
+\begin{itemize}
+	\item \texttt{Order} $\rightarrow$ \texttt{User}: Relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, puesto que un pedido será creado o manejado por un empleado.
+	\item \texttt{Order} $\rightarrow$ \texttt{OrderItem}: Relación \texttt{\char`@{}OneToMany} (1:N), puesto que un pedido contendrá múltiples ítems. En \textit{Spring Boot} se definió como bidireccional, para que los ítems pudieran notificar al pedido padre que recalculase su precio total. Sin embargo, en la práctica funcionará como \textbf{unidireccional}, puesto que los ítems no consultarán ni gestionarán en ningún momento el pedido al que pertenecen.
+	\item \texttt{OrderItem} $\rightarrow$ \texttt{Product}: Relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, debido a que cada ítem referencia a una cantidad determinada de un producto ofertado en el catálogo.
+	\item \texttt{DiningOrder} $\rightarrow$ \texttt{DiningTable}: Relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, puesto que un pedido de comedor debe estar asociado a la mesa donde se servirá.
+\end{itemize}
+
+El aspecto más característico de este módulo es la presencia de una \textbf{jerarquía de herencia}, para manejar los distintos tipos de pedidos (bar o comedor) desde un enfoque organizado y escalable. El uso de herencia permite \textbf{atributos específicos} por tipo, mientras comparte \textbf{datos comunes} eficientemente. La estrategia de herencia utilizada es \textbf{\textit{JOINED}}\todo{ref a web} y los motivos de su elección, así como una descripción más detallada de los tipos de pedido, se pueden encontrar en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/80}{\#80}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Diseño arquitectónico}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Diseño procedimental}
 
