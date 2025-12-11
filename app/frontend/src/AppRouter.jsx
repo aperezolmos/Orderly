@@ -15,6 +15,8 @@ const LoadingFallback = () => {
 
 
 // ------- PAGES ------------------------------------------
+const MainPage = React.lazy(() => import('./common/pages/MainPage'));
+
 // Auth
 const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
 const Register = React.lazy(() => import('./modules/auth/pages/RegisterPage'));
@@ -93,7 +95,7 @@ const AppRouter = () => {
               element={
                 !isAuthenticated ? 
                 <WithoutLayout><Login /></WithoutLayout> : 
-                <Navigate to="/profile" replace />
+                <Navigate to="/" replace />
               }
             />
             <Route
@@ -101,12 +103,28 @@ const AppRouter = () => {
               element={
                 !isAuthenticated ? 
                 <WithoutLayout><Register /></WithoutLayout> : 
-                <Navigate to="/profile" replace />
+                <Navigate to="/" replace />
               }
             />
 
 
             {/* Protected USER routes */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <WithLayout>
+                    <MainPage />
+                  </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/home"
+              element={<Navigate to="/" replace />}
+            />
+            
             <Route
               path="/profile"
               element={
@@ -328,18 +346,8 @@ const AppRouter = () => {
 
             {/* Default route */}
             <Route
-              path="/"
-              element={<Navigate to={isAuthenticated ? "/profile" : "/login"} replace />}
-            />
-
-            {/* 404 route */}
-            <Route 
-              path="*" 
-              element={
-                <WithLayout>
-                  <div>Page not found</div>
-                </WithLayout>
-              } 
+              path="*"
+              element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
             />
           </Routes>
         </React.Suspense>

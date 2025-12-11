@@ -10,17 +10,33 @@
     "edit": "Editar",
     "create": "Crear",
     "confirm": "Confirmar",
-    "back": "Volver"
+    "back": "Volver",
+    "welcome": "Bienvenido",
+    "welcomeMessage": "Selecciona un módulo para comenzar"
   },
   "navigation": {
     "home": "Inicio",
+    "main": "Inicio",
     "profile": "Perfil",
     "login": "Iniciar Sesión",
+    "register": "Registrarse",
     "logout": "Cerrar Sesión",
+    "access": "Acceder",
+    "management": "Gestión",
+    "list": "Listado",
+    "actions": "Acciones",
+    "dashboard": "Panel",
     "users": "Usuarios",
     "roles": "Roles",
-    "actions": "Acciones",
-    "dashboard": "Panel"
+    "foods": "Alimentos",
+    "products": "Productos",
+    "tables": "Mesas",
+    "reservations": "Reservas",
+    "orders": "Pedidos"
+  },
+  "userMenu": {
+    "viewProfile": "Ver perfil",
+    "logout": "Cerrar sesión"
   },
   "language": {
     "select": "Seleccionar Idioma",
