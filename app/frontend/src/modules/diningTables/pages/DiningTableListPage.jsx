@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, Badge, Box, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconPlus, IconTable, IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconPlus, IconDesk, IconEdit, IconTrash } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useDiningTables } from '../hooks/useDiningTables';
@@ -59,7 +59,7 @@ const DiningTableListPage = () => {
       title: t('diningTables:list.name'),
       render: (table) => (
         <Group>
-          <IconTable size="1rem" />
+          <IconDesk size="1rem" />
           <Text>{table.name}</Text>
         </Group>
       )

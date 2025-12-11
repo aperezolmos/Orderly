@@ -10,17 +10,33 @@
     "edit": "Edit",
     "create": "Create",
     "confirm": "Confirm",
-    "back": "Back"
+    "back": "Back",
+    "welcome": "Welcome",
+    "welcomeMessage": "Select a module to get started"
   },
   "navigation": {
     "home": "Home",
+    "main": "Home",
     "profile": "Profile",
     "login": "Login",
+    "register": "Register",
     "logout": "Logout",
+    "access": "Access",
+    "management": "Management",
+    "list": "List",
+    "actions": "Actions",
+    "dashboard": "Dashboard",
     "users": "Users",
     "roles": "Roles",
-    "actions": "Actions",
-    "dashboard": "Dashboard"
+    "foods": "Foods",
+    "products": "Products",
+    "tables": "Tables",
+    "reservations": "Reservations",
+    "orders": "Orders"
+  },
+  "userMenu": {
+    "viewProfile": "View Profile",
+    "logout": "Logout"
   },
   "language": {
     "select": "Select Language",
