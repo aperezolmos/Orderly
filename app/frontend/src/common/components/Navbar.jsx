@@ -134,7 +134,7 @@ const Navbar = ({ opened, toggle }) => {
             }}
             onClick={() => navigate('/')}
           >
-            RestoManager
+            NombreApp
           </Text>
         </Box>
 

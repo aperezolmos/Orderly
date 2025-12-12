@@ -28,5 +28,6 @@ public abstract class OrderResponseDTO {
     private LocalDateTime updatedAt;
     private Integer employeeId;
     private String employeeName;
+    private Integer itemCount;
     private List<OrderItemResponseDTO> items;
 }

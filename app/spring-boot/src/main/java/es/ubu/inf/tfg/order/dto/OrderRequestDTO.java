@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract class OrderRequestDTO {
 
-    @Size(max = 20, message = "Order number cannot exceed {max} characters")
+    @Size(max = 30, message = "Order number cannot exceed {max} characters")
     private String orderNumber;
 
     @NotBlank(message = "Order type is required")
