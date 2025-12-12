@@ -46,6 +46,7 @@ public abstract class DiningOrderMapper {
     @Mapping(target = "employeeName", source = "employee.firstName")
     @Mapping(target = "tableId", source = "table.id")
     @Mapping(target = "tableName", source = "table.name")
+    @Mapping(target = "itemCount", expression = "java(entity.getItems() != null ? entity.getItems().size() : 0)")
     @Mapping(target = "items", ignore = true)
     public abstract DiningOrderResponseDTO toResponseDTO(DiningOrder entity);
 
@@ -55,6 +56,7 @@ public abstract class DiningOrderMapper {
     @Mapping(target = "employeeName", source = "employee.firstName")
     @Mapping(target = "tableId", source = "table.id")
     @Mapping(target = "tableName", source = "table.name")
+    @Mapping(target = "itemCount", expression = "java(entity.getItems() != null ? entity.getItems().size() : 0)")
     public abstract DiningOrderResponseDTO toDetailedResponseDTO(DiningOrder entity);
 
 

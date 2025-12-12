@@ -89,7 +89,7 @@ const PendingOrdersList = ({ orders, currentOrderId, onOrderSelect, isLoading })
                   {order.totalAmount ? `€${order.totalAmount.toFixed(2)}` : '€0.00'}
                 </Text>
                 <Text size="sm" c="dimmed">
-                  {order.items?.length || 0} items
+                  {order.itemCount === 1 ? '1 ítem' : `${order.itemCount} ítems`}
                 </Text>
               </div>
             </Group>

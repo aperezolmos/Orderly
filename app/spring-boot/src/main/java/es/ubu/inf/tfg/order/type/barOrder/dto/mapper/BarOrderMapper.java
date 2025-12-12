@@ -38,6 +38,7 @@ public abstract class BarOrderMapper {
     @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
     @Mapping(target = "employeeName", source = "employee.firstName")
+    @Mapping(target = "itemCount", expression = "java(entity.getItems() != null ? entity.getItems().size() : 0)")
     @Mapping(target = "items", ignore = true)
     public abstract BarOrderResponseDTO toResponseDTO(BarOrder entity);
 
@@ -45,6 +46,7 @@ public abstract class BarOrderMapper {
     @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
     @Mapping(target = "employeeName", source = "employee.firstName")
+    @Mapping(target = "itemCount", expression = "java(entity.getItems() != null ? entity.getItems().size() : 0)")
     public abstract BarOrderResponseDTO toDetailedResponseDTO(BarOrder entity);
 
     

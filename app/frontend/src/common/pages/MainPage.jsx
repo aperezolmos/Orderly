@@ -16,7 +16,7 @@ const MainPage = () => {
   const features = [
     {
       title: t('navigation.users'),
-      description: 'Manage system users and permissions',
+      description: 'Manage system users and permissions', // TODO: añadir traducción
       icon: <IconUsers size={30} />,
       path: '/users',
       color: 'blue',
