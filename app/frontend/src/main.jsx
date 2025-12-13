@@ -9,6 +9,7 @@ import { createRoot } from 'react-dom/client';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
+import { AuthProvider } from './context/AuthContext';
 import App from './App.jsx';
 
 
@@ -28,10 +29,12 @@ createRoot(document.getElementById('root')).render(
       withGlobalStyles
       defaultColorScheme="light"
     >
-      <ModalsProvider>
-        <Notifications />
-        <App />
-      </ModalsProvider>
+      <AuthProvider>
+        <ModalsProvider>
+          <Notifications />
+          <App />
+        </ModalsProvider>
+      </AuthProvider>
     </MantineProvider>
   </StrictMode>
 );

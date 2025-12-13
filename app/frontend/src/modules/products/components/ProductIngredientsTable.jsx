@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Table, NumberInput, ActionIcon, Group, Text } from '@mantine/core';
-import { IconTrash, IconCheck } from '@tabler/icons-react';
+import { IconTrash, IconCheck, IconEdit } from '@tabler/icons-react';
 import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
 
 
@@ -79,7 +79,7 @@ const ProductIngredientsTable = ({
                       onClick={() => startEdit(ingredient)}
                       disabled={loading}
                     >
-                      <IconCheck size="1rem" />
+                      <IconEdit size="1rem" />
                     </ActionIcon>
                   </Group>
                 )}
