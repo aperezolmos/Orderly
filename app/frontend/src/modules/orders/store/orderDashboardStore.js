@@ -200,4 +200,14 @@ export const useOrderDashboardStore = create((set, get) => ({
     }
     return createdOrder;
   },
+
+  // Eliminar pedido
+  deleteOrder: async (orderId, orderType) => {
+    if (orderType === 'bar') {
+      await orderService.deleteBarOrder(orderId);
+    } else {
+      await orderService.deleteDiningOrder(orderId);
+    }
+    await get().fetchOrders(orderType);
+  },
 }));
