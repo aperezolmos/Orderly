@@ -17,6 +17,9 @@ const LoadingFallback = () => {
 // ------- PAGES ------------------------------------------
 const MainPage = React.lazy(() => import('./common/pages/MainPage'));
 
+// Orders
+const OrdersDashboardPage = React.lazy(() => import('./modules/orders/pages/OrderDashboardPage'));
+
 // Auth
 const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
 const Register = React.lazy(() => import('./modules/auth/pages/RegisterPage'));
@@ -52,9 +55,6 @@ const DiningTableEdit = React.lazy(() => import('./modules/diningTables/pages/Di
 const ReservationList = React.lazy(() => import('./modules/reservations/pages/ReservationListPage'));
 const ReservationCreate = React.lazy(() => import('./modules/reservations/pages/ReservationCreatePage'));
 const ReservationEdit = React.lazy(() => import('./modules/reservations/pages/ReservationEditPage'));
-
-// Orders
-const OrdersDashboardPage = React.lazy(() => import('./modules/orders/pages/OrderDashboardPage'));
 
 
 // --------------------------------------------------------
@@ -140,7 +140,7 @@ const AppRouter = () => {
               path="/orders"
               element={
                 <ProtectedRoute>
-                  <WithoutLayout><OrdersDashboardPage /></WithoutLayout>
+                  <WithLayout><OrdersDashboardPage /></WithLayout>
                 </ProtectedRoute>
               }
             />

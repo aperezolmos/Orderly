@@ -183,4 +183,21 @@ export const useOrderDashboardStore = create((set, get) => ({
   setActivePage: async (page) => {
     await get().fetchProducts(page);
   },
+
+  // Crear pedido
+  createOrder: async (dto, orderType) => {
+    let createdOrder = null;
+    if (orderType === 'bar') {
+      createdOrder = await orderService.createBarOrder(dto);
+    } 
+    else {
+      createdOrder = await orderService.createDiningOrder(dto);
+    }
+    // Refresca la lista y selecciona el nuevo pedido
+    await get().fetchOrders(orderType);
+    if (createdOrder?.id) {
+      await get().selectOrder(createdOrder.id);
+    }
+    return createdOrder;
+  },
 }));

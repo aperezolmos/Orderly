@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 import { Group, Button, Loader, Paper, Title, Space } from '@mantine/core';
+import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 import OrderDetailsTable from './OrderDetailsTable';
 import PendingOrdersList from './PendingOrdersList';
+import OrderCreateForm from './OrderCreateForm';
 
 
 const OrderDashboardSection = () => {
@@ -16,11 +19,42 @@ const OrderDashboardSection = () => {
     selectOrder,
     removeOrderItem,
     updateOrder,
+    createOrder,
   } = useOrderDashboardStore();
+
 
   useEffect(() => {
     fetchOrders(orderType);
   }, [orderType]);
+
+  const openCreateOrderModal = () => {
+    modals.open({
+      title: `Crear pedido de ${orderType === 'bar' ? 'Barra' : 'Comedor'}`,
+      size: 'lg',
+      children: (
+        <OrderCreateForm
+          orderType={orderType}
+          onSuccess={async (dto) => {
+            try {
+              await createOrder(dto, orderType);
+              modals.closeAll();
+              notifications.show({
+                title: 'Pedido creado',
+                message: 'El pedido se ha creado correctamente',
+                color: 'green',
+              });
+            } 
+            catch (err) {
+              console.error('Error:', err);
+            }
+          }}
+          onCancel={() => modals.closeAll()}
+        />
+      ),
+      closeOnClickOutside: false,
+      withCloseButton: true,
+    });
+  };
 
   if (isLoadingOrders) {
     return (
@@ -32,6 +66,7 @@ const OrderDashboardSection = () => {
       </Paper>
     );
   }
+  
 
   return (
     <div>
@@ -47,6 +82,15 @@ const OrderDashboardSection = () => {
           onClick={() => setOrderType('dining')}
         >
           Pedidos de Comedor
+        </Button>
+        <Button
+          variant="light"
+          color="green"
+          leftSection="+"
+          onClick={openCreateOrderModal}
+          style={{ marginLeft: 'auto' }}
+        >
+          Crear pedido
         </Button>
       </Group>
       <OrderDetailsTable
