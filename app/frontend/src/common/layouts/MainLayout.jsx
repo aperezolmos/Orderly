@@ -5,7 +5,7 @@ import { IconHome, IconPackage, IconUsers, IconShield, IconDesk,
          IconCalendar, IconChartBar, IconPlus, IconList } from '@tabler/icons-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import { useTranslationWithLoading } from '../hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -17,8 +17,8 @@ const MainLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const { t } = useTranslationWithLoading('common');
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const { t } = useTranslation('common');
   
 
   // Management modules for sidebar

@@ -8,7 +8,7 @@ import { IconUser, IconLogout, IconChevronDown, IconHome, IconPackage,
          IconChevronRight } from '@tabler/icons-react';
 import { useAuth } from '../../context/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
-import { useTranslationWithLoading } from '../hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import { useMediaQuery } from '@mantine/hooks';
 
 
@@ -17,10 +17,10 @@ const Navbar = ({ opened, toggle }) => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
   const theme = useMantineTheme();
-  const { t } = useTranslationWithLoading('common');
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [hoveredModule, setHoveredModule] = useState(null);
+  const { t } = useTranslation('common');
 
 
   const handleLogout = async () => {

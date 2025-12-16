@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { TextInput, PasswordInput, Button, Group, Alert, LoadingOverlay, Box, Text } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import { TextInput, PasswordInput, Button, Group, Alert, LoadingOverlay, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle, IconCheck, IconX } from '@tabler/icons-react';
 import { userService } from '../../../services/backend/userService';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const RegisterForm = ({ 
@@ -13,9 +13,10 @@ const RegisterForm = ({
   onClearError 
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth']);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
+
 
   const form = useForm({
     initialValues: {

@@ -4,14 +4,14 @@ import { Container, Title, Text, Group, Badge,
          Button, Card, SimpleGrid } from '@mantine/core';
 import { IconUser, IconLogout, IconShield } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ProfilePage = () => {
   
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslationWithLoading(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth']);
 
 
   const handleLogout = async () => {

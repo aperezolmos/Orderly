@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Text, Alert, Box, LoadingOverlay } from '@mantine/core';
+import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
 import { userService } from '../../../services/backend/userService';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const UserEditPage = () => {
@@ -16,7 +16,7 @@ const UserEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'users']);
+  const { t } = useTranslation(['common', 'users']);
   
 
   useEffect(() => {
@@ -40,21 +40,6 @@ const UserEditPage = () => {
       loadUser();
     }
   }, [id]);
-
-
-  if (!ready || isNamespaceLoading) {
-    return (
-      <FormLayout
-        title="Loading..."
-        breadcrumbs={[]}
-        showBackButton={true}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </FormLayout>
-    );
-  }
 
 
   const handleSubmit = async (userData) => {

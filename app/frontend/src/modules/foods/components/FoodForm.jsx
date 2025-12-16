@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { TextInput, NumberInput, Button, Group, Select, LoadingOverlay, Tabs, Box } from '@mantine/core';
+import { useEffect } from 'react';
+import { TextInput, NumberInput, Button, Group, Select, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import NutritionInfoForm from './NutritionInfoForm';
 
 
@@ -25,7 +25,7 @@ const FoodForm = ({
   submitLabel = "Create Food"
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'foods']);
+  const { t } = useTranslation(['common', 'foods']);
 
 
   const form = useForm({

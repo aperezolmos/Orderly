@@ -5,14 +5,14 @@ import { useAuth } from '../../../context/useAuth';
 import { notifications } from '@mantine/notifications';
 import AuthLayout from '../components/AuthLayout';
 import LoginForm from '../components/LoginForm';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const LoginPage = () => {
   
   const { login, error, clearError, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslationWithLoading(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth']);
 
 
   useEffect(() => {

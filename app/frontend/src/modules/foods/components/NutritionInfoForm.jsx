@@ -1,10 +1,9 @@
-import React from 'react';
 import { NumberInput, Group, Divider, Title, Box } from '@mantine/core';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const MineralsFields = ({ form, prefix = 'nutritionInfo.minerals.' }) => {
-  const { t } = useTranslationWithLoading(['foods']);
+  const { t } = useTranslation(['foods']);
   return (
     <Box>
       <Title order={5} mb="xs">{t('foods:form.minerals')}</Title>
@@ -26,7 +25,7 @@ const MineralsFields = ({ form, prefix = 'nutritionInfo.minerals.' }) => {
 
 
 const VitaminsFields = ({ form, prefix = 'nutritionInfo.vitamins.' }) => {
-  const { t } = useTranslationWithLoading(['foods']);
+  const { t } = useTranslation(['foods']);
   return (
     <Box>
       <Title order={5} mb="xs">{t('foods:form.vitamins')}</Title>
@@ -50,7 +49,7 @@ const VitaminsFields = ({ form, prefix = 'nutritionInfo.vitamins.' }) => {
 
 
 const NutritionInfoForm = ({ form }) => {
-  const { t } = useTranslationWithLoading(['foods']);
+  const { t } = useTranslation(['foods']);
   return (
     <Box>
       <Title order={4} mb="sm">{t('foods:form.nutritionInfo')}</Title>

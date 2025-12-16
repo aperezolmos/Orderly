@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { TextInput, Button, Group, Box, Loader } from '@mantine/core';
 import { IconSearch, IconPlus } from '@tabler/icons-react';
 import { foodService } from '../../../services/backend/foodService';
 import ProductIngredientsTable from './ProductIngredientsTable';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ProductIngredientsManager = ({
@@ -15,10 +15,10 @@ const ProductIngredientsManager = ({
   loading,
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'products', 'foods']);
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searching, setSearching] = useState(false);
+  const { t } = useTranslation(['common', 'products', 'foods']);
 
   useEffect(() => {
     if (search.length < 2) {

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Text, Alert, Box, LoadingOverlay } from '@mantine/core';
+import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ReservationForm from '../components/ReservationForm';
 import { reservationService } from '../../../services/backend/reservationService';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ReservationEditPage = () => {
@@ -16,7 +16,7 @@ const ReservationEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'reservations']);
+  const { t } = useTranslation(['common', 'reservations']);
 
 
   useEffect(() => {
@@ -36,20 +36,6 @@ const ReservationEditPage = () => {
     };
     if (id) loadReservation();
   }, [id]);
-
-  if (!ready || isNamespaceLoading) {
-    return (
-      <FormLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-        showBackButton={true}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </FormLayout>
-    );
-  }
 
   const handleSubmit = async (reservationData) => {
     try {

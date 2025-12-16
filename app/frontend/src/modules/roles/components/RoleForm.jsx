@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, Textarea, Button, Group, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import { roleService } from '../../../services/backend/roleService';
 import PermissionCheckboxList from './PermissionCheckboxList';
 
@@ -13,9 +13,9 @@ const RoleForm = ({
   submitLabel = "Create Role"
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'roles']);
   const [allPermissions, setAllPermissions] = useState([]);
   const [permissionsLoading, setPermissionsLoading] = useState(false);
+  const { t } = useTranslation(['common', 'roles']);
 
 
   const form = useForm({

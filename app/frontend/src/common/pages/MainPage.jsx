@@ -3,14 +3,14 @@ import { IconUsers, IconShield, IconPackage, IconChartBar,
          IconCalendar, IconDesk } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import { useTranslationWithLoading } from '../hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const MainPage = () => {
   
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { t } = useTranslationWithLoading('common');
+  const { t } = useTranslation('common');
 
 
   const features = [

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { diningTableService } from '../../../services/backend/diningTableService';
 import { notifications } from '@mantine/notifications';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 export const useDiningTables = () => {
@@ -9,7 +9,7 @@ export const useDiningTables = () => {
   const [tables, setTables] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { t } = useTranslationWithLoading(['common', 'diningTables']);
+  const { t } = useTranslation(['common', 'diningTables']);
 
 
   const loadTables = async () => {

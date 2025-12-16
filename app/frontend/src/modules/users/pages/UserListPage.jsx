@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, Badge, Box, LoadingOverlay } from '@mantine/core';
+import { Group, Text, Modal, Button, Badge } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconPlus, IconUser, IconEdit, IconTrash } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useUsers } from '../hooks/useUsers';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const UserListPage = () => {
@@ -15,21 +15,7 @@ const UserListPage = () => {
   const { users, loading, deleteUser } = useUsers();
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'users']);
-
-  
-  if (!ready || isNamespaceLoading) {
-    return (
-      <ManagementLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </ManagementLayout>
-    );
-  }
+  const { t } = useTranslation(['common', 'users']);
   
 
   const handleEdit = (user) => {

@@ -1,6 +1,5 @@
-import React from 'react';
 import { Card, Title, Group, Divider, Box, Text } from '@mantine/core';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const renderField = (label, value, unit = '', key = '') =>
@@ -13,7 +12,7 @@ const renderField = (label, value, unit = '', key = '') =>
 
 const ProductNutritionInfoView = ({ nutritionInfo }) => {
   
-  const { t } = useTranslationWithLoading(['products', 'foods']);
+  const { t } = useTranslation(['products', 'foods']);
   if (!nutritionInfo) return null;
   
 

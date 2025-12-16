@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, NumberInput, Button, Group,
         LoadingOverlay, Tabs, Select } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { reservationService } from '../../../services/backend/reservationService';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import { IconUser, IconInfoCircle } from '@tabler/icons-react';
 
 
@@ -15,9 +15,9 @@ const ReservationForm = ({
   submitLabel = "Create Reservation"
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'reservations']);
   const [tables, setTables] = useState([]);
   const [tablesLoading, setTablesLoading] = useState(false);
+  const { t } = useTranslation(['common', 'reservations']);
 
 
   const form = useForm({

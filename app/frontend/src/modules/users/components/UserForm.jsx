@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
          LoadingOverlay, Tabs, Alert, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -6,7 +6,7 @@ import { IconAlertCircle, IconUser, IconShield } from '@tabler/icons-react';
 import { userService } from '../../../services/backend/userService';
 import RoleTransferList from '../../roles/components/RoleTransferList';
 import { useUserRoles } from '../hooks/useUserRoles';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const UserForm = ({
@@ -17,9 +17,9 @@ const UserForm = ({
   showRoleManagement = true
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'users']);
   const [usernameAvailable, setUsernameAvailable] = useState(true);
   const [checkingUsername, setCheckingUsername] = useState(false);
+  const { t } = useTranslation(['common', 'users']);
 
 
   // Initialize user roles

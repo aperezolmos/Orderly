@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { TextInput, NumberInput, Button, Group, Tabs, LoadingOverlay, Box } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { TextInput, NumberInput, Button, Group, Tabs, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import ProductIngredientsManager from './ProductIngredientsManager';
 
 
@@ -14,8 +14,8 @@ const ProductForm = ({
   onIngredientsChange,
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'products']);
   const [ingredients, setIngredients] = useState(initialIngredients);
+  const { t } = useTranslation(['common', 'products']);
 
 
   const form = useForm({

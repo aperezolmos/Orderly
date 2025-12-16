@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, LoadingOverlay } from '@mantine/core';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ProductForm from '../components/ProductForm';
 import { useProducts } from '../hooks/useProducts';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ProductCreatePage = () => {
@@ -12,22 +11,8 @@ const ProductCreatePage = () => {
   const navigate = useNavigate();
   const { createProduct, loading: createLoading } = useProducts();
   const [error, setError] = useState(null);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'products']);
+  const { t } = useTranslation(['common', 'products']);
 
-
-  if (!ready || isNamespaceLoading) {
-    return (
-      <FormLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-        showBackButton={true}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </FormLayout>
-    );
-  }
 
   const handleSubmit = async (productData) => {
     try {
