@@ -1,0 +1,84 @@
+{
+  "management": {
+    "title": "Gestión de Pedidos",
+    "dashboard": "Panel de Pedidos",
+    "list": "Pedidos",
+    "bar": "Pedidos de Barra",
+    "dining": "Pedidos de Comedor",
+    "create": "Crear Pedido",
+    "edit": "Editar Pedido",
+    "view": "Ver Pedido"
+  },
+  "form": {
+    "orderNumber": "Número de pedido",
+    "orderNumberPlaceholder": "Opcional",
+    "customerName": "Nombre del cliente",
+    "customerNamePlaceholder": "Opcional",
+    "notes": "Notas",
+    "notesPlaceholder": "Notas para cocina/barra",
+    "drinksOnly": "Solo bebidas",
+    "table": "Mesa",
+    "tablePlaceholder": "Selecciona una mesa",
+    "create": "Crear pedido",
+    "update": "Actualizar pedido",
+    "edit": "Editar pedido"
+  },
+  "list": {
+    "id": "ID",
+    "orderNumber": "Nº Pedido",
+    "customerName": "Cliente",
+    "table": "Mesa",
+    "status": "Estado",
+    "created": "Creado",
+    "totalAmount": "Total",
+    "itemCount": "Ítems",
+    "newOrder": "Nuevo Pedido"
+  },
+  "types": {
+    "bar": "Barra",
+    "dining": "Comedor"
+  },
+  "status": {
+    "PENDING": "Pendiente",
+    "IN_PROGRESS": "En preparación",
+    "READY": "Listo",
+    "SERVED": "Servido",
+    "PAID": "Pagado",
+    "CANCELLED": "Cancelado"
+  },
+  "dashboard": {
+    "pendingOrders": "Pedidos pendientes",
+    "noPendingOrders": "No hay pedidos pendientes",
+    "allCompleted": "Todos los pedidos están completados",
+    "productsAvailable": "Productos disponibles",
+    "pageFooter": "Página {{page}} de {{totalPages}} • {{count}} productos mostrados",
+    "orderDetails": "Detalles del pedido",
+    "addProduct": "Añadir producto",
+    "removeProduct": "Eliminar producto",
+    "editOrder": "Editar pedido",
+    "deleteOrder": "Eliminar pedido",
+    "confirmDeleteTitle": "@:common.modal.titleDelete",
+    "confirmDeleteMessage": "¿Seguro que quieres eliminar el pedido \"{{order}}\"? Esta acción no se puede deshacer.",
+    "created": "Creado: {{time}}",
+    "notes": "Notas",
+    "noNotes": "Sin notas",
+    "noProducts": "Este pedido no tiene ningún producto.",
+    "total": "Total: {{amount}}",
+    "save": "@:common.app.save",
+    "cancel": "@:common.app.cancel"
+  },
+  "notifications": {
+    "createSuccess": "Pedido creado correctamente",
+    "updateSuccess": "Pedido actualizado correctamente",
+    "deleteSuccess": "Pedido eliminado correctamente",
+    "loadError": "Error cargando pedidos",
+    "createError": "Error creando pedido",
+    "updateError": "Error actualizando pedido",
+    "deleteError": "Error eliminando pedido"
+  },
+  "errors": {
+    "loadError": "Error cargando pedido",
+    "notFound": "No se pudo cargar el pedido con ID: {{id}}",
+    "notFoundDetails": "El pedido puede haber sido eliminado o no tienes permiso para acceder a él"
+  }
+}

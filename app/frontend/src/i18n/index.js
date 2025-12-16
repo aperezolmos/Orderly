@@ -10,6 +10,7 @@ import enFoods from './locales/en/foods.json';
 import enProducts from './locales/en/products.json';
 import enDiningTables from './locales/en/diningTables.json';
 import enReservations from './locales/en/reservations.json';
+import enOrders from './locales/en/orders.json';
 
 import esCommon from './locales/es/common.json';
 import esAuth from './locales/es/auth.json';
@@ -19,6 +20,7 @@ import esFoods from './locales/es/foods.json';
 import esProducts from './locales/es/products.json';
 import esDiningTables from './locales/es/diningTables.json';
 import esReservations from './locales/es/reservations.json';
+import esOrders from './locales/es/orders.json';
 
 
 const resources = {
@@ -31,6 +33,7 @@ const resources = {
     products: enProducts,
     diningTables: enDiningTables,
     reservations: enReservations,
+    orders: enOrders,
   },
   es: {
     common: esCommon,
@@ -41,6 +44,7 @@ const resources = {
     products: esProducts,
     diningTables: esDiningTables,
     reservations: esReservations,
+    orders: esOrders,
   },
 };
 

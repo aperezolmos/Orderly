@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, Textarea, Select, Checkbox, Button, Group, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { reservationService } from '../../../../services/backend/reservationService';
 import { notifications } from '@mantine/notifications';
 import { useAuth } from '../../../../context/useAuth';
+import { useTranslation } from 'react-i18next';
+
 
 const OrderForm = ({
   orderType,
@@ -11,13 +13,15 @@ const OrderForm = ({
   onSubmit,
   onCancel,
   loading = false,
-  submitLabel = 'Crear pedido',
+  submitLabel,
   disabledFields = [],
 }) => {
   const [tables, setTables] = useState([]);
   const [loadingTables, setLoadingTables] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { user } = useAuth();
+  const { t } = useTranslation(['common', 'orders']);
+
 
   useEffect(() => {
     if (orderType === 'dining') {
@@ -40,19 +44,19 @@ const OrderForm = ({
     validate: {
       orderNumber: (v) =>
         v && v.length > 30
-          ? 'Máx 30 caracteres'
+          ? t('common:validation.maxLength', { count: 30 })
           : null,
       customerName: (v) =>
         v && v.length > 100
-          ? 'Máx 100 caracteres'
+          ? t('common:validation.maxLength', { count: 100 })
           : null,
       notes: (v) =>
         v && v.length > 255
-          ? 'Máx 255 caracteres'
+          ? t('common:validation.maxLength', { count: 255 })
           : null,
       tableId: (v) =>
         orderType === 'dining' && !v
-          ? 'Mesa obligatoria'
+          ? t('orders:form.tablePlaceholder')
           : null,
     },
   });
@@ -76,7 +80,7 @@ const OrderForm = ({
       await onSubmit(dto);
     } catch (err) {
       notifications.show({
-        title: 'Error',
+        title: t('common:app.error'),
         message: err.message,
         color: 'red',
       });
@@ -89,24 +93,24 @@ const OrderForm = ({
     <form onSubmit={form.onSubmit(handleSubmit)} style={{ position: 'relative', minWidth: 400, minHeight: 200 }}>
       <LoadingOverlay visible={submitting || loadingTables || loading} />
       <TextInput
-        label="Número de pedido"
-        placeholder="Opcional"
+        label={t('orders:form.orderNumber')}
+        placeholder={t('orders:form.orderNumberPlaceholder')}
         maxLength={30}
         {...form.getInputProps('orderNumber')}
         mb="md"
         disabled={disabledFields.includes('orderNumber')}
       />
       <TextInput
-        label="Nombre del cliente"
-        placeholder="Opcional"
+        label={t('orders:form.customerName')}
+        placeholder={t('orders:form.customerNamePlaceholder')}
         maxLength={100}
         {...form.getInputProps('customerName')}
         mb="md"
         disabled={disabledFields.includes('customerName')}
       />
       <Textarea
-        label="Notas"
-        placeholder="Notas para cocina/barra"
+        label={t('orders:form.notes')}
+        placeholder={t('orders:form.notesPlaceholder')}
         maxLength={255}
         autosize
         minRows={2}
@@ -116,7 +120,7 @@ const OrderForm = ({
       />
       {orderType === 'bar' && (
         <Checkbox
-          label="Solo bebidas"
+          label={t('orders:form.drinksOnly')}
           {...form.getInputProps('drinksOnly', { type: 'checkbox' })}
           mb="md"
           disabled={disabledFields.includes('drinksOnly')}
@@ -124,23 +128,27 @@ const OrderForm = ({
       )}
       {orderType === 'dining' && (
         <Select
-          label="Mesa"
-          placeholder="Selecciona una mesa"
+          label={t('orders:form.table')}
+          placeholder={t('orders:form.tablePlaceholder')}
           data={tables.map(table => ({
             value: table.id.toString(),
             label: table.name,
           }))}
           required
           searchable
-          nothingfound="No hay mesas activas"
+          nothingfound={t('orders:form.tablePlaceholder')}
           {...form.getInputProps('tableId')}
           mb="md"
           disabled={disabledFields.includes('tableId')}
         />
       )}
       <Group justify="flex-end" mt="xl">
-        <Button variant="default" onClick={onCancel} disabled={submitting || loading}>Cancelar</Button>
-        <Button type="submit" loading={submitting || loading}>{submitLabel}</Button>
+        <Button variant="default" onClick={onCancel} disabled={submitting || loading}>
+          {t('common:app.cancel')}
+        </Button>
+        <Button type="submit" loading={submitting || loading}>
+          {submitLabel || t('orders:form.create')}
+        </Button>
       </Group>
     </form>
   );

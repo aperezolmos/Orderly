@@ -60,7 +60,7 @@ const MainLayout = ({ children }) => {
       adminOnly: true
     },
     {
-      name: t('common:common:navigation.roles.name'),
+      name: t('common:navigation.roles.name'),
       icon: <IconShield size={20} />,
       color: 'violet',
       items: [

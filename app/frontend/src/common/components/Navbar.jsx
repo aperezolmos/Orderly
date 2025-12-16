@@ -61,7 +61,7 @@ const Navbar = ({ opened, toggle }) => {
       adminOnly: true
     },
     {
-      name: t('common:common:navigation.roles.name'),
+      name: t('common:navigation.roles.name'),
       icon: <IconShield size={18} />,
       color: 'violet',
       items: [
