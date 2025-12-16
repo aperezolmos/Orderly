@@ -22,16 +22,16 @@ const DiningTableForm = ({
     },
     validate: {
       name: (value) => {
-        if (!value) return t('diningTables:validation.nameRequired');
-        if (value.length > 10) return t('diningTables:validation.nameMaxLength');
+        if (!value) return t('common:validation.required');
+        if (value.length > 10) return t('common:validation.maxLength', { count: 10 });
         return null;
       },
       capacity: (value) => {
-        if (!value || value < 1) return t('diningTables:validation.capacityMin');
+        if (!value || value < 1) return t('common:validation.positive');
         return null;
       },
       locationDescription: (value) => {
-        if (value && value.length > 100) return t('diningTables:validation.locationMaxLength');
+        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
         return null;
       },
     },

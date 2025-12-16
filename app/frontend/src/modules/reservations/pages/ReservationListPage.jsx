@@ -103,18 +103,18 @@ const ReservationListPage = () => {
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('reservations:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('reservations:deleteModal.message', { id: reservationToDelete?.id })}
+          {t('common:modal.messageDelete', { id: reservationToDelete?.id })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('reservations:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('reservations:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

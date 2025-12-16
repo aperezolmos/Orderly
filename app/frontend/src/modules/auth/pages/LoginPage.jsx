@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Text, LoadingOverlay } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/useAuth';
@@ -52,7 +52,7 @@ const LoginPage = () => {
       linkComponent={registerLink}
     >
       <div style={{ position: 'relative' }}>
-        <LoadingOverlay visible={loading} overlayBlur={2} />
+        <LoadingOverlay visible={loading} overlayblur={2} />
         
         <LoginForm
           onSubmit={handleLogin}

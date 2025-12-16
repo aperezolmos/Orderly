@@ -26,13 +26,34 @@
     "list": "Listado",
     "actions": "Acciones",
     "dashboard": "Panel",
-    "users": "Usuarios",
-    "roles": "Roles",
-    "foods": "Alimentos",
-    "products": "Productos",
-    "tables": "Mesas",
-    "reservations": "Reservas",
-    "orders": "Pedidos"
+    "users": {
+      "name": "Usuarios",
+      "description": "Administrar usuarios y asignar permisos del sistema"
+    },
+    "roles": {
+      "name": "Roles",
+      "description": "Configurar roles y permisos de usuario"
+    },
+    "foods": {
+      "name": "Alimentos",
+      "description": "Gestionar alimentos y categorías"
+    },
+    "products": {
+      "name": "Productos",
+      "description": "Manejar el inventario de productos"
+    },
+    "tables": {
+      "name": "Mesas",
+      "description": "Gestionar las mesas de comedor y su disponibilidad"
+    },
+    "reservations": {
+      "name": "Reservas",
+      "description": "Gestionar las reservas de mesas"
+    },
+    "orders": {
+      "name": "Pedidos",
+      "description": "Ver y gestionar los pedidos de los clientes"
+    }
   },
   "userMenu": {
     "viewProfile": "Ver perfil",
@@ -48,7 +69,8 @@
     "required": "Este campo es obligatorio",
     "minLength": "Mínimo {{count}} caracteres requeridos",
     "maxLength": "Este campo no puede exceder {{count}} caracteres",
-    "positive": "Debe ser un valor positivo",
+    "positive": "El valor debe ser positivo",
+    "positiveOrZero": "El valor debe ser positivo o cero",
     "number": "Debe ser un número válido"
   },
   "data": {

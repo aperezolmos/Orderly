@@ -20,18 +20,12 @@
     "name": "Nombre",
     "capacity": "Capacidad",
     "locationDescription": "Ubicación",
+    "noLocation": "Sin ubicación",
     "isActive": "Activa",
     "active": "Activa",
     "inactive": "Inactiva",
     "created": "Creada",
-    "newTable": "Nueva Mesa",
-    "noLocation": "Sin ubicación"
-  },
-  "validation": {
-    "nameRequired": "El nombre de la mesa es obligatorio",
-    "nameMaxLength": "El nombre de la mesa no puede exceder 10 caracteres",
-    "capacityMin": "La capacidad debe ser al menos 1",
-    "locationMaxLength": "La descripción de ubicación no puede exceder 100 caracteres"
+    "newTable": "Nueva Mesa"
   },
   "notifications": {
     "createSuccess": "Mesa creada exitosamente",
@@ -43,10 +37,8 @@
     "deleteError": "Error eliminando mesa"
   },
   "deleteModal": {
-    "title": "Confirmar Eliminación de Mesa",
-    "message": "¿Estás seguro de que quieres eliminar la mesa \"{{name}}\"? Esta acción no se puede deshacer",
-    "cancel": "Cancelar",
-    "confirm": "Eliminar"
+    "title": "@:common.modal.titleDelete",
+    "message": "@:common.modal.messageDelete"
   },
   "errors": {
     "loadError": "Error cargando mesa",

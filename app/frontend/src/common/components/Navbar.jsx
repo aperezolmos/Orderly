@@ -31,7 +31,7 @@ const Navbar = ({ opened, toggle }) => {
   // Management modules with their sub-options
   const managementModules = [
     {
-      name: t('navigation.foods'),
+      name: t('common:navigation.foods.name'),
       icon: <IconPackage size={18} />,
       color: 'green',
       items: [
@@ -41,7 +41,7 @@ const Navbar = ({ opened, toggle }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.products'),
+      name: t('common:navigation.products.name'),
       icon: <IconPackage size={18} />,
       color: 'orange',
       items: [
@@ -51,7 +51,7 @@ const Navbar = ({ opened, toggle }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.users'),
+      name: t('common:navigation.users.name'),
       icon: <IconUsers size={18} />,
       color: 'blue',
       items: [
@@ -61,7 +61,7 @@ const Navbar = ({ opened, toggle }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.roles'),
+      name: t('common:common:navigation.roles.name'),
       icon: <IconShield size={18} />,
       color: 'violet',
       items: [
@@ -71,7 +71,7 @@ const Navbar = ({ opened, toggle }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.tables'),
+      name: t('common:navigation.tables.name'),
       icon: <IconDesk size={18} />,
       color: 'cyan',
       items: [
@@ -81,7 +81,7 @@ const Navbar = ({ opened, toggle }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.reservations'),
+      name: t('common:navigation.reservations.name'),
       icon: <IconCalendar size={18} />,
       color: 'pink',
       items: [
@@ -91,11 +91,11 @@ const Navbar = ({ opened, toggle }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.orders'),
+      name: t('common:navigation.orders.name'),
       icon: <IconChartBar size={18} />,
       color: 'grape',
       items: [
-        { label: t('common:navigation.list'), path: '/orders', icon: <IconList size={14} /> }
+        { label: t('common:navigation.dashboard'), path: '/orders', icon: <IconList size={14} /> }
       ],
       adminOnly: false
     }
@@ -155,7 +155,7 @@ const Navbar = ({ opened, toggle }) => {
               },
             }}
           >
-            {t('navigation.main')}
+            {t('common:navigation.main')}
           </Button>
         )}
 
@@ -177,12 +177,12 @@ const Navbar = ({ opened, toggle }) => {
                 leftSection={<IconSettings size={16} />}
                 rightSection={<IconChevronDown size={14} />}
               >
-                {t('navigation.management')}
+                {t('common:navigation.management')}
               </Button>
             </Menu.Target>
 
             <Menu.Dropdown style={{ padding: '8px' }}>
-              <Menu.Label>{t('navigation.management')}</Menu.Label>
+              <Menu.Label>{t('common:navigation.management')}</Menu.Label>
               <Divider mb="xs" />
               
               <Stack gap={2}>
@@ -290,13 +290,13 @@ const Navbar = ({ opened, toggle }) => {
               size="sm"
               onClick={() => navigate('/register')}
             >
-              {t('navigation.register')}
+              {t('common:navigation.register')}
             </Button>
             <Button
               size="sm"
               onClick={() => navigate('/login')}
             >
-              {t('navigation.login')}
+              {t('common:navigation.login')}
             </Button>
           </Group>
         ) : (
@@ -328,7 +328,7 @@ const Navbar = ({ opened, toggle }) => {
                 leftSection={<IconUser size={14} />}
                 onClick={() => navigate('/profile')}
               >
-                {t('userMenu.viewProfile')}
+                {t('common:userMenu.viewProfile')}
               </Menu.Item>
               <Menu.Divider />
               <Menu.Item
@@ -336,7 +336,7 @@ const Navbar = ({ opened, toggle }) => {
                 leftSection={<IconLogout size={14} />}
                 onClick={handleLogout}
               >
-                {t('userMenu.logout')}
+                {t('common:userMenu.logout')}
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>

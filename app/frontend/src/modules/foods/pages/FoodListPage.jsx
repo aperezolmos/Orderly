@@ -97,18 +97,18 @@ const FoodListPage = () => {
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('foods:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('foods:deleteModal.message', { name: foodToDelete?.name })}
+          {t('common:modal.messageDelete', { name: foodToDelete?.name })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('foods:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('foods:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

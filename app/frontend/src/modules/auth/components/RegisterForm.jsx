@@ -90,7 +90,7 @@ const RegisterForm = ({
     if (!username || username.length < 3) return null;
     
     if (checkingUsername) {
-      return <LoadingOverlay visible={true} overlayBlur={2} />;
+      return <LoadingOverlay visible={true} overlayblur={2} />;
     }
     
     if (usernameAvailable === true) {
@@ -117,7 +117,7 @@ const RegisterForm = ({
 
   return (
     <Box pos="relative">
-      <LoadingOverlay visible={loading} overlayBlur={2} />
+      <LoadingOverlay visible={loading} overlayblur={2} />
       
       <form onSubmit={form.onSubmit(handleSubmit)}>
         {error && (

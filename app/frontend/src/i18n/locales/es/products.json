@@ -7,14 +7,13 @@
     "list": "Productos"
   },
   "form": {
-    "basicInfo": "Información Básica",
     "ingredients": "Ingredientes",
     "name": "Nombre",
-    "namePlaceholder": "Ingrese nombre del producto",
+    "namePlaceholder": "Ingresar nombre del producto",
     "description": "Descripción",
-    "descriptionPlaceholder": "Ingrese descripción",
+    "descriptionPlaceholder": "Ingresar descripción",
     "price": "Precio",
-    "pricePlaceholder": "Ingrese precio",
+    "pricePlaceholder": "Ingresar precio",
     "create": "Crear Producto",
     "update": "Actualizar Producto",
     "edit": "Editar Producto"
@@ -27,13 +26,6 @@
     "created": "Creado",
     "newProduct": "Nuevo Producto"
   },
-  "validation": {
-    "nameRequired": "El nombre es obligatorio",
-    "nameMaxLength": "El nombre no puede exceder 100 caracteres",
-    "descriptionMaxLength": "La descripción no puede exceder 255 caracteres",
-    "priceRequired": "El precio es obligatorio",
-    "priceNonNegative": "El precio no puede ser negativo"
-  },
   "notifications": {
     "createSuccess": "Producto creado exitosamente",
     "updateSuccess": "Producto actualizado exitosamente",
@@ -44,10 +36,8 @@
     "deleteError": "Error eliminando producto"
   },
   "deleteModal": {
-    "title": "Confirmar Eliminación de Producto",
-    "message": "¿Estás seguro de que quieres eliminar el producto \"{{name}}\"? Esta acción no se puede deshacer",
-    "cancel": "Cancelar",
-    "confirm": "Eliminar"
+    "title": "@:common.modal.titleDelete",
+    "message": "@:common.modal.messageDelete"
   },
   "errors": {
     "loadError": "Error cargando producto",
@@ -61,7 +51,7 @@
     "food": "Alimento",
     "quantity": "Cantidad (g)",
     "actions": "Acciones",
-    "noIngredientes": "No hay ingredientes añadidos",
+    "noIngredients": "No hay ingredientes añadidos",
     "edit": "Editar"
   },
   "nutrition": {

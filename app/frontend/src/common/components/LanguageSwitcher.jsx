@@ -1,6 +1,5 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionIcon, Group, Tooltip, Menu, Text } from '@mantine/core';
+import { ActionIcon, Tooltip, Menu, Text } from '@mantine/core';
 import { IconLanguage, IconCheck } from '@tabler/icons-react';
 
 
@@ -10,8 +9,8 @@ const LanguageSwitcher = () => {
 
 
   const languages = [
-    { code: 'en', name: t('language.english'), flag: '🇺🇸' },
-    { code: 'es', name: t('language.spanish'), flag: '🇪🇸' },
+    { code: 'en', name: t('common:language.english'), flag: '🇺🇸' },
+    { code: 'es', name: t('common:language.spanish'), flag: '🇪🇸' },
   ];
 
   const changeLanguage = (lng) => {
@@ -22,7 +21,7 @@ const LanguageSwitcher = () => {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <Tooltip label={t('language.change')} position="bottom">
+        <Tooltip label={t('common:language.change')} position="bottom">
           <ActionIcon variant="light" size="lg">
             <IconLanguage size="1.25rem" />
           </ActionIcon>
@@ -30,7 +29,7 @@ const LanguageSwitcher = () => {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Label>{t('language.select')}</Menu.Label>
+        <Menu.Label>{t('common:language.select')}</Menu.Label>
         {languages.map((language) => (
           <Menu.Item
             key={language.code}

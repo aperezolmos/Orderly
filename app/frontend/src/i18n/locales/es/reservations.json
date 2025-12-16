@@ -6,24 +6,23 @@
     "list": "Reservas"
   },
   "form": {
-    "basicInfo": "Información Básica",
-    "guestInfo": "Datos del Comensal",
+    "guestInfo": "Datos del comensal",
     "diningTable": "Mesa",
     "diningTablePlaceholder": "Selecciona una mesa",
     "noTables": "No hay mesas activas disponibles",
     "numberOfGuests": "Nº de Comensales",
     "numberOfGuestsPlaceholder": "Introduce el número de comensales",
-    "reservationDateTime": "Fecha y Hora de la Reserva",
+    "reservationDateTime": "Fecha y Hora de la reserva",
     "reservationDateTimePlaceholder": "Selecciona fecha y hora",
-    "estimatedDurationMinutes": "Duración Estimada (minutos)",
+    "estimatedDurationMinutes": "Duración estimada (minutos)",
     "estimatedDurationMinutesPlaceholder": "Introduce duración (30-240)",
-    "guestFirstName": "Nombre del Comensal",
+    "guestFirstName": "Nombre del comensal",
     "guestFirstNamePlaceholder": "Introduce el nombre",
-    "guestLastName": "Apellido del Comensal",
+    "guestLastName": "Apellido del comensal",
     "guestLastNamePlaceholder": "Introduce el apellido",
-    "guestPhone": "Teléfono del Comensal",
+    "guestPhone": "Teléfono del comensal",
     "guestPhonePlaceholder": "Introduce el teléfono",
-    "guestSpecialRequests": "Peticiones Especiales",
+    "guestSpecialRequests": "Peticiones especiales",
     "guestSpecialRequestsPlaceholder": "Alergias, preferencias, etc.",
     "create": "Crear Reserva",
     "update": "Actualizar Reserva"
@@ -44,14 +43,7 @@
     "CANCELLED": "Cancelada"
   },
   "validation": {
-    "tableRequired": "La mesa es obligatoria",
-    "guestsMin": "Debe haber al menos 1 comensal",
-    "dateRequired": "La fecha y hora son obligatorias",
-    "durationRange": "La duración debe estar entre 30 y 240 minutos",
-    "guestFirstNameRequired": "El nombre del comensal es obligatorio",
-    "guestLastNameRequired": "El apellido del comensal es obligatorio",
-    "guestPhoneRequired": "El teléfono del comensal es obligatorio",
-    "specialRequestsMaxLength": "Las peticiones especiales no pueden exceder 500 caracteres"
+    "durationRange": "La duración debe estar entre {{minDuration}} y {{maxDuration}} minutos"
   },
   "notifications": {
     "createSuccess": "Reserva creada exitosamente",
@@ -63,10 +55,8 @@
     "deleteError": "Error eliminando reserva"
   },
   "deleteModal": {
-    "title": "Confirmar Eliminación de Reserva",
-    "message": "¿Estás seguro de que quieres eliminar la reserva #{{id}}? Esta acción no se puede deshacer",
-    "cancel": "Cancelar",
-    "confirm": "Eliminar"
+    "title": "@:common.modal.titleDelete",
+    "message": "@:common.modal.messageDelete"
   },
   "errors": {
     "loadError": "Error cargando reserva",

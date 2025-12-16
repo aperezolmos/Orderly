@@ -26,13 +26,34 @@
     "list": "List",
     "actions": "Actions",
     "dashboard": "Dashboard",
-    "users": "Users",
-    "roles": "Roles",
-    "foods": "Foods",
-    "products": "Products",
-    "tables": "Tables",
-    "reservations": "Reservations",
-    "orders": "Orders"
+    "users": {
+      "name": "Users",
+      "description": "Manage users and assign system permissions"
+    },
+    "roles": {
+      "name": "Roles",
+      "description": "Configure user roles and permissions"
+    },
+    "foods": {
+      "name": "Foods",
+      "description": "Manage food items and categories"
+    },
+    "products": {
+      "name": "Products",
+      "description": "Handle product inventory"
+    },
+    "tables": {
+      "name": "Tables",
+      "description": "Manage dining tables and availability"
+    },
+    "reservations": {
+      "name": "Reservations",
+      "description": "Handle table reservations"
+    },
+    "orders": {
+      "name": "Orders",
+      "description": "View and manage customer orders"
+    }
   },
   "userMenu": {
     "viewProfile": "View profile",
@@ -48,7 +69,8 @@
     "required": "This field is required",
     "minLength": "Minimum {{count}} characters required",
     "maxLength": "Field cannot exceed {{count}} characters",
-    "positive": "Must be a positive value",
+    "positive": "Value must be positive",
+    "positiveOrZero": "Value must be positive or zero",
     "number": "Must be a valid number"
   },
   "data": {

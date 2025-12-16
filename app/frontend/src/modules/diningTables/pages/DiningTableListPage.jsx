@@ -111,18 +111,18 @@ const DiningTableListPage = () => {
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('diningTables:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('diningTables:deleteModal.message', { name: tableToDelete?.name })}
+          {t('common:modal.messageDelete', { name: tableToDelete?.name })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('diningTables:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('diningTables:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

@@ -7,7 +7,6 @@
     "list": "Products"
   },
   "form": {
-    "basicInfo": "Basic Information",
     "ingredients": "Ingredients",
     "name": "Name",
     "namePlaceholder": "Enter product name",
@@ -27,13 +26,6 @@
     "created": "Created",
     "newProduct": "New Product"
   },
-  "validation": {
-    "nameRequired": "Name is required",
-    "nameMaxLength": "Name cannot exceed 100 characters",
-    "descriptionMaxLength": "Description cannot exceed 255 characters",
-    "priceRequired": "Price is required",
-    "priceNonNegative": "Price cannot be negative"
-  },
   "notifications": {
     "createSuccess": "Product created successfully",
     "updateSuccess": "Product updated successfully",
@@ -44,10 +36,8 @@
     "deleteError": "Error deleting product"
   },
   "deleteModal": {
-    "title": "Confirm Product Deletion",
-    "message": "Are you sure you want to delete product \"{{name}}\"? This action cannot be undone",
-    "cancel": "Cancel",
-    "confirm": "Delete"
+    "title": "@:common.modal.titleDelete",
+    "message": "@:common.modal.messageDelete"
   },
   "errors": {
     "loadError": "Error loading product",

@@ -1,6 +1,5 @@
-import React from 'react';
 import { Table, ActionIcon, Group, Text } from '@mantine/core';
-import { IconEdit, IconTrash, IconDots } from '@tabler/icons-react';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
 
@@ -56,7 +55,7 @@ const DataTable = ({
           {columns.map((column) => (
             <th key={column.key}>{column.title}</th>
           ))}
-          {actions && <th style={{ width: '100px' }}>{t('navigation.actions')}</th>}
+          {actions && <th style={{ width: '100px' }}>{t('common:navigation.actions')}</th>}
         </tr>
       </thead>
       <tbody>
@@ -64,7 +63,7 @@ const DataTable = ({
           <tr>
             <td colSpan={columns.length + (actions ? 1 : 0)}>
               <Text align="center" color="dimmed" py="xl">
-                {t('data.noData')}
+                {t('common:data.noData')}
               </Text>
             </td>
           </tr>

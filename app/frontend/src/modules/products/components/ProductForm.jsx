@@ -26,17 +26,17 @@ const ProductForm = ({
     },
     validate: {
       name: (value) => {
-        if (!value) return t('products:validation.nameRequired');
-        if (value.length > 100) return t('products:validation.nameMaxLength');
+        if (!value) return t('common:validation.required');
+        if (value.length > 100) return t('common:validation.maxLength', { count: 100 });
         return null;
       },
       description: (value) => {
-        if (value && value.length > 255) return t('products:validation.descriptionMaxLength');
+        if (value && value.length > 255) return t('common:validation.maxLength', { count: 255 });
         return null;
       },
       price: (value) => {
-        if (value === '' || value === null) return t('products:validation.priceRequired');
-        if (Number(value) < 0) return t('products:validation.priceNonNegative');
+        if (value === '' || value === null) return t('common:validation.required');
+        if (Number(value) < 0) return t('common:validation.positiveOrZero');
         return null;
       },
     },
@@ -101,7 +101,7 @@ const ProductForm = ({
       <LoadingOverlay visible={loading} />
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic">{t('products:form.basicInfo')}</Tabs.Tab>
+          <Tabs.Tab value="basic">{t('common:form.basicInfo')}</Tabs.Tab>
           <Tabs.Tab value="ingredients">{t('products:form.ingredients')}</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="basic" pt="xs">

@@ -6,24 +6,23 @@
     "list": "Reservations"
   },
   "form": {
-    "basicInfo": "Basic Info",
     "guestInfo": "Guest Info",
     "diningTable": "Dining Table",
     "diningTablePlaceholder": "Select a table",
     "noTables": "No active tables available",
-    "numberOfGuests": "Number of Guests",
+    "numberOfGuests": "Number of guests",
     "numberOfGuestsPlaceholder": "Enter number of guests",
     "reservationDateTime": "Reservation Date & Time",
     "reservationDateTimePlaceholder": "Select date and time",
-    "estimatedDurationMinutes": "Estimated Duration (minutes)",
+    "estimatedDurationMinutes": "Estimated duration (minutes)",
     "estimatedDurationMinutesPlaceholder": "Enter duration (30-240)",
-    "guestFirstName": "Guest First Name",
+    "guestFirstName": "Guest first name",
     "guestFirstNamePlaceholder": "Enter guest's first name",
-    "guestLastName": "Guest Last Name",
+    "guestLastName": "Guest last name",
     "guestLastNamePlaceholder": "Enter guest's last name",
-    "guestPhone": "Guest Phone",
+    "guestPhone": "Guest phone",
     "guestPhonePlaceholder": "Enter guest's phone",
-    "guestSpecialRequests": "Special Requests",
+    "guestSpecialRequests": "Special requests",
     "guestSpecialRequestsPlaceholder": "Allergies, preferences, etc.",
     "create": "Create Reservation",
     "update": "Update Reservation"
@@ -44,14 +43,7 @@
     "CANCELLED": "Cancelled"
   },
   "validation": {
-    "tableRequired": "Table is required",
-    "guestsMin": "At least 1 guest",
-    "dateRequired": "Date and time required",
-    "durationRange": "Duration must be between 30 and 240 minutes",
-    "guestFirstNameRequired": "Guest's first name required",
-    "guestLastNameRequired": "Guest's last name required",
-    "guestPhoneRequired": "Guest's phone required",
-    "specialRequestsMaxLength": "Special requests cannot exceed 500 characters"
+    "durationRange": "Duration must be between {{minDuration}} and {{maxDuration}} minutes"
   },
   "notifications": {
     "createSuccess": "Reservation created successfully",
@@ -63,10 +55,8 @@
     "deleteError": "Error deleting reservation"
   },
   "deleteModal": {
-    "title": "Confirm Reservation Deletion",
-    "message": "Are you sure you want to delete reservation #{{id}}? This action cannot be undone",
-    "cancel": "Cancel",
-    "confirm": "Delete"
+    "title": "@:common.modal.titleDelete",
+    "message": "@:common.modal.messageDelete"
   },
   "errors": {
     "loadError": "Error loading reservation",
