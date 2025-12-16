@@ -49,28 +49,28 @@ const UserForm = ({
     },
     validate: {
       username: (value) => {
-        if (!value) return t('users:validation.usernameRequired');
-        if (value.length < 3) return t('users:validation.usernameMinLength');
-        if (value.length > 50) return t('users:validation.usernameMaxLength');
-        if (!usernameAvailable) return t('auth:validation.usernameTaken');
+        if (!value) return t('common:validation.required');
+        if (value.length < 3) return t('common:validation.minLength', { count: 3 });
+        if (value.length > 50) return t('common:validation.maxLength', { count: 50 });
+        if (!usernameAvailable) return t('users:validation.usernameTaken');
         return null;
       },
       password: (value) => {
-        if (!user && !value) return t('users:validation.passwordRequired');
-        if (value && value.length < 4) return t('users:validation.passwordMinLength');
+        if (!user && !value) return t('common:validation.required');
+        if (value && value.length < 4) return t('common:validation.minLength', { count: 4 });
         return null;
       },
       confirmPassword: (value, values) => {
-        if (!user && !value) return t('users:validation.confirmPasswordRequired');
+        if (!user && !value) return t('common:validation.required');
         if (value !== values.password) return t('users:validation.passwordsMatch');
         return null;
       },
       firstName: (value) => {
-        if (value && value.length > 100) return t('users:validation.firstNameMaxLength');
+        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
         return null;
       },
       lastName: (value) => {
-        if (value && value.length > 100) return t('users:validation.lastNameMaxLength');
+        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
         return null;
       },
     },
@@ -145,7 +145,7 @@ const UserForm = ({
       <Tabs defaultValue="basic">
         <Tabs.List>
           <Tabs.Tab value="basic" icon={<IconUser size="0.8rem" />}>
-            {t('users:form.basicInfo')}
+            {t('common:form.basicInfo')}
           </Tabs.Tab>
           {showRoleManagement && (
             <Tabs.Tab value="roles" icon={<IconShield size="0.8rem" />}>
@@ -163,7 +163,7 @@ const UserForm = ({
             {...form.getInputProps('username')}
             onBlur={(e) => checkUsernameAvailability(e.target.value)}
             error={form.errors.username}
-            rightSection={checkingUsername ? <div>{t('auth:register.checkingUsername')}</div> : null}
+            rightSection={checkingUsername ? <div>{t('users:validation.checkingUsername')}</div> : null}
             mb="md"
           />
 

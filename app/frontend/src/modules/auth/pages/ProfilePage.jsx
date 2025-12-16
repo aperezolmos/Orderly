@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAuth } from '../../../context/useAuth';
 import { Container, Title, Text, Group, Badge,
          Button, Card, SimpleGrid } from '@mantine/core';
@@ -11,7 +10,7 @@ const ProfilePage = () => {
   
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth', 'users']);
 
 
   const handleLogout = async () => {
@@ -51,20 +50,20 @@ const ProfilePage = () => {
           </Group>
 
           <Group position="apart" mb="xs">
-            <Text weight={500}>{t('auth:register.username')}</Text>
+            <Text weight={500}>{t('users:form.username')}</Text>
             <Text>{user.username}</Text>
           </Group>
 
           {user.firstName && (
             <Group position="apart" mb="xs">
-              <Text weight={500}>{t('auth:register.firstName')}</Text>
+              <Text weight={500}>{t('users:form.firstName')}</Text>
               <Text>{user.firstName}</Text>
             </Group>
           )}
 
           {user.lastName && (
             <Group position="apart" mb="xs">
-              <Text weight={500}>{t('auth:register.lastName')}</Text>
+              <Text weight={500}>{t('users:form.lastName')}</Text>
               <Text>{user.lastName}</Text>
             </Group>
           )}

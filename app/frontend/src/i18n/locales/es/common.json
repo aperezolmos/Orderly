@@ -18,9 +18,9 @@
     "home": "Inicio",
     "main": "Inicio",
     "profile": "Perfil",
-    "login": "Iniciar Sesión",
+    "login": "Iniciar sesión",
     "register": "Registrarse",
-    "logout": "Cerrar Sesión",
+    "logout": "Cerrar sesión",
     "access": "Acceder",
     "management": "Gestión",
     "list": "Listado",
@@ -39,31 +39,52 @@
     "logout": "Cerrar sesión"
   },
   "language": {
-    "select": "Seleccionar Idioma",
+    "select": "Seleccionar idioma",
     "english": "Inglés",
     "spanish": "Español",
     "change": "Cambiar idioma"
   },
   "validation": {
     "required": "Este campo es obligatorio",
-    "minLength": "Mínimo {{count}} caracteres requeridos"
+    "minLength": "Mínimo {{count}} caracteres requeridos",
+    "maxLength": "Este campo no puede exceder {{count}} caracteres",
+    "positive": "Debe ser un valor positivo",
+    "number": "Debe ser un número válido"
   },
   "data": {
     "noData": "No se encontraron datos",
     "loading": "Cargando datos...",
     "error": "Error cargando datos"
   },
+  "modal": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "titleDelete": "Confirmar eliminación",
+    "messageDelete": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer"
+  },
   "error": {
+    "generic": "Error",
     "boundary": {
       "title": "Algo salió mal",
       "message": "Ocurrió un error al renderizar este componente",
-      "reload": "Recargar Página"
+      "reload": "Recargar página"
     },
-    "accessDenied": "Acceso Denegado - Se requieren privilegios de administrador"
+    "accessDenied": "Acceso Denegado - Se requieren privilegios de administrador",
+    "notFound": "No se pudo encontrar el recurso solicitado",
+    "loadError": "Error cargando datos"
   },
   "form": {
     "submit": "Enviar",
     "reset": "Restablecer",
-    "optional": "Opcional"
+    "optional": "Opcional",
+    "basicInfo": "Información básica"
+  },
+  "status": {
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "created": "Creado",
+    "updated": "Actualizado",
+    "deleted": "Eliminado"
   }
 }

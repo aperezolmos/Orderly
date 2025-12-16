@@ -88,19 +88,19 @@ const RoleListPage = () => {
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('roles:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('roles:deleteModal.message', { name: roleToDelete?.name })}
+          {t('common:modal.messageDelete', { name: roleToDelete?.name })}
         </Text>
         
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('roles:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('roles:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

@@ -13,7 +13,7 @@ const RegisterForm = ({
   onClearError 
 }) => {
   
-  const { t } = useTranslation(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth', 'users']);
   const [usernameAvailable, setUsernameAvailable] = useState(null);
   const [checkingUsername, setCheckingUsername] = useState(false);
 
@@ -28,23 +28,23 @@ const RegisterForm = ({
     },
     validate: {
       username: (value) => {
-        if (!value.trim()) return t('auth:validation.usernameRequired');
-        if (value.length < 3) return t('auth:validation.usernameMinLength');
-        if (value.length > 50) return t('auth:validation.usernameMaxLength');
-        if (usernameAvailable === false) return t('auth:validation.usernameTaken');
+        if (!value.trim()) return t('common:validation.required');
+        if (value.length < 3) return t('common:validation.minLength', { count: 3 });
+        if (value.length > 50) return t('common:validation.maxLength', { count: 50 });
+        if (usernameAvailable === false) return t('users:validation.usernameTaken');
         return null;
       },
       firstName: (value) => 
-        value && value.length > 100 ? t('auth:validation.firstNameMaxLength') : null,
+        value && value.length > 100 ? t('common:validation.maxLength', { count: 100 }) : null,
       lastName: (value) => 
-        value && value.length > 100 ? t('auth:validation.lastNameMaxLength') : null,
+        value && value.length > 100 ? t('common:validation.maxLength', { count: 100 }) : null,
       password: (value) => {
-        if (!value) return t('auth:validation.passwordRequired');
-        if (value.length < 4) return t('auth:validation.passwordMinLength');
+        if (!value) return t('common:validation.required');
+        if (value.length < 4) return t('common:validation.minLength', { count: 4 });
         return null;
       },
       confirmPassword: (value, values) => 
-        value !== values.password ? t('auth:validation.passwordsMatch') : null,
+        value !== values.password ? t('users:validation.passwordsMatch') : null,
     },
   });
 
@@ -78,7 +78,7 @@ const RegisterForm = ({
 
   const handleSubmit = (values) => {
     if (usernameAvailable === false) {
-      form.setFieldError('username', t('auth:validation.usernameTaken'));
+      form.setFieldError('username', t('users:validation.usernameTaken'));
       return;
     }
     onSubmit(values);
@@ -106,10 +106,10 @@ const RegisterForm = ({
 
   const getUsernameDescription = () => {
     if (checkingUsername) {
-      return t('auth:register.checkingUsername');
+      return t('users:validation.checkingUsername');
     }
     if (usernameAvailable === true) {
-      return t('auth:register.usernameAvailable');
+      return t('users:validation.usernameAvailable');
     }
     return t('auth:register.usernameDescription');
   };
@@ -134,8 +134,8 @@ const RegisterForm = ({
         )}
 
         <TextInput
-          label={t('auth:register.username')}
-          placeholder={t('auth:register.username')}
+          label={t('users:form.username')}
+          placeholder={t('users:form.usernamePlaceholder')}
           required
           description={getUsernameDescription()}
           rightSection={getUsernameRightSection()}
@@ -144,8 +144,8 @@ const RegisterForm = ({
         />
 
         <TextInput
-          label={t('auth:register.firstName')}
-          placeholder={t('auth:register.firstName')}
+          label={t('users:form.firstName')}
+          placeholder={t('users:form.firstNamePlaceholder')}
           mt="md"
           description={t('auth:register.nameDescription')}
           {...form.getInputProps('firstName')}
@@ -153,8 +153,8 @@ const RegisterForm = ({
         />
 
         <TextInput
-          label={t('auth:register.lastName')}
-          placeholder={t('auth:register.lastName')}
+          label={t('users:form.lastName')}
+          placeholder={t('users:form.lastNamePlaceholder')}
           mt="md"
           description={t('auth:register.nameDescription')}
           {...form.getInputProps('lastName')}
@@ -162,8 +162,8 @@ const RegisterForm = ({
         />
 
         <PasswordInput
-          label={t('auth:register.password')}
-          placeholder={t('auth:register.password')}
+          label={t('users:form.password')}
+          placeholder={t('users:form.passwordPlaceholder')}
           required
           mt="md"
           description={t('auth:register.passwordDescription')}
@@ -172,8 +172,8 @@ const RegisterForm = ({
         />
 
         <PasswordInput
-          label={t('auth:register.confirmPassword')}
-          placeholder={t('auth:register.confirmPassword')}
+          label={t('users:form.confirmPassword')}
+          placeholder={t('users:form.confirmPasswordPlaceholder')}
           required
           mt="md"
           {...form.getInputProps('confirmPassword')}

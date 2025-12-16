@@ -7,19 +7,18 @@
   },
   "form": {
     "username": "Usuario",
-    "usernamePlaceholder": "Ingrese usuario",
+    "usernamePlaceholder": "Ingresar usuario",
     "firstName": "Nombre",
-    "firstNamePlaceholder": "Ingrese nombre",
+    "firstNamePlaceholder": "Ingresar nombre",
     "lastName": "Apellido",
-    "lastNamePlaceholder": "Ingrese apellido",
+    "lastNamePlaceholder": "Ingresar apellido",
     "password": "Contraseña",
-    "passwordPlaceholder": "Ingrese contraseña",
-    "confirmPassword": "Confirmar Contraseña",
+    "passwordPlaceholder": "Ingresar contraseña",
+    "confirmPassword": "Confirmar contraseña",
     "confirmPasswordPlaceholder": "Confirmar contraseña",
-    "newPassword": "Nueva Contraseña (dejar en blanco para mantener la actual)",
+    "newPassword": "Nueva contraseña",
     "create": "Crear Usuario",
     "update": "Actualizar Usuario",
-    "basicInfo": "Información Básica",
     "roleManagement": "Gestión de Roles",
     "passwordInfo": "Deja los campos de contraseña en blanco para mantener la contraseña actual",
     "roleChanges": "Los cambios de roles se guardarán cuando envíes el formulario"
@@ -35,13 +34,9 @@
     "noRoles": "Sin roles"
   },
   "validation": {
-    "usernameRequired": "El usuario es obligatorio",
-    "usernameMinLength": "El usuario debe tener al menos 3 caracteres",
-    "usernameMaxLength": "El usuario no puede exceder 50 caracteres",
-    "firstNameMaxLength": "El nombre no puede exceder 100 caracteres",
-    "lastNameMaxLength": "El apellido no puede exceder 100 caracteres",
-    "passwordRequired": "La contraseña es obligatoria",
-    "passwordMinLength": "La contraseña debe tener al menos 4 caracteres",
+    "checkingUsername": "Verificando usuario...",
+    "usernameAvailable": "Nombre de usuario disponible",
+    "usernameTaken": "El nombre de usuario ya está en uso",
     "confirmPasswordRequired": "Por favor confirma la contraseña",
     "passwordsMatch": "Las contraseñas no coinciden"
   },
@@ -57,11 +52,9 @@
     "rolesUpdateError": "Error actualizando roles del usuario"
   },
   "deleteModal": {
-    "title": "Confirmar Eliminación de Usuario",
-    "message": "¿Estás seguro de que quieres eliminar al usuario \"{{username}}\"? Esta acción no se puede deshacer",
-    "adminWarning": "Advertencia: Este usuario tiene privilegios de administrador",
-    "cancel": "Cancelar",
-    "confirm": "Eliminar"
+    "title": "@:common.modal.titleDelete",
+    "message": "@:common.modal.messageDelete",
+    "adminWarning": "Advertencia: Este usuario tiene privilegios de administrador"
   },
   "errors": {
     "loadError": "Error cargando usuario",

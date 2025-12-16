@@ -113,11 +113,11 @@ const UserListPage = () => {
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('users:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('users:deleteModal.message', { username: userToDelete?.username })}
+          {t('common:modal.messageDelete', { name: userToDelete?.username })}
         </Text>
         
         {userToDelete?.roleNames?.includes('ROLE_ADMIN') && (
@@ -128,10 +128,10 @@ const UserListPage = () => {
         
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('users:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('users:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>
