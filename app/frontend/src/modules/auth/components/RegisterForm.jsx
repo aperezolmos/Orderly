@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { TextInput, PasswordInput, Button, Group, Alert, LoadingOverlay, Box } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Group, Alert,
+         LoadingOverlay, Box, Loader } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle, IconCheck, IconX } from '@tabler/icons-react';
-import { userService } from '../../../services/backend/userService';
 import { useTranslation } from 'react-i18next';
+import { useUsernameCheck } from '../../users/hooks/useUsernameCheck';
 
 
 const RegisterForm = ({ 
@@ -13,9 +14,9 @@ const RegisterForm = ({
   onClearError 
 }) => {
   
-  const { t } = useTranslation(['common', 'auth', 'users']);
+  const { checkUsernameAvailability, checkingUsername } = useUsernameCheck();
   const [usernameAvailable, setUsernameAvailable] = useState(null);
-  const [checkingUsername, setCheckingUsername] = useState(false);
+  const { t } = useTranslation(['common', 'auth', 'users']);
 
 
   const form = useForm({
@@ -53,28 +54,16 @@ const RegisterForm = ({
     const username = form.values.username.trim();
     
     if (username.length >= 3 && username.length <= 50) {
-      const checkUsername = async () => {
-        setCheckingUsername(true);
-        try {
-          const available = await userService.checkUsernameAvailability(username);
-          setUsernameAvailable(available);
-        } 
-        catch (error) {
-          console.error('Error checking username:', error);
-          setUsernameAvailable(null);
-        } 
-        finally {
-          setCheckingUsername(false);
-        }
-      };
-
-      const timeoutId = setTimeout(checkUsername, 500);
+      const timeoutId = setTimeout(async () => {
+        const available = await checkUsernameAvailability(username);
+        setUsernameAvailable(available);
+      }, 500);
       return () => clearTimeout(timeoutId);
     } 
     else {
       setUsernameAvailable(null);
     }
-  }, [form.values.username]);
+  }, [form.values.username, checkUsernameAvailability]);
 
   const handleSubmit = (values) => {
     if (usernameAvailable === false) {
@@ -84,32 +73,28 @@ const RegisterForm = ({
     onSubmit(values);
   };
 
+
   const getUsernameRightSection = () => {
     const username = form.values.username.trim();
-    
     if (!username || username.length < 3) return null;
-    
     if (checkingUsername) {
-      return <LoadingOverlay visible={true} overlayblur={2} />;
+      return <Loader size="xs" />;
     }
-    
     if (usernameAvailable === true) {
       return <IconCheck size="1rem" color="green" />;
     }
-    
     if (usernameAvailable === false) {
       return <IconX size="1rem" color="red" />;
     }
-    
     return null;
   };
 
   const getUsernameDescription = () => {
-    if (checkingUsername) {
-      return t('users:validation.checkingUsername');
-    }
     if (usernameAvailable === true) {
       return t('users:validation.usernameAvailable');
+    }
+    if (usernameAvailable === false) {
+      return t('users:validation.usernameTaken');
     }
     return t('auth:register.usernameDescription');
   };

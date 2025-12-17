@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
-         LoadingOverlay, Tabs, Alert, Text } from '@mantine/core';
+         LoadingOverlay, Tabs, Alert, Text, Loader } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle, IconUser, IconShield } from '@tabler/icons-react';
-import { userService } from '../../../services/backend/userService';
+import { IconAlertCircle, IconUser, IconShield, IconCheck, IconX } from '@tabler/icons-react';
 import RoleTransferList from '../../roles/components/RoleTransferList';
 import { useUserRoles } from '../hooks/useUserRoles';
 import { useTranslation } from 'react-i18next';
+import { useUsernameCheck } from '../hooks/useUsernameCheck';
 
 
 const UserForm = ({
@@ -17,8 +17,8 @@ const UserForm = ({
   showRoleManagement = true
 }) => {
   
+  const { checkUsernameAvailability, checkingUsername } = useUsernameCheck();
   const [usernameAvailable, setUsernameAvailable] = useState(true);
-  const [checkingUsername, setCheckingUsername] = useState(false);
   const { t } = useTranslation(['common', 'users']);
 
 
@@ -52,7 +52,8 @@ const UserForm = ({
         if (!value) return t('common:validation.required');
         if (value.length < 3) return t('common:validation.minLength', { count: 3 });
         if (value.length > 50) return t('common:validation.maxLength', { count: 50 });
-        if (!usernameAvailable) return t('users:validation.usernameTaken');
+        if (user && user.username === value) return null;
+        if (usernameAvailable === false) return t('users:validation.usernameTaken');
         return null;
       },
       password: (value) => {
@@ -76,32 +77,29 @@ const UserForm = ({
     },
   });
 
-  // Verify username availability
-  const checkUsernameAvailability = async (username) => {
-    if (username.length < 3) {
+  
+  // Check if username is available
+  useEffect(() => {
+    const username = form.values.username.trim();
+    if (!username || username.length < 3) {
       setUsernameAvailable(true);
       return;
     }
-
-    // If we are editing and the username hasn't changed, it's available
+    
+    // If editing and username unchanged, skip check
     if (user && user.username === username) {
       setUsernameAvailable(true);
       return;
     }
-
-    setCheckingUsername(true);
-    try {
-      const available = await userService.checkUsernameAvailability(username);
+    
+    const timeoutId = setTimeout(async () => {
+      const available = await checkUsernameAvailability(username, user?.username);
       setUsernameAvailable(available);
-    } 
-    catch (error) {
-      setUsernameAvailable(false);
-      console.error('Error:', error);
-    } 
-    finally {
-      setCheckingUsername(false);
-    }
-  };
+    }, 500);
+    
+    return () => clearTimeout(timeoutId);
+  }, [form.values.username, user, checkUsernameAvailability]);
+
 
   // Load user data when editing
   useEffect(() => {
@@ -137,6 +135,26 @@ const UserForm = ({
     await onSubmit(userData);
   };
   
+  const getUsernameRightSection = () => {
+    const username = form.values.username.trim();
+    if (!username || username.length < 3) return null;
+
+    // If editing and username unchanged, show green check
+    if (user && user.username === username) {
+      return <IconCheck size="1rem" color="green" />;
+    }
+
+    if (checkingUsername) {
+      return <Loader size="xs" />;
+    }
+    if (usernameAvailable === true) {
+      return <IconCheck size="1rem" color="green" />;
+    }
+    if (usernameAvailable === false) {
+      return <IconX size="1rem" color="red" />;
+    }
+    return null;
+  };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -161,10 +179,9 @@ const UserForm = ({
             required
             maxLength={50}
             {...form.getInputProps('username')}
-            onBlur={(e) => checkUsernameAvailability(e.target.value)}
-            error={form.errors.username}
-            rightSection={checkingUsername ? <div>{t('users:validation.checkingUsername')}</div> : null}
+            rightSection={getUsernameRightSection()}
             mb="md"
+            disabled={loading}
           />
 
           <Group grow mb="md">

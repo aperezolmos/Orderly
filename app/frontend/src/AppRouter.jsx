@@ -4,14 +4,7 @@ import { useAuth } from './context/useAuth';
 import ProtectedRoute from './common/components/ProtectedRoute';
 import ErrorBoundary from './common/components/ErrorBoundary';
 import MainLayout from './common/layouts/MainLayout';
-import { useTranslation } from 'react-i18next';
-
-
-// Internationalized loading component
-const LoadingFallback = () => {
-  const { t } = useTranslation('common');
-  return <div>{t('app.loading')}</div>;
-};
+import LoadingFallback from './common/components/LoadingFallback';
 
 
 // ------- PAGES ------------------------------------------

@@ -34,7 +34,6 @@
     "noRoles": "Sin roles"
   },
   "validation": {
-    "checkingUsername": "Verificando usuario...",
     "usernameAvailable": "Nombre de usuario disponible",
     "usernameTaken": "El nombre de usuario ya está en uso",
     "confirmPasswordRequired": "Por favor confirma la contraseña",

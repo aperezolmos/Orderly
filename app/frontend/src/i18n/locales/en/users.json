@@ -34,7 +34,6 @@
     "noRoles": "No roles"
   },
   "validation": {
-    "checkingUsername": "Checking username...",
     "usernameAvailable": "Username is available",
     "usernameTaken": "Username is already taken",
     "confirmPasswordRequired": "Please confirm password",
