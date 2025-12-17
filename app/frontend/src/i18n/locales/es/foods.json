@@ -85,10 +85,6 @@
     "updateError": "Error actualizando alimento",
     "deleteError": "Error eliminando alimento"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error cargando alimento",
     "notFound": "No se pudo cargar el alimento con ID: {{id}}",

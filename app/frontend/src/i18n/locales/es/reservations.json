@@ -54,10 +54,6 @@
     "updateError": "Error actualizando reserva",
     "deleteError": "Error eliminando reserva"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error cargando reserva",
     "notFound": "No se pudo cargar la reserva con ID: {{id}}",

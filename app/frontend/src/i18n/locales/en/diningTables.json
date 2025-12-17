@@ -36,10 +36,6 @@
     "updateError": "Error updating table",
     "deleteError": "Error deleting table"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error loading table",
     "notFound": "Could not load table with ID: {{id}}",

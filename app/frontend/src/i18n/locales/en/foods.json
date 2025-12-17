@@ -85,10 +85,6 @@
     "updateError": "Error updating food",
     "deleteError": "Error deleting food"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error loading food",
     "notFound": "Could not load food with ID: {{id}}",

@@ -36,10 +36,6 @@
     "updateError": "Error actualizando mesa",
     "deleteError": "Error eliminando mesa"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error cargando mesa",
     "notFound": "No se pudo cargar la mesa con ID: {{id}}",

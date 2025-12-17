@@ -52,8 +52,6 @@
     "rolesUpdateError": "Error actualizando roles del usuario"
   },
   "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete",
     "adminWarning": "Advertencia: Este usuario tiene privilegios de administrador"
   },
   "errors": {

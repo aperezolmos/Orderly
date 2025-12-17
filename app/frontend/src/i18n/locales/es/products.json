@@ -35,10 +35,6 @@
     "updateError": "Error actualizando producto",
     "deleteError": "Error eliminando producto"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error cargando producto",
     "notFound": "No se pudo cargar el producto con ID: {{id}}",

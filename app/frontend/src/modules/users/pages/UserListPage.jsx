@@ -54,12 +54,14 @@ const UserListPage = () => {
     {
       key: 'name',
       title: t('users:list.fullName'),
-      render: (user) => (
-        <Text>
-          {[user.firstName, user.lastName].filter(Boolean).join(' ') || 
-           <Text color="dimmed" fs="italic">{t('users:list.notSpecified')}</Text>}
-        </Text>
-      )
+      render: (user) => {
+        const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ');
+        return (
+          <Text color={!fullName ? "dimmed" : undefined} fs={!fullName ? "italic" : undefined}>
+            {fullName || t('users:list.notSpecified')}
+          </Text>
+        );
+      }
     },
     {
       key: 'roles',

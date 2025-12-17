@@ -54,10 +54,6 @@
     "updateError": "Error updating reservation",
     "deleteError": "Error deleting reservation"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error loading reservation",
     "notFound": "Could not load reservation with ID: {{id}}",

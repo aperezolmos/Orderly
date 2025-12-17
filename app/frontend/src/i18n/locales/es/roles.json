@@ -42,10 +42,6 @@
     "updateError": "Error actualizando rol",
     "deleteError": "Error eliminando rol"
   },
-  "deleteModal": {
-    "title": "@:common.modal.titleDelete",
-    "message": "@:common.modal.messageDelete"
-  },
   "errors": {
     "loadError": "Error cargando rol",
     "notFound": "No se pudo cargar el rol con ID: {{id}}",
