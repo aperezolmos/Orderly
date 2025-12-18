@@ -1,53 +1,24 @@
-import { apiClient, handleApiError } from './api';
+import { apiClient } from './api';
 
 
 export const authService = {
 
-  login: async (username, password) => {
-    try {
-      const user = await apiClient.post('/auth/login', {
-        username,
-        password
-      });
-      return user;
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-  
-  register: async (userData) => {
-    try {
-      const user = await apiClient.post('/auth/register', userData);
-      return user;
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
+  login: async (username, password) =>
+    apiClient.post('/auth/login', { username, password }),
+
+  register: async (userData) =>
+    apiClient.post('/auth/register', userData),
 
   logout: async () => {
-    try {
-      await apiClient.post('/auth/logout');
-    } catch (error) {
-      handleApiError(error);
-    }
+    await apiClient.post('/auth/logout');
   },
 
-  getCurrentUser: async () => {
-    try {
-      return await apiClient.get('/auth/me');
-    } catch (error) {
-      return handleApiError(error);
-    }
-  },
+  getCurrentUser: async () => apiClient.get('/auth/me'),
 
   checkAuthStatus: async () => {
     try {
       return await apiClient.get('/auth/me');
-    } catch (error) {
-      console.log('Auth error:', error);
-      return null;
     }
-  }
+    catch { return null; }
+  },
 };

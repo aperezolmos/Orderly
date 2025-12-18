@@ -2,22 +2,75 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 
+// Custom error class for API errors
+export class ApiError extends Error {
+  constructor({ status, error, message, details, timestamp }) {
+    super(message || error || 'API Error');
+    this.name = 'ApiError';
+    this.status = status;
+    this.error = error;
+    this.details = details;
+    this.timestamp = timestamp;
+  }
+}
+
+// Helper to build query strings from an object
+export function buildQueryString(params) {
+  if (!params) return '';
+  const esc = encodeURIComponent;
+  return (
+    '?' +
+    Object.entries(params)
+      .filter(([, v]) => v !== undefined && v !== null)
+      .map(([k, v]) => esc(k) + '=' + esc(v))
+      .join('&')
+  );
+}
+
+// Centralized response management
+async function handleResponse(response) {
+  
+  if (response.status === 204) return null;
+  
+  const text = await response.text();
+  if (!response.ok) {
+    let errorData;
+    try {
+      errorData = text ? JSON.parse(text) : {};
+    } 
+    catch {
+      errorData = { message: text || response.statusText };
+    }
+    throw new ApiError({
+      status: response.status,
+      error: errorData.error || response.statusText,
+      message: errorData.message || errorData.error || response.statusText,
+      details: errorData.details,
+      timestamp: errorData.timestamp,
+    });
+  }
+  
+  if (!text) return null;
+  try {
+    return JSON.parse(text);
+  } 
+  catch {
+    return text;
+  }
+}
+
+
+// --------------------------------------------------------
 // Base API client with fetch
 export const apiClient = {
     
-  get: async (endpoint) => {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  get: async (endpoint, params) => {
+    const url = API_BASE_URL + endpoint + (params ? buildQueryString(params) : '');
+    const response = await fetch(url, {
       method: 'GET',
-      credentials: 'include', // Cookies
+      credentials: 'include',
     });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    if (response.status === 204) return null;
-    const text = await response.text();
-    if (!text) return null;
-    return JSON.parse(text);
+    return handleResponse(response);
   },
 
   post: async (endpoint, data) => {
@@ -29,14 +82,7 @@ export const apiClient = {
       body: JSON.stringify(data),
       credentials: 'include',
     });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    if (response.status === 204) return null;
-    const text = await response.text();
-    if (!text) return null;
-    return JSON.parse(text);
+    return handleResponse(response);
   },
 
   put: async (endpoint, data) => {
@@ -48,14 +94,7 @@ export const apiClient = {
       body: JSON.stringify(data),
       credentials: 'include',
     });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    if (response.status === 204) return null;
-    const text = await response.text();
-    if (!text) return null;
-    return JSON.parse(text);
+    return handleResponse(response);
   },
 
   patch: async (endpoint, data) => {
@@ -67,14 +106,7 @@ export const apiClient = {
       body: JSON.stringify(data),
       credentials: 'include',
     });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    if (response.status === 204) return null;
-    const text = await response.text();
-    if (!text) return null;
-    return JSON.parse(text);
+    return handleResponse(response);
   },
 
   delete: async (endpoint) => {
@@ -82,25 +114,6 @@ export const apiClient = {
       method: 'DELETE',
       credentials: 'include',
     });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    // There may be no content in the response of DELETE requests
-    if (response.status === 204) {
-      return null;
-    }
-    const text = await response.text();
-    if (!text) return null;
-    return JSON.parse(text);
-  }
-};
-
-
-// Utility for handling API errors
-// TODO: cambiar?
-export const handleApiError = (error) => {
-  console.error('API Error:', error);
-  throw error;
+    return handleResponse(response);
+  },
 };

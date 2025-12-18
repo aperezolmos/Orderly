@@ -51,9 +51,9 @@ const ReservationForm = ({
         const activeTables = await reservationService.getActiveTables();
         setTables(activeTables);
       } 
-      catch (error) {
+      catch (err) {
         setTables([]);
-        console.error('Error:', error);
+        console.error('Error:', err);
       } 
       finally {
         setTablesLoading(false);

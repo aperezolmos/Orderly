@@ -18,8 +18,8 @@ export const useUserRoles = (initialUserRoles = []) => {
       const allRoles = await roleService.getRoles();
       setAvailableRoles(allRoles);
     } 
-    catch (error) {
-      console.error('Error loading roles:', error);
+    catch (err) {
+      console.error('Error loading roles:', err);
     } 
     finally {
       setLoading(false);
