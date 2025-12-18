@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Text } from '@mantine/core';
+import { LoadingOverlay, Box, Text } from '@mantine/core';
 import { useAuth } from '../../../context/useAuth';
-import AuthLayout from '../components/AuthLayout';
+import AuthLayout from '../layouts/AuthLayout';
 import RegisterForm from '../components/RegisterForm';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const RegisterPage = () => {
   
   const { register, error, clearError, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslationWithLoading(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth']);
+
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -43,12 +44,15 @@ const RegisterPage = () => {
       subtitle={t('auth:register.loginPrompt')}
       linkComponent={loginLink}
     >
-      <RegisterForm
-        onSubmit={handleRegister}
-        loading={loading}
-        error={error}
-        onClearError={clearError}
-      />
+      <Box pos="relative">
+        <LoadingOverlay visible={loading} overlayblur={2} />
+        <RegisterForm
+          onSubmit={handleRegister}
+          loading={loading}
+          error={error}
+          onClearError={clearError}
+        />
+      </Box>
     </AuthLayout>
   );
 };

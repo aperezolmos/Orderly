@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, Badge, Box, LoadingOverlay } from '@mantine/core';
+import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconEdit, IconTrash, IconUser } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useReservations } from '../hooks/useReservations';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ReservationListPage = () => {
@@ -15,21 +15,8 @@ const ReservationListPage = () => {
   const { reservations, loading, deleteReservation } = useReservations();
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'reservations']);
+  const { t } = useTranslation(['common', 'reservations']);
 
-
-  if (!ready || isNamespaceLoading) {
-    return (
-      <ManagementLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </ManagementLayout>
-    );
-  }
 
   const handleEdit = (reservation) => {
     navigate(`/reservations/${reservation.id}/edit`);
@@ -104,30 +91,33 @@ const ReservationListPage = () => {
         createButtonLabel={t('reservations:list.newReservation')}
         onCreateClick={() => navigate('/reservations/new')}
       >
-        <DataTable
-          columns={columns}
-          data={reservations}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-        />
+        <div style={{ position: 'relative' }}>
+          <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
+            <DataTable
+              columns={columns}
+              data={reservations}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              loading={loading}
+            />
+        </div>
       </ManagementLayout>
 
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('reservations:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('reservations:deleteModal.message', { id: reservationToDelete?.id })}
+          {t('common:modal.messageDelete', { id: reservationToDelete?.id })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('reservations:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('reservations:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

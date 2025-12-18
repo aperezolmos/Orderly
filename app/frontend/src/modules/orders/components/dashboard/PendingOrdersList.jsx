@@ -1,14 +1,18 @@
 import { Group, Text, Badge, Paper, ScrollArea, Stack, Loader } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
+
 
 const PendingOrdersList = ({ orders, currentOrderId, onOrderSelect, isLoading }) => {
   
+  const { t } = useTranslation(['orders']);
+
   if (isLoading) {
     return (
       <Paper p="lg" withBorder>
         <Group justify="center">
           <Loader />
-          <Text>Cargando pedidos...</Text>
+          <Text>{t('orders:dashboard.pendingOrders')}</Text>
         </Group>
       </Paper>
     );
@@ -20,8 +24,8 @@ const PendingOrdersList = ({ orders, currentOrderId, onOrderSelect, isLoading })
         <Group justify="center">
           <IconClock size={48} stroke={1} />
           <div>
-            <Text ta="center" fw={500}>No hay pedidos pendientes</Text>
-            <Text ta="center" size="sm" c="dimmed">Todos los pedidos están completados</Text>
+            <Text ta="center" fw={500}>{t('orders:dashboard.noPendingOrders')}</Text>
+            <Text ta="center" size="sm" c="dimmed">{t('orders:dashboard.allCompleted')}</Text>
           </div>
         </Group>
       </Paper>
@@ -71,25 +75,29 @@ const PendingOrdersList = ({ orders, currentOrderId, onOrderSelect, isLoading })
           >
             <Group justify="apart">
               <div style={{ flex: 1 }}>
-                <Text fw={500} truncate>Pedido #{order.orderNumber}</Text>
+                <Text fw={500} truncate>
+                  {t('orders:list.orderNumber') + ' #' + order.orderNumber}
+                </Text>
                 <Text size="sm" c="dimmed">
-                  {order.customerName || 'Sin cliente'} • 
-                  {order.tableName && ` Mesa: ${order.tableName}`}
-                  {order.drinksOnly !== undefined && ` • ${order.drinksOnly ? 'Solo bebidas' : 'Comida y bebida'}`}
+                  {order.customerName || t('orders:list.customerName')}
+                  {order.tableName && ` • ${t('orders:list.table')}: ${order.tableName}`}
+                  {order.drinksOnly !== undefined && ` • ${order.drinksOnly ? t('orders:form.drinksOnly') : t('orders:dashboard.addProduct')}`}
                 </Text>
                 <Text size="xs" c="dimmed" mt={4}>
-                  Creado: {formatTime(order.createdAt)}
+                  {t('orders:dashboard.created', { time: formatTime(order.createdAt) })}
                 </Text>
               </div>
               <div style={{ textAlign: 'right', minWidth: 120 }}>
                 <Badge color={getStatusColor(order.status)} mb={4}>
-                  {order.status}
+                  {t(`orders:status.${order.status}`, order.status)}
                 </Badge>
                 <Text fw={700} size="lg">
                   {order.totalAmount ? `€${order.totalAmount.toFixed(2)}` : '€0.00'}
                 </Text>
                 <Text size="sm" c="dimmed">
-                  {order.itemCount === 1 ? '1 ítem' : `${order.itemCount} ítems`}
+                  {order.itemCount === 1
+                    ? `1 ${t('orders:list.itemCount')}`
+                    : `${order.itemCount} ${t('orders:list.itemCount')}`}
                 </Text>
               </div>
             </Group>

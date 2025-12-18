@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, Badge, Box, LoadingOverlay } from '@mantine/core';
+import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconPlus, IconUser, IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useUsers } from '../hooks/useUsers';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const UserListPage = () => {
@@ -15,21 +15,7 @@ const UserListPage = () => {
   const { users, loading, deleteUser } = useUsers();
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'users']);
-
-  
-  if (!ready || isNamespaceLoading) {
-    return (
-      <ManagementLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </ManagementLayout>
-    );
-  }
+  const { t } = useTranslation(['common', 'users']);
   
 
   const handleEdit = (user) => {
@@ -68,12 +54,14 @@ const UserListPage = () => {
     {
       key: 'name',
       title: t('users:list.fullName'),
-      render: (user) => (
-        <Text>
-          {[user.firstName, user.lastName].filter(Boolean).join(' ') || 
-           <Text color="dimmed" fs="italic">{t('users:list.notSpecified')}</Text>}
-        </Text>
-      )
+      render: (user) => {
+        const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ');
+        return (
+          <Text color={!fullName ? "dimmed" : undefined} fs={!fullName ? "italic" : undefined}>
+            {fullName || t('users:list.notSpecified')}
+          </Text>
+        );
+      }
     },
     {
       key: 'roles',
@@ -115,23 +103,26 @@ const UserListPage = () => {
         createButtonLabel={t('users:list.newUser')}
         onCreateClick={() => navigate('/users/new')}
       >
-        <DataTable
-          columns={columns}
-          data={users}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-        />
+        <div style={{ position: 'relative' }}>
+          <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
+            <DataTable
+              columns={columns}
+              data={users}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              loading={loading}
+            />
+        </div>
       </ManagementLayout>
 
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('users:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('users:deleteModal.message', { username: userToDelete?.username })}
+          {t('common:modal.messageDelete', { name: userToDelete?.username })}
         </Text>
         
         {userToDelete?.roleNames?.includes('ROLE_ADMIN') && (
@@ -142,10 +133,10 @@ const UserListPage = () => {
         
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('users:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('users:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

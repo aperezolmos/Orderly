@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { TextInput, NumberInput, Button, Group, LoadingOverlay, Text } from '@mantine/core';
+import { useEffect } from 'react';
+import { TextInput, NumberInput, Button, Group, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const DiningTableForm = ({
@@ -11,7 +11,7 @@ const DiningTableForm = ({
   submitLabel = "Create Table"
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'diningTables']);
+  const { t } = useTranslation(['common', 'diningTables']);
 
 
   const form = useForm({
@@ -22,16 +22,16 @@ const DiningTableForm = ({
     },
     validate: {
       name: (value) => {
-        if (!value) return t('diningTables:validation.nameRequired');
-        if (value.length > 10) return t('diningTables:validation.nameMaxLength');
+        if (!value) return t('common:validation.required');
+        if (value.length > 10) return t('common:validation.maxLength', { count: 10 });
         return null;
       },
       capacity: (value) => {
-        if (!value || value < 1) return t('diningTables:validation.capacityMin');
+        if (!value || value < 1) return t('common:validation.positive');
         return null;
       },
       locationDescription: (value) => {
-        if (value && value.length > 100) return t('diningTables:validation.locationMaxLength');
+        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
         return null;
       },
     },

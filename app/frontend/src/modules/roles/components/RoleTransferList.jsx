@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Group, Badge, Paper, Title, Text, ScrollArea, Stack } from '@mantine/core';
 import { IconX, IconPlus, IconShield } from '@tabler/icons-react';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const RoleTransferList = memo(({
@@ -12,7 +12,7 @@ const RoleTransferList = memo(({
   loading = false
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'roles']);
+  const { t } = useTranslation(['common', 'roles']);
 
 
   return (

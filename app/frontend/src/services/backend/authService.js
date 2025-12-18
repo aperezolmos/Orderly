@@ -1,40 +1,24 @@
-import { apiClient, handleApiError } from './api';
+import { apiClient } from './api';
 
 
 export const authService = {
 
-  login: async (username, password) => {
-    try {
-      const user = await apiClient.post('/auth/login', {
-        username,
-        password
-      });
-      return user;
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-  
-  register: async (userData) => {
-    try {
-      const user = await apiClient.post('/auth/register', userData);
-      return user;
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
+  login: async (username, password) =>
+    apiClient.post('/auth/login', { username, password }),
+
+  register: async (userData) =>
+    apiClient.post('/auth/register', userData),
 
   logout: async () => {
-    // Only clears local state
-    // TODO: aquí iría una llamada al backend para invalidar sesión
-    return Promise.resolve();
+    await apiClient.post('/auth/logout');
   },
 
+  getCurrentUser: async () => apiClient.get('/auth/me'),
+
   checkAuthStatus: async () => {
-    //TODO: se podría usar /auth/status o /auth/me¿?
-    const user = localStorage.getItem('currentUser');
-    return user ? JSON.parse(user) : null;
-  }
+    try {
+      return await apiClient.get('/auth/me');
+    }
+    catch { return null; }
+  },
 };

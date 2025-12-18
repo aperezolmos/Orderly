@@ -1,77 +1,19 @@
-import { apiClient, handleApiError } from './api';
+import { apiClient } from './api';
 
 
 export const userService = {
   
-  getUsers: async () => {
-    try {
-      return await apiClient.get('/users');
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
+  getUsers: async () => apiClient.get('/users'),
+  getUserById: async (id) => apiClient.get(`/users/${id}`),
+  getUserByUsername: async (username) => apiClient.get(`/users/username/${username}`),
+  createUser: async (userData) => apiClient.post('/users', userData),
+  updateUser: async (id, userData) => apiClient.put(`/users/${id}`, userData),
+  deleteUser: async (id) => apiClient.delete(`/users/${id}`),
+  checkUsernameAvailability: async (username) => apiClient.get('/users/check-username', { username }),
 
-  getUserById: async (id) => {
-    try {
-      return await apiClient.get(`/users/${id}`);
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
 
-  getUserByUsername: async (username) => {
-    try {
-      return await apiClient.get(`/users/username/${username}`);
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  createUser: async (userData) => {
-    try {
-      return await apiClient.post('/users', userData);
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  updateUser: async (id, userData) => {
-    try {
-      return await apiClient.put(`/users/${id}`, userData);
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  deleteUser: async (id) => {
-    try {
-      return await apiClient.delete(`/users/${id}`);
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  checkUsernameAvailability: async (username) => {
-    try {
-      return await apiClient.get(`/users/check-username?username=${username}`);
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  setUserRoles: async (userId, roleIds) => {
-    try {
-      return await apiClient.put(`/users/${userId}/roles`, roleIds);
-    } 
-    catch (error) {
-      return handleApiError(error);
-    }
-  }
+  // ======================
+  // ROLES
+  // ======================
+  setUserRoles: async (userId, roleIds) => apiClient.put(`/users/${userId}/roles`, roleIds),
 };

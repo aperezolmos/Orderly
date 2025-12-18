@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Table, NumberInput, ActionIcon, Group, Text } from '@mantine/core';
 import { IconTrash, IconCheck, IconEdit } from '@tabler/icons-react';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ProductIngredientsTable = ({
@@ -11,9 +11,9 @@ const ProductIngredientsTable = ({
   loading,
 }) => {
   
-  const { t } = useTranslationWithLoading(['products', 'foods']);
   const [editId, setEditId] = useState(null);
   const [editValue, setEditValue] = useState(null);
+  const { t } = useTranslation(['products', 'foods']);
 
 
   const startEdit = (ingredient) => {

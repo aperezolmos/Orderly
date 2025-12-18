@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { TextInput, NumberInput, Button, Group, Select, LoadingOverlay, Tabs, Box } from '@mantine/core';
+import { useEffect } from 'react';
+import { TextInput, NumberInput, Button, Group, Select, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import NutritionInfoForm from './NutritionInfoForm';
 
 
@@ -25,7 +25,7 @@ const FoodForm = ({
   submitLabel = "Create Food"
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'foods']);
+  const { t } = useTranslation(['common', 'foods']);
 
 
   const form = useForm({
@@ -68,14 +68,14 @@ const FoodForm = ({
     },
     validate: {
       name: (value) => {
-        if (!value) return t('foods:validation.nameRequired');
-        if (value.length > 100) return t('foods:validation.nameMaxLength');
+        if (!value) return t('common:validation.required');
+        if (value.length > 100) return t('common:validation.maxLength', { count: 100 });
         return null;
       },
-      foodGroup: (value) => (!value ? t('foods:validation.foodGroupRequired') : null),
+      foodGroup: (value) => (!value ? t('common:validation.required') : null),
       servingWeightGrams: (value) => {
-        if (!value) return t('foods:validation.servingWeightRequired');
-        if (Number(value) <= 0) return t('foods:validation.servingWeightPositive');
+        if (!value) return t('common:validation.required');
+        if (Number(value) <= 0) return t('common:validation.positive');
         return null;
       },
     },
@@ -121,8 +121,8 @@ const FoodForm = ({
       <LoadingOverlay visible={loading} />
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic">{t('foods:form.basicInfo')}</Tabs.Tab>
-          <Tabs.Tab value="nutrition">{t('foods:form.nutritionInfo')}</Tabs.Tab>
+          <Tabs.Tab value="basic">{t('common:form.basicInfo')}</Tabs.Tab>
+          <Tabs.Tab value="nutrition">{t('foods:form.nutritionInfo.title')}</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="basic" pt="xs">
           <TextInput

@@ -38,8 +38,6 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       
       const userData = await authService.login(username, password);
-      
-      localStorage.setItem('currentUser', JSON.stringify(userData));
       setUser(userData);
       
       return userData;
@@ -59,9 +57,6 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       
       const newUser = await authService.register(userData);
-      
-      // Auto-login after registration
-      localStorage.setItem('currentUser', JSON.stringify(newUser));
       setUser(newUser);
       
       return newUser;
@@ -81,7 +76,6 @@ export const AuthProvider = ({ children }) => {
       await authService.logout();
     } 
     finally {
-      localStorage.removeItem('currentUser');
       setUser(null);
       setError(null);
       setLoading(false);

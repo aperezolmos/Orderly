@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, NumberInput, Button, Group,
         LoadingOverlay, Tabs, Select } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { reservationService } from '../../../services/backend/reservationService';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import { IconUser, IconInfoCircle } from '@tabler/icons-react';
 
 
@@ -15,9 +15,9 @@ const ReservationForm = ({
   submitLabel = "Create Reservation"
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'reservations']);
   const [tables, setTables] = useState([]);
   const [tablesLoading, setTablesLoading] = useState(false);
+  const { t } = useTranslation(['common', 'reservations']);
 
 
   const form = useForm({
@@ -32,14 +32,15 @@ const ReservationForm = ({
       guestSpecialRequests: '',
     },
     validate: {
-      diningTableId: (value) => !value ? t('reservations:validation.tableRequired') : null,
-      numberOfGuests: (value) => !value || value < 1 ? t('reservations:validation.guestsMin') : null,
-      reservationDateTime: (value) => !value ? t('reservations:validation.dateRequired') : null,
-      estimatedDurationMinutes: (value) => value < 30 || value > 240 ? t('reservations:validation.durationRange') : null,
-      guestFirstName: (value) => !value ? t('reservations:validation.guestFirstNameRequired') : null,
-      guestLastName: (value) => !value ? t('reservations:validation.guestLastNameRequired') : null,
-      guestPhone: (value) => !value ? t('reservations:validation.guestPhoneRequired') : null,
-      guestSpecialRequests: (value) => value && value.length > 500 ? t('reservations:validation.specialRequestsMaxLength') : null,
+      diningTableId: (value) => !value ? t('common:validation.required') : null,
+      numberOfGuests: (value) => !value || value < 1 ? t('common:validation.positive') : null,
+      reservationDateTime: (value) => !value ? t('common:validation.required') : null,
+      estimatedDurationMinutes: (value) => value < 30 || value > 240 
+        ? t('reservations:validation.durationRange', { minDuration: 30, maxDuration: 240 }) : null,
+      guestFirstName: (value) => !value ? t('common:validation.required') : null,
+      guestLastName: (value) => !value ? t('common:validation.required') : null,
+      guestPhone: (value) => !value ? t('common:validation.required') : null,
+      guestSpecialRequests: (value) => value && value.length > 500 ? t('common:validation.maxLength', { count: 500 }) : null,
     },
   });
 
@@ -50,9 +51,9 @@ const ReservationForm = ({
         const activeTables = await reservationService.getActiveTables();
         setTables(activeTables);
       } 
-      catch (error) {
+      catch (err) {
         setTables([]);
-        console.error('Error:', error);
+        console.error('Error:', err);
       } 
       finally {
         setTablesLoading(false);
@@ -96,7 +97,7 @@ const ReservationForm = ({
       <Tabs defaultValue="basic">
         <Tabs.List>
           <Tabs.Tab value="basic" icon={<IconInfoCircle size="0.8rem" />}>
-            {t('reservations:form.basicInfo')}
+            {t('common:form.basicInfo')}
           </Tabs.Tab>
           <Tabs.Tab value="guest" icon={<IconUser size="0.8rem" />}>
             {t('reservations:form.guestInfo')}

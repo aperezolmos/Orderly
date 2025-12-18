@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, Box, LoadingOverlay } from '@mantine/core';
+import { Group, Text, Modal, Button, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useProducts } from '../hooks/useProducts';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ProductListPage = () => {
@@ -14,21 +14,8 @@ const ProductListPage = () => {
   const { products, loading, deleteProduct } = useProducts();
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'products']);
+  const { t } = useTranslation(['common', 'products']);
 
-
-  if (!ready || isNamespaceLoading) {
-    return (
-      <ManagementLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </ManagementLayout>
-    );
-  }
 
   const handleEdit = (product) => {
     navigate(`/products/${product.id}/edit`);
@@ -97,30 +84,33 @@ const ProductListPage = () => {
         createButtonLabel={t('products:list.newProduct')}
         onCreateClick={() => navigate('/products/new')}
       >
-        <DataTable
-          columns={columns}
-          data={products}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-        />
+        <div style={{ position: 'relative' }}>
+          <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
+            <DataTable
+              columns={columns}
+              data={products}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              loading={loading}
+            />
+        </div>
       </ManagementLayout>
 
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('products:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('products:deleteModal.message', { name: productToDelete?.name })}
+          {t('common:modal.messageDelete', { name: productToDelete?.name })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('products:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('products:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

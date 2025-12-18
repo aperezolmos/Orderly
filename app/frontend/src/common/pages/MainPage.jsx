@@ -3,68 +3,68 @@ import { IconUsers, IconShield, IconPackage, IconChartBar,
          IconCalendar, IconDesk } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import { useTranslationWithLoading } from '../hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const MainPage = () => {
   
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { t } = useTranslationWithLoading('common');
+  const { t } = useTranslation('common');
 
 
   const features = [
     {
-      title: t('navigation.users'),
-      description: 'Manage system users and permissions', // TODO: añadir traducción
+      title: t('common:navigation.users.name'),
+      description: t('common:navigation.users.description'),
       icon: <IconUsers size={30} />,
       path: '/users',
       color: 'blue',
       adminOnly: true
     },
     {
-      title: t('navigation.roles'),
-      description: 'Configure user roles and permissions',
+      title: t('common:navigation.roles.name'),
+      description: t('common:navigation.roles.description'),
       icon: <IconShield size={30} />,
       path: '/roles',
       color: 'violet',
       adminOnly: true
     },
     {
-      title: t('navigation.foods'),
-      description: 'Manage food items and categories',
+      title: t('common:navigation.foods.name'),
+      description: t('common:navigation.foods.description'),
       icon: <IconPackage size={30} />,
       path: '/foods',
       color: 'green',
       adminOnly: true
     },
     {
-      title: t('navigation.products'),
-      description: 'Handle product inventory',
+      title: t('common:navigation.products.name'),
+      description: t('common:navigation.products.description'),
       icon: <IconPackage size={30} />,
       path: '/products',
       color: 'orange',
       adminOnly: true
     },
     {
-      title: t('navigation.tables'),
-      description: 'Manage dining tables and availability',
+      title: t('common:navigation.tables.name'),
+      description: t('common:navigation.tables.description'),
       icon: <IconDesk size={30} />,
       path: '/tables',
       color: 'cyan',
       adminOnly: true
     },
     {
-      title: t('navigation.reservations'),
-      description: 'Handle table reservations',
+      title: t('common:navigation.reservations.name'),
+      description: t('common:navigation.reservations.description'),
       icon: <IconCalendar size={30} />,
       path: '/reservations',
       color: 'pink',
       adminOnly: true
     },
     {
-      title: t('navigation.orders'),
-      description: 'View and manage customer orders',
+      title: t('common:navigation.orders.name'),
+      description: t('common:navigation.orders.description'),
       icon: <IconChartBar size={30} />,
       path: '/orders',
       color: 'grape',
@@ -82,7 +82,7 @@ const MainPage = () => {
   return (
     <Container size="xl" py="xl">
       <Title order={1} mb="md" align="center">
-        {t('app.welcome')}, {user?.username || t('navigation.user')}!
+        {user ? `${t('app.welcome')}, ${user.username}!` : `${t('app.welcome')}!`}
       </Title>
       
       <Text color="dimmed" size="lg" mb="xl" align="center">

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
 import { LoadingOverlay, Text, Center } from '@mantine/core';
@@ -26,7 +25,7 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
       return (
         <Center style={{ height: '60vh' }}>
           <Text color="red" size="xl" weight={500}>
-            {t('error.accessDenied')}
+            {t('common:error.accessDenied')}
           </Text>
         </Center>
       );

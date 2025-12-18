@@ -8,18 +8,17 @@
   "form": {
     "username": "Username",
     "usernamePlaceholder": "Enter username",
-    "firstName": "First Name",
+    "firstName": "First name",
     "firstNamePlaceholder": "Enter first name",
-    "lastName": "Last Name",
+    "lastName": "Last name",
     "lastNamePlaceholder": "Enter last name",
     "password": "Password",
     "passwordPlaceholder": "Enter password",
-    "confirmPassword": "Confirm Password",
+    "confirmPassword": "Confirm password",
     "confirmPasswordPlaceholder": "Confirm password",
-    "newPassword": "New Password (leave blank to keep current)",
+    "newPassword": "New password",
     "create": "Create User",
     "update": "Update User",
-    "basicInfo": "Basic Information",
     "roleManagement": "Role Management",
     "passwordInfo": "Leave password fields blank to keep the current password",
     "roleChanges": "Role changes will be saved when you submit the form"
@@ -35,13 +34,8 @@
     "noRoles": "No roles"
   },
   "validation": {
-    "usernameRequired": "Username is required",
-    "usernameMinLength": "Username must be at least 3 characters",
-    "usernameMaxLength": "Username cannot exceed 50 characters",
-    "firstNameMaxLength": "First name cannot exceed 100 characters",
-    "lastNameMaxLength": "Last name cannot exceed 100 characters",
-    "passwordRequired": "Password is required",
-    "passwordMinLength": "Password must be at least 4 characters",
+    "usernameAvailable": "Username is available",
+    "usernameTaken": "Username is already taken",
     "confirmPasswordRequired": "Please confirm password",
     "passwordsMatch": "Passwords do not match"
   },
@@ -57,11 +51,7 @@
     "rolesUpdateError": "Error updating user roles"
   },
   "deleteModal": {
-    "title": "Confirm User Deletion",
-    "message": "Are you sure you want to delete user \"{{username}}\"? This action cannot be undone",
-    "adminWarning": "Warning: This user has admin privileges",
-    "cancel": "Cancel",
-    "confirm": "Delete"
+    "adminWarning": "Warning: This user has admin privileges"
   },
   "errors": {
     "loadError": "Error loading user",

@@ -1,0 +1,82 @@
+{
+  "management": {
+    "title": "Order Management",
+    "dashboard": "Order Dashboard",
+    "list": "Orders",
+    "bar": "Bar Orders",
+    "dining": "Dining Orders",
+    "create": "Create Order",
+    "edit": "Edit Order",
+    "view": "View Order"
+  },
+  "form": {
+    "orderNumber": "Order Number",
+    "orderNumberPlaceholder": "Optional",
+    "customerName": "Customer Name",
+    "customerNamePlaceholder": "Optional",
+    "notes": "Notes",
+    "notesPlaceholder": "Notes for kitchen/bar",
+    "drinksOnly": "Drinks only",
+    "table": "Table",
+    "tablePlaceholder": "Select a table",
+    "create": "Create order",
+    "update": "Update order",
+    "edit": "Edit order"
+  },
+  "list": {
+    "id": "ID",
+    "orderNumber": "Order No.",
+    "customerName": "Customer",
+    "table": "Table",
+    "status": "Status",
+    "created": "Created",
+    "totalAmount": "Total",
+    "itemCount": "Items",
+    "newOrder": "New Order"
+  },
+  "types": {
+    "bar": "Bar",
+    "dining": "Dining"
+  },
+  "status": {
+    "PENDING": "Pending",
+    "IN_PROGRESS": "In progress",
+    "READY": "Ready",
+    "SERVED": "Served",
+    "PAID": "Paid",
+    "CANCELLED": "Cancelled"
+  },
+  "dashboard": {
+    "pendingOrders": "Pending orders",
+    "noPendingOrders": "No pending orders",
+    "allCompleted": "All orders are completed",
+    "productsAvailable": "Available products",
+    "pageFooter": "Page {{page}} of {{totalPages}} • {{count}} products shown",
+    "orderDetails": "Order details",
+    "addProduct": "Add product",
+    "removeProduct": "Remove product",
+    "editOrder": "Edit order",
+    "deleteOrder": "Delete order",
+    "confirmDeleteTitle": "@:common.modal.titleDelete",
+    "confirmDeleteMessage": "Are you sure you want to delete order \"{{order}}\"? This action cannot be undone.",
+    "created": "Created: {{time}}",
+    "notes": "Notes",
+    "noNotes": "No notes",
+    "noProducts": "This order has no products.",
+    "total": "Total: {{amount}}"
+  },
+  "notifications": {
+    "createSuccess": "Order created successfully",
+    "updateSuccess": "Order updated successfully",
+    "deleteSuccess": "Order deleted successfully",
+    "loadError": "Error loading orders",
+    "createError": "Error creating order",
+    "updateError": "Error updating order",
+    "deleteError": "Error deleting order"
+  },
+  "errors": {
+    "loadError": "Error loading order",
+    "notFound": "Could not load order with ID: {{id}}",
+    "notFoundDetails": "The order may have been deleted or you may not have permission to access it"
+  }
+}

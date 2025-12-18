@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput, Textarea, Button, Group, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import { roleService } from '../../../services/backend/roleService';
 import PermissionCheckboxList from './PermissionCheckboxList';
 
@@ -13,9 +13,9 @@ const RoleForm = ({
   submitLabel = "Create Role"
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'roles']);
   const [allPermissions, setAllPermissions] = useState([]);
   const [permissionsLoading, setPermissionsLoading] = useState(false);
+  const { t } = useTranslation(['common', 'roles']);
 
 
   const form = useForm({
@@ -26,12 +26,12 @@ const RoleForm = ({
     },
     validate: {
       name: (value) => {
-        if (!value) return t('roles:form.nameRequired');
-        if (value.length > 50) return t('roles:form.nameMaxLength');
+        if (!value) return t('common:validation.required');
+        if (value.length > 50) return t('common:validation.maxLength', { count: 50 });
         return null;
       },
       description: (value) => {
-        if (value && value.length > 255) return t('roles:form.descriptionMaxLength');
+        if (value && value.length > 255) return t('common:validation.maxLength', { count: 255 });
         return null;
       },
     },
@@ -81,7 +81,7 @@ const RoleForm = ({
 
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic">{t('roles:form.basicInfo')}</Tabs.Tab>
+          <Tabs.Tab value="basic">{t('common:form.basicInfo')}</Tabs.Tab>
           <Tabs.Tab value="permissions">{t('roles:form.permissions')}</Tabs.Tab>
         </Tabs.List>
 

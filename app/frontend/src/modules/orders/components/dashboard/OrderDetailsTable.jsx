@@ -3,10 +3,14 @@ import { Table, Badge, Group, Text, Button, ActionIcon, NumberInput, ScrollArea 
 import { IconTrash } from '@tabler/icons-react';
 import { formatCurrency } from '../../../../utils/formatters';
 import { useOrderDashboardStore } from '../../store/orderDashboardStore';
+import { useTranslation } from 'react-i18next';
 
 
 const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
+  
   const { editedQuantities, setItemQuantity } = useOrderDashboardStore();
+  const { t } = useTranslation(['common','orders']);
+  
 
   useEffect(() => {
     // Reset edición cuando cambia el pedido actual
@@ -16,7 +20,7 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
   if (!order) {
     return (
       <Group justify="center" p="md">
-        <Text c="dimmed">No hay pedido seleccionado</Text>
+        <Text c="dimmed">{t('orders:dashboard.noPendingOrders')}</Text>
       </Group>
     );
   }
@@ -50,11 +54,15 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
     <div className="order-details">
       <Group justify="apart" mb="md">
         <div>
-          <Text fw={500}>Pedido #{order.orderNumber}</Text>
-          <Text size="sm" c="dimmed">{order.customerName || 'Cliente no especificado'}</Text>
+          <Text fw={500}>
+            {t('orders:list.orderNumber') + ' #' + order.orderNumber}
+          </Text>
+          <Text size="sm" c="dimmed">
+            {order.customerName || t('orders:list.customerName')}
+          </Text>
         </div>
         <Badge color={getStatusColor(order.status)} size="lg" variant="filled">
-          {order.status}
+          {t(`orders:status.${order.status}`, order.status)}
         </Badge>
       </Group>
       <ScrollArea h={260} type="auto">
@@ -62,10 +70,10 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
           <Table verticalSpacing="sm" striped>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Producto</Table.Th>
-                <Table.Th>Precio Unit.</Table.Th>
-                <Table.Th>Cantidad</Table.Th>
-                <Table.Th>Total</Table.Th>
+                <Table.Th>{t('orders:dashboard.addProduct')}</Table.Th>
+                <Table.Th>{t('products:form.price')}</Table.Th>
+                <Table.Th>{t('orders:list.itemCount')}</Table.Th>
+                <Table.Th>{t('orders:dashboard.total', { amount: '' })}</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -73,7 +81,7 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
                 <Table.Tr>
                   <Table.Td colSpan={4}>
                     <Text c="dimmed" ta="center">
-                      Este pedido no tiene ningún producto.
+                      {t('orders:dashboard.noProducts')}
                     </Text>
                   </Table.Td>
                 </Table.Tr>
@@ -111,18 +119,18 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
       </ScrollArea>
       <Group justify="space-between" mt="xl">
         <div style={{ maxWidth: '60%' }}>
-          <Text size="sm" c="dimmed">Notas:</Text>
+          <Text size="sm" c="dimmed">{t('orders:dashboard.notes')}</Text>
           <Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-            {order.notes || 'Sin notas'}
+            {order.notes || t('orders:dashboard.noNotes')}
           </Text>
         </div>
 
         <div style={{ textAlign: 'right' }}>
           <Text size="lg" fw={700}>
-            Total: {formatCurrency(order.totalAmount)}
+            {t('orders:dashboard.total', { amount: formatCurrency(order.totalAmount) })}
           </Text>
           <Group justify="flex-end" mt="md">
-            <Button variant="outline" onClick={handleSave}>Guardar</Button>
+            <Button variant="outline" onClick={handleSave}>{t('common:app.save')}</Button>
           </Group>
         </div>
       </Group>

@@ -6,10 +6,6 @@
     "list": "Alimentos"
   },
   "form": {
-    "basicInfo": "Información Básica",
-    "nutritionInfo": "Información Nutricional",
-    "minerals": "Minerales",
-    "vitamins": "Vitaminas",
     "name": "Nombre",
     "namePlaceholder": "Ingrese nombre del alimento",
     "foodGroup": "Grupo Alimenticio",
@@ -18,32 +14,41 @@
     "servingWeightPlaceholder": "ej. 100",
     "create": "Crear Alimento",
     "update": "Actualizar Alimento",
-    "calories": "Calorías",
-    "carbohydrates": "Carbohidratos",
-    "fats": "Grasas",
-    "fiber": "Fibra",
-    "protein": "Proteína",
-    "salt": "Sal",
-    "saturatedFats": "Grasas Saturadas",
-    "sugars": "Azúcares",
-    "calcium": "Calcio",
-    "iron": "Hierro",
-    "magnesium": "Magnesio",
-    "phosphorus": "Fósforo",
-    "potassium": "Potasio",
-    "selenium": "Selenio",
-    "sodium": "Sodio",
-    "zinc": "Zinc",
-    "vitaminA": "Vitamina A",
-    "vitaminC": "Vitamina C",
-    "vitaminD": "Vitamina D",
-    "vitaminE": "Vitamina E",
-    "vitaminB1": "Vitamina B1",
-    "vitaminB2": "Vitamina B2",
-    "vitaminB3": "Vitamina B3",
-    "vitaminB6": "Vitamina B6",
-    "vitaminB9": "Vitamina B9",
-    "vitaminB12": "Vitamina B12"
+    "nutritionInfo": {
+      "title": "Información Nutricional",
+      "calories": "Calorías",
+      "carbohydrates": "Carbohidratos",
+      "fats": "Grasas",
+      "fiber": "Fibra",
+      "protein": "Proteína",
+      "salt": "Sal",
+      "saturatedFats": "Grasas Saturadas",
+      "sugars": "Azúcares"
+    },
+    "minerals": {
+      "title": "Minerales",
+      "calcium": "Calcio",
+      "iron": "Hierro",
+      "magnesium": "Magnesio",
+      "phosphorus": "Fósforo",
+      "potassium": "Potasio",
+      "selenium": "Selenio",
+      "sodium": "Sodio",
+      "zinc": "Zinc"
+    },
+    "vitamins": {
+      "title": "Vitaminas",
+      "vitaminA": "Vitamina A",
+      "vitaminC": "Vitamina C",
+      "vitaminD": "Vitamina D",
+      "vitaminE": "Vitamina E",
+      "vitaminB1": "Vitamina B1",
+      "vitaminB2": "Vitamina B2",
+      "vitaminB3": "Vitamina B3",
+      "vitaminB6": "Vitamina B6",
+      "vitaminB9": "Vitamina B9",
+      "vitaminB12": "Vitamina B12"
+    }    
   },
   "list": {
     "id": "ID",
@@ -79,12 +84,6 @@
     "createError": "Error creando alimento",
     "updateError": "Error actualizando alimento",
     "deleteError": "Error eliminando alimento"
-  },
-  "deleteModal": {
-    "title": "Confirmar Eliminación de Alimento",
-    "message": "¿Estás seguro de que quieres eliminar el alimento \"{{name}}\"? Esta acción no se puede deshacer",
-    "cancel": "Cancelar",
-    "confirm": "Eliminar"
   },
   "errors": {
     "loadError": "Error cargando alimento",

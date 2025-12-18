@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { productService } from '../../../services/backend/productService';
 import { notifications } from '@mantine/notifications';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 export const useProducts = () => {
@@ -9,7 +9,7 @@ export const useProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { t } = useTranslationWithLoading(['common', 'products']);
+  const { t } = useTranslation(['common', 'products']);
 
   const loadProducts = async () => {
     try {

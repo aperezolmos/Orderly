@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { Text, LoadingOverlay } from '@mantine/core';
+import { useEffect } from 'react';
+import { Text, LoadingOverlay, Box } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/useAuth';
 import { notifications } from '@mantine/notifications';
-import AuthLayout from '../components/AuthLayout';
+import AuthLayout from '../layouts/AuthLayout';
 import LoginForm from '../components/LoginForm';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const LoginPage = () => {
   
   const { login, error, clearError, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslationWithLoading(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth']);
 
 
   useEffect(() => {
@@ -51,8 +51,8 @@ const LoginPage = () => {
       subtitle={t('auth:login.registerPrompt')}
       linkComponent={registerLink}
     >
-      <div style={{ position: 'relative' }}>
-        <LoadingOverlay visible={loading} overlayBlur={2} />
+      <Box pos="relative">
+        <LoadingOverlay visible={loading} overlayblur={2} />
         
         <LoginForm
           onSubmit={handleLogin}
@@ -66,7 +66,7 @@ const LoginPage = () => {
             {t('auth:login.forgotPassword')}
           </Link>
         </Text>
-      </div>
+      </Box>
     </AuthLayout>
   );
 };

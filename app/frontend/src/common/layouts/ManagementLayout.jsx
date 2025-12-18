@@ -17,7 +17,7 @@ const ManagementLayout = ({
   const navigate = useNavigate();
 
   const items = [
-    { title: 'Dashboard', href: '/' },
+    { title: 'Dashboard', href: '/' }, // TODO: cambiar -> home o main
     ...breadcrumbs,
   ].map((item, index) => (
     <Anchor href={item.href} key={index} onClick={(e) => {

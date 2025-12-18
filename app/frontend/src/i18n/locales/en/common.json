@@ -26,44 +26,87 @@
     "list": "List",
     "actions": "Actions",
     "dashboard": "Dashboard",
-    "users": "Users",
-    "roles": "Roles",
-    "foods": "Foods",
-    "products": "Products",
-    "tables": "Tables",
-    "reservations": "Reservations",
-    "orders": "Orders"
+    "users": {
+      "name": "Users",
+      "description": "Manage users and assign system permissions"
+    },
+    "roles": {
+      "name": "Roles",
+      "description": "Configure user roles and permissions"
+    },
+    "foods": {
+      "name": "Foods",
+      "description": "Manage food items and categories"
+    },
+    "products": {
+      "name": "Products",
+      "description": "Handle product inventory"
+    },
+    "tables": {
+      "name": "Tables",
+      "description": "Manage dining tables and availability"
+    },
+    "reservations": {
+      "name": "Reservations",
+      "description": "Handle table reservations"
+    },
+    "orders": {
+      "name": "Orders",
+      "description": "View and manage customer orders"
+    }
   },
   "userMenu": {
-    "viewProfile": "View Profile",
+    "viewProfile": "View profile",
     "logout": "Logout"
   },
   "language": {
-    "select": "Select Language",
+    "select": "Select language",
     "english": "English",
     "spanish": "Spanish",
     "change": "Change language"
   },
   "validation": {
     "required": "This field is required",
-    "minLength": "Minimum {{count}} characters required"
+    "minLength": "Minimum {{count}} characters required",
+    "maxLength": "Field cannot exceed {{count}} characters",
+    "positive": "Value must be positive",
+    "positiveOrZero": "Value must be positive or zero",
+    "number": "Must be a valid number"
   },
   "data": {
     "noData": "No data found",
     "loading": "Loading data...",
     "error": "Error loading data"
   },
+  "modal": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "titleDelete": "Confirm deletion",
+    "messageDelete": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone"
+  },
   "error": {
+    "generic": "Error",
     "boundary": {
       "title": "Something went wrong",
       "message": "An error occurred while rendering this component",
-      "reload": "Reload Page"
+      "reload": "Reload page"
     },
-    "accessDenied": "Access Denied - Admin privileges required"
+    "accessDenied": "Access Denied - Admin privileges required",
+    "notFound": "Could not find the requested resource",
+    "loadError": "Error loading data"
   },
   "form": {
     "submit": "Submit",
     "reset": "Reset",
-    "optional": "Optional"
+    "optional": "Optional",
+    "basicInfo": "Basic Information"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "created": "Created",
+    "updated": "Updated",
+    "deleted": "Deleted"
   }
 }

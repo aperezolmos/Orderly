@@ -7,9 +7,11 @@ import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 import OrderDetailsTable from './OrderDetailsTable';
 import PendingOrdersList from './PendingOrdersList';
 import OrderForm from './OrderForm';
+import { useTranslation } from 'react-i18next';
 
 
 const OrderDashboardSection = () => {
+  
   const {
     orderType,
     setOrderType,
@@ -26,6 +28,7 @@ const OrderDashboardSection = () => {
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+  const { t } = useTranslation(['common', 'orders']);
 
 
   useEffect(() => {
@@ -36,7 +39,7 @@ const OrderDashboardSection = () => {
   // Crear pedido
   const openCreateOrderModal = () => {
     modals.open({
-      title: `Crear pedido de ${orderType === 'bar' ? 'Barra' : 'Comedor'}`,
+      title: t('orders:management.create') + ' ' + t(`orders:types.${orderType}`),
       size: 'lg',
       children: (
         <OrderForm
@@ -47,13 +50,17 @@ const OrderDashboardSection = () => {
               await createOrder(dto, orderType);
               modals.closeAll();
               notifications.show({
-                title: 'Pedido creado',
-                message: 'El pedido se ha creado correctamente',
+                title: t('common:app.success'),
+                message: t('orders:notifications.createSuccess'),
                 color: 'green',
               });
             } 
             catch (err) {
-              console.error('Error:', err);
+              notifications.show({
+                title: t('common:app.error'),
+                message: err.message,
+                color: 'red',
+              });
             } 
             finally {
               setFormLoading(false);
@@ -61,7 +68,7 @@ const OrderDashboardSection = () => {
           }}
           onCancel={() => modals.closeAll()}
           loading={formLoading}
-          submitLabel="Crear pedido"
+          submitLabel={t('orders:form.create')}
         />
       ),
       closeOnClickOutside: false,
@@ -73,7 +80,7 @@ const OrderDashboardSection = () => {
   const openEditOrderModal = () => {
     if (!currentOrder) return;
     modals.open({
-      title: `Editar pedido #${currentOrder.orderNumber || currentOrder.id}`,
+      title: t('orders:management.edit') + ` #${currentOrder.orderNumber || currentOrder.id}`,
       size: 'lg',
       children: (
         <OrderForm
@@ -85,13 +92,17 @@ const OrderDashboardSection = () => {
               await updateOrder({ ...currentOrder, ...dto });
               modals.closeAll();
               notifications.show({
-                title: 'Pedido actualizado',
-                message: 'El pedido se ha actualizado correctamente',
+                title: t('common:app.success'),
+                message: t('orders:notifications.updateSuccess'),
                 color: 'green',
               });
             } 
             catch (err) {
-              console.error('Error:', err);
+              notifications.show({
+                title: t('common:app.error'),
+                message: err.message,
+                color: 'red',
+              });
             } 
             finally {
               setFormLoading(false);
@@ -99,7 +110,7 @@ const OrderDashboardSection = () => {
           }}
           onCancel={() => modals.closeAll()}
           loading={formLoading}
-          submitLabel="Actualizar pedido"
+          submitLabel={t('orders:form.update')}
         />
       ),
       closeOnClickOutside: false,
@@ -115,14 +126,14 @@ const OrderDashboardSection = () => {
       await deleteOrder(currentOrder.id, orderType);
       setDeleteModalOpen(false);
       notifications.show({
-        title: 'Pedido eliminado',
-        message: 'El pedido ha sido eliminado correctamente',
+        title: t('common:app.success'),
+        message: t('orders:notifications.deleteSuccess'),
         color: 'green',
       });
     } 
     catch (err) {
       notifications.show({
-        title: 'Error al eliminar',
+        title: t('orders:notifications.deleteError'),
         message: err.message,
         color: 'red',
       });
@@ -137,7 +148,7 @@ const OrderDashboardSection = () => {
       <Paper p="xl" withBorder>
         <Group justify="center">
           <Loader />
-          <Title order={4}>Cargando pedidos...</Title>
+          <Title order={4}>{t('common:app.loading')}</Title>
         </Group>
       </Paper>
     );
@@ -152,13 +163,13 @@ const OrderDashboardSection = () => {
           variant={orderType === 'bar' ? 'filled' : 'outline'}
           onClick={() => setOrderType('bar')}
         >
-          Pedidos de Barra
+          {t('orders:management.bar')}
         </Button>
         <Button
           variant={orderType === 'dining' ? 'filled' : 'outline'}
           onClick={() => setOrderType('dining')}
         >
-          Pedidos de Comedor
+          {t('orders:management.dining')}
         </Button>
         <Button
           variant="light"
@@ -167,7 +178,7 @@ const OrderDashboardSection = () => {
           onClick={openCreateOrderModal}
           style={{ marginLeft: 'auto' }}
         >
-          Crear pedido
+          {t('orders:form.create')}
         </Button>
       </Group>
 
@@ -179,7 +190,7 @@ const OrderDashboardSection = () => {
           size="lg"
           onClick={openEditOrderModal}
           disabled={!currentOrder}
-          title="Editar pedido"
+          title={t('orders:form.edit')}
         >
           <IconPencil size={20} />
         </ActionIcon>
@@ -189,7 +200,7 @@ const OrderDashboardSection = () => {
           size="lg"
           onClick={() => setDeleteModalOpen(true)}
           disabled={!currentOrder}
-          title="Eliminar pedido"
+          title={t('orders:dashboard.deleteOrder')}
         >
           <IconTrash size={20} />
         </ActionIcon>
@@ -199,20 +210,21 @@ const OrderDashboardSection = () => {
       <Modal
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
-        title="Eliminar pedido"
+        title={t('orders:dashboard.deleteOrder')}
         centered
         size="sm"
       >
         <Text mb="md">
-          ¿Seguro que quieres eliminar el pedido{' '}
-          <b>#{currentOrder?.orderNumber || currentOrder?.id}</b>? Esta acción no se puede deshacer.
+          {t('orders:dashboard.confirmDeleteMessage', {
+            order: `#${currentOrder?.orderNumber || currentOrder?.id}`,
+          })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={() => setDeleteModalOpen(false)}>
-            Cancelar
+            {t('common:app.cancel')}
           </Button>
           <Button color="red" onClick={handleDeleteOrder} loading={formLoading}>
-            Eliminar
+            {t('common:app.delete')}
           </Button>
         </Group>
       </Modal>

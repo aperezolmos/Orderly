@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, LoadingOverlay, Box } from '@mantine/core';
+import { Group, Text, Modal, Button, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconPlus, IconShield } from '@tabler/icons-react';
+import { IconShield } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useRoles } from '../hooks/useRoles';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const RoleListPage = () => {
@@ -15,21 +15,7 @@ const RoleListPage = () => {
   const { roles, loading, deleteRole } = useRoles();
   const [roleToDelete, setRoleToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'roles']);
-
-
-  if (!ready || isNamespaceLoading) {
-    return (
-      <ManagementLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </ManagementLayout>
-    );
-  }
+  const { t } = useTranslation(['common', 'roles']);
 
   const handleEdit = (role) => {
     navigate(`/roles/${role.id}/edit`);
@@ -90,31 +76,34 @@ const RoleListPage = () => {
         createButtonLabel={t('roles:list.newRole')}
         onCreateClick={() => navigate('/roles/new')}
       >
-        <DataTable
-          columns={columns}
-          data={roles}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-        />
+        <div style={{ position: 'relative' }}>
+          <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
+          <DataTable
+            columns={columns}
+            data={roles}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            loading={loading}
+          />
+        </div>
       </ManagementLayout>
 
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('roles:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('roles:deleteModal.message', { name: roleToDelete?.name })}
+          {t('common:modal.messageDelete', { name: roleToDelete?.name })}
         </Text>
         
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('roles:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('roles:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

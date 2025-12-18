@@ -1,63 +1,12 @@
-import { apiClient, handleApiError } from './api';
+import { apiClient } from './api';
 
 
 export const foodService = {
-  
-  getFoods: async () => {
-    try {
-      return await apiClient.get('/foods');
-    }
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  getFoodById: async (id) => {
-    try {
-      return await apiClient.get(`/foods/${id}`);
-    }
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  createFood: async (foodData) => {
-    try {
-      return await apiClient.post('/foods', foodData);
-    }
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  updateFood: async (id, foodData) => {
-    try {
-      return await apiClient.put(`/foods/${id}`, foodData);
-    }
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  deleteFood: async (id) => {
-    try {
-      return await apiClient.delete(`/foods/${id}`);
-    }
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  checkFoodNameAvailability: async (name) => {
-    try {
-      return !await apiClient.get(`/foods/name/${encodeURIComponent(name)}/exists`);
-    }
-    catch (error) {
-      return handleApiError(error);
-    }
-  },
-
-  searchFoods: async (name) => {
-    return await apiClient.get(`/foods/search?name=${encodeURIComponent(name)}`);
-  }
+  getFoods: async () => apiClient.get('/foods'),
+  getFoodById: async (id) => apiClient.get(`/foods/${id}`),
+  searchFoods: async (name) => apiClient.get('/foods/search', { name }),
+  createFood: async (foodData) => apiClient.post('/foods', foodData),
+  updateFood: async (id, foodData) => apiClient.put(`/foods/${id}`, foodData),
+  deleteFood: async (id) => apiClient.delete(`/foods/${id}`),
+  checkFoodNameAvailability: async (name) => apiClient.get(`/foods/name/${encodeURIComponent(name)}/exists`),
 };

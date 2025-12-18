@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { userService } from '../../../services/backend/userService';
 import { notifications } from '@mantine/notifications';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 export const useUsers = () => {
@@ -9,7 +9,7 @@ export const useUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { t } = useTranslationWithLoading(['common', 'users']);
+  const { t } = useTranslation(['common', 'users']);
   
 
   const loadUsers = async () => {

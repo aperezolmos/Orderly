@@ -1,8 +1,7 @@
-import React from 'react';
 import { TextInput, PasswordInput, Button, Group, Alert } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const LoginForm = ({ 
@@ -12,7 +11,7 @@ const LoginForm = ({
   onClearError 
 }) => {
   
-  const { t } = useTranslationWithLoading(['common', 'auth']);
+  const { t } = useTranslation(['common', 'auth', 'users']);
 
 
   const form = useForm({
@@ -21,8 +20,8 @@ const LoginForm = ({
       password: '',
     },
     validate: {
-      username: (value) => !value.trim() ? t('auth:validation.usernameRequired') : null,
-      password: (value) => !value ? t('auth:validation.passwordRequired') : null,
+      username: (value) => !value.trim() ? t('common:validation.required') : null,
+      password: (value) => !value ? t('common:validation.required') : null,
     },
   });
 
@@ -47,16 +46,16 @@ const LoginForm = ({
       )}
 
       <TextInput
-        label={t('auth:login.username')}
-        placeholder={t('auth:login.username')}
+        label={t('users:form.username')}
+        placeholder={t('users:form.usernamePlaceholder')}
         required
         {...form.getInputProps('username')}
         disabled={loading}
       />
 
       <PasswordInput
-        label={t('auth:login.password')}
-        placeholder={t('auth:login.password')}
+        label={t('users:form.password')}
+        placeholder={t('users:form.passwordPlaceholder')}
         required
         mt="md"
         {...form.getInputProps('password')}

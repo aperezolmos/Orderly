@@ -1,11 +1,15 @@
-import { Grid, Container, Paper, Title, Group, Space, Text } from '@mantine/core';
+import { Grid, Container, Paper, Title, Group } from '@mantine/core';
 import { IconListCheck, IconChefHat } from '@tabler/icons-react';
 import ProductGrid from '../components/dashboard/ProductGrid';
 import OrderDashboardSection from '../components/dashboard/OrderDashboardSection';
+import { useTranslation } from 'react-i18next';
 
 
 const OrderDashboardPage = () => {
   
+  const { t } = useTranslation(['orders']);
+  
+
   return (
     <Container size="xl" py="xl">
       <Grid gutter="lg">
@@ -15,7 +19,7 @@ const OrderDashboardPage = () => {
           <Paper shadow="md" p="md" withBorder>
             <Group mb="md">
               <IconChefHat size={24} />
-              <Title order={2}>Gestión de pedidos</Title>
+              <Title order={2}>{t('orders:management.title')}</Title>
             </Group>
             <OrderDashboardSection />
           </Paper>
@@ -27,7 +31,7 @@ const OrderDashboardPage = () => {
           <Paper shadow="md" p="md" withBorder>
             <Group mb="md">
               <IconListCheck size={24} />
-              <Title order={2}>Productos disponibles</Title>
+              <Title order={2}>{t('orders:dashboard.productsAvailable')}</Title>
             </Group>
             <ProductGrid />
           </Paper>

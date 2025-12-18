@@ -1,10 +1,14 @@
 import { Paper, Text, Group, ActionIcon, Badge } from '@mantine/core';
 import { IconShoppingCartPlus, IconChefHat, IconGlass } from '@tabler/icons-react';
 import { formatCurrency } from '../../../../utils/formatters';
+import { useTranslation } from 'react-i18next';
 
 
 const ProductCard = ({ product, onSelect }) => {
   
+  const { t } = useTranslation(['orders']);
+
+
   const getCategoryIcon = (category) => {
     switch (category?.toLowerCase()) {
       case 'drink':
@@ -31,6 +35,8 @@ const ProductCard = ({ product, onSelect }) => {
     }
   };
 
+  // TODO: Assuming product.category exists and is 'food', 'drink', etc.
+  const categoryKey = product.category ? product.category.toLowerCase() : 'food';
 
   return (
     <Paper
@@ -57,11 +63,11 @@ const ProductCard = ({ product, onSelect }) => {
     >
       <Group justify="apart" align="start" mb="xs">
         <Badge
-          leftSection={getCategoryIcon('food')}
-          color={getCategoryColor('food')}
+          leftSection={getCategoryIcon(categoryKey)}
+          color={getCategoryColor(categoryKey)}
           variant="light"
         >
-          Food
+          {t(`orders:types.${categoryKey}`, categoryKey)}
         </Badge>
         <ActionIcon
           variant="filled"

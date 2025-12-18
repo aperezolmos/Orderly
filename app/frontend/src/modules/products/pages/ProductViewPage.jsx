@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Title, Text, Group, Box, Button, LoadingOverlay } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import ProductNutritionInfoView from '../components/ProductNutritionInfoView';
 import { productService } from '../../../services/backend/productService';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const ProductViewPage = () => {
@@ -14,7 +14,7 @@ const ProductViewPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'products', 'foods']);
+  const { t } = useTranslation(['common', 'products', 'foods']);
 
 
   useEffect(() => {
@@ -35,10 +35,10 @@ const ProductViewPage = () => {
     if (id) loadProduct();
   }, [id]);
 
-  if (!ready || isNamespaceLoading || loading) {
+  if (loading) {
     return (
       <ManagementLayout
-        title={t('common:app.loading')}
+        title={t('products:management.view')}
         breadcrumbs={[]}
       >
         <Box style={{ height: '200px', position: 'relative' }}>

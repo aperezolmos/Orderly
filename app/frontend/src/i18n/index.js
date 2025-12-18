@@ -2,29 +2,49 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
+import enCommon from './locales/en/common.json';
+import enAuth from './locales/en/auth.json';
+import enRoles from './locales/en/roles.json';
+import enUsers from './locales/en/users.json';
+import enFoods from './locales/en/foods.json';
+import enProducts from './locales/en/products.json';
+import enDiningTables from './locales/en/diningTables.json';
+import enReservations from './locales/en/reservations.json';
+import enOrders from './locales/en/orders.json';
 
-const loadedNamespaces = new Set();
+import esCommon from './locales/es/common.json';
+import esAuth from './locales/es/auth.json';
+import esRoles from './locales/es/roles.json';
+import esUsers from './locales/es/users.json';
+import esFoods from './locales/es/foods.json';
+import esProducts from './locales/es/products.json';
+import esDiningTables from './locales/es/diningTables.json';
+import esReservations from './locales/es/reservations.json';
+import esOrders from './locales/es/orders.json';
+
 
 const resources = {
   en: {
-    common: () => import('./locales/en/common.json'),
-    auth: () => import('./locales/en/auth.json'),
-    roles: () => import('./locales/en/roles.json'),
-    users: () => import('./locales/en/users.json'),
-    foods: () => import('./locales/en/foods.json'),
-    products: () => import('./locales/en/products.json'),
-    diningTables: () => import('./locales/en/diningTables.json'),
-    reservations: () => import('./locales/en/reservations.json'),
+    common: enCommon,
+    auth: enAuth,
+    roles: enRoles,
+    users: enUsers,
+    foods: enFoods,
+    products: enProducts,
+    diningTables: enDiningTables,
+    reservations: enReservations,
+    orders: enOrders,
   },
   es: {
-    common: () => import('./locales/es/common.json'),
-    auth: () => import('./locales/es/auth.json'),
-    roles: () => import('./locales/es/roles.json'),
-    users: () => import('./locales/es/users.json'),
-    foods: () => import('./locales/es/foods.json'),
-    products: () => import('./locales/es/products.json'),
-    diningTables: () => import('./locales/es/diningTables.json'),
-    reservations: () => import('./locales/es/reservations.json'),
+    common: esCommon,
+    auth: esAuth,
+    roles: esRoles,
+    users: esUsers,
+    foods: esFoods,
+    products: esProducts,
+    diningTables: esDiningTables,
+    reservations: esReservations,
+    orders: esOrders,
   },
 };
 
@@ -33,77 +53,19 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    resources,
     fallbackLng: 'en',
     defaultNS: 'common',
-    
     interpolation: {
       escapeValue: false,
     },
-    
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
     },
-    
     react: {
-      useSuspense: true,
-      bindI18n: 'languageChanged loaded',
-      bindI18nStore: 'added removed',
+      useSuspense: false,
     },
-    
-    resources: {},
   });
-
-
-// Dynamically load namespaces
-const loadNamespace = async (lng, ns) => {
-  const cacheKey = `${lng}:${ns}`;
-  if (loadedNamespaces.has(cacheKey)) return true;
-  
-  try {
-    if (resources[lng]?.[ns]) {
-      const module = await resources[lng][ns]();
-      i18n.addResourceBundle(lng, ns, module.default);
-      loadedNamespaces.add(cacheKey);
-      return true;
-    }
-    return false;
-  } 
-  catch (error) {
-    console.warn(`Could not load namespace ${ns} for language ${lng}:`, error);
-    return false;
-  }
-};
-
-
-// Preload essential namespaces (common + auth for auth pages)
-const preloadEssentialNamespaces = async (lng) => {
-  await Promise.all([
-    loadNamespace(lng, 'common'),
-    loadNamespace(lng, 'auth')
-  ]);
-};
-
-preloadEssentialNamespaces(i18n.language);
-
-
-// Listen for language changes to load necessary namespaces
-i18n.on('languageChanged', async (lng) => {
-  await preloadEssentialNamespaces(lng);
-
-  // Trigger event for React to re-render
-  i18n.emit('loaded');
-});
-
-
-// Utility for hooks/components
-export const ensureNamespaceLoaded = async (ns) => {
-  const currentLng = i18n.language;
-  return await loadNamespace(currentLng, ns);
-};
-
-export const isNamespaceLoaded = (ns) => {
-  return loadedNamespaces.has(`${i18n.language}:${ns}`);
-};
 
 export default i18n;

@@ -5,7 +5,7 @@ import { IconHome, IconPackage, IconUsers, IconShield, IconDesk,
          IconCalendar, IconChartBar, IconPlus, IconList } from '@tabler/icons-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import { useTranslationWithLoading } from '../hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar';
 import { useMediaQuery } from '@mantine/hooks';
 
@@ -17,20 +17,20 @@ const MainLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
-  const { t } = useTranslationWithLoading('common');
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const { t } = useTranslation('common');
   
 
   // Management modules for sidebar
   const managementModules = [
     {
-      name: t('navigation.main'),
+      name: t('common:navigation.main'),
       path: '/',
       icon: <IconHome size={20} />,
       adminOnly: false
     },
     {
-      name: t('navigation.foods'),
+      name: t('common:navigation.foods.name'),
       icon: <IconPackage size={20} />,
       color: 'green',
       items: [
@@ -40,7 +40,7 @@ const MainLayout = ({ children }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.products'),
+      name: t('common:navigation.products.name'),
       icon: <IconPackage size={20} />,
       color: 'orange',
       items: [
@@ -50,7 +50,7 @@ const MainLayout = ({ children }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.users'),
+      name: t('common:navigation.users.name'),
       icon: <IconUsers size={20} />,
       color: 'blue',
       items: [
@@ -60,7 +60,7 @@ const MainLayout = ({ children }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.roles'),
+      name: t('common:navigation.roles.name'),
       icon: <IconShield size={20} />,
       color: 'violet',
       items: [
@@ -70,7 +70,7 @@ const MainLayout = ({ children }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.tables'),
+      name: t('common:navigation.tables.name'),
       icon: <IconDesk size={20} />,
       color: 'cyan',
       items: [
@@ -80,7 +80,7 @@ const MainLayout = ({ children }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.reservations'),
+      name: t('common:navigation.reservations.name'),
       icon: <IconCalendar size={20} />,
       color: 'pink',
       items: [
@@ -90,11 +90,11 @@ const MainLayout = ({ children }) => {
       adminOnly: true
     },
     {
-      name: t('navigation.orders'),
+      name: t('common:navigation.orders.name'),
       icon: <IconChartBar size={20} />,
       color: 'grape',
       items: [
-        { label: t('common:navigation.list'), path: '/orders', icon: <IconList size={16} /> }
+        { label: t('common:navigation.dashboard'), path: '/orders', icon: <IconList size={16} /> }
       ],
       adminOnly: false
     }

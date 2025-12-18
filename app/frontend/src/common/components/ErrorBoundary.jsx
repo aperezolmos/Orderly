@@ -32,17 +32,17 @@ const ErrorFallback = () => {
   return (
     <Alert 
       icon={<IconAlertTriangle size="1.5rem" />}
-      title={t('error.boundary.title')}
+      title={t('common:error.boundary.title')}
       color="red"
       variant="filled"
     >
       <Stack>
-        <Text>{t('error.boundary.message')}</Text>
+        <Text>{t('common:error.boundary.message')}</Text>
         <Button 
           variant="white" 
           onClick={() => window.location.reload()}
         >
-          {t('error.boundary.reload')}
+          {t('common:error.boundary.reload')}
         </Button>
       </Stack>
     </Alert>

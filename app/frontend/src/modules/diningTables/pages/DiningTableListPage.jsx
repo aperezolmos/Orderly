@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, Badge, Box, LoadingOverlay } from '@mantine/core';
+import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconPlus, IconDesk, IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconDesk } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useDiningTables } from '../hooks/useDiningTables';
-import { useTranslationWithLoading } from '../../../common/hooks/useTranslationWithLoading';
+import { useTranslation } from 'react-i18next';
 
 
 const DiningTableListPage = () => {
@@ -15,21 +15,8 @@ const DiningTableListPage = () => {
   const { tables, loading, deleteTable } = useDiningTables();
   const [tableToDelete, setTableToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
-  const { t, ready, isNamespaceLoading } = useTranslationWithLoading(['common', 'diningTables']);
+  const { t } = useTranslation(['common', 'diningTables']);
 
-
-  if (!ready || isNamespaceLoading) {
-    return (
-      <ManagementLayout
-        title={t('common:app.loading')}
-        breadcrumbs={[]}
-      >
-        <Box style={{ height: '200px', position: 'relative' }}>
-          <LoadingOverlay visible={true} />
-        </Box>
-      </ManagementLayout>
-    );
-  }
 
   const handleEdit = (table) => {
     navigate(`/tables/${table.id}/edit`);
@@ -77,8 +64,8 @@ const DiningTableListPage = () => {
       key: 'locationDescription',
       title: t('diningTables:list.locationDescription'),
       render: (table) => (
-        <Text size="sm">
-          {table.locationDescription || <Text color="dimmed" fs="italic">{t('diningTables:list.noLocation')}</Text>}
+        <Text size="sm" color={!table.locationDescription ? "dimmed" : undefined} fs={!table.locationDescription ? "italic" : undefined}>
+          {table.locationDescription || t('diningTables:list.noLocation')}
         </Text>
       )
     },
@@ -112,30 +99,33 @@ const DiningTableListPage = () => {
         createButtonLabel={t('diningTables:list.newTable')}
         onCreateClick={() => navigate('/tables/new')}
       >
-        <DataTable
-          columns={columns}
-          data={tables}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-        />
+        <div style={{ position: 'relative' }}>
+          <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
+            <DataTable
+              columns={columns}
+              data={tables}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              loading={loading}
+            />
+        </div>
       </ManagementLayout>
 
       <Modal
         opened={deleteModalOpened}
         onClose={closeDeleteModal}
-        title={t('diningTables:deleteModal.title')}
+        title={t('common:modal.titleDelete')}
         size="sm"
       >
         <Text mb="md">
-          {t('diningTables:deleteModal.message', { name: tableToDelete?.name })}
+          {t('common:modal.messageDelete', { name: tableToDelete?.name })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>
-            {t('diningTables:deleteModal.cancel')}
+            {t('common:modal.cancel')}
           </Button>
           <Button color="red" onClick={confirmDelete} loading={loading}>
-            {t('diningTables:deleteModal.confirm')}
+            {t('common:modal.confirm')}
           </Button>
         </Group>
       </Modal>

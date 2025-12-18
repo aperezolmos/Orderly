@@ -6,16 +6,12 @@
     "list": "Roles"
   },
   "form": {
-    "name": "Role Name",
+    "name": "Role name",
     "namePlaceholder": "Enter role name",
     "description": "Description",
     "descriptionPlaceholder": "Enter role description",
     "create": "Create Role",
     "update": "Update Role",
-    "nameRequired": "Name is required",
-    "nameMaxLength": "Name cannot exceed 50 characters",
-    "descriptionMaxLength": "Description cannot exceed 255 characters",
-    "basicInfo": "Basic Information",
     "permissions": "Permissions",
     "permissionsHelp": "Select the permissions for this role"
   },
@@ -23,8 +19,8 @@
     "id": "ID",
     "name": "Name",
     "description": "Description",
-    "users": "Users",
     "noDescription": "No description",
+    "users": "Users",
     "newRole": "New Role"
   },
   "transferList": {
@@ -45,12 +41,6 @@
     "createError": "Error creating role",
     "updateError": "Error updating role",
     "deleteError": "Error deleting role"
-  },
-  "deleteModal": {
-    "title": "Confirm Deletion",
-    "message": "Are you sure you want to delete role \"{{name}}\"? This action cannot be undone",
-    "cancel": "Cancel",
-    "confirm": "Delete"
   },
   "errors": {
     "loadError": "Error loading role",
