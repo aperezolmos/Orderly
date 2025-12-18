@@ -14,8 +14,10 @@ export const apiClient = {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
-    return response.json();
+    if (response.status === 204) return null;
+    const text = await response.text();
+    if (!text) return null;
+    return JSON.parse(text);
   },
 
   post: async (endpoint, data) => {
@@ -31,8 +33,10 @@ export const apiClient = {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
-    return response.json();
+    if (response.status === 204) return null;
+    const text = await response.text();
+    if (!text) return null;
+    return JSON.parse(text);
   },
 
   put: async (endpoint, data) => {
@@ -48,8 +52,10 @@ export const apiClient = {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
-    return response.json();
+    if (response.status === 204) return null;
+    const text = await response.text();
+    if (!text) return null;
+    return JSON.parse(text);
   },
 
   patch: async (endpoint, data) => {
@@ -65,8 +71,10 @@ export const apiClient = {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
-    return response.json();
+    if (response.status === 204) return null;
+    const text = await response.text();
+    if (!text) return null;
+    return JSON.parse(text);
   },
 
   delete: async (endpoint) => {
@@ -83,8 +91,9 @@ export const apiClient = {
     if (response.status === 204) {
       return null;
     }
-    
-    return response.json();
+    const text = await response.text();
+    if (!text) return null;
+    return JSON.parse(text);
   }
 };
 

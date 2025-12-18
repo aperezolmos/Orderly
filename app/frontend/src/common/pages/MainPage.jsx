@@ -82,7 +82,7 @@ const MainPage = () => {
   return (
     <Container size="xl" py="xl">
       <Title order={1} mb="md" align="center">
-        {t('app.welcome')}, {user?.username || t('navigation.user')}!
+        {user ? `${t('app.welcome')}, ${user.username}!` : `${t('app.welcome')}!`}
       </Title>
       
       <Text color="dimmed" size="lg" mb="xl" align="center">

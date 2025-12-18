@@ -98,6 +98,17 @@ public class GlobalExceptionHandler {
             errors);
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex) {
+        
+        log.error("Error de estado ilegal (inconsistencia interna): {}", ex.getMessage());
+        
+        return createErrorResponseEntity(
+            HttpStatus.INTERNAL_SERVER_ERROR, 
+            "Internal server error", 
+            ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
 

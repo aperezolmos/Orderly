@@ -84,6 +84,14 @@ const AppRouter = () => {
           <Routes>
             {/* Public routes */}
             <Route
+              path="/"
+              element={ <WithLayout><MainPage /></WithLayout> }
+            />
+            <Route
+              path="/home"
+              element={<Navigate to="/" replace />}
+            />
+            <Route
               path="/login"
               element={
                 !isAuthenticated ? 
@@ -102,22 +110,6 @@ const AppRouter = () => {
 
 
             {/* Protected USER routes */}
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <WithLayout>
-                    <MainPage />
-                  </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/home"
-              element={<Navigate to="/" replace />}
-            />
-            
             <Route
               path="/profile"
               element={

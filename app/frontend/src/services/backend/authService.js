@@ -27,14 +27,27 @@ export const authService = {
   },
 
   logout: async () => {
-    // Only clears local state
-    // TODO: aquí iría una llamada al backend para invalidar sesión
-    return Promise.resolve();
+    try {
+      await apiClient.post('/auth/logout');
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  getCurrentUser: async () => {
+    try {
+      return await apiClient.get('/auth/me');
+    } catch (error) {
+      return handleApiError(error);
+    }
   },
 
   checkAuthStatus: async () => {
-    //TODO: se podría usar /auth/status o /auth/me¿?
-    const user = localStorage.getItem('currentUser');
-    return user ? JSON.parse(user) : null;
+    try {
+      return await apiClient.get('/auth/me');
+    } catch (error) {
+      console.log('Auth error:', error);
+      return null;
+    }
   }
 };
