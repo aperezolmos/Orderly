@@ -29,16 +29,13 @@ const UserEditPage = () => {
       } 
       catch (err) {
         setError(err.message);
-        console.error('Error loading user:', err);
+        console.error('Error loading user:', err); //borrar
       } 
       finally {
         setLoading(false);
       }
     };
-
-    if (id) {
-      loadUser();
-    }
+    if (id) loadUser();
   }, [id]);
 
 
@@ -46,13 +43,12 @@ const UserEditPage = () => {
     try {
       setSubmitting(true);
       setError(null);
-      
       await userService.updateUser(parseInt(id), userData);
-      
       navigate('/users', { replace: true });
     } 
     catch (err) {
       setError(err.message);
+      console.error('Error updating user:', err); //borrar
       throw err;
     } 
     finally {
@@ -64,6 +60,7 @@ const UserEditPage = () => {
     { title: t('users:management.list'), href: '/users' },
     { title: t('users:management.edit'), href: `/users/${id}/edit` }
   ];
+
 
   if (error && !loading) {
     return (

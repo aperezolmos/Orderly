@@ -17,6 +17,7 @@ const FoodEditPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const { t } = useTranslation(['common', 'foods']);
+  
 
   useEffect(() => {
     const loadFood = async () => {

@@ -30,28 +30,25 @@ const RoleEditPage = () => {
       } 
       catch (err) {
         setError(err.message);
-        console.error('Error loading role:', err);
+        console.error('Error loading role:', err); //borrar
       } 
       finally {
         setLoading(false);
       }
     };
-
-    if (id) {
-      loadRole();
-    }
+    if (id) loadRole();
   }, [id]);
 
   const handleSubmit = async (roleData) => {
     try {
       setLoading(true);
       setError(null);
-      
       await updateRole(parseInt(id), roleData);
       navigate('/roles', { replace: true });
     } 
     catch (err) {
       setError(err.message);
+      console.error('Error updating role:', err); //borrar
       throw err;
     } 
     finally {
@@ -65,7 +62,6 @@ const RoleEditPage = () => {
   ];
 
 
-  // Show error if the role cannot be loaded
   if (error && !loading) {
     return (
       <FormLayout

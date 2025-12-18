@@ -104,7 +104,7 @@ const UserListPage = () => {
         onCreateClick={() => navigate('/users/new')}
       >
         <div style={{ position: 'relative' }}>
-          <LoadingOverlay visible={loading} overlayblur={2} />
+          <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
             <DataTable
               columns={columns}
               data={users}

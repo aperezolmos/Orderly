@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, Badge } from '@mantine/core';
+import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconPlus, IconDesk, IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconDesk } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useDiningTables } from '../hooks/useDiningTables';
@@ -99,13 +99,16 @@ const DiningTableListPage = () => {
         createButtonLabel={t('diningTables:list.newTable')}
         onCreateClick={() => navigate('/tables/new')}
       >
-        <DataTable
-          columns={columns}
-          data={tables}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-        />
+        <div style={{ position: 'relative' }}>
+          <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
+            <DataTable
+              columns={columns}
+              data={tables}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              loading={loading}
+            />
+        </div>
       </ManagementLayout>
 
       <Modal

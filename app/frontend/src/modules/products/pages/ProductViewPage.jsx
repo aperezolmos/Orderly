@@ -38,7 +38,7 @@ const ProductViewPage = () => {
   if (loading) {
     return (
       <ManagementLayout
-        title={t('common:app.loading')}
+        title={t('products:management.view')}
         breadcrumbs={[]}
       >
         <Box style={{ height: '200px', position: 'relative' }}>

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { orderService } from '../../../services/backend/orderService';
 import { productService } from '../../../services/backend/productService';
 
+
 // Helper para construir el DTO de request según tipo
 function toOrderRequestDTO(order, orderType, editedQuantities = {}) {
   const items = Array.isArray(order.items)

@@ -28,20 +28,20 @@ const VitaminsFields = ({ form, prefix = 'nutritionInfo.vitamins.' }) => {
   const { t } = useTranslation(['foods']);
   return (
     <Box>
-      <Title order={5} mb="xs">{t('foods.form.vitamins.title')}</Title>
+      <Title order={5} mb="xs">{t('foods:form.vitamins.title')}</Title>
       <Group grow mb="md">
-        <NumberInput label={t('foods.form.vitamins.vitaminA')} {...form.getInputProps(`${prefix}vitaminA`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminC')} {...form.getInputProps(`${prefix}vitaminC`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminD')} {...form.getInputProps(`${prefix}vitaminD`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminE')} {...form.getInputProps(`${prefix}vitaminE`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminB1')} {...form.getInputProps(`${prefix}vitaminB1`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminA')} {...form.getInputProps(`${prefix}vitaminA`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminC')} {...form.getInputProps(`${prefix}vitaminC`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminD')} {...form.getInputProps(`${prefix}vitaminD`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminE')} {...form.getInputProps(`${prefix}vitaminE`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminB1')} {...form.getInputProps(`${prefix}vitaminB1`)} min={0} />
       </Group>
       <Group grow mb="md">
-        <NumberInput label={t('foods.form.vitamins.vitaminB2')} {...form.getInputProps(`${prefix}vitaminB2`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminB3')} {...form.getInputProps(`${prefix}vitaminB3`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminB6')} {...form.getInputProps(`${prefix}vitaminB6`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminB9')} {...form.getInputProps(`${prefix}vitaminB9`)} min={0} />
-        <NumberInput label={t('foods.form.vitamins.vitaminB12')} {...form.getInputProps(`${prefix}vitaminB12`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminB2')} {...form.getInputProps(`${prefix}vitaminB2`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminB3')} {...form.getInputProps(`${prefix}vitaminB3`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminB6')} {...form.getInputProps(`${prefix}vitaminB6`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminB9')} {...form.getInputProps(`${prefix}vitaminB9`)} min={0} />
+        <NumberInput label={t('foods:form.vitamins.vitaminB12')} {...form.getInputProps(`${prefix}vitaminB12`)} min={0} />
       </Group>
     </Box>
   );
