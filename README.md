@@ -1,38 +1,39 @@
-# 🍽️ Proyecto de Gestión de Negocios de Restauración
+# 🍽️ Restaurant Business Management Project
 
-Aplicación web para **gestión integral de locales de restauración**. Permite administrar productos ofertados, información nutricional, comandas y reservas de mesas.
+Web application for **comprehensive management of restaurant establishments**. Allows administrators to manage offered products, nutritional information, orders, and table reservations.
 
-## 🚀 Despliegue
+## 🚀 Deployment
 
-### Prerrequisitos
-1. Git _(para clonar el repositorio)_
-2. Docker y Docker Compose
+### Prerequisites
+1. Git _(for cloning the repository)_
+2. Docker and Docker Compose
 
-### Pasos de instalación
-#### 1. Clonar repositorio
+### Installation Steps
+#### 1. Clone the repository
 
 ```bash
 git clone https://github.com/aperezolmos/tfg-aperezolmos.git
 cd tfg-aperezolmos
 ```
 
-#### 2. Configurar variables
+#### 2. Configure environment variables
 ```bash
 cp .env.example .env
 ```
-Edita `.env` con tus credenciales (contraseñas, puertos, usuarios).
+Edit `.env` with your credentials (passwords, ports, users).
 
-#### 3. Construir contenedores y ejecutar con Docker
+#### 3. Build and run containers with Docker
 ```bash
 docker-compose up --build -d
 ```
-#### 4. Acceder a la aplicación
-Se accede a la aplicación desde el navegador a través de [http://localhost:5173](http://localhost:5173).
+#### 4. Access the application
+Access the application through your browser at [http://localhost:5173](http://localhost:5173).
+> 🔐 _Login with default user_: `admin` (_password_: `admin`)
 
 * **Backend API:** [http://localhost:8080](http://localhost:8080)
-* **Base de datos:** `localhost:3307` (Acceso vía cliente SQL)
+* **Database:** `localhost:3307` (Access via SQL client)
 
-## 🛠️ Tecnologías utilizadas
+## 🛠️ Technologies Used
 
 <p align="left"> 
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" title="React" alt="React" height="30"/> 
