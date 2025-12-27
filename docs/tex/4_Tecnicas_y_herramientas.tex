@@ -1,6 +1,204 @@
 \capitulo{4}{Técnicas y herramientas}
 
-Esta parte de la memoria tiene como objetivo presentar las técnicas metodológicas y las herramientas de desarrollo que se han utilizado para llevar a cabo el proyecto. Si se han estudiado diferentes alternativas de metodologías, herramientas, bibliotecas se puede hacer un resumen de los aspectos más destacados de cada alternativa, incluyendo comparativas entre las distintas opciones y una justificación de las elecciones realizadas. 
-No se pretende que este apartado se convierta en un capítulo de un libro dedicado a cada una de las alternativas, sino comentar los aspectos más destacados de cada opción, con un repaso somero a los fundamentos esenciales y referencias bibliográficas para que el lector pueda ampliar su conocimiento sobre el tema.
+En este capítulo se describen las metodologías y herramientas tecnológicas escogidas para el desarrollo del proyecto, detallando los aspectos principales y justificando los motivos de su selección.
 
+% Se puede encontrar un resumen de las herramientas utilizadas para cada parte del proyecto en la tabla <ref>.
 
+% A continuación....   Se pueden encontrar definiciones de las herramientas en los subapartados que siguen...
+
+% \tablaSmall{Herramientas y tecnologías utilizadas en cada parte del proyecto}{l c c c c}{herramientasportipodeuso}
+% { \multicolumn{1}{l}{Herramientas} & App AngularJS & API REST & BD & Memoria \\}{ 
+	% HTML5 & X & & &\\
+	% CSS3 & X & & &\\
+	% BOOTSTRAP & X & & &\\
+	% JavaScript & X & & &\\
+	% AngularJS & X & & &\\
+	% Bower & X & & &\\
+	% PHP & & X & &\\
+	% Karma + Jasmine & X & & &\\
+	% Slim framework & & X & &\\
+	% Idiorm & & X & &\\
+	% Composer & & X & &\\
+	% JSON & X & X & &\\
+	% PhpStorm & X & X & &\\
+	% MySQL & & & X &\\
+	% PhpMyAdmin & & & X &\\
+	% Git + BitBucket & X & X & X & X\\
+	% Mik\TeX{} & & & & X\\
+	% \TeX{}Maker & & & & X\\
+	% Astah & & & & X\\
+	% Balsamiq Mockups & X & & &\\
+	% VersionOne & X & X & X & X\\
+	% } 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Metodologías y técnicas de gestión}
+
+\subsubsection{Scrum}
+Scrum~\cite{atlassian:scrum} es un marco de trabajo ágil orientado a la gestión y desarrollo de proyectos complejos, especialmente en el ámbito del desarrollo de \textit{software}. Se basa en un enfoque iterativo e incremental, en el que el trabajo se organiza en ciclos de duración fija denominados \textit{sprints}. Durante cada \textit{sprint} se selecciona un conjunto de requisitos priorizados que deben ser diseñados, implementados y validados.
+
+Scrum define una serie de 
+\href{https://www.atlassian.com/es/agile/scrum/roles}{roles}, 
+\href{https://www.atlassian.com/es/agile/scrum/ceremonies}{eventos} y 
+\href{https://www.atlassian.com/es/agile/scrum/artifacts}{artefactos} 
+que facilitan la planificación, la inspección continua del progreso y la adaptación a cambios en los requisitos, promoviendo la entrega frecuente de incrementos funcionales del producto.
+
+En el marco de este trabajo, se adaptó esta metodología a las particularidades de un desarrollo académico individual. Para ello, se preservaron elementos fundamentales como la duración de los \textit{sprints} (1-2 semanas) y las reuniones de revisión tras finalizar cada iteración, destinadas a evaluar los avances logrados y planificar las siguientes mejoras.
+
+\subsubsection{Kanban}
+Kanban~\cite{atlassian:kanban} es una técnica de gestión visual del trabajo cuyo objetivo principal es optimizar el flujo de tareas y mejorar la eficiencia del proceso de desarrollo. Se basa en la representación gráfica del estado de las tareas mediante un tablero dividido en columnas que reflejan las distintas fases del proceso (p. ej. \textit{``In progress''} o \textit{``Done''}). En la figura \ref{fig:4_tablero_kanban} se puede observar el tablero Kanban utilizado durante el desarrollo de este proyecto. 
+
+Cada tarea se representa como un elemento que se desplaza entre estados a medida que avanza su ejecución. Kanban pone especial énfasis en la limitación del trabajo en curso (\textit{Work In Progress}), la identificación de cuellos de botella y la mejora continua del proceso, sin imponer iteraciones temporales cerradas ni roles específicos.
+
+\subsubsection{\textit{Rich Domain Model}}
+El \textit{Rich Domain Model} o Modelo Enriquecido~\cite{memobackend:richDomain} es un enfoque de diseño propio de la arquitectura orientada a objetos y del \textit{Domain-Driven Design}~\cite{geeksforgeeks:DDD}, en el que las entidades del dominio encapsulan tanto los datos como el comportamiento asociado a los mismos.
+
+A diferencia de los 
+\href{https://memobackend.com.ar/2024-06-11-modelos-anemicos-enriquecidos/#:~:text=en%20las%20aplicaciones.-,Modelos%20An%C3%A9micos,negocio%20no%20est%C3%A1%20estrechamente%20ligada%20a%20los%20estados%20de%20los%20objetos.,-Modelos%20Enriquecidos%20o}{modelos anémicos}, 
+en los que las entidades actúan únicamente como contenedores de información, un modelo de dominio enriquecido incluye lógica de negocio relevante dentro de las propias clases del dominio. Este enfoque favorece una mayor cohesión, una mejor representación del dominio del problema y una distribución más natural de las responsabilidades dentro del sistema.
+
+\subsubsection{\textit{Domain-Driven Design}}
+\todo[inline]{Incluir? -> no se ha aplicado al 100\%. se ha aplicado en la estructura de directorios y en los métodos que realizan las entidades propietarias (ej: los productos manejan sus propios ingredientes, los pedidos manejan sus líneas de pedido, etc.)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Patrón de arquitectura}
+\todo[inline]{Incluir aquí o en los anexos? -> o introducir brevemente aquí y expandir en anexos}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Tecnologías y \textit{frameworks} principales}
+
+\subsection{\textit{Backend}}
+\subsubsection{Spring Boot}
+\textit{Spring Boot}~\cite{tokioschool:springBoot} es un \textit{framework} del ecosistema \textit{Spring}~\cite{spring:springFramework} diseñado para simplificar el desarrollo de aplicaciones \textit{backend} basadas en Java. Proporciona configuración automática, un sistema de dependencias gestionado y un servidor embebido, lo que permite crear aplicaciones listas para producción con un esfuerzo de configuración mínimo. Está especialmente orientado al desarrollo de servicios web y APIs REST.
+
+\subsubsection{Spring Data JPA}
+\textit{Spring Data JPA}~\cite{spring:springJPA} es un módulo de \textit{Spring}~\cite{spring:springFramework} que facilita el acceso y la persistencia de datos mediante la especificación JPA (\textit{Java Persistence API})\todo{ref}.
+
+JPA define un estándar para el mapeo objeto-relacional (ORM), permitiendo representar tablas de bases de datos como entidades Java. \textit{Spring Data JPA} abstrae gran parte del código repetitivo asociado al acceso a datos, proporcionando repositorios y mecanismos automáticos de generación de consultas.
+
+\subsubsection{Spring Security}
+\textit{Spring Security}~\cite{spring:springSecurity} es un \textit{framework} orientado a la gestión de la seguridad en aplicaciones Java. Proporciona mecanismos para la autenticación, autorización y protección frente a ataques comunes, como 
+\href{https://www.cloudflare.com/es-es/learning/security/threats/cross-site-request-forgery/}{CSRF} 
+o accesos no autorizados. Se integra de forma nativa con \textit{Spring Boot} y permite definir políticas de seguridad de manera flexible y extensible.
+
+\subsubsection{Spring Validation}
+\textit{Spring Validation}\todo{ref y revisar texto} es un módulo que permite validar datos de entrada mediante anotaciones declarativas. Se basa en la especificación \textit{Bean Validation}\todo{ref} y se utiliza habitualmente para comprobar la validez de los datos recibidos en peticiones, asegurando el cumplimiento de restricciones como valores obligatorios, rangos numéricos o formatos específicos.
+\todo[inline]{dónde lo usamos nosotros -> dtos}
+
+\subsubsection{Lombok}
+\textit{Lombok}~\cite{spring:lombok} es una biblioteca que reduce la cantidad de código repetitivo (\textit{``boilerplate''}) en aplicaciones Java mediante el uso de anotaciones. Permite generar automáticamente métodos comunes como \textit{getters}, \textit{setters}, constructores o métodos \texttt{equals} y \texttt{hashCode} durante el proceso de compilación, mejorando la legibilidad y mantenibilidad del código.
+
+\subsubsection{MapStruct}
+\textit{MapStruct}~\cite{spring:mapstruct} es una herramienta de mapeo de objetos que permite transformar de forma automática y segura objetos de un tipo a otro, como entidades y DTOs (ver <ref>\todo{ref a concepto del apartado 3}). Genera código en tiempo de compilación, lo que ofrece un alto rendimiento y evita errores en tiempo de ejecución, manteniendo una separación clara entre las distintas capas de la aplicación.
+
+\subsubsection{MySQL}
+\textit{MySQL}~\cite{wiki:mysql} es un sistema de gestión de bases de datos relacional ampliamente utilizado en aplicaciones empresariales y web. Se caracteriza por su rendimiento, fiabilidad y compatibilidad con múltiples plataformas. En el contexto de aplicaciones \textit{Spring Boot}, se emplea junto con el controlador JDBC correspondiente para permitir la comunicación entre la aplicación y la base de datos~\cite{spring:mysql}.
+
+\subsection{\textit{Frontend}}
+\subsubsection{React}
+\textit{React}~\cite{react:intro} es una biblioteca de JavaScript para la construcción de interfaces de usuario basadas en componentes reutilizables. Se centra en la creación de vistas declarativas y en la gestión eficiente del estado y la actualización del \href{https://www.geeksforgeeks.org/javascript/dom-document-object-model/}{DOM}\todo{ref a url o redactar concepto en apartado 3?} 
+mediante un modelo de renderizado reactivo.
+
+\subsubsection{Vite}
+\textit{Vite}~\cite{vite:intro} es una herramienta de construcción y desarrollo \textit{frontend} que proporciona un entorno de desarrollo rápido y optimizado. Utiliza un servidor de desarrollo basado en 
+\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules}{módulos ES} 
+y genera \textit{builds} de producción altamente eficientes, reduciendo significativamente los tiempos de arranque y recarga.
+
+\subsubsection{Mantine}
+\textit{Mantine}~\cite{react:mantine} es una biblioteca de componentes para \textit{React} que proporciona elementos de interfaz modernos, accesibles y personalizables. Incluye componentes visuales, utilidades de estilo y \textit{hooks} que facilitan el desarrollo de interfaces coherentes y funcionales.
+
+\imagenConEtiqueta{img/apdo_4/4_mantine_componentes.png}{Ejemplos de componentes de \textit{Mantine UI}}{4_mantine_componentes}\todo{incluir imagen?}
+
+\subsubsection{React Router}
+\textit{React Router}~\cite{react:router} es una biblioteca de enrutamiento para aplicaciones \textit{React} que permite gestionar la navegación entre distintas vistas sin recargar la página. Facilita la creación de aplicaciones de una sola página (\textit{Single Page Applications}\todo{ref a concepto del apartado 3}) mediante rutas declarativas y dinámicas.
+
+\subsubsection{i18next y react-i18next}
+\textit{i18next}~\cite{react:i18next} es un \textit{framework} de internacionalización que permite gestionar traducciones y contenido multilingüe en aplicaciones \textit{frontend}. La librería \textit{react-i18next}~\cite{react:react-i18next} proporciona integración específica con \textit{React}, facilitando la adaptación dinámica de la interfaz al idioma seleccionado por el usuario.
+
+\subsubsection{Zustand}
+\textit{Zustand}~\cite{react:zustand} es una biblioteca ligera para la gestión del estado global en aplicaciones \textit{React}. Se caracteriza por su simplicidad, bajo acoplamiento y uso de \textit{hooks}, permitiendo compartir estado entre componentes sin la complejidad de soluciones más pesadas.
+
+\subsection{Contenedores y despliegue}
+\subsubsection{Docker}
+\textit{Docker}~\cite{docker:overview} es una plataforma de \revisionA{contenedorización}\todo{o contenerización??} que permite empaquetar aplicaciones junto con sus dependencias en contenedores ligeros y portables. Esto garantiza que la aplicación se ejecute de forma consistente en diferentes entornos, facilitando el despliegue y la reproducibilidad.\todo{explicar más?? concepto de contenedor??}
+
+\subsubsection{Docker Compose}
+\textit{Docker Compose}~\cite{docker:compose} es una herramienta que permite definir y gestionar aplicaciones compuestas por múltiples contenedores mediante archivos de configuración declarativos. Facilita la orquestación de servicios, la definición de redes y volúmenes, y el despliegue conjunto de todos los componentes de una aplicación.
+
+\subsection{API de información nutricional \revisionB{(cambiar título)}}
+\todo[inline]{Redactar...}
+
+\subsection{\textit{Testing} y calidad del software \revisionC{(incluir?)}}
+\subsubsection{JUnit}
+\textit{JUnit} es un \textit{framework} de pruebas unitarias para Java que permite verificar el correcto funcionamiento de componentes individuales del sistema. Facilita la automatización de pruebas y la detección temprana de errores durante el desarrollo.
+
+\subsubsection{Mockito}
+\textit{Mockito} es una biblioteca de apoyo para pruebas que permite crear objetos simulados (\textit{mocks}) con el fin de aislar componentes y controlar su comportamiento durante la ejecución de las pruebas. Es especialmente útil para probar clases que dependen de otros componentes del sistema.
+
+\subsubsection{Spring Boot Test}
+\textit{Spring Boot Test} es un módulo que proporciona soporte específico para la realización de pruebas en aplicaciones \textit{Spring Boot}. Permite cargar contextos de aplicación, simular peticiones HTTP y realizar pruebas de integración de forma controlada.
+
+\subsubsection{H2}
+\textit{H2} es un sistema de base de datos relacional en memoria utilizado habitualmente en entornos de pruebas. Permite ejecutar pruebas de acceso a datos sin depender de una base de datos externa, garantizando rapidez y aislamiento en los tests.
+
+\subsection{Automatizaciones \revisionB{(cambiar título)}}
+\todo[inline]{SonarCloud, Github actions...}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Herramientas de desarrollo y documentación}
+
+\subsection{Control de versiones}
+\subsubsection{GitHub}
+\textit{GitHub}~\cite{github:about} es una plataforma de alojamiento de repositorios que se basa en el sistema de control de versiones distribuido \textit{Git}. Permite gestionar el código fuente de un proyecto, registrar su evolución histórica y facilitar la colaboración mediante funcionalidades como repositorios remotos, gestión de ramas, control de incidencias (\textit{issues}) y solicitudes de integración (\textit{pull requests}). \textit{Git}, como sistema subyacente, permite realizar un seguimiento detallado de los cambios y trabajar de forma descentralizada.
+
+\subsubsection{GitHub Projects}
+\textit{GitHub Projects}~\cite{github:projects} es una herramienta integrada en la plataforma \textit{GitHub} orientada a la planificación y gestión del trabajo mediante tableros visuales. Permite organizar tareas a través de vistas tipo Kanban, listas o tablas, vinculando elementos como \textit{issues} y \textit{pull requests} procedentes de uno o varios repositorios.
+
+\imagenConEtiqueta{img/apdo_4/4_tablero_kanban.png}{Tablero Kanban de \textit{GitHub Projects}}{4_tablero_kanban}
+
+\textit{GitHub Projects} añade una capa de gestión independiente del repositorio, facilitando la priorización, el seguimiento del progreso y la visualización del estado del proyecto. Además, incorpora mecanismos de automatización (\textit{workflows}) que permiten realizar acciones automáticas en función de eventos, como actualizar el estado de una tarea al cerrarse un \textit{issue} o al cambiar su posición dentro del tablero. La herramienta también ofrece métricas y gráficos, como diagramas de progreso (\textit{burn-up}), que ayudan a analizar la evolución del trabajo a lo largo del tiempo.
+
+\subsubsection{GitHub Flow}
+\textit{GitHub Flow} es un flujo de trabajo ligero para la gestión de ramas en proyectos controlados con \textit{Git}. Se basa en una rama principal (\textit{main}) estable y en la creación de ramas independientes (\textit{/feature/x}) para el desarrollo de nuevas funcionalidades, correcciones o mejoras (en nuestro caso, se ha creado una rama por cada \textit{issue}). Una vez completado el trabajo en una rama, ésta se integra nuevamente en la rama principal mediante un proceso de revisión y fusión.
+
+\imagenConEtiqueta{img/apdo_4/4_comparativa_githubFlow.png}{Comparativa de ramas entre \textit{GitFlow} y \textit{GitHub Flow}~\cite{medium:githubFlow}}{4_comparativa_githubFlow}
+
+A diferencia de metodologías más complejas como \textit{Git Flow}, que define múltiples ramas permanentes (p. ej. \textit{develop}, \textit{release} o \textit{hotfix}), \textit{GitHub Flow} reduce la complejidad del proceso y resulta especialmente adecuado para proyectos de tamaño reducido o desarrollo individual, donde se prioriza la simplicidad y la trazabilidad de los cambios.
+
+\subsubsection{\textit{Conventional Commits}}
+\textit{Conventional Commits}~\cite{convComm:summary} es una convención para la redacción de mensajes de \textit{commit} que define una estructura estandarizada basada en un prefijo que indica el tipo de cambio realizado (p. ej. \textit{feat}, \textit{fix}, \textit{refactor}). Este enfoque mejora la legibilidad del historial de cambios y facilita la comprensión de la evolución del proyecto.
+
+La estructura de un \textit{commit} según esta convención es la siguiente:
+\par
+{\centering \texttt{<tipo>[alcance (opcional)]: <descripción>} \par}
+
+\subsection{Entorno de desarrollo}
+\subsubsection{Visual Studio Code}
+\textit{Visual Studio Code}~\cite{vscode:docs} es un editor de código fuente ligero y multiplataforma ampliamente utilizado en el desarrollo de software. Destaca su amplio ecosistema de extensiones que permiten adaptarlo a distintos lenguajes y tecnologías. También resulta muy útil su integración nativa con \textit{Git}, que permite gestionar el control de versiones directamente desde la interfaz del editor.
+
+Para este proyecto se ha hecho uso del 
+\href{https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack}{\textit{Extension Pack for Java}}, 
+un conjunto de herramientas que proporciona soporte avanzado para el lenguaje. Incluye autocompletado inteligente, navegación por el código, refactorización, ejecución y depuración de aplicaciones, así como integración con herramientas de construcción y pruebas.
+
+\subsubsection{Postman}
+\textit{Postman}~\cite{postman:product} es una herramienta de desarrollo que permite diseñar, ejecutar y analizar peticiones HTTP a servicios web, especialmente APIs REST. Facilita el envío de solicitudes con distintos métodos (\textit{GET, POST, PUT, DELETE}, etc.), la configuración de cabeceras y cuerpos de petición, y la visualización detallada de las respuestas devueltas por el servidor. \textit{Postman} se utiliza habitualmente para verificar el comportamiento de los \textit{endpoints}, validar respuestas y apoyar el proceso de desarrollo y depuración de APIs.
+
+\todo[inline]{se ha usado para ver las respuestas de la API spring boot y la api nutricional...}
+
+\subsection{Documentación}
+\subsubsection{LaTeX}
+\LaTeX{}~\cite{latex:home} es un sistema de composición tipográfica orientado a la elaboración de documentos técnicos y científicos. Permite separar el contenido del formato, facilitando la creación de documentos estructurados y coherentes, especialmente adecuados para trabajos académicos extensos.
+
+\subsubsection{TeXstudio}
+\TeX{}studio~\cite{texstudio:home} es un entorno de desarrollo integrado para \LaTeX{} que proporciona herramientas como edición asistida, autocompletado de comandos, compilación integrada y visualización del documento resultante. Facilita la redacción y revisión de documentos complejos en \LaTeX{} de forma local.
+
+La herramienta escogida inicialmente fue \textit{Overleaf}~\cite{overleaf:about}, con el fin de aprovechar sus funciones de colaboración y revisión remota. Sin embargo, a medida que aumentaba la extensión y complejidad de la documentación, se terminó excediendo el \textit{compile timeout} permitido en su 
+\href{https://docs.overleaf.com/getting-started/free-and-premium-plans/plan-limits}{plan gratuito}. 
+Es por ello que se trasladó el flujo de trabajo al entorno local mediante, manteniendo la documentación sincronizada tanto en el repositorio de \textit{GitHub} como en la plataforma de \textit{Overleaf}. De este modo, el tutor podría disponer siempre del documento más reciente para su revisión.
+
+\subsubsection{MiKTeX}
+MiK\TeX{}~\cite{miktex:home} es una distribución ligera de \LaTeX{} que incluye los paquetes y herramientas necesarios para compilar documentos. Se caracteriza por su sistema de gestión de paquetes bajo demanda, lo que permite instalar únicamente los componentes necesarios, reduciendo el tamaño de la instalación. Esta particularidad motivó la elección de MiK\TeX{} frente a otras distribuciones como \TeX{}Live, la cual realiza instalaciones completas de forma predeterminada.\todo{incluir esta última frase?}
