@@ -9,12 +9,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Diseño de datos}
+\label{sec:C.2_DiseñoDatos}
 
 \todo[inline]{Intro muy breve}
 \todo{Tablas con atributos? o mencionar algún atributo relevante al menos}
 \todo[inline]{Relación IS-A en el diagrama -> editar}
 
 \subsection{Modelo conceptual}
+\label{subsec:C.2_ModeloConceptual}
 
 A continuación, se procede a listar las \textbf{entidades} que conforman la aplicación y a describir brevemente su propósito. Las \textbf{relaciones} entre entidades y detalles particulares se describirán en el apartado ``\textit{\nameref{subsec:C.2_ModelosDetallados}}''.
 
@@ -58,7 +60,7 @@ Este módulo controla el acceso al sistema y los permisos del personal del resta
 
 \begin{itemize}
 	\item \texttt{User} $\leftrightarrow$ \texttt{Role}: Relación \texttt{\char`@{}ManyToMany} (N:M) bidireccional, lo que implica que un usuario puede tener varios roles y que un rol puede pertenecer a varios usuarios. Esta relación se implementa mediante la tabla \texttt{user\_roles}, la cual \textbf{no es una entidad JPA}, puesto que solo almacena claves foráneas y no tiene lógica de negocio.
-	\item \texttt{Role} $\rightarrow$ \texttt{Permission}: No se trata de una ``relación'' como tal, al no ser \texttt{Permission} una entidad\todo{incluir?}. La lista de permisos de un rol es una colección de elementos (\texttt{\char`@{}ElementCollection}) del enumerado \texttt{Permission} (1:N), lo que se traduce en una tabla separada \texttt{role\_permissions}. Esta tabla \textbf{no es una entidad JPA} porque solo sirve para almacenar relaciones simples sin atributos extra.
+	\item \texttt{Role} $\rightarrow$ \texttt{Permission}: La lista de permisos de un rol es una colección de elementos (\texttt{\char`@{}ElementCollection}) del enumerado \texttt{Permission} (1:N), lo que se traduce en una tabla separada \texttt{role\_permissions}. Esta tabla \textbf{no es una entidad JPA} porque solo sirve para almacenar relaciones simples sin atributos extra.
 	\item \texttt{Order} $\rightarrow$ \texttt{User}: Relación \texttt{\char`@{}ManyToOne} (N:1), puesto que cada pedido está asociado a un empleado que lo crea o gestiona. La \textbf{unidireccionalidad} desde \texttt{Order} hacia \texttt{User} implica que los usuarios \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos asociados a ellos.
 \end{itemize}
 %-------------------------------
