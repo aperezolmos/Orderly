@@ -291,6 +291,28 @@
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos añadidos por mí
+
+\newcommand{\revisionA}[1]{\colorbox{red!40}{#1}}
+\newcommand{\revisionB}[1]{\colorbox{yellow!75}{#1}}
+\newcommand{\revisionC}[1]{\colorbox{green!60}{#1}}
+
+
+% El otro comando de imagen genera la etiqueta a partir de la ruta
+\newcommand{\imagenConEtiqueta}[3]{
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=0.9\textwidth]{#1} % #1 es la RUTA
+		\caption{#2}\label{fig:#3} % #3 es la ETIQUETA LIMPIA
+	\end{figure}
+	\FloatBarrier
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 \graphicspath{ {./img/} }
 
 % Capítulos
@@ -358,12 +380,12 @@
   }
 \makeatother
 
-\newcommand{\nombre}{Nombre del alumno} %%% cambio de comando
+\newcommand{\nombre}{Amanda Pérez Olmos} %%% cambio de comando
 
 % Datos de portada
 \title{título del TFG}
 \author{\nombre}
-\tutor{nombre tutor}
+\tutor{Raúl Marticorena Sánchez}
 \date{\today}
 
 \begin{document}
@@ -380,11 +402,11 @@
 
 \noindent\includegraphics[width=\textwidth]{cabecera}\vspace{1cm}
 
-\noindent D. nombre tutor, profesor del departamento de nombre departamento, área de nombre área.
+\noindent D. Raúl Marticorena Sánchez, profesor del departamento de Ingeniería Informática, área de Lenguajes y Sistemas Informáticos.
 
 \noindent Expone:
 
-\noindent Que el alumno D. \nombre, con DNI dni, ha realizado el Trabajo final de Grado en Ingeniería Informática titulado título de TFG. 
+\noindent Que el alumno Dña. \nombre, con DNI 71365665T, ha realizado el Trabajo final de Grado en Ingeniería Informática titulado título de TFG\todo{completar}. 
 
 \noindent Y que dicho trabajo ha sido realizado por el alumno bajo la dirección del que suscribe, en virtud de lo cual se autoriza su presentación y defensa.
 
@@ -398,24 +420,24 @@ En Burgos, {\large \today}
 \begin{minipage}{0.45\textwidth}
 \begin{flushleft} %\large
 Vº. Bº. del Tutor:\\[2cm]
-D. nombre tutor
+D. Raúl Marticorena Sánchez
 \end{flushleft}
 \end{minipage}
 \hfill
-\begin{minipage}{0.45\textwidth}
-\begin{flushleft} %\large
-Vº. Bº. del co-tutor:\\[2cm]
-D. nombre co-tutor
-\end{flushleft}
-\end{minipage}
-\hfill
+% \begin{minipage}{0.45\textwidth}
+	% \begin{flushleft} %\large
+		% Vº. Bº. del co-tutor:\\[2cm]
+		% D. nombre co-tutor
+		% \end{flushleft}
+	% \end{minipage}
+% \hfill
 
 \vfill
 
 % para casos con solo un tutor comentar lo anterior
 % y descomentar lo siguiente
 %Vº. Bº. del Tutor:\\[2cm]
-%D. nombre tutor
+%D. Raúl Marticorena Sánchez
 
 
 \newpage\null\thispagestyle{empty}\newpage
