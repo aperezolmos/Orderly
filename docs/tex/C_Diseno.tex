@@ -76,7 +76,7 @@ Este módulo gestiona el catálogo de productos del restaurante y su composició
 	\item \texttt{OrderItem} $\rightarrow$ \texttt{Product}: Relación \texttt{\char`@{}ManyToOne} (N:1) que vincula pedidos con productos, registrando cantidad, precio unitario y total. La \textbf{unidireccionalidad} desde \texttt{OrderItem} hacia \texttt{Product} implica que los productos \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos a los que han sido añadidos.
 \end{itemize}
 
-Respecto a la \textbf{información nutricional} que almacena un alimento, cabe destacar el uso de \textbf{objetos embebidos} (\texttt{\char`@{}Embeddable})\todo{ref a web explicandolo?} para almacenar los datos en una sola tabla \texttt{foods}, pero manteniendo una separación entre clases: \texttt{NutritionInfo}, \texttt{Minerals} y \texttt{Vitamins}. Esto permite la reutilización, encapsulación y cálculo de operaciones matemáticas particulares. Se explica con más detalle en \revisionC{<ref>}.\todo{ref a apartado de mejoras respecto de nutrimenu}
+Respecto a la \textbf{información nutricional} que almacena un alimento, cabe destacar el uso de \textbf{objetos embebidos} (\texttt{\char`@{}Embeddable})\todo{ref a web explicandolo?} para almacenar los datos en una sola tabla \texttt{foods}, pero manteniendo una separación entre clases: \texttt{NutritionInfo}, \texttt{Minerals} y \texttt{Vitamins}. Esto permite la reutilización, encapsulación y cálculo de operaciones matemáticas particulares. Se explica con más detalle en \revisionC{<ref>}.\todo{ref a apartado de mejoras respecto de nutrimenu -> NO, ref al pull request 51 y 52}
 %-------------------------------
 \subsubsection{Modelo para gestión de reservas de mesas}
 
@@ -114,5 +114,9 @@ El aspecto más característico de este módulo es la presencia de una \textbf{j
 
 \section{Diseño procedimental}
 
+
+% Anotación Transactional
+
+% OrderMapperFactory -> mencionar que es factoría pero también podría considerarse strategy¿?
 
 

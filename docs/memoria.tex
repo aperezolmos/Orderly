@@ -2,7 +2,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{todonotes}
-\setuptodonotes{fancyline, color=blue!30}
+\setuptodonotes{fancyline, color=blue!15}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -300,11 +300,11 @@
 
 
 % El otro comando de imagen genera la etiqueta a partir de la ruta
-\newcommand{\imagenConEtiqueta}[3]{
+\newcommand{\imagenConEtiqueta}[4][0.9\textwidth]{
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=0.9\textwidth]{#1} % #1 es la RUTA
-		\caption{#2}\label{fig:#3} % #3 es la ETIQUETA LIMPIA
+		\includegraphics[width=#1]{#2}  % #1 es el tamaño (opcional) | #2 es la RUTA
+		\caption{#3}\label{fig:#4}      % #4 es la ETIQUETA LIMPIA
 	\end{figure}
 	\FloatBarrier
 }

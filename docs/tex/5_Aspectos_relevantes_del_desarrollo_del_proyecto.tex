@@ -1,7 +1,159 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 
-Este apartado pretende recoger los aspectos más interesantes del desarrollo del proyecto, comentados por los autores del mismo.
-Debe incluir desde la exposición del ciclo de vida utilizado, hasta los detalles de mayor relevancia de las fases de análisis, diseño e implementación.
-Se busca que no sea una mera operación de copiar y pegar diagramas y extractos del código fuente, sino que realmente se justifiquen los caminos de solución que se han tomado, especialmente aquellos que no sean triviales.
-Puede ser el lugar más adecuado para documentar los aspectos más interesantes del diseño y de la implementación, con un mayor hincapié en aspectos tales como el tipo de arquitectura elegido, los índices de las tablas de la base de datos, normalización y desnormalización, distribución en ficheros3, reglas de negocio dentro de las bases de datos (EDVHV GH GDWRV DFWLYDV), aspectos de desarrollo relacionados con el WWW...
-Este apartado, debe convertirse en el resumen de la experiencia práctica del proyecto, y por sí mismo justifica que la memoria se convierta en un documento útil, fuente de referencia para los autores, los tutores y futuros alumnos.
+Este capítulo recoge los aspectos más importantes del desarrollo del proyecto. Engloba la descripción de los componentes implementados, la justificación de las decisiones tomadas y la diferenciación de las fases del desarrollo.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Inicio del proyecto}
+
+La idea del proyecto surgió a partir de mi familiaridad con el flujo de trabajo en locales de restauración y el potencial de escalabilidad detectado, permitiendo futuras ampliaciones como  la gestión de inventario o el análisis de costes, entre otros. Asimismo, el desarrollo se planteó como una oportunidad para consolidar las competencias adquiridas durante la carrera y profundizar en tecnologías modernas de alta demanda en el mercado actual.
+
+En la primera reunión con el tutor, se le explicaron los objetivos generales y las funcionalidades mínimas que se pretendía que abarcara la aplicación. Se acordó entonces introducir aspectos que contribuyeran a la diferenciación de la aplicación respecto de herramientas comunes de gestión. Fue ahí donde el tutor propuso tomar como referencia un Trabajo de Fin de Grado anterior, elaborado por Álvaro Manjón Vara. En dicho proyecto se desarrolló una aplicación web de nombre \textit{\textbf{NutriMenu}}~\cite{nutrimenu2024}, dirigida a los centros de restauración de la Universidad de Burgos, cuya principal funcionalidad era la creación de menús con información nutricional de cada plato, obtenida a partir de una API externa.
+
+Se dio la circunstancia de que el \textit{stack} tecnológico sugerido al tutor coincidía en gran medida con el del TFG mencionado. Aún así, no se optó por utilizar como base dicha aplicación, sino que se partió de un desarrollo desde cero, puesto que tanto el modelo de datos como la lógica de negocio iban a verse modificados significativamente y nuevos módulos de gestión iban a ser añadidos.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Desarrollo del \textit{backend}}
+
+\todo[inline]{spring boot + mysql + docker -> sistemas distribuidos asignatura + ventajas que ofrecen
+
+
+bbdd se inicializa mediante las tablas de spring boot. para los usuarios, tenemos el datainitializer %-> aunque luego vamos a tener que meter entidades (productos, alimentos, reservas) de prueba, así que queda pendiente de modificar esto
+
+}
+
+\todo[inline]{arquitectura de la aplicación?? introducción + diagrama y luego completar en anexos -> o hacer una sección propia ANTERIOR a esta?}
+
+% MENCIONAR?
+% -Métodos de consistencia -> relaciones bidireccionales
+% clave compuesta derivada -> ya se menciona en anexo
+% excluir campos tostring y hashcode en relaciones -> lazyinitialization, stackoverflow...
+
+%---------------------------------------------------------------
+
+\subsection{Funcionalidades principales y módulos}
+
+La API REST desarrollada cubre los principales procesos de gestión de un local de restauración, agrupados en los siguientes módulos funcionales:
+
+\begin{itemize}
+	\item \textbf{Gestión de productos:} Permite la creación, edición, consulta y eliminación de productos ofertados, así como la gestión de sus ingredientes y el cálculo dinámico de su información nutricional.
+	\item \textbf{Gestión de alimentos e ingredientes:} Facilita la administración de alimentos y su información nutricional, permitiendo su uso como ingredientes en productos.
+	\item \textbf{Gestión de reservas de mesas:} Permite la reserva y administración de mesas, incluyendo la gestión de disponibilidad y la prevención de solapamientos.
+	\item \textbf{Gestión de mesas:} Administra las mesas disponibles en el local, su capacidad y estado.
+	\item \textbf{Gestión de pedidos (comandas):} Soporta la creación y seguimiento de pedidos realizados en el local, diferenciando entre pedidos de barra y de comedor mediante una jerarquía de herencia.\todo{referenciar anexo diciendo que se explica ahí la jerarquía?}
+	\item \textbf{Gestión de usuarios y roles:} Incluye la administración de usuarios, roles y permisos, con control de acceso basado en roles y granularidad de permisos.
+\end{itemize}
+
+Cada módulo está implementado siguiendo el patrón de capas\todo{ref a apartado o anexo que lo explique}, con entidades de dominio, repositorios, servicios y controladores, lo que facilita la mantenibilidad y la extensibilidad del sistema.
+
+%---------------------------------------------------------------
+
+\subsection{Modelo de datos y relaciones}
+
+\todo[inline]{INCLUIR? -> o en anexos
+	
+	La persistencia se gestiona mediante repositorios que extienden JpaRepository...
+	%, lo que permite aprovechar las capacidades de Spring Data JPA para la consulta y manipulación de datos.
+}
+
+El modelo de datos, específicamente en su módulo de alimentos, toma como referencia el esquema de \textit{NutriMenu}~\cite{nutrimenu2024}. Se utiliza una base de datos \textit{\textbf{MySQL}} para asegurar la consistencia relacional de la información. Al igual que en el proyecto de referencia, se emplea un \textbf{enfoque híbrido}, el cual combina el almacenamiento local de alimentos creados manualmente con la obtención de datos externos provenientes de la API de \textit{Open Food Facts}~\cite{api:openFoodFacts}.
+
+\imagenConEtiqueta[0.6\textwidth]{img/apdo_5/5_modeloBD_nutrimenu.png}{Modelo de base de datos de \textit{NutriMenu}~\cite{nutrimenu2024}}{5_modeloBD_nutrimenu}
+
+A pesar de compartir el planteamiento conceptual con el proyecto de referencia, se han introducido \textbf{mejoras} significativas en la arquitectura de datos y la lógica de negocio para optimizar el \textbf{rendimiento} y la \textbf{mantenibilidad} del sistema. Las modificaciones más relevantes son:
+
+\begin{itemize}
+	\item \textbf{Simplificación mediante objetos embebidos:} A diferencia de \textit{NutriMenu}, que gestionaba la información nutricional (vitaminas, minerales, etc.) como entidades independientes, en este trabajo se han implementado como objetos embebidos (\texttt{\char`@{}Embeddable})\todo{ref a web explicandolo?}. Esto elimina la necesidad de tablas adicionales y relaciones complejas (\textit{joins}), permitiendo que toda la información nutricional se persista en una única tabla de alimentos, lo que mejora la eficiencia de las operaciones en la base de datos.
+	\item \textbf{Cálculo dinámico de información nutricional y consistencia:} Se ha sustituido la actualización manual de valores nutricionales por un sistema de cálculo dinámico. Mientras que en el proyecto anterior los cálculos eran verbosos y se duplicaban en la base de datos, este modelo utiliza el principio \textit{``\textbf{Single Source of Truth}''}~\cite{medium:singleSourceTruth}, recalculando los valores en tiempo real a partir del alimento original. Esto asegura que cualquier cambio en un ingrediente se refleje automáticamente en todos los productos asociados.
+\end{itemize}
+
+Para una descripción técnica más detallada sobre la implementación de estas entidades y la lógica de negocio aplicada, se recomienda consultar los \textit{pull requests} 
+\href{https://github.com/aperezolmos/tfg-aperezolmos/pull/51}{\#51} y 
+\href{https://github.com/aperezolmos/tfg-aperezolmos/pull/52}{\#52} 
+en el repositorio del proyecto.
+
+\imagenConEtiqueta[0.6\textwidth]{img/apdo_5/5_modeloEER_Completo.png}{Modelo de base de datos actual}{5_modeloEER_Completo}
+
+\todo[inline]{Métodos de consistencia bidireccional y campos de auditoría -> aquí o en el apéndice C: Diseño de datos??}
+
+%---------------------------------------------------------------
+
+\subsection{Lógica de negocio y servicios}
+
+La lógica de negocio se encapsula en servicios específicos para cada módulo, que se encargan de validar las operaciones, gestionar las transacciones\todo{mencionar anotación Transactional? -> quizás mejor en anexo diseño procedimental} y aplicar las reglas del dominio. Por ejemplo:
+
+\begin{itemize}
+	\item El servicio de \textbf{productos} calcula la información nutricional total de cada producto en función de sus ingredientes, utilizando métodos de dominio y operaciones sobre objetos de tipo \texttt{NutritionInfo}.
+	\item El servicio de \textbf{reservas} valida la disponibilidad de mesas y previene solapamientos mediante la comprobación de conflictos de horario antes de confirmar una reserva.
+	\item Los servicios de \textbf{pedidos} gestionan la creación y actualización de comandas, diferenciando entre pedidos de barra y comedor mediante una jerarquía de herencia (\texttt{Order}, \texttt{BarOrder}, \texttt{DiningOrder}) y un patrón de factoría\todo{ref} para los \textit{mappers} (\texttt{OrderMapperFactory})\todo{explicar en anexos}.
+\end{itemize}
+
+La separación de responsabilidades\todo{ref principio SRP?} 
+%entre servicios y controladores 
+permite mantener la lógica de negocio aislada de los puntos de entrada de la API, facilitando la reutilización y el testeo de los componentes. Este diseño ha favorecido la implementación de \textit{\textbf{thin controllers}}\todo{ref?}, esto es, controladores que se mantienen ligeros al delegar toda la complejidad y las reglas de dominio en los servicios correspondientes.
+
+%---------------------------------------------------------------
+
+\subsection{Comunicación entre capas: DTOs y \textit{mappers}}
+
+La comunicación entre las distintas capas de la aplicación se realiza mediante objetos de transferencia de datos, diferenciando entre DTOs de \textbf{petición} (\textit{RequestDTO}) y de \textbf{respuesta} (\textit{ResponseDTO}). Esta distinción permite adaptar los datos expuestos por la API a las necesidades de cada operación, facilitando la validación de los datos recibidos (ver apartado ``\textit{\nameref{subsec:5.2_excepVal}}'') y ocultando detalles internos o sensibles. Por ejemplo, la contraseña de un usuario, aunque se almacena encriptada, no se proporciona en el DTO de respuesta.
+
+La conversión entre entidades y DTOs se realiza mediante \textit{mappers} implementados con \textit{MapStruct}, lo que permite definir reglas de mapeo declarativas y reducir la cantidad de código repetitivo. En casos complejos, como la jerarquía de pedidos, se emplea una factoría de \textit{mappers} para aislar la lógica de conversión y facilitar la extensión a nuevos tipos de pedidos.\todo{incluir esta última línea?}
+
+\missingfigure{diagrama de comunicación entre capas, indicando dónde se usa el dto y dónde la entidad}
+
+%---------------------------------------------------------------
+
+\subsection{Seguridad y control de acceso}
+
+La seguridad y el control de acceso en el \textit{backend} se gestionan mediante \textit{Spring Security}, implementando un sistema de autenticación basado en sesiones HTTP y \textbf{autorización granular por roles y permisos}. Los \textit{endpoints} de la API están protegidos mediante anotaciones como \texttt{\char`@{}PreAuthorize}, que verifican los permisos necesarios para cada operación, garantizando que solo los usuarios autorizados puedan acceder a los recursos sensibles.
+
+La sesión de usuario autenticado se mantiene en el \textit{backend} mediante el componente \texttt{SessionManager}, que almacena el contexto de seguridad en la sesión HTTP y gestiona el ciclo de vida de la autenticación. Para la representación de usuarios en el sistema de seguridad, se utiliza la clase \texttt{CustomUserDetails}, que adapta la entidad \texttt{User} y expone sus roles y permisos como \textit{authorities} de \textit{Spring Security}, permitiendo así un control de acceso detallado a los recursos.
+
+
+%más breve
+%La seguridad de la aplicación se gestiona mediante Spring Security, implementando control de acceso basado en roles y permisos. Los endpoints de la API están protegidos mediante anotaciones de autorización (\texttt{\char`@{}PreAuthorize}), y la autenticación se realiza mediante sesiones gestionadas en el backend. El sistema de roles y permisos permite una granularidad suficiente para cubrir los distintos perfiles de usuario del local.
+
+%---------------------------------------------------------------
+
+\subsection{Manejo de excepciones y validaciones}
+\label{subsec:5.2_excepVal}
+
+El \textit{backend} implementa un \textbf{sistema centralizado de manejo de excepciones} mediante el componente \texttt{GlobalExceptionHandler}, que captura y gestiona los errores más frecuentes (entidades no encontradas, violaciones de integridad, errores de validación, etc.). Los errores se devuelven en un formato estructurado que facilita su tratamiento en el \textit{frontend}.
+
+\missingfigure{Captura del formato de ErrorResponse}
+
+Las validaciones de los datos de entrada se realizan tanto a nivel de DTOs, utilizando anotaciones estándar de \textit{Java Validation} (\texttt{\char`@{}NotNull}, \texttt{\char`@{}Size}, \texttt{\char`@{}Min}, etc.), como a nivel de lógica de negocio en los servicios. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Desarrollo del \textit{frontend}}
+
+...
+
+\subsection{Internacionalización}
+
+...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Consumo de la API de datos nutricionales}
+%Otro título: "Suministro de información nutricional mediante API"
+
+La elección de una API que proporcionase información de alimentos y datos nutricionales se llevó a cabo mediante una comparativa que se encuentra detallada en el \textit{issue} \href{https://github.com/aperezolmos/tfg-aperezolmos/issues/10}{\#10}. La API seleccionada fue \textit{\textbf{Nutritionix}}~\cite{api:nutritionix}, la cual también fue elegida en el proyecto \textit{NutriMenu}~\cite{nutrimenu2024}.
+
+Sin embargo, a 19 de noviembre de 2025, recibí una notificación oficial vía correo electrónico por parte de \textit{Nutritionix}, en la cual se comunicaba que el plan de acceso gratuito dejaría de estar operativo~\cite{reddit:nutritionixFreePlan}, invalidando así su uso para el proyecto.
+
+Se optó entonces por la segunda opción más completa de la comparativa: \textbf{\textit{Open Food Facts} (OFF)}~\cite{api:openFoodFacts}.
+\todo[inline]{Qué ventajas tiene respecto a ntx (alérgenos, abierto) y desventajas (productos comunes) -> breve (1-2 líneas)}
+
+\todo[inline]{Después aquí explicar MUY BREVEMENTE los endpoints utilizados o los datos extraídos de la api. -> o hacer esto en apartado 4. Técnicas y herramientas?}
+
+\missingfigure{Búsqueda de un alimento mediante la API OFF}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{TO DO: otras secciones}
+
+Despliegue, Testing, Automatizaciones...
