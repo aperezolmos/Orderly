@@ -16,14 +16,14 @@ Se dio la circunstancia de que el \textit{stack} tecnológico sugerido al tutor 
 
 \section{Desarrollo del \textit{backend}}
 
-\todo[inline]{spring boot + mysql + docker -> sistemas distribuidos asignatura + ventajas que ofrecen
+\todo[inline]{intro breve con infraestructura?
+	
+	spring boot + mysql + docker -> sistemas distribuidos asignatura + ventajas que ofrecen
 
 
 bbdd se inicializa mediante las tablas de spring boot. para los usuarios, tenemos el datainitializer %-> aunque luego vamos a tener que meter entidades (productos, alimentos, reservas) de prueba, así que queda pendiente de modificar esto
 
 }
-
-\todo[inline]{arquitectura de la aplicación?? introducción + diagrama y luego completar en anexos -> o hacer una sección propia ANTERIOR a esta?}
 
 % MENCIONAR?
 % -Métodos de consistencia -> relaciones bidireccionales
@@ -41,11 +41,11 @@ La API REST desarrollada cubre los principales procesos de gestión de un local 
 	\item \textbf{Gestión de alimentos e ingredientes:} Facilita la administración de alimentos y su información nutricional, permitiendo su uso como ingredientes en productos.
 	\item \textbf{Gestión de reservas de mesas:} Permite la reserva y administración de mesas, incluyendo la gestión de disponibilidad y la prevención de solapamientos.
 	\item \textbf{Gestión de mesas:} Administra las mesas disponibles en el local, su capacidad y estado.
-	\item \textbf{Gestión de pedidos (comandas):} Soporta la creación y seguimiento de pedidos realizados en el local, diferenciando entre pedidos de barra y de comedor mediante una jerarquía de herencia.\todo{referenciar anexo diciendo que se explica ahí la jerarquía?}
+	\item \textbf{Gestión de pedidos (comandas):} Soporta la creación y seguimiento de pedidos realizados en el local, diferenciando entre pedidos de barra y de comedor mediante una jerarquía de herencia.
 	\item \textbf{Gestión de usuarios y roles:} Incluye la administración de usuarios, roles y permisos, con control de acceso basado en roles y granularidad de permisos.
 \end{itemize}
 
-Cada módulo está implementado siguiendo el patrón de capas\todo{ref a apartado o anexo que lo explique}, con entidades de dominio, repositorios, servicios y controladores, lo que facilita la mantenibilidad y la extensibilidad del sistema.
+Cada módulo está implementado siguiendo el patrón de capas\todo{ref a apartado o anexo que lo explique o a 4.2 de técnicas y herramientas}, con entidades de dominio, repositorios, servicios y controladores, lo que facilita la mantenibilidad y la extensibilidad del sistema.
 
 %---------------------------------------------------------------
 
@@ -64,7 +64,7 @@ El modelo de datos, específicamente en su módulo de alimentos, toma como refer
 A pesar de compartir el planteamiento conceptual con el proyecto de referencia, se han introducido \textbf{mejoras} significativas en la arquitectura de datos y la lógica de negocio para optimizar el \textbf{rendimiento} y la \textbf{mantenibilidad} del sistema. Las modificaciones más relevantes son:
 
 \begin{itemize}
-	\item \textbf{Simplificación mediante objetos embebidos:} A diferencia de \textit{NutriMenu}, que gestionaba la información nutricional (vitaminas, minerales, etc.) como entidades independientes, en este trabajo se han implementado como objetos embebidos (\texttt{\char`@{}Embeddable})\todo{ref a web explicandolo?}. Esto elimina la necesidad de tablas adicionales y relaciones complejas (\textit{joins}), permitiendo que toda la información nutricional se persista en una única tabla de alimentos, lo que mejora la eficiencia de las operaciones en la base de datos.
+	\item \textbf{Simplificación mediante objetos embebidos:} A diferencia de \textit{NutriMenu}, que gestionaba la información nutricional (vitaminas, minerales, etc.) como entidades independientes, en este trabajo se han implementado como objetos embebidos (\texttt{\char`@{}Embeddable}). Esto elimina la necesidad de tablas adicionales y relaciones complejas (\textit{joins}), permitiendo que toda la información nutricional se persista en una única tabla de alimentos, lo que mejora la eficiencia de las operaciones en la base de datos.
 	\item \textbf{Cálculo dinámico de información nutricional y consistencia:} Se ha sustituido la actualización manual de valores nutricionales por un sistema de cálculo dinámico. Mientras que en el proyecto anterior los cálculos eran verbosos y se duplicaban en la base de datos, este modelo utiliza el principio \textit{``\textbf{Single Source of Truth}''}~\cite{medium:singleSourceTruth}, recalculando los valores en tiempo real a partir del alimento original. Esto asegura que cualquier cambio en un ingrediente se refleje automáticamente en todos los productos asociados.
 \end{itemize}
 
@@ -75,7 +75,7 @@ en el repositorio del proyecto.
 
 \imagenConEtiqueta[0.6\textwidth]{img/apdo_5/5_modeloEER_Completo.png}{Modelo de base de datos actual}{5_modeloEER_Completo}
 
-\todo[inline]{Métodos de consistencia bidireccional y campos de auditoría -> aquí o en el apéndice C: Diseño de datos??}
+\todo[inline]{Métodos de consistencia bidireccional y campos de auditoría -> aquí o en el apéndice C??}
 
 %---------------------------------------------------------------
 
@@ -107,7 +107,9 @@ La conversión entre entidades y DTOs se realiza mediante \textit{mappers} imple
 
 \subsection{Seguridad y control de acceso}
 
-La seguridad y el control de acceso en el \textit{backend} se gestionan mediante \textit{Spring Security}, implementando un sistema de autenticación basado en sesiones HTTP y \textbf{autorización granular por roles y permisos}. Los \textit{endpoints} de la API están protegidos mediante anotaciones como \texttt{\char`@{}PreAuthorize}, que verifican los permisos necesarios para cada operación, garantizando que solo los usuarios autorizados puedan acceder a los recursos sensibles.
+La seguridad y el control de acceso en el \textit{backend} se gestionan mediante \textit{Spring Security}, implementando un sistema de autenticación basado en sesiones HTTP y \textbf{autorización granular por roles y permisos} 
+(ver \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/81}{\#81}). 
+Los \textit{endpoints} de la API están protegidos mediante anotaciones como \texttt{\char`@{}PreAuthorize}, que verifican los permisos necesarios para cada operación, garantizando que solo los usuarios autorizados puedan acceder a los recursos sensibles.
 
 La sesión de usuario autenticado se mantiene en el \textit{backend} mediante el componente \texttt{SessionManager}, que almacena el contexto de seguridad en la sesión HTTP y gestiona el ciclo de vida de la autenticación. Para la representación de usuarios en el sistema de seguridad, se utiliza la clase \texttt{CustomUserDetails}, que adapta la entidad \texttt{User} y expone sus roles y permisos como \textit{authorities} de \textit{Spring Security}, permitiendo así un control de acceso detallado a los recursos.
 
@@ -148,7 +150,7 @@ Sin embargo, a 19 de noviembre de 2025, recibí una notificación oficial vía c
 Se optó entonces por la segunda opción más completa de la comparativa: \textbf{\textit{Open Food Facts} (OFF)}~\cite{api:openFoodFacts}.
 \todo[inline]{Qué ventajas tiene respecto a ntx (alérgenos, abierto) y desventajas (productos comunes) -> breve (1-2 líneas)}
 
-\todo[inline]{Después aquí explicar MUY BREVEMENTE los endpoints utilizados o los datos extraídos de la api. -> o hacer esto en apartado 4. Técnicas y herramientas?}
+\todo[inline]{Después aquí explicar brevemente los endpoints utilizados o los datos extraídos de la api. -> o hacer esto en apartado 4. Técnicas y herramientas?}
 
 \missingfigure{Búsqueda de un alimento mediante la API OFF}
 
