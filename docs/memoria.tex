@@ -2,7 +2,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{todonotes}
-\setuptodonotes{fancyline, color=blue!30}
+\setuptodonotes{fancyline, color=blue!15}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -300,11 +300,11 @@
 
 
 % El otro comando de imagen genera la etiqueta a partir de la ruta
-\newcommand{\imagenConEtiqueta}[3]{
+\newcommand{\imagenConEtiqueta}[4][0.9\textwidth]{
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=0.9\textwidth]{#1} % #1 es la RUTA
-		\caption{#2}\label{fig:#3} % #3 es la ETIQUETA LIMPIA
+		\includegraphics[width=#1]{#2}  % #1 es el tamaño (opcional) | #2 es la RUTA
+		\caption{#3}\label{fig:#4}      % #4 es la ETIQUETA LIMPIA
 	\end{figure}
 	\FloatBarrier
 }
@@ -406,9 +406,9 @@
 
 \noindent Expone:
 
-\noindent Que el alumno Dña. \nombre, con DNI 71365665T, ha realizado el Trabajo final de Grado en Ingeniería Informática titulado título de TFG\todo{completar}. 
+\noindent Que la alumna Dña. \nombre, con DNI 71365665T, ha realizado el Trabajo final de Grado en Ingeniería Informática titulado \revisionA{título de TFG}\todo{completar}. 
 
-\noindent Y que dicho trabajo ha sido realizado por el alumno bajo la dirección del que suscribe, en virtud de lo cual se autoriza su presentación y defensa.
+\noindent Y que dicho trabajo ha sido realizado por la alumna bajo la dirección del que suscribe, en virtud de lo cual se autoriza su presentación y defensa.
 
 \begin{center} %\large
 En Burgos, {\large \today}
@@ -417,12 +417,12 @@ En Burgos, {\large \today}
 \vfill\vfill\vfill
 
 % Author and supervisor
-\begin{minipage}{0.45\textwidth}
-\begin{flushleft} %\large
-Vº. Bº. del Tutor:\\[2cm]
-D. Raúl Marticorena Sánchez
-\end{flushleft}
-\end{minipage}
+%\begin{minipage}{0.45\textwidth}
+%\begin{flushleft} %\large
+%Vº. Bº. del Tutor:\\[2cm]
+%D. Raúl Marticorena Sánchez
+%\end{flushleft}
+%\end{minipage}
 \hfill
 % \begin{minipage}{0.45\textwidth}
 	% \begin{flushleft} %\large
@@ -439,6 +439,9 @@ D. Raúl Marticorena Sánchez
 %Vº. Bº. del Tutor:\\[2cm]
 %D. Raúl Marticorena Sánchez
 
+V.{\textsuperscript{o}} B.{\textsuperscript{o}} del Tutor:\\[2cm]
+
+D. Raúl Marticorena Sánchez
 
 \newpage\null\thispagestyle{empty}\newpage
 
