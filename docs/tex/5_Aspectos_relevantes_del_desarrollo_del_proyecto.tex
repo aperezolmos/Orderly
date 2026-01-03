@@ -16,19 +16,7 @@ Se dio la circunstancia de que el \textit{stack} tecnológico sugerido al tutor 
 
 \section{Desarrollo del \textit{backend}}
 
-\todo[inline]{intro breve con infraestructura?
-	
-	spring boot + mysql + docker -> sistemas distribuidos asignatura + ventajas que ofrecen
-
-
-bbdd se inicializa mediante las tablas de spring boot. para los usuarios, tenemos el datainitializer %-> aunque luego vamos a tener que meter entidades (productos, alimentos, reservas) de prueba, así que queda pendiente de modificar esto
-
-}
-
-% MENCIONAR?
-% -Métodos de consistencia -> relaciones bidireccionales
-% clave compuesta derivada -> ya se menciona en anexo
-% excluir campos tostring y hashcode en relaciones -> lazyinitialization, stackoverflow...
+\todo[inline]{intro muy breve?}
 
 %---------------------------------------------------------------
 
@@ -51,21 +39,18 @@ Cada módulo está implementado siguiendo el patrón de capas\todo{ref a apartad
 
 \subsection{Modelo de datos y relaciones}
 
-\todo[inline]{INCLUIR? -> o en anexos
-	
-	La persistencia se gestiona mediante repositorios que extienden JpaRepository...
-	%, lo que permite aprovechar las capacidades de Spring Data JPA para la consulta y manipulación de datos.
-}
+El modelo de datos, específicamente en su módulo de alimentos, toma como referencia el esquema de \textit{NutriMenu}~\cite{nutrimenu2024}, el cual puede visualizarse por completo en la figura \ref{fig:5_modeloBD_nutrimenu}. Se utiliza una base de datos \textit{\textbf{MySQL}} para asegurar la consistencia relacional de la información. La persistencia se gestiona mediante repositorios que extienden de \texttt{JpaRepository}, lo que permite aprovechar las capacidades de \textit{Spring Data JPA} para la consulta y manipulación de datos. Al igual que en el proyecto de referencia, se emplea un \textbf{enfoque híbrido}, el cual combina el almacenamiento local de alimentos creados manualmente con la obtención de datos externos provenientes de la API de \textit{Open Food Facts}~\cite{api:openFoodFacts}.
 
-El modelo de datos, específicamente en su módulo de alimentos, toma como referencia el esquema de \textit{NutriMenu}~\cite{nutrimenu2024}. Se utiliza una base de datos \textit{\textbf{MySQL}} para asegurar la consistencia relacional de la información. Al igual que en el proyecto de referencia, se emplea un \textbf{enfoque híbrido}, el cual combina el almacenamiento local de alimentos creados manualmente con la obtención de datos externos provenientes de la API de \textit{Open Food Facts}~\cite{api:openFoodFacts}.
-
-\imagenConEtiqueta[0.6\textwidth]{img/apdo_5/5_modeloBD_nutrimenu.png}{Modelo de base de datos de \textit{NutriMenu}~\cite{nutrimenu2024}}{5_modeloBD_nutrimenu}
+\imagenConEtiqueta[0.5\textwidth]{img/apdo_5/5_modeloBD_nutrimenu.png}{Modelo de base de datos de \textit{NutriMenu}~\cite{nutrimenu2024}}{5_modeloBD_nutrimenu}
 
 A pesar de compartir el planteamiento conceptual con el proyecto de referencia, se han introducido \textbf{mejoras} significativas en la arquitectura de datos y la lógica de negocio para optimizar el \textbf{rendimiento} y la \textbf{mantenibilidad} del sistema. Las modificaciones más relevantes son:
 
 \begin{itemize}
 	\item \textbf{Simplificación mediante objetos embebidos:} A diferencia de \textit{NutriMenu}, que gestionaba la información nutricional (vitaminas, minerales, etc.) como entidades independientes, en este trabajo se han implementado como objetos embebidos (\texttt{\char`@{}Embeddable}). Esto elimina la necesidad de tablas adicionales y relaciones complejas (\textit{joins}), permitiendo que toda la información nutricional se persista en una única tabla de alimentos, lo que mejora la eficiencia de las operaciones en la base de datos.
 	\item \textbf{Cálculo dinámico de información nutricional y consistencia:} Se ha sustituido la actualización manual de valores nutricionales por un sistema de cálculo dinámico. Mientras que en el proyecto anterior los cálculos eran verbosos y se duplicaban en la base de datos, este modelo utiliza el principio \textit{``\textbf{Single Source of Truth}''}~\cite{medium:singleSourceTruth}, recalculando los valores en tiempo real a partir del alimento original. Esto asegura que cualquier cambio en un ingrediente se refleje automáticamente en todos los productos asociados.
+	
+	% nutriscore, alérgenos...
+	
 \end{itemize}
 
 Para una descripción técnica más detallada sobre la implementación de estas entidades y la lógica de negocio aplicada, se recomienda consultar los \textit{pull requests} 
@@ -73,15 +58,17 @@ Para una descripción técnica más detallada sobre la implementación de estas 
 \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/52}{\#52} 
 en el repositorio del proyecto.
 
-\imagenConEtiqueta[0.6\textwidth]{img/apdo_5/5_modeloEER_Completo.png}{Modelo de base de datos actual}{5_modeloEER_Completo}
+\imagenConEtiqueta[0.5\textwidth]{img/apdo_5/5_modeloEER_Completo.png}{Modelo de base de datos actual}{5_modeloEER_Completo}
 
-\todo[inline]{Métodos de consistencia bidireccional y campos de auditoría -> aquí o en el apéndice C??}
+%\todo[inline]{Métodos de consistencia bidireccional y campos de auditoría -> aquí o en el apéndice C??} %creo que mejor apéndice
 
 %---------------------------------------------------------------
 
 \subsection{Lógica de negocio y servicios}
 
-La lógica de negocio se encapsula en servicios específicos para cada módulo, que se encargan de validar las operaciones, gestionar las transacciones\todo{mencionar anotación Transactional? -> quizás mejor en anexo diseño procedimental} y aplicar las reglas del dominio. Por ejemplo:
+La lógica de negocio se encapsula en servicios específicos para cada módulo, que se encargan de validar las operaciones, gestionar las transacciones 
+%\todo{mencionar anotación Transactional? -> quizás mejor en anexo diseño procedimental}  %-> sí, mencionar en anexos
+y aplicar las reglas del dominio. Por ejemplo:
 
 \begin{itemize}
 	\item El servicio de \textbf{productos} calcula la información nutricional total de cada producto en función de sus ingredientes, utilizando métodos de dominio y operaciones sobre objetos de tipo \texttt{NutritionInfo}.
@@ -109,7 +96,7 @@ La conversión entre entidades y DTOs se realiza mediante \textit{mappers} imple
 
 La seguridad y el control de acceso en el \textit{backend} se gestionan mediante \textit{Spring Security}, implementando un sistema de autenticación basado en sesiones HTTP y \textbf{autorización granular por roles y permisos} 
 (ver \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/81}{\#81}). 
-Los \textit{endpoints} de la API están protegidos mediante anotaciones como \texttt{\char`@{}PreAuthorize}, que verifican los permisos necesarios para cada operación, garantizando que solo los usuarios autorizados puedan acceder a los recursos sensibles.
+Los \textit{endpoints} de la API están protegidos mediante anotaciones \texttt{\char`@{}PreAuthorize}, que verifican los permisos necesarios para cada operación, garantizando que solo los usuarios autorizados puedan acceder a los recursos sensibles.
 
 La sesión de usuario autenticado se mantiene en el \textit{backend} mediante el componente \texttt{SessionManager}, que almacena el contexto de seguridad en la sesión HTTP y gestiona el ciclo de vida de la autenticación. Para la representación de usuarios en el sistema de seguridad, se utiliza la clase \texttt{CustomUserDetails}, que adapta la entidad \texttt{User} y expone sus roles y permisos como \textit{authorities} de \textit{Spring Security}, permitiendo así un control de acceso detallado a los recursos.
 
@@ -132,11 +119,48 @@ Las validaciones de los datos de entrada se realizan tanto a nivel de DTOs, util
 
 \section{Desarrollo del \textit{frontend}}
 
-...
+El desarrollo de la interfaz de usuario comenzó inicialmente con \textit{Thymeleaf}, integrado en el proyecto \textit{Spring Boot}, aprovechando la experiencia adquirida durante la carrera\todo{La asignatura fue Sistemas Distribuidos, pero no sé si se recomienda mencionarlo o mejor no}. Sin embargo, tras una primera fase de exploración, se migró la capa de presentación a \textbf{\textit{React}}, como se justifica en la sección 
+\ref{sec:4.3_tecnologias} \textit{``\nameref{sec:4.3_tecnologias}''}.
+
+La navegación entre las distintas secciones de la aplicación se gestiona mediante \textit{\textbf{React Router}}, permitiendo una experiencia de usuario fluida y sin recargas de página. Se han definido \textbf{rutas protegidas} para aquellas secciones que requieren autenticación o permisos específicos, utilizando el componente \texttt{ProtectedRoute}.
+
+%---------------------------------------------------------------
+
+\subsection{Arquitectura de componentes y experiencia de usuario}
+
+%El objetivo de ofrecer una interfaz coherente y confiable se consiguió gracias a una estrategia basada en componentes reutilizables y un sistema de comunicación claro con el usuario. 
+
+Para sentar las bases visuales y acelerar el desarrollo, se utilizó la biblioteca \textit{\textbf{Mantine}}, que proporciona componentes preconstruidos, modernos y accesibles, como formularios, notificaciones o modales. Esto permitió evitar la implementación manual de elementos comunes y se obtuvo una interfaz limpia y responsiva, con soporte nativo para temas claros y oscuros, así como para la adaptación a dispositivos móviles. Sobre esta base, se diseñaron estructuras como \texttt{MainLayout}, que agrupa elementos comunes a toda la aplicación (como la barra de navegación), y \texttt{FormLayout}, un esquema unificado para los formularios de creación y edición de todas las entidades.
+
+Asimismo, para garantizar una experiencia consistente ante la naturaleza \textbf{asíncrona} de las peticiones a la API, la interfaz debe responder adecuadamente ante posibles demoras o errores. Por ello, se integró de forma sistemática un sistema de \textit{feedback} que informa al usuario en todo momento: \textbf{indicadores de carga} (\texttt{LoadingOverlay}) durante las operaciones, mensajes informativos cuando no hay datos para mostrar, alertas en formularios y notificaciones de éxito o error (mediante \textbf{\textit{\char`@{}mantine/notifications}}) con mensajes contextualizados. 
+
+%---------------------------------------------------------------
+
+\subsection{Gestión de datos y operaciones sobre entidades}\todo{¿Cambiar título?}
+
+La gestión de las múltiples entidades del sistema se abordó mediante un patrón modular y repetible que \textbf{desacopla} la lógica de acceso a datos, la presentación en pantalla y la validación de la información introducida por el usuario.
+
+La \textbf{comunicación con el \textit{backend}} se canaliza a través de un \textbf{cliente API centralizado}, que se encarga de realizar todas las peticiones HTTP a la API REST y gestionar de manera uniforme los errores y la autenticación. Para cada dominio, se crearon \textit{\textbf{hooks}} personalizados (por ejemplo, \texttt{useUsers}, \texttt{useProducts}) que encapsulan todas las operaciones CRUD, gestionando internamente los \textbf{estados} de carga, error y datos. Esta abstracción permitió que los componentes de UI se centraran exclusivamente en la presentación, consumiendo los \textit{hooks} sin preocuparse de los detalles de la comunicación.
+
+Respecto a la gestión de \textbf{formularios}, se utilizó el sistema \texttt{useForm} de \textit{Mantine}, el cual permite definir validaciones personalizadas, gestionar el estado de los campos y mostrar mensajes de error de forma clara.
+
+Para la \textbf{gestión del estado} general se siguió un principio de simplicidad: la mayoría de las entidades manejan su información de forma local mediante sus \textit{\textbf{hooks}}. Sin embargo, se hizo una excepción para el \textit{dashboard} de pedidos (ver figura <ref>\todo{Ref a imagen dashboard}), una de las funcionalidades centrales y más distintivas de la aplicación. Dado que este módulo requiere visualizar y actualizar en tiempo real el estado de los pedidos pendientes (permitiendo añadir productos, modificar cantidades y cambiar estados), se optó por un \textit{\textbf{store}} global basado en \textit{\textbf{Zustand}}. Esta decisión permite que varios componentes reaccionen simultáneamente a los cambios, ofreciendo una experiencia fluida y en tiempo real sin recargas de página.
+
+\missingfigure{Interfaz del dashboard de pedidos}
 
 \subsection{Internacionalización}
 
-...
+La aplicación es completamente multilingüe, permitiendo alternar entre español e inglés de forma instantánea. Para ello se ha utilizado \textbf{\textit{react-i18next}}, organizando los textos en archivos de recursos por módulo y facilitando la traducción y ampliación futura a otros idiomas.
+
+\todo[inline]{Mención breve
+
+- Selector de idioma (LanguageSwitcher)
+
+% - Mensajes de error que provienen de la API van en inglés siempre
+
+- Resultados de la API OFF %dependiendo de si se logra obtener resultados en inglés y español dependiendo del idioma actual de la app
+
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -148,9 +172,13 @@ La elección de una API que proporcionase información de alimentos y datos nutr
 Sin embargo, a 19 de noviembre de 2025, recibí una notificación oficial vía correo electrónico por parte de \textit{Nutritionix}, en la cual se comunicaba que el plan de acceso gratuito dejaría de estar operativo~\cite{reddit:nutritionixFreePlan}, invalidando así su uso para el proyecto.
 
 Se optó entonces por la segunda opción más completa de la comparativa: \textbf{\textit{Open Food Facts} (OFF)}~\cite{api:openFoodFacts}.
-\todo[inline]{Qué ventajas tiene respecto a ntx (alérgenos, abierto) y desventajas (productos comunes) -> breve (1-2 líneas)}
 
-\todo[inline]{Después aquí explicar brevemente los endpoints utilizados o los datos extraídos de la api. -> o hacer esto en apartado 4. Técnicas y herramientas?}
+\todo[inline]{Incluir (breve):
+	
+	- Qué ventajas tiene respecto a ntx (alérgenos, abierto) y desventajas (productos comunes) -> breve (1-2 líneas)
+	
+	- Detallar cómo se han adaptado los datos de la API para nuestro modelo y las dificultades
+}
 
 \missingfigure{Búsqueda de un alimento mediante la API OFF}
 

@@ -69,6 +69,7 @@ en los que las entidades actúan únicamente como contenedores de información, 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Tecnologías y \textit{frameworks} principales}
+\label{sec:4.3_tecnologias}
 
 \subsection{\textit{Backend}}
 \subsubsection{Spring Boot}
@@ -104,9 +105,13 @@ y se utiliza habitualmente para comprobar la validez de los datos recibidos en p
 \textit{React}~\cite{react:intro} es una biblioteca de JavaScript para la construcción de interfaces de usuario basadas en componentes reutilizables. Se centra en la creación de vistas declarativas y en la gestión eficiente del estado y la actualización del \href{https://www.geeksforgeeks.org/javascript/dom-document-object-model/}{DOM} (\textit{Document Object Model}) 
 mediante un modelo de renderizado reactivo.
 
+Su elección se justifica frente a alternativas como \textit{Thymeleaf}\todo{ref?} por las necesidades específicas del proyecto: la gestión de un elevado número de entidades (productos, pedidos, reservas, usuarios, etc.) y la exigencia de una interfaz dinámica y reactiva. El paradigma basado en \textbf{componentes} y la \textbf{arquitectura SPA} de \textit{React} permiten un desarrollo más modular, mantenible y con mejor experiencia de usuario.
+
+Pese a no haber utilizado \textit{React} previamente, el análisis del proyecto de referencia NutriMenu~\cite{nutrimenu2024} permitió evaluar su viabilidad y agilizar el aprendizaje inicial. Su adopción supuso, por lo tanto, un reto formativo para dominar una herramienta estándar en el sector
+
 \subsubsection{Vite}
 \textit{Vite}~\cite{vite:intro} es una herramienta de construcción y desarrollo \textit{frontend} que proporciona un entorno de desarrollo rápido y optimizado. Utiliza un servidor de desarrollo basado en 
-\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules}{módulos ES} 
+\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules}{módulos ES} \todo{revisar}
 y genera \textit{builds} de producción altamente eficientes, reduciendo significativamente los tiempos de arranque y recarga.
 
 \subsubsection{Mantine}
@@ -132,6 +137,8 @@ y genera \textit{builds} de producción altamente eficientes, reduciendo signifi
 
 \subsection{API de información nutricional: \textit{Open Food Facts}}
 \todo[inline]{Redactar...}
+
+%\todo[inline]{Explicar brevemente los endpoints utilizados o los datos extraídos de la api¿?}
 
 \subsection{\textit{Testing} y calidad del software}
 \subsubsection{JUnit}
@@ -206,4 +213,4 @@ La herramienta escogida inicialmente fue \textit{Overleaf}~\cite{overleaf:about}
 Es por ello que se trasladó el flujo de trabajo al entorno local mediante, manteniendo la documentación sincronizada tanto en el repositorio de \textit{GitHub} como en la plataforma de \textit{Overleaf}. De este modo, el tutor podría disponer siempre del documento más reciente para su revisión.
 
 \subsubsection{MiKTeX}
-MiK\TeX{}~\cite{miktex:home} es una distribución ligera de \LaTeX{} que incluye los paquetes y herramientas necesarios para compilar documentos. Se caracteriza por su sistema de gestión de paquetes bajo demanda, lo que permite instalar únicamente los componentes necesarios, reduciendo el tamaño de la instalación. Esta particularidad motivó la elección de MiK\TeX{} frente a otras distribuciones como \TeX{}Live, la cual realiza instalaciones completas de forma predeterminada.
+MiK\TeX{}~\cite{miktex:home} es una distribución ligera de \LaTeX{} que incluye los paquetes y herramientas necesarios para compilar documentos. Se caracteriza por su sistema de gestión de paquetes bajo demanda, lo que permite instalar únicamente los componentes necesarios, reduciendo el tamaño de la instalación. Esta particularidad motivó la elección de MiK\TeX{} frente a otras distribuciones como \TeX{}Live\todo{ref?}, la cual realiza instalaciones completas de forma predeterminada.
