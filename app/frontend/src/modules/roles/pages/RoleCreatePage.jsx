@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 const RoleCreatePage = () => {
   
   const navigate = useNavigate();
-  const { createRole, loading } = useRoles();
+  const { createRole, loading, error, clearError } = useRoles();
   const { t } = useTranslation(['common', 'roles']);
 
 
@@ -29,6 +29,8 @@ const RoleCreatePage = () => {
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}
+      error={error}
+      onClearError={clearError}
     >
       <RoleForm
         onSubmit={handleSubmit}

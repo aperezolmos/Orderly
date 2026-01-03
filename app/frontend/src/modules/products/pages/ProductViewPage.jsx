@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Title, Text, Group, Box, Button, LoadingOverlay } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import ProductNutritionInfoView from '../components/ProductNutritionInfoView';
-import { productService } from '../../../services/backend/productService';
+import { useProducts } from '../hooks/useProducts';
 import { useTranslation } from 'react-i18next';
 
 
@@ -12,28 +12,19 @@ const ProductViewPage = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const {
+    currentProduct,
+    loading,
+    error,
+    loadProductById,
+  } = useProducts();
   const { t } = useTranslation(['common', 'products', 'foods']);
 
 
   useEffect(() => {
-    const loadProduct = async () => {
-      setLoading(true);
-      try {
-        const productData = await productService.getProductById(parseInt(id), { detailed: true, includeIngredients: true });
-        setProduct(productData);
-      } 
-      catch (err) {
-        setProduct(null);
-        console.error('Error:', err);
-      } 
-      finally {
-        setLoading(false);
-      }
-    };
-    if (id) loadProduct();
-  }, [id]);
+    if (id) loadProductById(parseInt(id), { detailed: true, includeIngredients: true });
+  }, [id, loadProductById]);
+
 
   if (loading) {
     return (
@@ -48,7 +39,7 @@ const ProductViewPage = () => {
     );
   }
 
-  if (!product) {
+  if (error || !currentProduct) {
     return (
       <ManagementLayout
         title={t('products:management.view')}
@@ -62,6 +53,8 @@ const ProductViewPage = () => {
     );
   }
 
+  const product = currentProduct;
+  
 
   return (
     <ManagementLayout

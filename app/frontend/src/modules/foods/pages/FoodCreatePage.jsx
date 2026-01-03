@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLayout from '../../../common/layouts/FormLayout';
 import FoodForm from '../components/FoodForm';
@@ -9,20 +8,13 @@ import { useTranslation } from 'react-i18next';
 const FoodCreatePage = () => {
   
   const navigate = useNavigate();
-  const { createFood, loading: createLoading } = useFoods();
-  const [error, setError] = useState(null);
+  const { createFood, loading, error, clearError } = useFoods();
   const { t } = useTranslation(['common', 'foods']);
 
 
   const handleSubmit = async (foodData) => {
-    try {
-      setError(null);
-      await createFood(foodData);
-      navigate('/foods', { replace: true });
-    } 
-    catch (err) {
-      setError(err.message);
-    }
+    await createFood(foodData);
+    navigate('/foods', { replace: true });
   };
 
   const breadcrumbs = [
@@ -36,13 +28,13 @@ const FoodCreatePage = () => {
       title={t('foods:management.create')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
-      loading={createLoading}
+      loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <FoodForm
         onSubmit={handleSubmit}
-        loading={createLoading}
+        loading={loading}
         submitLabel={t('foods:form.create')}
       />
     </FormLayout>

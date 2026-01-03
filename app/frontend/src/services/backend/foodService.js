@@ -2,6 +2,7 @@ import { apiClient } from './api';
 
 
 export const foodService = {
+  
   getFoods: async () => apiClient.get('/foods'),
   getFoodById: async (id) => apiClient.get(`/foods/${id}`),
   searchFoods: async (name) => apiClient.get('/foods/search', { name }),

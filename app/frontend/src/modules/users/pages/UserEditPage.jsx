@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
-import { userService } from '../../../services/backend/userService';
+import { useUsers } from '../hooks/useUsers';
 import { useTranslation } from 'react-i18next';
 
 
@@ -12,48 +12,24 @@ const UserEditPage = () => {
   
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    currentUser,
+    loading,
+    error,
+    updateUser,
+    loadUserById,
+    clearError,
+  } = useUsers();
   const { t } = useTranslation(['common', 'users']);
   
 
   useEffect(() => {
-    const loadUser = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const userData = await userService.getUserById(parseInt(id));
-        setUser(userData);
-      } 
-      catch (err) {
-        setError(err.message);
-        console.error('Error loading user:', err); //borrar
-      } 
-      finally {
-        setLoading(false);
-      }
-    };
-    if (id) loadUser();
-  }, [id]);
-
+    if (id) loadUserById(parseInt(id));
+  }, [id, loadUserById]);
 
   const handleSubmit = async (userData) => {
-    try {
-      setSubmitting(true);
-      setError(null);
-      await userService.updateUser(parseInt(id), userData);
-      navigate('/users', { replace: true });
-    } 
-    catch (err) {
-      setError(err.message);
-      console.error('Error updating user:', err); //borrar
-      throw err;
-    } 
-    finally {
-      setSubmitting(false);
-    }
+    await updateUser(parseInt(id), userData);
+    navigate('/users', { replace: true });
   };
 
   const breadcrumbs = [
@@ -69,7 +45,7 @@ const UserEditPage = () => {
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
-        onClearError={() => setError(null)}
+        onClearError={clearError}
       >
         <Alert 
           icon={<IconAlertCircle size="1rem" />} 
@@ -93,12 +69,12 @@ const UserEditPage = () => {
       showBackButton={true}
       loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <UserForm
-        user={user}
+        user={currentUser}
         onSubmit={handleSubmit}
-        loading={submitting}
+        loading={loading}
         submitLabel={t('users:form.update')}
         showRoleManagement={true}
       />

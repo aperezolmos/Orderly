@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import FoodForm from '../components/FoodForm';
-import { foodService } from '../../../services/backend/foodService';
+import { useFoods } from '../hooks/useFoods';
 import { useTranslation } from 'react-i18next';
 
 
@@ -12,45 +12,24 @@ const FoodEditPage = () => {
   
   const { id } = useParams();
   const navigate = useNavigate();
-  const [food, setFood] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    currentFood,
+    loading,
+    error,
+    updateFood,
+    loadFoodById,
+    clearError,
+  } = useFoods();
   const { t } = useTranslation(['common', 'foods']);
   
 
   useEffect(() => {
-    const loadFood = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const foodData = await foodService.getFoodById(parseInt(id));
-        setFood(foodData);
-      } 
-      catch (err) {
-        setError(err.message);
-      } 
-      finally {
-        setLoading(false);
-      }
-    };
-    if (id) loadFood();
-  }, [id]);
+    if (id) loadFoodById(parseInt(id));
+  }, [id, loadFoodById]);
 
   const handleSubmit = async (foodData) => {
-    try {
-      setSubmitting(true);
-      setError(null);
-      await foodService.updateFood(parseInt(id), foodData);
-      navigate('/foods', { replace: true });
-    } 
-    catch (err) {
-      setError(err.message);
-      throw err;
-    } 
-    finally {
-      setSubmitting(false);
-    }
+    await updateFood(parseInt(id), foodData);
+    navigate('/foods', { replace: true });
   };
 
   const breadcrumbs = [
@@ -66,7 +45,7 @@ const FoodEditPage = () => {
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
-        onClearError={() => setError(null)}
+        onClearError={clearError}
       >
         <Alert
           icon={<IconAlertCircle size="1rem" />}
@@ -90,12 +69,12 @@ const FoodEditPage = () => {
       showBackButton={true}
       loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <FoodForm
-        food={food}
+        food={currentFood}
         onSubmit={handleSubmit}
-        loading={submitting}
+        loading={loading}
         submitLabel={t('foods:form.update')}
       />
     </FormLayout>

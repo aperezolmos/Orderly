@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ProductForm from '../components/ProductForm';
-import { productService } from '../../../services/backend/productService';
+import { useProducts } from '../hooks/useProducts';
 import { useTranslation } from 'react-i18next';
 
 
@@ -12,43 +12,24 @@ const ProductEditPage = () => {
   
   const { id } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    currentProduct,
+    loading,
+    error,
+    updateProduct,
+    loadProductById,
+    clearError,
+  } = useProducts();
   const { t } = useTranslation(['common', 'products']);
 
 
   useEffect(() => {
-    const loadProduct = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const productData = await productService.getProductById(parseInt(id), { detailed: true, includeIngredients: true });
-        setProduct(productData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (id) loadProduct();
-  }, [id]);
+    if (id) loadProductById(parseInt(id), { detailed: true, includeIngredients: true });
+  }, [id, loadProductById]);
 
   const handleSubmit = async (productData) => {
-    try {
-      setSubmitting(true);
-      setError(null);
-      await productService.updateProduct(parseInt(id), productData);
-      navigate('/products', { replace: true });
-    } 
-    catch (err) {
-      setError(err.message);
-      throw err;
-    } 
-    finally {
-      setSubmitting(false);
-    }
+    await updateProduct(parseInt(id), productData);
+    navigate('/products', { replace: true });
   };
 
   const breadcrumbs = [
@@ -64,7 +45,7 @@ const ProductEditPage = () => {
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
-        onClearError={() => setError(null)}
+        onClearError={clearError}
       >
         <Alert
           icon={<IconAlertCircle size="1rem" />}
@@ -88,14 +69,14 @@ const ProductEditPage = () => {
       showBackButton={true}
       loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <ProductForm
-        product={product}
+        product={currentProduct}
         onSubmit={handleSubmit}
-        loading={submitting}
+        loading={loading}
         submitLabel={t('products:form.update')}
-        initialIngredients={product?.ingredients || []}
+        initialIngredients={currentProduct?.ingredients || []}
       />
     </FormLayout>
   );

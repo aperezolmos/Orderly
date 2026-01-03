@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import DiningTableForm from '../components/DiningTableForm';
-import { diningTableService } from '../../../services/backend/diningTableService';
+import { useDiningTables } from '../hooks/useDiningTables';
 import { useTranslation } from 'react-i18next';
 
 
@@ -12,45 +12,24 @@ const DiningTableEditPage = () => {
   
   const { id } = useParams();
   const navigate = useNavigate();
-  const [table, setTable] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    currentTable,
+    loading,
+    error,
+    updateTable,
+    loadTableById,
+    clearError,
+  } = useDiningTables();
   const { t } = useTranslation(['common', 'diningTables']);
 
 
   useEffect(() => {
-    const loadTable = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const tableData = await diningTableService.getTableById(parseInt(id));
-        setTable(tableData);
-      } catch (err) {
-        setError(err.message);
-        console.error('Error loading table:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      loadTable();
-    }
-  }, [id]);
+    if (id) loadTableById(parseInt(id));
+  }, [id, loadTableById]);
 
   const handleSubmit = async (tableData) => {
-    try {
-      setSubmitting(true);
-      setError(null);
-      await diningTableService.updateTable(parseInt(id), tableData);
-      navigate('/tables', { replace: true });
-    } catch (err) {
-      setError(err.message);
-      throw err;
-    } finally {
-      setSubmitting(false);
-    }
+    await updateTable(parseInt(id), tableData);
+    navigate('/tables', { replace: true });
   };
 
   const breadcrumbs = [
@@ -66,7 +45,7 @@ const DiningTableEditPage = () => {
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
-        onClearError={() => setError(null)}
+        onClearError={clearError}
       >
         <Alert
           icon={<IconAlertCircle size="1rem" />}
@@ -90,12 +69,12 @@ const DiningTableEditPage = () => {
       showBackButton={true}
       loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <DiningTableForm
-        table={table}
+        table={currentTable}
         onSubmit={handleSubmit}
-        loading={submitting}
+        loading={loading}
         submitLabel={t('diningTables:form.update')}
       />
     </FormLayout>
