@@ -1,0 +1,98 @@
+import { useState } from 'react';
+import { Stack, Pagination, Loader, Center, Alert, Group, TextInput, Button } from '@mantine/core';
+import { IconAlertCircle, IconSearchOff, IconSearch } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
+import { useOpenFoodFactsSearch } from '../hooks/useOpenFoodFactsSearch';
+import OpenFoodFactsResultsList from './OpenFoodFactsResultsList';
+
+
+const OpenFoodFactsSearchTab = () => {
+  
+  const [query, setQuery] = useState('');
+  const {
+    results,
+    loading,
+    error,
+    page,
+    pageCount,
+    search,
+    setPage,
+    searched,
+  } = useOpenFoodFactsSearch();
+  const { t } = useTranslation(['foods']);
+
+
+  const handleSearch = (q) => {
+    setQuery(q);
+    search(q, 1);
+  };
+
+
+  return (
+    <Stack>
+      {/* Search Bar */}
+      <Group align="end" gap="xs">
+        <TextInput
+          label={t('foods:off.searchLabel')}
+          placeholder={t('foods:off.searchPlaceholder')}
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') handleSearch(query);
+          }}
+          style={{ flex: 1 }}
+          disabled={loading}
+        />
+        <Button
+          leftSection={<IconSearch size={16} />}
+          onClick={() => handleSearch(query)}
+          loading={loading}
+          disabled={!query.trim()}
+        >
+          {t('foods:off.searchButton')}
+        </Button>
+      </Group>
+      
+      {loading && (
+        <Center mt="md" p="xl">
+          <Loader />
+        </Center>
+      )}
+      
+      {!loading && error && (
+        <Alert
+          icon={<IconAlertCircle size="1rem" />}
+          title={t('foods:off.errorTitle')}
+          color="red"
+          mt="md"
+        >
+          {error}
+        </Alert>
+      )}
+      
+      {!loading && searched && results.length === 0 && !error && (
+        <Alert
+          icon={<IconSearchOff size="1rem" />}
+          title={t('foods:off.noResults')}
+          color="blue"
+          mt="md"
+        >
+          {t('foods:off.noResults')}
+        </Alert>
+      )}
+      
+      {!loading && results.length > 0 && (
+        <>
+          <OpenFoodFactsResultsList results={results} />
+          {pageCount > 1 && (
+            <Center mt="md">
+              <Pagination value={page} onChange={setPage} total={pageCount} />
+            </Center>
+          )}
+        </>
+      )}
+    </Stack>
+  );
+};
+
+export default OpenFoodFactsSearchTab;

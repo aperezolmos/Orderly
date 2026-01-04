@@ -89,5 +89,20 @@
     "loadError": "Error loading food",
     "notFound": "Could not load food with ID: {{id}}",
     "notFoundDetails": "The food may have been deleted or you may not have permission to access it"
+  },
+  "create": {
+    "manualTab": "Manual",
+    "offTab": "Search in Open Food Facts"
+  },
+  "off": {
+    "searchLabel": "Search food",
+    "searchPlaceholder": "Enter name or part of the name",
+    "searchButton": "Search",
+    "addButton": "Add",
+    "noResults": "No results found for your search",
+    "error": "Error searching in Open Food Facts",
+    "errorTitle": "Search error",
+    "noBrand": "No brand",
+    "noName": "No name"
   }
 }
