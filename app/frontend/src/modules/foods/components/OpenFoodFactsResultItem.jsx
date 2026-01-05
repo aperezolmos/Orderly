@@ -6,7 +6,7 @@ const NO_IMAGE_PLACEHOLDER =
   'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg';
 
 
-const OpenFoodFactsResultItem = ({ product }) => {
+const OpenFoodFactsResultItem = ({ product, onAdd, disabled }) => {
   
   const { t } = useTranslation(['foods']);
 
@@ -16,8 +16,9 @@ const OpenFoodFactsResultItem = ({ product }) => {
 
 
   const handleAdd = () => {
-    // TODO: por ahora solo logueamos el producto
-    console.log('Selected OFF product:', product);
+    if (onAdd && !disabled) {
+      onAdd(product.code);
+    }
   };
   
 
@@ -78,6 +79,7 @@ const OpenFoodFactsResultItem = ({ product }) => {
           color="green" 
           onClick={handleAdd}
           style={{ flexShrink: 0, minWidth: 'fit-content' }}
+          disabled={disabled}
         >
           {t('foods:off.addButton')}
         </Button>

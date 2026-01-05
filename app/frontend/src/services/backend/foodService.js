@@ -10,4 +10,10 @@ export const foodService = {
   updateFood: async (id, foodData) => apiClient.put(`/foods/${id}`, foodData),
   deleteFood: async (id) => apiClient.delete(`/foods/${id}`),
   checkFoodNameAvailability: async (name) => apiClient.get(`/foods/name/${encodeURIComponent(name)}/exists`),
+
+
+  // ======================
+  // EXTERNAL API (OFF)
+  // ======================
+  createFoodFromOFFBarcode: async (barcode) => apiClient.post(`/foods/external/${barcode}`),
 };

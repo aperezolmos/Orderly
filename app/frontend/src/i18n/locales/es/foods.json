@@ -103,6 +103,7 @@
     "error": "Error al buscar en Open Food Facts",
     "errorTitle": "Error de búsqueda",
     "noBrand": "Sin marca",
-    "noName": "Sin nombre"
+    "noName": "Sin nombre",
+    "creatingFood": "Creando alimento desde Open Food Facts..."
   }
 }
