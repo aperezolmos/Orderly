@@ -109,6 +109,15 @@ public class GlobalExceptionHandler {
             ex.getMessage());
     }
 
+    @ExceptionHandler(OpenFoodFactsException.class)
+    public ResponseEntity<ErrorResponse> handleOpenFoodFactsException(OpenFoodFactsException ex) {
+        return createErrorResponseEntity(
+            HttpStatus.BAD_GATEWAY,
+            "External API (Open Food Facts) error",
+            ex.getMessage()
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
 

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ProductForm from '../components/ProductForm';
@@ -9,19 +8,13 @@ import { useTranslation } from 'react-i18next';
 const ProductCreatePage = () => {
   
   const navigate = useNavigate();
-  const { createProduct, loading: createLoading } = useProducts();
-  const [error, setError] = useState(null);
+  const { createProduct, loading, error, clearError } = useProducts();
   const { t } = useTranslation(['common', 'products']);
 
 
   const handleSubmit = async (productData) => {
-    try {
-      setError(null);
-      await createProduct(productData);
-      navigate('/products', { replace: true });
-    } catch (err) {
-      setError(err.message);
-    }
+    await createProduct(productData);
+    navigate('/products', { replace: true });
   };
 
   const breadcrumbs = [
@@ -35,13 +28,13 @@ const ProductCreatePage = () => {
       title={t('products:management.create')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
-      loading={createLoading}
+      loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <ProductForm
         onSubmit={handleSubmit}
-        loading={createLoading}
+        loading={loading}
         submitLabel={t('products:form.create')}
       />
     </FormLayout>

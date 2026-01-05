@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLayout from '../../../common/layouts/FormLayout';
 import DiningTableForm from '../components/DiningTableForm';
@@ -9,19 +8,13 @@ import { useTranslation } from 'react-i18next';
 const DiningTableCreatePage = () => {
 
   const navigate = useNavigate();
-  const { createTable, loading: createLoading } = useDiningTables();
-  const [error, setError] = useState(null);
+  const { createTable, loading, error, clearError } = useDiningTables();
   const { t } = useTranslation(['common', 'diningTables']);
 
 
   const handleSubmit = async (tableData) => {
-    try {
-      setError(null);
-      await createTable(tableData);
-      navigate('/tables', { replace: true });
-    } catch (err) {
-      setError(err.message);
-    }
+    await createTable(tableData);
+    navigate('/tables', { replace: true });
   };
 
   const breadcrumbs = [
@@ -35,13 +28,13 @@ const DiningTableCreatePage = () => {
       title={t('diningTables:management.create')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
-      loading={createLoading}
+      loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <DiningTableForm
         onSubmit={handleSubmit}
-        loading={createLoading}
+        loading={loading}
         submitLabel={t('diningTables:form.create')}
       />
     </FormLayout>

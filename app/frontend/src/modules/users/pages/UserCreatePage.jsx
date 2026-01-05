@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
@@ -9,20 +8,13 @@ import { useTranslation } from 'react-i18next';
 const UserCreatePage = () => {
   
   const navigate = useNavigate();
-  const { createUser, loading: createLoading } = useUsers();
-  const [error, setError] = useState(null);
+  const { createUser, loading, error, clearError } = useUsers();
   const { t } = useTranslation(['common', 'users']);
 
 
   const handleSubmit = async (userData) => {
-    try {
-      setError(null);
-      await createUser(userData);
-      navigate('/users', { replace: true });
-    } 
-    catch (err) {
-      setError(err.message);
-    }
+    await createUser(userData);
+    navigate('/users', { replace: true });
   };
 
   const breadcrumbs = [
@@ -36,13 +28,13 @@ const UserCreatePage = () => {
       title={t('users:management.create')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
-      loading={createLoading}
+      loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <UserForm
         onSubmit={handleSubmit}
-        loading={createLoading}
+        loading={loading}
         submitLabel={t('users:form.create')}
         showRoleManagement={true}
       />
