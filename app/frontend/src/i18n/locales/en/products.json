@@ -51,6 +51,9 @@
     "edit": "Edit"
   },
   "nutrition": {
-    "title": "Total Nutrition Information"
+    "title": "Total Nutrition Information",
+    "chartView": "Chart",
+    "tableView": "Table",
+    "pieChartNote": "The chart shows the proportion of major macronutrients in the outer ring and their subcomponents in the inner ring"
   }
 }

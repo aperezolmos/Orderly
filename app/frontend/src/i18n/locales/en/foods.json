@@ -16,6 +16,8 @@
     "update": "Update Food",
     "nutritionInfo": {
       "title": "Nutrition Information",
+      "value": "Value",
+      "reference": "Reference",
       "calories": "Calories",
       "carbohydrates": "Carbohydrates",
       "fats": "Fats",

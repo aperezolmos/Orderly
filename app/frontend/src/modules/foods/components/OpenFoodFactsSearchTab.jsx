@@ -41,7 +41,7 @@ const OpenFoodFactsSearchTab = () => {
           zIndex={10}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
         >
-          <Center style={{ flexDirection: 'column', minHeight: 200 }}> //TODO. ahora está en el centro de la lista, pero eso puede estar fuera de la pantalla
+          <Center style={{ flexDirection: 'column', minHeight: 200 }}> 
             <Loader size="lg" />
             <Text mt="md" ta="center">{t('foods:off.creatingFood')}</Text>
           </Center>
