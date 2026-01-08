@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.food;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
 import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+import es.ubu.inf.tfg.food.external.OpenFoodFactsService;
 
 import jakarta.validation.Valid;
 
@@ -22,6 +23,7 @@ import java.util.List;
 public class FoodController {
 
     private final FoodService foodService;
+    private final OpenFoodFactsService openFoodFactsService;
     
 
     @GetMapping
@@ -54,6 +56,14 @@ public class FoodController {
     @PostMapping
     @PreAuthorize("hasAuthority('FOOD_CREATE')")
     public ResponseEntity<FoodResponseDTO> createFood(@Valid @RequestBody FoodRequestDTO foodRequest) {
+        FoodResponseDTO createdFood = foodService.create(foodRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdFood);
+    }
+
+    @PostMapping("/external/{barcode}")
+    @PreAuthorize("hasAuthority('FOOD_CREATE')")
+    public ResponseEntity<FoodResponseDTO> createFoodFromExternalAPI(@PathVariable String barcode) {
+        FoodRequestDTO foodRequest = openFoodFactsService.createFoodFromOpenFoodFacts(barcode);
         FoodResponseDTO createdFood = foodService.create(foodRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFood);
     }

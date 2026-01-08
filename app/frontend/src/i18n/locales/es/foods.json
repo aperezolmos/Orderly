@@ -16,6 +16,8 @@
     "update": "Actualizar Alimento",
     "nutritionInfo": {
       "title": "Información Nutricional",
+      "value": "Valor",
+      "reference": "Referencia",
       "calories": "Calorías",
       "carbohydrates": "Carbohidratos",
       "fats": "Grasas",
@@ -89,5 +91,21 @@
     "loadError": "Error cargando alimento",
     "notFound": "No se pudo cargar el alimento con ID: {{id}}",
     "notFoundDetails": "El alimento puede haber sido eliminado o no tienes permiso para acceder a él"
+  },
+  "create": {
+    "manualTab": "Manual",
+    "offTab": "Buscar en Open Food Facts"
+  },
+  "off": {
+    "searchLabel": "Buscar alimento",
+    "searchPlaceholder": "Introduce nombre o parte del nombre",
+    "searchButton": "Buscar",
+    "addButton": "Añadir",
+    "noResults": "No se encontraron resultados para tu búsqueda",
+    "error": "Error al buscar en Open Food Facts",
+    "errorTitle": "Error de búsqueda",
+    "noBrand": "Sin marca",
+    "noName": "Sin nombre",
+    "creatingFood": "Creando alimento desde Open Food Facts..."
   }
 }

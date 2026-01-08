@@ -1,6 +1,6 @@
 \capitulo{4}{Técnicas y herramientas}
 
-En este capítulo se describen las metodologías y herramientas tecnológicas escogidas para el desarrollo del proyecto, detallando los aspectos principales y justificando los motivos de su selección.
+En este capítulo se describen las metodologías y herramientas tecnológicas escogidas para el desarrollo del trabajo, detallando los aspectos principales y justificando los motivos de su selección.
 
 % Se puede encontrar un resumen de las herramientas utilizadas para cada parte del proyecto en la tabla <ref>.
 
@@ -59,23 +59,24 @@ A diferencia de los
 en los que las entidades actúan únicamente como contenedores de información, un modelo de dominio enriquecido incluye lógica de negocio relevante dentro de las propias clases del dominio. Este enfoque favorece una mayor cohesión, una mejor representación del dominio del problema y una distribución más natural de las responsabilidades dentro del sistema.
 
 \subsubsection{\textit{Domain-Driven Design}}
-\todo[inline]{Incluir? -> no se ha aplicado al 100\%. se ha aplicado en la estructura de directorios y en los métodos que realizan las entidades propietarias (ej: los productos manejan sus propios ingredientes, los pedidos manejan sus líneas de pedido, etc.)}
+\todo[inline]{Incluir -> no se ha aplicado al 100\%. se ha aplicado en la estructura de directorios y en los métodos que realizan las entidades propietarias (ej: los productos manejan sus propios ingredientes, los pedidos manejan sus líneas de pedido, etc.)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Patrón de arquitectura}
-\todo[inline]{Incluir aquí o en los anexos? -> o introducir brevemente aquí y expandir en anexos}
+\todo[inline]{Introducir brevemente aquí y expandir en anexos}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Tecnologías y \textit{frameworks} principales}
+\label{sec:4.3_tecnologias}
 
 \subsection{\textit{Backend}}
 \subsubsection{Spring Boot}
 \textit{Spring Boot}~\cite{tokioschool:springBoot} es un \textit{framework} del ecosistema \textit{Spring}~\cite{spring:springFramework} diseñado para simplificar el desarrollo de aplicaciones \textit{backend} basadas en Java. Proporciona configuración automática, un sistema de dependencias gestionado y un servidor embebido, lo que permite crear aplicaciones listas para producción con un esfuerzo de configuración mínimo. Está especialmente orientado al desarrollo de servicios web y APIs REST.
 
 \subsubsection{Spring Data JPA}
-\textit{Spring Data JPA}~\cite{spring:springJPA} es un módulo de \textit{Spring}~\cite{spring:springFramework} que facilita el acceso y la persistencia de datos mediante la especificación JPA (\textit{Java Persistence API})\todo{ref}.
+\textit{Spring Data JPA}~\cite{spring:springJPA} es un módulo de \textit{Spring}~\cite{spring:springFramework} que facilita el acceso y la persistencia de datos mediante la especificación JPA (\textit{Java Persistence API})\todo{ref a url o concepto apdo 3}.
 
 JPA define un estándar para el mapeo objeto-relacional (ORM), permitiendo representar tablas de bases de datos como entidades Java. \textit{Spring Data JPA} abstrae gran parte del código repetitivo asociado al acceso a datos, proporcionando repositorios y mecanismos automáticos de generación de consultas.
 
@@ -85,35 +86,39 @@ JPA define un estándar para el mapeo objeto-relacional (ORM), permitiendo repre
 o accesos no autorizados. Se integra de forma nativa con \textit{Spring Boot} y permite definir políticas de seguridad de manera flexible y extensible.
 
 \subsubsection{Spring Validation}
-\textit{Spring Validation}\todo{ref y revisar texto} es un módulo que permite validar datos de entrada mediante anotaciones declarativas. Se basa en la especificación \textit{Bean Validation}\todo{ref} y se utiliza habitualmente para comprobar la validez de los datos recibidos en peticiones, asegurando el cumplimiento de restricciones como valores obligatorios, rangos numéricos o formatos específicos.
+\textit{Spring Validation}~\cite{spring:validation} es un módulo que permite validar datos de entrada mediante anotaciones declarativas. Se basa en la especificación 
+\href{https://www.baeldung.com/java-validation}{\textit{Bean Validation}} 
+y se utiliza habitualmente para comprobar la validez de los datos recibidos en peticiones, asegurando el cumplimiento de restricciones como valores obligatorios, rangos numéricos o formatos específicos.
 \todo[inline]{dónde lo usamos nosotros -> dtos}
 
 \subsubsection{Lombok}
 \textit{Lombok}~\cite{spring:lombok} es una biblioteca que reduce la cantidad de código repetitivo (\textit{``boilerplate''}) en aplicaciones Java mediante el uso de anotaciones. Permite generar automáticamente métodos comunes como \textit{getters}, \textit{setters}, constructores o métodos \texttt{equals} y \texttt{hashCode} durante el proceso de compilación, mejorando la legibilidad y mantenibilidad del código.
 
 \subsubsection{MapStruct}
-\textit{MapStruct}~\cite{spring:mapstruct} es una herramienta de mapeo de objetos que permite transformar de forma automática y segura objetos de un tipo a otro, como entidades y DTOs (ver <ref>\todo{ref a concepto del apartado 3}). Genera código en tiempo de compilación, lo que ofrece un alto rendimiento y evita errores en tiempo de ejecución, manteniendo una separación clara entre las distintas capas de la aplicación.
+\textit{MapStruct}~\cite{spring:mapstruct} es una herramienta de mapeo de objetos que permite transformar de forma automática y segura objetos de un tipo a otro, como entidades y DTOs. Genera código en tiempo de compilación, lo que ofrece un alto rendimiento y evita errores en tiempo de ejecución, manteniendo una separación clara entre las distintas capas de la aplicación.
 
 \subsubsection{MySQL}
 \textit{MySQL}~\cite{wiki:mysql} es un sistema de gestión de bases de datos relacional ampliamente utilizado en aplicaciones empresariales y web. Se caracteriza por su rendimiento, fiabilidad y compatibilidad con múltiples plataformas. En el contexto de aplicaciones \textit{Spring Boot}, se emplea junto con el controlador JDBC correspondiente para permitir la comunicación entre la aplicación y la base de datos~\cite{spring:mysql}.
 
 \subsection{\textit{Frontend}}
 \subsubsection{React}
-\textit{React}~\cite{react:intro} es una biblioteca de JavaScript para la construcción de interfaces de usuario basadas en componentes reutilizables. Se centra en la creación de vistas declarativas y en la gestión eficiente del estado y la actualización del \href{https://www.geeksforgeeks.org/javascript/dom-document-object-model/}{DOM}\todo{ref a url o redactar concepto en apartado 3?} 
+\textit{React}~\cite{react:intro} es una biblioteca de JavaScript para la construcción de interfaces de usuario basadas en componentes reutilizables. Se centra en la creación de vistas declarativas y en la gestión eficiente del estado y la actualización del \href{https://www.geeksforgeeks.org/javascript/dom-document-object-model/}{DOM} (\textit{Document Object Model}) 
 mediante un modelo de renderizado reactivo.
+
+Su elección se justifica frente a alternativas como \textit{Thymeleaf}\todo{ref?} por las necesidades específicas del proyecto: la gestión de un elevado número de entidades (productos, pedidos, reservas, usuarios, etc.) y la exigencia de una interfaz dinámica y reactiva. El paradigma basado en \textbf{componentes} y la \textbf{arquitectura SPA} de \textit{React} permiten un desarrollo más modular, mantenible y con mejor experiencia de usuario.
+
+Pese a no haber utilizado \textit{React} previamente, el análisis del proyecto de referencia NutriMenu~\cite{nutrimenu2024} permitió evaluar su viabilidad y agilizar el aprendizaje inicial. Su adopción supuso, por lo tanto, un reto formativo para dominar una herramienta estándar en el sector
 
 \subsubsection{Vite}
 \textit{Vite}~\cite{vite:intro} es una herramienta de construcción y desarrollo \textit{frontend} que proporciona un entorno de desarrollo rápido y optimizado. Utiliza un servidor de desarrollo basado en 
-\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules}{módulos ES} 
+\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules}{módulos ES} \todo{revisar}
 y genera \textit{builds} de producción altamente eficientes, reduciendo significativamente los tiempos de arranque y recarga.
 
 \subsubsection{Mantine}
 \textit{Mantine}~\cite{react:mantine} es una biblioteca de componentes para \textit{React} que proporciona elementos de interfaz modernos, accesibles y personalizables. Incluye componentes visuales, utilidades de estilo y \textit{hooks} que facilitan el desarrollo de interfaces coherentes y funcionales.
 
-\imagenConEtiqueta{img/apdo_4/4_mantine_componentes.png}{Ejemplos de componentes de \textit{Mantine UI}}{4_mantine_componentes}\todo{incluir imagen?}
-
 \subsubsection{React Router}
-\textit{React Router}~\cite{react:router} es una biblioteca de enrutamiento para aplicaciones \textit{React} que permite gestionar la navegación entre distintas vistas sin recargar la página. Facilita la creación de aplicaciones de una sola página (\textit{Single Page Applications}\todo{ref a concepto del apartado 3}) mediante rutas declarativas y dinámicas.
+\textit{React Router}~\cite{react:router} es una biblioteca de enrutamiento para aplicaciones \textit{React} que permite gestionar la navegación entre distintas vistas sin recargar la página. Facilita la creación de aplicaciones de una sola página (\textit{Single Page Applications}) mediante rutas declarativas y dinámicas.
 
 \subsubsection{i18next y react-i18next}
 \textit{i18next}~\cite{react:i18next} es un \textit{framework} de internacionalización que permite gestionar traducciones y contenido multilingüe en aplicaciones \textit{frontend}. La librería \textit{react-i18next}~\cite{react:react-i18next} proporciona integración específica con \textit{React}, facilitando la adaptación dinámica de la interfaz al idioma seleccionado por el usuario.
@@ -123,28 +128,30 @@ y genera \textit{builds} de producción altamente eficientes, reduciendo signifi
 
 \subsection{Contenedores y despliegue}
 \subsubsection{Docker}
-\textit{Docker}~\cite{docker:overview} es una plataforma de \revisionA{contenedorización}\todo{o contenerización??} que permite empaquetar aplicaciones junto con sus dependencias en contenedores ligeros y portables. Esto garantiza que la aplicación se ejecute de forma consistente en diferentes entornos, facilitando el despliegue y la reproducibilidad.\todo{explicar más?? concepto de contenedor??}
+\textit{Docker}~\cite{docker:overview} es una plataforma de contenerización que permite empaquetar aplicaciones junto con sus dependencias en contenedores ligeros y portables. Esto garantiza que la aplicación se ejecute de forma consistente en diferentes entornos, facilitando el despliegue y la reproducibilidad.
 
 \subsubsection{Docker Compose}
 \textit{Docker Compose}~\cite{docker:compose} es una herramienta que permite definir y gestionar aplicaciones compuestas por múltiples contenedores mediante archivos de configuración declarativos. Facilita la orquestación de servicios, la definición de redes y volúmenes, y el despliegue conjunto de todos los componentes de una aplicación.
 
-\subsection{API de información nutricional \revisionB{(cambiar título)}}
+\subsection{API de información nutricional: \textit{Open Food Facts}}
 \todo[inline]{Redactar...}
 
-\subsection{\textit{Testing} y calidad del software \revisionC{(incluir?)}}
+%\todo[inline]{Explicar brevemente los endpoints utilizados o los datos extraídos de la api¿?}
+
+\subsection{\textit{Testing} y calidad del software}
 \subsubsection{JUnit}
-\textit{JUnit} es un \textit{framework} de pruebas unitarias para Java que permite verificar el correcto funcionamiento de componentes individuales del sistema. Facilita la automatización de pruebas y la detección temprana de errores durante el desarrollo.
+\textit{JUnit}~\cite{tutorialspoint:junit} es un \textit{framework} de pruebas unitarias para Java que permite verificar el correcto funcionamiento de componentes individuales del sistema. Facilita la automatización de pruebas y la detección temprana de errores durante el desarrollo.
 
 \subsubsection{Mockito}
-\textit{Mockito} es una biblioteca de apoyo para pruebas que permite crear objetos simulados (\textit{mocks}) con el fin de aislar componentes y controlar su comportamiento durante la ejecución de las pruebas. Es especialmente útil para probar clases que dependen de otros componentes del sistema.
+\textit{Mockito}~\cite{tutorialspoint:mockito} es una biblioteca de apoyo para pruebas que permite crear objetos simulados (\textit{mocks}) con el fin de aislar componentes y controlar su comportamiento durante la ejecución de las pruebas. Es especialmente útil para probar clases que dependen de otros componentes del sistema.
 
 \subsubsection{Spring Boot Test}
-\textit{Spring Boot Test} es un módulo que proporciona soporte específico para la realización de pruebas en aplicaciones \textit{Spring Boot}. Permite cargar contextos de aplicación, simular peticiones HTTP y realizar pruebas de integración de forma controlada.
+\textit{Spring Boot Test} es un módulo que proporciona soporte específico para la realización de pruebas en aplicaciones \textit{Spring Boot}. Permite cargar contextos de aplicación, simular peticiones HTTP y realizar pruebas de integración de forma controlada~\cite{spring:integrationTest}.
 
 \subsubsection{H2}
-\textit{H2} es un sistema de base de datos relacional en memoria utilizado habitualmente en entornos de pruebas. Permite ejecutar pruebas de acceso a datos sin depender de una base de datos externa, garantizando rapidez y aislamiento en los tests.
+\textit{H2}~\cite{medium:h2} es un sistema de base de datos relacional en memoria utilizado habitualmente en entornos de pruebas. Permite ejecutar pruebas de acceso a datos sin depender de una base de datos externa, garantizando rapidez y aislamiento en los tests.
 
-\subsection{Automatizaciones \revisionB{(cambiar título)}}
+\subsection{Automatizaciones}
 \todo[inline]{SonarCloud, Github actions...}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -184,10 +191,13 @@ Para este proyecto se ha hecho uso del
 \href{https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack}{\textit{Extension Pack for Java}}, 
 un conjunto de herramientas que proporciona soporte avanzado para el lenguaje. Incluye autocompletado inteligente, navegación por el código, refactorización, ejecución y depuración de aplicaciones, así como integración con herramientas de construcción y pruebas.
 
-\subsubsection{Postman}
-\textit{Postman}~\cite{postman:product} es una herramienta de desarrollo que permite diseñar, ejecutar y analizar peticiones HTTP a servicios web, especialmente APIs REST. Facilita el envío de solicitudes con distintos métodos (\textit{GET, POST, PUT, DELETE}, etc.), la configuración de cabeceras y cuerpos de petición, y la visualización detallada de las respuestas devueltas por el servidor. \textit{Postman} se utiliza habitualmente para verificar el comportamiento de los \textit{endpoints}, validar respuestas y apoyar el proceso de desarrollo y depuración de APIs.
+A pesar de que existen entornos específicos para el desarrollo con Java, como \textit{IntelliJ IDEA}%~\cite{intelliJ:docs}
+, se optó por \textit{VS Code} debido a la familiaridad con su flujo de trabajo tras su uso continuado durante el grado. Gracias al mencionado sistema de extensiones, este editor ofrece una experiencia equiparable en potencia y funcionalidad.
 
-\todo[inline]{se ha usado para ver las respuestas de la API spring boot y la api nutricional...}
+\subsubsection{Postman}
+\textit{Postman}~\cite{postman:product} es una herramienta de desarrollo que permite diseñar, ejecutar y analizar peticiones HTTP a servicios web, especialmente APIs REST. Facilita el envío de solicitudes con distintos métodos (\textit{GET, POST, PUT, DELETE}, etc.), la configuración de cabeceras y cuerpos de petición, y la visualización detallada de las respuestas devueltas por el servidor. 
+
+\textit{Postman} se utiliza habitualmente para verificar el comportamiento de los \textit{endpoints}, validar respuestas y apoyar el proceso de desarrollo y depuración de APIs. En este proyecto, se ha usado principalmente para validar la lógica de la API desarrollada con \textit{Spring Boot}, así como para testear las respuestas provenientes de las APIs nutricionales externas, facilitando así su posterior integración en el sistema.
 
 \subsection{Documentación}
 \subsubsection{LaTeX}
@@ -201,4 +211,4 @@ La herramienta escogida inicialmente fue \textit{Overleaf}~\cite{overleaf:about}
 Es por ello que se trasladó el flujo de trabajo al entorno local mediante, manteniendo la documentación sincronizada tanto en el repositorio de \textit{GitHub} como en la plataforma de \textit{Overleaf}. De este modo, el tutor podría disponer siempre del documento más reciente para su revisión.
 
 \subsubsection{MiKTeX}
-MiK\TeX{}~\cite{miktex:home} es una distribución ligera de \LaTeX{} que incluye los paquetes y herramientas necesarios para compilar documentos. Se caracteriza por su sistema de gestión de paquetes bajo demanda, lo que permite instalar únicamente los componentes necesarios, reduciendo el tamaño de la instalación. Esta particularidad motivó la elección de MiK\TeX{} frente a otras distribuciones como \TeX{}Live, la cual realiza instalaciones completas de forma predeterminada.\todo{incluir esta última frase?}
+MiK\TeX{}~\cite{miktex:home} es una distribución ligera de \LaTeX{} que incluye los paquetes y herramientas necesarios para compilar documentos. Se caracteriza por su sistema de gestión de paquetes bajo demanda, lo que permite instalar únicamente los componentes necesarios, reduciendo el tamaño de la instalación. Esta particularidad motivó la elección de MiK\TeX{} frente a otras distribuciones como \TeX{}Live\todo{ref?}, la cual realiza instalaciones completas de forma predeterminada.

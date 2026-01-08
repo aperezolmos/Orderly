@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ReservationForm from '../components/ReservationForm';
@@ -9,19 +8,13 @@ import { useTranslation } from 'react-i18next';
 const ReservationCreatePage = () => {
   
   const navigate = useNavigate();
-  const { createReservation, loading: createLoading } = useReservations();
-  const [error, setError] = useState(null);
+  const { createReservation, loading, error, clearError } = useReservations();
   const { t } = useTranslation(['common', 'reservations']);
 
 
   const handleSubmit = async (reservationData) => {
-    try {
-      setError(null);
-      await createReservation(reservationData);
-      navigate('/reservations', { replace: true });
-    } catch (err) {
-      setError(err.message);
-    }
+    await createReservation(reservationData);
+    navigate('/reservations', { replace: true });
   };
 
   const breadcrumbs = [
@@ -35,13 +28,13 @@ const ReservationCreatePage = () => {
       title={t('reservations:management.create')}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
-      loading={createLoading}
+      loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <ReservationForm
         onSubmit={handleSubmit}
-        loading={createLoading}
+        loading={loading}
         submitLabel={t('reservations:form.create')}
       />
     </FormLayout>

@@ -51,6 +51,9 @@
     "edit": "Editar"
   },
   "nutrition": {
-    "title": "Información Nutricional Total"
+    "title": "Información Nutricional Total",
+    "chartView": "Gráfico",
+    "tableView": "Tabla",
+    "pieChartNote": "El gráfico muestra la proporción de macronutrientes principales en el anillo exterior y sus subcomponentes en el interior"
   }
 }

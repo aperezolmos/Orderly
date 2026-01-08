@@ -7,17 +7,16 @@ import { useTranslation } from 'react-i18next';
 export const useRoles = () => {
   
   const [roles, setRoles] = useState([]);
+  const [currentRole, setCurrentRole] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { t } = useTranslation(['common', 'roles']);
   
 
   const loadRoles = useCallback(async () => {
-    if (loading) return;
-    
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      setError(null);
       const data = await roleService.getRoles();
       setRoles(data);
     } 
@@ -32,16 +31,35 @@ export const useRoles = () => {
     finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
-  useEffect(() => {
-    loadRoles();
-  }, []);
-  
+  const loadRoleById = useCallback(async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const role = await roleService.getRoleById(id);
+      setCurrentRole(role);
+      return role;
+    } 
+    catch (err) {
+      setError(err.message);
+      setCurrentRole(null);
+      notifications.show({
+        title: t('roles:notifications.loadError'),
+        message: err.message,
+        color: 'red',
+      });
+      throw err;
+    } 
+    finally {
+      setLoading(false);
+    }
+  }, [t]);
 
   const createRole = async (roleData) => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
       const newRole = await roleService.createRole(roleData);
       setRoles(prev => [...prev, newRole]);
       notifications.show({
@@ -52,6 +70,7 @@ export const useRoles = () => {
       return newRole;
     } 
     catch (err) {
+      setError(err.message);
       notifications.show({
         title: t('roles:notifications.createError'),
         message: err.message,
@@ -65,12 +84,12 @@ export const useRoles = () => {
   };
 
   const updateRole = async (id, roleData) => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
       const updatedRole = await roleService.updateRole(id, roleData);
-      setRoles(prev => prev.map(role => 
-        role.id === id ? updatedRole : role
-      ));
+      setRoles(prev => prev.map(role => role.id === id ? updatedRole : role));
+      setCurrentRole(updatedRole);
       notifications.show({
         title: t('common:app.success'),
         message: t('roles:notifications.updateSuccess'),
@@ -79,6 +98,7 @@ export const useRoles = () => {
       return updatedRole;
     } 
     catch (err) {
+      setError(err.message);
       notifications.show({
         title: t('roles:notifications.updateError'),
         message: err.message,
@@ -92,10 +112,12 @@ export const useRoles = () => {
   };
 
   const deleteRole = async (id) => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
       await roleService.deleteRole(id);
       setRoles(prev => prev.filter(role => role.id !== id));
+      if (currentRole && currentRole.id === id) setCurrentRole(null);
       notifications.show({
         title: t('common:app.success'),
         message: t('roles:notifications.deleteSuccess'),
@@ -103,6 +125,7 @@ export const useRoles = () => {
       });
     } 
     catch (err) {
+      setError(err.message);
       notifications.show({
         title: t('roles:notifications.deleteError'),
         message: err.message,
@@ -116,13 +139,25 @@ export const useRoles = () => {
   };
 
 
+  const clearCurrentRole = () => setCurrentRole(null);
+  const clearError = () => setError(null);
+
+  useEffect(() => {
+    loadRoles();
+  }, [loadRoles]);
+
+
   return {
     roles,
+    currentRole,
     loading,
     error,
     loadRoles,
+    loadRoleById,
     createRole,
     updateRole,
     deleteRole,
+    clearCurrentRole,
+    clearError,
   };
 };

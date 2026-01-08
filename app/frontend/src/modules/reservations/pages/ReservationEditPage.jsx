@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ReservationForm from '../components/ReservationForm';
-import { reservationService } from '../../../services/backend/reservationService';
+import { useReservations } from '../hooks/useReservations';
 import { useTranslation } from 'react-i18next';
 
 
@@ -12,45 +12,24 @@ const ReservationEditPage = () => {
   
   const { id } = useParams();
   const navigate = useNavigate();
-  const [reservation, setReservation] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    currentReservation,
+    loading,
+    error,
+    updateReservation,
+    loadReservationById,
+    clearError,
+  } = useReservations();
   const { t } = useTranslation(['common', 'reservations']);
 
 
   useEffect(() => {
-    const loadReservation = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await reservationService.getReservationById(parseInt(id));
-        setReservation(data);
-      } 
-      catch (err) {
-        setError(err.message);
-      } 
-      finally {
-        setLoading(false);
-      }
-    };
-    if (id) loadReservation();
-  }, [id]);
+    if (id) loadReservationById(parseInt(id));
+  }, [id, loadReservationById]);
 
   const handleSubmit = async (reservationData) => {
-    try {
-      setSubmitting(true);
-      setError(null);
-      await reservationService.updateReservation(parseInt(id), reservationData);
-      navigate('/reservations', { replace: true });
-    } 
-    catch (err) {
-      setError(err.message);
-      throw err;
-    } 
-    finally {
-      setSubmitting(false);
-    }
+    await updateReservation(parseInt(id), reservationData);
+    navigate('/reservations', { replace: true });
   };
 
   const breadcrumbs = [
@@ -66,7 +45,7 @@ const ReservationEditPage = () => {
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
-        onClearError={() => setError(null)}
+        onClearError={clearError}
       >
         <Alert
           icon={<IconAlertCircle size="1rem" />}
@@ -90,12 +69,12 @@ const ReservationEditPage = () => {
       showBackButton={true}
       loading={loading}
       error={error}
-      onClearError={() => setError(null)}
+      onClearError={clearError}
     >
       <ReservationForm
-        reservation={reservation}
+        reservation={currentReservation}
         onSubmit={handleSubmit}
-        loading={submitting}
+        loading={loading}
         submitLabel={t('reservations:form.update')}
       />
     </FormLayout>
