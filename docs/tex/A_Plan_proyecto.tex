@@ -10,6 +10,8 @@
 
 \todo[inline]{Pendiente escribir.}
 
+% los gráficos se han creado con Excel...imitando el formato de ZenHub...
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{\textit{Sprint} 0}
@@ -130,7 +132,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 Se acordó plasmar las mejoras respecto al TFG anterior en el apartado de <Aspectos Relevantes?>\todo{Referencia cuando se haya añadido}, para reflejar el proceso de transformación seguido y las decisiones que llevaron a él.
 
-Respecto a la arquitectura de la aplicación, se le planteó al tutor el \textbf{cambio de la arquitectura actual} monolítica, por una \textbf{arquitectura SPA} con \textit{React}. Inicialmente, se había optado por usar \textit{Thymeleaf} como motor de plantillas, y gestionar las vistas de la aplicación mediante controladores web. Sin embargo, la generación de las plantillas HTML y los controladores específicos para cada acción (p. ej. \texttt{UserEditController} o \texttt{UsermanagementController}) resultaban un poco pesados y menos fáciles de escalar. Es por eso que se optó por la naturaleza reutilizable de los componentes de \textit{React} para, en primera instancia, definir de forma más simple las tablas de gestión CRUD para cada entidad (y muchas otras mejoras). \todo{Ref a apartado donde se detalle esto?}
+Respecto a la arquitectura de la aplicación, se le planteó al tutor el \textbf{cambio de la arquitectura actual} monolítica, por una \textbf{arquitectura SPA} con \textit{React}. Inicialmente, se había optado por usar \textit{Thymeleaf} como motor de plantillas, y gestionar las vistas de la aplicación mediante controladores web. Sin embargo, la generación de las plantillas HTML y los controladores específicos para cada acción (p. ej. \texttt{UserEditController} o \texttt{UserManagementController}) resultaban un poco pesados y menos fáciles de escalar. Es por eso que se optó por la naturaleza reutilizable de los componentes de \textit{React} para, en primera instancia, definir de forma más simple las tablas de gestión CRUD para cada entidad (y muchas otras mejoras). \todo{Ref a apartado donde se detalle esto?}
 
 Debido a que la idea del cambio de arquitectura surgió durante el desarrollo del \textit{sprint}, hubo un \textit{issue} que se pospuso para futuras iteraciones, relacionado con la \textbf{internacionalización} de la aplicación. Esto es debido a que la implementación de dicha funcionalidad cambia por completo dependiendo de la arquitectura. Por lo tanto, se pospuso para cuando se disponga de un \textit{frontend} funcional.
 
@@ -223,6 +225,77 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 Habiendo implementado las páginas de gestión principales y probado el comportamiento de la API, se acordó preparar la aplicación para su primer \textbf{\textit{release}}. Para ello, se propuso implementar los componentes faltantes para lograr una navegación fluida entre las páginas existentes (mediante un \textit{navbar}) y asegurar el correcto manejo de excepciones y errores que puedan producirse. También deberán corregirse los errores pendientes del \textit{dashboard} de pedidos.
 
 Como añadidos futuros, para una siguiente versión de la API, se propuso la generación de \textbf{menús}. Actualmente se ``añaden'' los ítems individualmente al pedido, pero podría haber un conjunto de productos que constituya un menú, con un precio fijado y características particulares. Esto haría que fuese necesario añadir un campo de ``tipo'' a la entidad \texttt{Product}, para saber si se trata de un primer plato, postre, bebida, etc. También se propuso un filtrado por tipos o características de productos desde el \textit{dashboard} de pedidos.
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 7}
+\label{subsec:A.2_sprint7}
+
+\underline{Duración}: 2 semanas (04/12/2025 - 18/12/2025)
+
+Así como el \textit{sprint} anterior se dedicó mayoritariamente a solventar los errores de la API, este \textit{sprint} se enfocó en resolver aspectos pendientes del \textit{frontend} e implementar los componentes restantes de navegación, para lograr una \textbf{primera versión funcional} de la aplicación.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/8?closed=1}{\textbf{Sprint 7}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Implementación de una barra de navegación principal:} Los componentes que la forman se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/117}{\#117}.
+	\item \textbf{Implementación de autenticación con sesiones de \textit{Spring Security}:} Se configuró la persistencia de la sesión para el \textit{frontend React} mediante \textit{cookies} \texttt{JSESSIONID}.
+	\item \textbf{Implementación de formulario para crear/editar pedidos:} Se añadieron al \textit{dashboard} botones para crear y editar pedidos de distintos tipos. También se habilitó la eliminación de pedidos desde la interfaz.
+	\item \textbf{Mejoras y resolución de errores pendientes:} Cuestiones pendientes relacionadas con la internacionalización, estados de carga, manejo de errores y más. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/124}{\#124}.
+	\item \textbf{Creación de \textit{workflow} para ejecutar pruebas de la API:} Se utilizó \textit{GitHub Actions} para configurar la ejecución de los tests definidos para la API \textit{Spring Boot} con cada \textit{commit} realizado sobre el backend.
+	\item \textbf{Redacción del apartado \textit{``\ref{sec:C.2_DiseñoDatos} \nameref{sec:C.2_DiseñoDatos}''}:} Se describieron las entidades y relaciones que conforman el modelo y se generaron diagramas EER.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint7_burndown.png}{Gráfico \textit{burndown} del Sprint 7}{A2_sprint7_burndown}
+
+\subsubsection{Revisión}
+
+Tras el visto bueno del tutor, se lanzó la 
+\href{https://github.com/aperezolmos/tfg-aperezolmos/releases/tag/v0.8.0-beta}{\textbf{v0.8.0-beta}} 
+de la aplicación.
+
+Para la siguiente versión de la aplicación, se acordó incluir la \textbf{sección nutricional} y \textbf{comunicación con la API externa} \textit{Open Food Facts}. Esto incluye, como mínimo, la búsqueda y creación de alimentos a partir de la API, la extracción de información nutricional de los productos y la visualización de gráficos para mostrar dicha información de manera más amigable para el usuario.
+
+También se planteó la posible inclusión del \textbf{Nutri-Score} como medida adicional y más reconocible para los clientes. Esto requeriría documentarse acerca de cómo se calcula dicha medida o buscar herramientas gratuitas que realicen este cálculo y adaptar nuestros datos para dicha operación.
+
+% mejor diferenciación de tipos de pedidos + paginación
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 8}
+\label{subsec:A.2_sprint8}
+
+\underline{Duración}: 3 semanas (18/12/2025 - 08/01/2026)
+
+En este \textit{sprint} se redactaron los apartados principales de la memoria y se integró la conexión con la API nutricional \textit{Open Food Facts} (\textit{OFF}), permitiendo la creación y persistencia de un alimento (\textit{Food}) a partir de su búsqueda en la API externa.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/9?closed=1}{\textbf{Sprint 8}}
+
+\subsubsection{Objetivos}
+
+\begin{itemize}
+	\item \textbf{Investigación acerca de los datos devueltos por \textit{OFF}:} para poder adaptar los campos devueltos por la API \textit{OFF}, se hizo necesario revisar su documentación para saber qué campos podrían ser aprovechados por nuestro modelo y cómo se podían transformar.
+	\item \textbf{Búsqueda de alimentos de \textit{OFF} desde \textit{React}:} se implementó un componente de búsqueda (por nombre o información relacionada) en la página de creación de un alimento, permitiendo realizar peticiones a la API externa y visualizar un listado paginado con los resultados devueltos. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/138}{\#138}.
+	\item \textbf{Creación de alimentos de \textit{OFF} desde Spring Boot:} se implementaron mecanismos para adaptar los datos de la API externa al modelo del \textit{backend} y posteriormente persistir el alimento obtenido. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/138}{\#138}.
+	\item \textbf{Creación de gráficos y tablas nutricionales:} los macronutrientes de un producto ahora se visualizan en forma de gráfico de donut, también con la opción de visualizarlos en tablas junto a ingestas de referencia.
+	\item \textbf{Redacción de apartados principales de la memoria:} se redactaron casi por completo los apartados ``\textit{3. Conceptos teóricos}'', ``\textit{4. Técnicas y herramientas}'' y ``\textit{5. Aspectos relevantes del desarrollo del proyecto}''. Queda pendiente la redacción de algunos subapartados menores y la revisión por parte del tutor.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint8_burndown.png}{Gráfico \textit{burndown} del Sprint 8}{A2_sprint8_burndown}
+
+\subsubsection{Revisión}
+
+Con la sección nutricional mayormente implementada (a falta de alérgenos y medidas nutricionales puntuales), se acordó dar por \textbf{finalizada la implementación de funcionalidades} de la aplicación. Los \textit{sprints} posteriores se dedicarán a la corrección de errores, modificación de interfaces y mejoras menores, así como la redacción de la documentación y anexos.
+
+En esta fase final del desarrollo se acordó volver a \textit{sprints} de 1 semana, para agilizar las revisiones. El siguiente \textit{sprint} tendrá como objetivo principal la finalización y revisión de la \textbf{memoria} principal del trabajo.
+
+%---------------------------------------------------------------
+
+\subsection{Gráfico \textit{Burn-up}}
+
+\missingfigure{Gráfico burn up general(cuando finalice el proyecto)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
