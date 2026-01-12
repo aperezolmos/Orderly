@@ -68,7 +68,7 @@ public class BarOrderService {
 
     public List<BarOrderResponseDTO> findPendingBarOrders() {
         return barOrderRepository.findPendingBarOrders(
-                List.of(OrderStatus.PENDING, OrderStatus.IN_PROGRESS)).stream()
+                List.of(OrderStatus.PENDING, OrderStatus.IN_PROGRESS, OrderStatus.READY)).stream()
                 .map(barOrderMapper::toResponseDTO).collect(Collectors.toList());
     }
 

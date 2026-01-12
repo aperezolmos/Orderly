@@ -41,6 +41,8 @@ export const useOrderDashboardStore = create((set, get) => ({
   isLoadingOrders: false,
   isLoadingProducts: false,
   editedQuantities: {}, // { [itemId]: cantidad }
+  isUpdatingStatus: false,
+
 
   // Alternar tipo de pedido y cargar pedidos pendientes
   setOrderType: async (type) => {
@@ -128,6 +130,42 @@ export const useOrderDashboardStore = create((set, get) => ({
     });
     // Refresca la lista pero mantén el actual
     await get().fetchOrders(orderType);
+  },
+
+  // Cambiar estado del pedido actual
+  updateOrderStatus: async (newStatus) => {
+    const { currentOrder, orderType } = get();
+    if (!currentOrder?.id || currentOrder.status === newStatus) return;
+
+    set({ isUpdatingStatus: true });
+    try {
+      await orderService.updateOrderStatus(currentOrder.id, newStatus);
+      
+      // Refresca el pedido actual
+      let updatedOrder = null;
+      if (orderType === 'bar') {
+        updatedOrder = await orderService.getBarOrderById(currentOrder.id);
+      } else {
+        updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
+      }
+      
+      set({
+        currentOrder: { 
+          ...updatedOrder, 
+          items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [] 
+        },
+      });
+      
+      // Refresca la lista de pedidos
+      await get().fetchOrders(orderType);
+      
+      return updatedOrder;
+    } catch (error) {
+      console.error('Error updating order status:', error);
+      throw error;
+    } finally {
+      set({ isUpdatingStatus: false });
+    }
   },
 
   // Eliminar ítem del pedido actual

@@ -1,11 +1,13 @@
 import { Group, Text, Badge, Paper, ScrollArea, Stack, Loader } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { getStatusColor } from '../../../../utils/orderStatuses';
 
 
 const PendingOrdersList = ({ orders, currentOrderId, onOrderSelect, isLoading }) => {
   
   const { t } = useTranslation(['orders']);
+  
 
   if (isLoading) {
     return (
@@ -31,18 +33,6 @@ const PendingOrdersList = ({ orders, currentOrderId, onOrderSelect, isLoading })
       </Paper>
     );
   }
-
-  const getStatusColor = (status) => {
-    const colors = {
-      'PENDING': 'yellow',
-      'IN_PROGRESS': 'blue',
-      'READY': 'green',
-      'SERVED': 'teal',
-      'PAID': 'gray',
-      'CANCELLED': 'red',
-    };
-    return colors[status?.toUpperCase()] || 'gray';
-  };
 
   const formatTime = (dateTime) => {
     if (!dateTime) return '';

@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
-import { Table, Badge, Group, Text, Button, ActionIcon, NumberInput, ScrollArea } from '@mantine/core';
+import { Table, Group, Text, Button, ActionIcon, NumberInput, ScrollArea } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { formatCurrency } from '../../../../utils/formatters';
 import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 import { useTranslation } from 'react-i18next';
+import OrderStatusButton from './OrderStatusButton';
 
 
 const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
   
-  const { editedQuantities, setItemQuantity } = useOrderDashboardStore();
+  const { editedQuantities, setItemQuantity,
+          updateOrderStatus, isUpdatingStatus } = useOrderDashboardStore();
   const { t } = useTranslation(['common','orders']);
   
 
@@ -38,21 +40,14 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
     onSave({ ...order, items });
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      'PENDING': 'yellow',
-      'IN_PROGRESS': 'blue',
-      'READY': 'green',
-      'SERVED': 'teal',
-      'PAID': 'gray',
-      'CANCELLED': 'red',
-    };
-    return colors[status?.toUpperCase()] || 'gray';
+  const handleChangeStatus = async (newStatus) => {
+    await updateOrderStatus(newStatus);
   };
+
 
   return (
     <div className="order-details">
-      <Group justify="apart" mb="md">
+      <Group justify="space-between" mb="md" align="center">
         <div>
           <Text fw={500}>
             {t('orders:list.orderNumber') + ' #' + order.orderNumber}
@@ -61,10 +56,13 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
             {order.customerName || t('orders:list.customerName')}
           </Text>
         </div>
-        <Badge color={getStatusColor(order.status)} size="lg" variant="filled">
-          {t(`orders:status.${order.status}`, order.status)}
-        </Badge>
+        <OrderStatusButton
+          currentStatus={order.status}
+          onChange={handleChangeStatus}
+          disabled={isUpdatingStatus}
+        />
       </Group>
+      
       <ScrollArea h={260} type="auto">
         <Table.ScrollContainer minWidth={500}>
           <Table verticalSpacing="sm" striped>
@@ -117,6 +115,7 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
           </Table>
         </Table.ScrollContainer>
       </ScrollArea>
+      
       <Group justify="space-between" mt="xl">
         <div style={{ maxWidth: '60%' }}>
           <Text size="sm" c="dimmed">{t('orders:dashboard.notes')}</Text>
