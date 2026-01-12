@@ -32,7 +32,10 @@
     "created": "Created",
     "totalAmount": "Total",
     "itemCount": "Items",
-    "newOrder": "New Order"
+    "newOrder": "New Order",
+    "type": "Type",
+    "viewOrder": "View order",
+    "noData": "No orders found"
   },
   "types": {
     "bar": "Bar",

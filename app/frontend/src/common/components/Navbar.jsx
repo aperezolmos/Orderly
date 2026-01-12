@@ -4,7 +4,7 @@ import { Group, Button, Menu, Avatar, Text, Box, Burger, Stack,
          Divider, useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { IconUser, IconLogout, IconChevronDown, IconHome, IconPackage,
          IconUsers, IconShield, IconDesk, IconCalendar, IconChartBar, IconPlus,
-         IconList, IconSettings, IconSun, IconMoon,
+         IconList, IconLayoutDashboard, IconSettings, IconSun, IconMoon,
          IconChevronRight } from '@tabler/icons-react';
 import { useAuth } from '../../context/useAuth';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -95,7 +95,8 @@ const Navbar = ({ opened, toggle }) => {
       icon: <IconChartBar size={18} />,
       color: 'grape',
       items: [
-        { label: t('common:navigation.dashboard'), path: '/orders', icon: <IconList size={14} /> }
+        { label: t('common:navigation.dashboard'), path: '/orders', icon: <IconLayoutDashboard size={14} /> },
+        { label: t('common:navigation.list'), path: '/orders/history', icon: <IconList size={14} /> }
       ],
       adminOnly: false
     }

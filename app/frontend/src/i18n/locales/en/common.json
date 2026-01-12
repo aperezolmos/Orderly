@@ -12,7 +12,8 @@
     "confirm": "Confirm",
     "back": "Back",
     "welcome": "Welcome",
-    "welcomeMessage": "Select a module to get started"
+    "welcomeMessage": "Select a module to get started",
+    "reload": "Reload"
   },
   "navigation": {
     "home": "Home",
@@ -76,7 +77,8 @@
   "data": {
     "noData": "No data found",
     "loading": "Loading data...",
-    "error": "Error loading data"
+    "error": "Error loading data",
+    "total": "Total: {{count}}"
   },
   "modal": {
     "cancel": "Cancel",

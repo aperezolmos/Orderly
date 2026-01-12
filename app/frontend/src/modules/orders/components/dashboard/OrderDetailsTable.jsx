@@ -7,13 +7,12 @@ import { useTranslation } from 'react-i18next';
 import OrderStatusButton from './OrderStatusButton';
 
 
-const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
+const OrderDetailsTable = ({ order, onRemoveItem, onSave, viewOnly = false }) => {
   
   const { editedQuantities, setItemQuantity,
           updateOrderStatus, isUpdatingStatus } = useOrderDashboardStore();
   const { t } = useTranslation(['common','orders']);
   
-
   useEffect(() => {
     // Reset edición cuando cambia el pedido actual
     setItemQuantity({});
@@ -32,16 +31,16 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
 
   // Cambia la cantidad localmente en el store
   const handleQuantityChange = (itemId, value) => {
-    setItemQuantity(itemId, value);
+    if (!viewOnly) setItemQuantity(itemId, value);
   };
 
   // Guardar cambios (update completo)
   const handleSave = () => {
-    onSave({ ...order, items });
+    if (!viewOnly) onSave({ ...order, items });
   };
 
   const handleChangeStatus = async (newStatus) => {
-    await updateOrderStatus(newStatus);
+    if (!viewOnly) await updateOrderStatus(newStatus);
   };
 
 
@@ -59,7 +58,7 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
         <OrderStatusButton
           currentStatus={order.status}
           onChange={handleChangeStatus}
-          disabled={isUpdatingStatus}
+          disabled={isUpdatingStatus || viewOnly}
         />
       </Group>
       
@@ -90,20 +89,23 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
                     <Table.Td>{formatCurrency(item.unitPrice)}</Table.Td>
                     <Table.Td>
                       <Group gap="xs">
-                        <ActionIcon
-                          size="sm"
-                          variant="subtle"
-                          color="red"
-                          onClick={() => onRemoveItem(item.id)}
-                        >
-                          <IconTrash size={14} />
-                        </ActionIcon>
+                        {!viewOnly && (
+                          <ActionIcon
+                            size="sm"
+                            variant="subtle"
+                            color="red"
+                            onClick={() => onRemoveItem(item.id)}
+                          >
+                            <IconTrash size={14} />
+                          </ActionIcon>
+                        )}
                         <NumberInput
                           size="xs"
                           min={1}
                           value={editedQuantities[item.id] ?? item.quantity}
                           onChange={(value) => handleQuantityChange(item.id, value)}
                           style={{ width: 60 }}
+                          disabled={viewOnly}
                         />
                       </Group>
                     </Table.Td>
@@ -128,9 +130,11 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
           <Text size="lg" fw={700}>
             {t('orders:dashboard.total', { amount: formatCurrency(order.totalAmount) })}
           </Text>
-          <Group justify="flex-end" mt="md">
-            <Button variant="outline" onClick={handleSave}>{t('common:app.save')}</Button>
-          </Group>
+          {!viewOnly && (
+            <Group justify="flex-end" mt="md">
+              <Button variant="outline" onClick={handleSave}>{t('common:app.save')}</Button>
+            </Group>
+          )}
         </div>
       </Group>
     </div>

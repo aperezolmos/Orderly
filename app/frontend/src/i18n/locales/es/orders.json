@@ -32,7 +32,10 @@
     "created": "Creado",
     "totalAmount": "Total",
     "itemCount": "Ítems",
-    "newOrder": "Nuevo Pedido"
+    "newOrder": "Nuevo Pedido",
+    "type": "Tipo",
+    "viewOrder": "Ver pedido",
+    "noData": "No hay pedidos"
   },
   "types": {
     "bar": "Barra",
