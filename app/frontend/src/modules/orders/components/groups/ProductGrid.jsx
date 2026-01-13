@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Grid, Group, Text, Pagination, Badge } from '@mantine/core';
-import ProductCard from './ProductCard';
-import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 import { useTranslation } from 'react-i18next';
+import ProductCard from '../elements/ProductCard';
+import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 
 
 const ProductGrid = () => {

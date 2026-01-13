@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Paper, Group, Title, Badge, Button, Tabs, LoadingOverlay, Text } from '@mantine/core';
+import { Paper, Group, Title, Badge, Tabs, LoadingOverlay, Text } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
-import OrderForm from '../components/dashboard/OrderForm';
-import OrderDetailsTable from '../components/dashboard/OrderDetailsTable';
+import OrderForm from '../components/OrderForm';
+import OrderDetailsTable from '../components/OrderDetailsTable';
 import { orderService } from '../../../services/backend/orderService';
 import { getStatusColor, getStatusTranslationKey } from '../../../utils/orderStatuses';
-import { useTranslation } from 'react-i18next';
+
 
 const disabledFields = [
   'orderNumber', 'customerName', 'notes', 'drinksOnly', 'tableId'
 ];
 
 export default function OrderViewPage() {
+  
   const { id } = useParams();
-  //const navigate = useNavigate();
   const { t } = useTranslation(['orders', 'common']);
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
 
   useEffect(() => {
     let mounted = true;

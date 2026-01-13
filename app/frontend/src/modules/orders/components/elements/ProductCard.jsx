@@ -1,7 +1,7 @@
 import { Paper, Text, Group, ActionIcon, Badge } from '@mantine/core';
 import { IconShoppingCartPlus, IconChefHat, IconGlass } from '@tabler/icons-react';
-import { formatCurrency } from '../../../../utils/formatters';
 import { useTranslation } from 'react-i18next';
+import { formatCurrency } from '../../../../utils/formatters';
 
 
 const ProductCard = ({ product, onSelect }) => {
@@ -37,6 +37,7 @@ const ProductCard = ({ product, onSelect }) => {
 
   // TODO: Assuming product.category exists and is 'food', 'drink', etc.
   const categoryKey = product.category ? product.category.toLowerCase() : 'food';
+  
 
   return (
     <Paper

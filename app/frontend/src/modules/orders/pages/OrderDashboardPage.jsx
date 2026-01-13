@@ -1,8 +1,8 @@
 import { Grid, Container, Paper, Title, Group } from '@mantine/core';
 import { IconListCheck, IconChefHat } from '@tabler/icons-react';
-import ProductGrid from '../components/dashboard/ProductGrid';
-import OrderDashboardSection from '../components/dashboard/OrderDashboardSection';
 import { useTranslation } from 'react-i18next';
+import ProductGrid from '../components/groups/ProductGrid';
+import OrderDashboardSection from '../components/OrderDashboardSection';
 
 
 const OrderDashboardPage = () => {

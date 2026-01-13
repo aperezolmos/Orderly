@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Group, Button, Loader, Paper, Title, Space, ActionIcon, Modal, Text } from '@mantine/core';
+import { Group, Button, Loader, Paper, Title, Space,
+         ActionIcon, Modal, Text, useMantineTheme } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
-import { IconPencil, IconTrash } from '@tabler/icons-react';
-import { useOrderDashboardStore } from '../../store/orderDashboardStore';
-import OrderDetailsTable from './OrderDetailsTable';
-import PendingOrdersList from './PendingOrdersList';
-import OrderForm from './OrderForm';
+import { IconPencil, IconTrash, IconGlass, IconToolsKitchen2 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import { useOrderDashboardStore } from '../store/orderDashboardStore';
+import OrderDetailsTable from './OrderDetailsTable';
+import PendingOrdersList from './groups/PendingOrdersList';
+import OrderForm from './OrderForm';
 
 
 const OrderDashboardSection = () => {
@@ -29,6 +30,18 @@ const OrderDashboardSection = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
   const { t } = useTranslation(['common', 'orders']);
+  const theme = useMantineTheme();
+
+  
+  const getOrderTypeIcon = (type) => {
+    if (type === 'bar') {
+      return <IconGlass size={28} color={theme.colors.teal[6]} style={{ marginRight: 10 }} />;
+    } 
+    else if (type === 'dining') {
+      return <IconToolsKitchen2 size={28} color={theme.colors.orange[6]} style={{ marginRight: 10 }} />;
+    }
+    return null;
+  };
 
 
   useEffect(() => {
@@ -39,7 +52,12 @@ const OrderDashboardSection = () => {
   // Crear pedido
   const openCreateOrderModal = () => {
     modals.open({
-      title: t('orders:management.create') + ' ' + t(`orders:types.${orderType}`),
+      title: (
+        <Group align="center" gap="xs">
+          {getOrderTypeIcon(orderType)}
+          <span>{t('orders:management.create')} {t(`orders:types.${orderType}`)}</span>
+        </Group>
+      ),
       size: 'lg',
       children: (
         <OrderForm
@@ -79,8 +97,15 @@ const OrderDashboardSection = () => {
   // Editar pedido actual
   const openEditOrderModal = () => {
     if (!currentOrder) return;
+    const orderTypeForIcon = orderType;
+    
     modals.open({
-      title: t('orders:management.edit') + ` #${currentOrder.orderNumber || currentOrder.id}`,
+      title: (
+        <Group align="center" gap="xs">
+          {getOrderTypeIcon(orderTypeForIcon)}
+          <span>{t('orders:management.edit')} #{currentOrder.orderNumber || currentOrder.id}</span>
+        </Group>
+      ),
       size: 'lg',
       children: (
         <OrderForm
@@ -162,12 +187,16 @@ const OrderDashboardSection = () => {
         <Button
           variant={orderType === 'bar' ? 'filled' : 'outline'}
           onClick={() => setOrderType('bar')}
+          leftSection={<IconGlass size={15} />}
+          color="teal"
         >
           {t('orders:management.bar')}
         </Button>
         <Button
           variant={orderType === 'dining' ? 'filled' : 'outline'}
           onClick={() => setOrderType('dining')}
+          leftSection={<IconToolsKitchen2 size={15} />}
+          color="orange"
         >
           {t('orders:management.dining')}
         </Button>

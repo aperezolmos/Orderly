@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { Table, Group, Text, Button, ActionIcon, NumberInput, ScrollArea } from '@mantine/core';
+import { Table, Group, Text, Button, ActionIcon,
+         NumberInput, ScrollArea } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
-import { formatCurrency } from '../../../../utils/formatters';
-import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 import { useTranslation } from 'react-i18next';
-import OrderStatusButton from './OrderStatusButton';
+import { formatCurrency } from '../../../utils/formatters';
+import { useOrderDashboardStore } from '../store/orderDashboardStore';
+import OrderStatusButton from './elements/OrderStatusButton';
 
 
 const OrderDetailsTable = ({ order, onRemoveItem, onSave, viewOnly = false }) => {
@@ -12,6 +13,7 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave, viewOnly = false }) =>
   const { editedQuantities, setItemQuantity,
           updateOrderStatus, isUpdatingStatus } = useOrderDashboardStore();
   const { t } = useTranslation(['common','orders']);
+
   
   useEffect(() => {
     // Reset edición cuando cambia el pedido actual

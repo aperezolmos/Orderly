@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { Button, Group, Pagination, Paper, Title, Space, Container } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import OrderHistoryTable from '../components/OrderHistoryTable';
 import { useOrderHistory, ORDER_HISTORY_VIEW } from '../hooks/useOrderHistory';
-import { useTranslation } from 'react-i18next';
+
 
 const viewButtons = [
   { key: ORDER_HISTORY_VIEW.ALL, color: 'blue' },

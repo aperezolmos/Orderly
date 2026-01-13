@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { orderService } from '../../../services/backend/orderService';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { orderService } from '../../../services/backend/orderService';
 
 const PAGE_SIZE = 15;
 
