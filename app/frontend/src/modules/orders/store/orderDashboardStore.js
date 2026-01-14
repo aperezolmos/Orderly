@@ -3,7 +3,7 @@ import { orderService } from '../../../services/backend/orderService';
 import { productService } from '../../../services/backend/productService';
 
 
-// Helper para construir el DTO de request según tipo
+// Helper to build the request DTO according to order type
 function toOrderRequestDTO(order, orderType, editedQuantities = {}) {
   const items = Array.isArray(order.items)
     ? order.items.map(item => ({
@@ -31,75 +31,138 @@ function toOrderRequestDTO(order, orderType, editedQuantities = {}) {
   return dto;
 }
 
+
 export const useOrderDashboardStore = create((set, get) => ({
+  // ORDER STATES
   orderType: 'bar', // 'bar' or 'dining'
   orders: [],
   currentOrder: null,
+  isLoadingOrdersList: false,
+  isLoadingCurrentOrder: false,
+  isLoadingOrderDetails: false,
+  isUpdatingStatus: false,
+  editedQuantities: {},
+
+  // PRODUCT STATES
   products: [],
   activePage: 1,
   totalPages: 1,
-  isLoadingOrders: false,
   isLoadingProducts: false,
-  editedQuantities: {}, // { [itemId]: cantidad }
 
-  // Alternar tipo de pedido y cargar pedidos pendientes
+
+
+  // =============================
+  // ORDERS - LEFT SECTION
+  // =============================
+
+  /**
+   * Change order type (bar/dining) and load all orders
+   * This is the main loader for the orders section
+   */
   setOrderType: async (type) => {
-    set({ orderType: type, isLoadingOrders: true, editedQuantities: {} });
+    set({
+      orderType: type,
+      isLoadingOrdersList: true,
+      isLoadingCurrentOrder: true,
+      editedQuantities: {},
+    });
     await get().fetchOrders(type);
   },
 
-  // Cargar pedidos pendientes según tipo
+  /**
+   * Load pending order list by type
+   * Keeps currentOrder updated if it is still valid
+   */
   fetchOrders: async (type = get().orderType) => {
-    set({ isLoadingOrders: true });
-    let orders = [];
-    if (type === 'bar') {
-      orders = await orderService.getPendingBarOrders();
-    } else {
-      orders = await orderService.getPendingDiningOrders();
-    }
-    set({ orders, isLoadingOrders: false });
-    // Seleccionar el primero como actual si no hay ninguno
-    const currentOrder = get().currentOrder;
-    let newCurrentOrder = null;
-    if (currentOrder && orders.some(o => o.id === currentOrder.id)) {
-      // Refresca el pedido actual con DTO detallado
+    set({ isLoadingOrdersList: true });
+    try {
+      let orders = [];
       if (type === 'bar') {
-        newCurrentOrder = await orderService.getBarOrderById(currentOrder.id);
+        orders = await orderService.getPendingBarOrders();
       } else {
-        newCurrentOrder = await orderService.getDiningOrderById(currentOrder.id);
+        orders = await orderService.getPendingDiningOrders();
       }
-    } else if (orders.length > 0) {
-      const firstOrderId = orders[0].id;
-      if (type === 'bar') {
-        newCurrentOrder = await orderService.getBarOrderById(firstOrderId);
-      } else {
-        newCurrentOrder = await orderService.getDiningOrderById(firstOrderId);
+
+      set({ orders });
+
+      const currentOrder = get().currentOrder;
+      let newCurrentOrder = null;
+
+      if (currentOrder && orders.some(o => o.id === currentOrder.id)) {
+        // If the current order is still valid, refresh it with details
+        set({ isLoadingOrderDetails: true });
+        if (type === 'bar') {
+          newCurrentOrder = await orderService.getBarOrderById(currentOrder.id);
+        } else {
+          newCurrentOrder = await orderService.getDiningOrderById(currentOrder.id);
+        }
+      } 
+      else if (orders.length > 0) {
+        // Load the first order as current
+        set({ isLoadingCurrentOrder: true });
+        const firstOrderId = orders[0].id;
+        if (type === 'bar') {
+          newCurrentOrder = await orderService.getBarOrderById(firstOrderId);
+        } else {
+          newCurrentOrder = await orderService.getDiningOrderById(firstOrderId);
+        }
       }
+
+      set({
+        currentOrder: newCurrentOrder
+          ? { ...newCurrentOrder, items: Array.isArray(newCurrentOrder.items) ? newCurrentOrder.items : [] }
+          : null,
+        editedQuantities: {},
+        isLoadingOrdersList: false,
+        isLoadingCurrentOrder: false,
+        isLoadingOrderDetails: false,
+      });
     }
-    set({
-      currentOrder: newCurrentOrder
-        ? { ...newCurrentOrder, items: Array.isArray(newCurrentOrder.items) ? newCurrentOrder.items : [] }
-        : null,
-      editedQuantities: {},
-    });
+    catch (error) {
+      set({
+        isLoadingOrdersList: false,
+        isLoadingCurrentOrder: false,
+        isLoadingOrderDetails: false,
+      });
+      throw error;
+    }
   },
 
-  // Seleccionar pedido actual
+  /**
+   * Select a specific order to view its details
+   * Only loads the current order (without refreshing the list)
+   */
   selectOrder: async (orderId) => {
     const { orderType } = get();
-    let order = null;
-    if (orderType === 'bar') {
-      order = await orderService.getBarOrderById(orderId);
-    } else {
-      order = await orderService.getDiningOrderById(orderId);
+    set({ isLoadingCurrentOrder: true, isLoadingOrderDetails: true });
+
+    try {
+      let order = null;
+      if (orderType === 'bar') {
+        order = await orderService.getBarOrderById(orderId);
+      } else {
+        order = await orderService.getDiningOrderById(orderId);
+      }
+
+      set({
+        currentOrder: { ...order, items: Array.isArray(order?.items) ? order.items : [] },
+        editedQuantities: {},
+        isLoadingCurrentOrder: false,
+        isLoadingOrderDetails: false,
+      });
+    } 
+    catch (error) {
+      set({
+        isLoadingCurrentOrder: false,
+        isLoadingOrderDetails: false,
+      });
+      throw error;
     }
-    set({
-      currentOrder: { ...order, items: Array.isArray(order?.items) ? order.items : [] },
-      editedQuantities: {},
-    });
   },
 
-  // Modificar cantidad localmente (no persiste aún)
+  /**
+   * Modify quantity locally (does not persist on server)
+   */
   setItemQuantity: (itemId, quantity) => {
     set((state) => ({
       editedQuantities: {
@@ -109,106 +172,248 @@ export const useOrderDashboardStore = create((set, get) => ({
     }));
   },
 
-  // Guardar cambios de cantidades (update completo)
+  /**
+   * Save quantity changes (full order update)
+   * Reloads current order and list
+   */
   updateOrder: async (orderData) => {
     const { currentOrder, orderType, editedQuantities } = get();
     if (!currentOrder) return;
-    const dto = toOrderRequestDTO(orderData, orderType, editedQuantities);
-    let updatedOrder = null;
-    if (orderType === 'bar') {
-      await orderService.updateBarOrder(currentOrder.id, dto);
-      updatedOrder = await orderService.getBarOrderById(currentOrder.id);
-    } else {
-      await orderService.updateDiningOrder(currentOrder.id, dto);
-      updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
+
+    set({ isLoadingOrderDetails: true });
+    try {
+      const dto = toOrderRequestDTO(orderData, orderType, editedQuantities);
+
+      if (orderType === 'bar') {
+        await orderService.updateBarOrder(currentOrder.id, dto);
+      } else {
+        await orderService.updateDiningOrder(currentOrder.id, dto);
+      }
+
+      // Refresh current order
+      let updatedOrder = null;
+      if (orderType === 'bar') {
+        updatedOrder = await orderService.getBarOrderById(currentOrder.id);
+      } else {
+        updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
+      }
+
+      set({
+        currentOrder: { ...updatedOrder, items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [] },
+        editedQuantities: {},
+      });
+
+      // Refresh the list
+      await get().fetchOrders(orderType);
+    } 
+    catch (error) {
+      console.error('Error:', error);
+      throw error;
+    } 
+    finally {
+      set({ isLoadingOrderDetails: false });
     }
-    set({
-      currentOrder: { ...updatedOrder, items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [] },
-      editedQuantities: {},
-    });
-    // Refresca la lista pero mantén el actual
-    await get().fetchOrders(orderType);
   },
 
-  // Eliminar ítem del pedido actual
+  /**
+   * Change current order status
+   */
+  updateOrderStatus: async (newStatus) => {
+    const { currentOrder, orderType } = get();
+    if (!currentOrder?.id || currentOrder.status === newStatus) return;
+
+    set({ isUpdatingStatus: true });
+    try {
+      await orderService.updateOrderStatus(currentOrder.id, newStatus);
+
+      // Refresh current order
+      let updatedOrder = null;
+      if (orderType === 'bar') {
+        updatedOrder = await orderService.getBarOrderById(currentOrder.id);
+      } else {
+        updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
+      }
+
+      set({
+        currentOrder: {
+          ...updatedOrder,
+          items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [],
+        },
+      });
+
+      // Refresh the list
+      await get().fetchOrders(orderType);
+
+      return updatedOrder;
+    } 
+    catch (error) {
+      console.error('Error:', error);
+      throw error;
+    } 
+    finally {
+      set({ isUpdatingStatus: false });
+    }
+  },
+
+  /**
+   * Remove an item from current order
+   * Reloads the current order and the list
+   */
   removeOrderItem: async (itemId) => {
     const { currentOrder, orderType } = get();
     if (!currentOrder) return;
-    await orderService.removeItemFromOrder(currentOrder.id, itemId);
-    let updatedOrder = null;
-    if (orderType === 'bar') {
-      updatedOrder = await orderService.getBarOrderById(currentOrder.id);
-    } else {
-      updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
+
+    set({ isLoadingOrderDetails: true });
+    try {
+      await orderService.removeItemFromOrder(currentOrder.id, itemId);
+
+      let updatedOrder = null;
+      if (orderType === 'bar') {
+        updatedOrder = await orderService.getBarOrderById(currentOrder.id);
+      } else {
+        updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
+      }
+
+      set({
+        currentOrder: { ...updatedOrder, items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [] },
+        editedQuantities: {},
+      });
+
+      // Refresh the list
+      await get().fetchOrders(orderType);
+    } 
+    catch (error) {
+      console.error('Error:', error);
+      throw error;
+    } 
+    finally {
+      set({ isLoadingOrderDetails: false });
     }
-    set({
-      currentOrder: { ...updatedOrder, items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [] },
-      editedQuantities: {},
-    });
-    await get().fetchOrders(orderType);
   },
 
-  // Añadir producto como ítem al pedido actual
+  /**
+   * Add product to current order
+   * Reloads the current order and the list
+   */
   addProductToOrder: async (product) => {
     const { currentOrder, orderType } = get();
     if (!currentOrder) return;
-    await orderService.addItemToOrder(currentOrder.id, { productId: product.id, quantity: 1 });
-    let updatedOrder = null;
-    if (orderType === 'bar') {
-      updatedOrder = await orderService.getBarOrderById(currentOrder.id);
-    } else {
-      updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
-    }
-    set({
-      currentOrder: { ...updatedOrder, items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [] },
-      editedQuantities: {},
-    });
-    await get().fetchOrders(orderType);
-  },
-  
 
-  // PRODUCTS (right section)
+    set({ isLoadingOrderDetails: true });
+    try {
+      await orderService.addItemToOrder(currentOrder.id, { productId: product.id, quantity: 1 });
+
+      let updatedOrder = null;
+      if (orderType === 'bar') {
+        updatedOrder = await orderService.getBarOrderById(currentOrder.id);
+      } else {
+        updatedOrder = await orderService.getDiningOrderById(currentOrder.id);
+      }
+
+      set({
+        currentOrder: { ...updatedOrder, items: Array.isArray(updatedOrder.items) ? updatedOrder.items : [] },
+        editedQuantities: {},
+      });
+
+      // Refresh the list
+      await get().fetchOrders(orderType);
+    } 
+    catch (error) {
+      console.error('Error:', error);
+      throw error;
+    } 
+    finally {
+      set({ isLoadingOrderDetails: false });
+    }
+  },
+
+  /**
+   * Create a new order
+   * Refresh the list and select the new one
+   */
+  createOrder: async (dto, orderType) => {
+    set({ isLoadingOrdersList: true, isLoadingCurrentOrder: true });
+    try {
+      let createdOrder = null;
+      if (orderType === 'bar') {
+        createdOrder = await orderService.createBarOrder(dto);
+      } else {
+        createdOrder = await orderService.createDiningOrder(dto);
+      }
+
+      // Refresh the list
+      await get().fetchOrders(orderType);
+
+      // Select new order as the current one
+      if (createdOrder?.id) {
+        await get().selectOrder(createdOrder.id);
+      }
+
+      return createdOrder;
+    } 
+    catch (error) {
+      set({ isLoadingOrdersList: false, isLoadingCurrentOrder: false });
+      throw error;
+    }
+  },
+
+  /**
+   * Delete an order
+   * Refresh the list
+   */
+  deleteOrder: async (orderId, orderType) => {
+    set({ isLoadingOrdersList: true });
+    try {
+      if (orderType === 'bar') {
+        await orderService.deleteBarOrder(orderId);
+      } else {
+        await orderService.deleteDiningOrder(orderId);
+      }
+      await get().fetchOrders(orderType);
+    } 
+    catch (error) {
+      set({ isLoadingOrdersList: false });
+      throw error;
+    }
+  },
+
+  // =============================
+  // PRODUCTS - RIGHT SECTION
+  // =============================
+
+  /**
+   * Load products (pagination)
+   */
   fetchProducts: async (page = 1, itemsPerPage = 10) => {
     set({ isLoadingProducts: true });
-    const res = await productService.getProducts();
-    // TODO: Paginate manually (API does not paginate yet)
-    const products = res.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-    set({
-      products,
-      activePage: page,
-      totalPages: Math.ceil(res.length / itemsPerPage),
-      isLoadingProducts: false,
-    });
+    try {
+      const res = await productService.getProducts();
+      const products = Array.isArray(res) ? res : [];
+      const totalPages = Math.ceil(products.length / itemsPerPage);
+      const paginatedProducts = products.slice(
+        (page - 1) * itemsPerPage,
+        page * itemsPerPage
+      );
+      
+      set({
+        products: paginatedProducts,
+        activePage: page,
+        totalPages: Math.max(1, totalPages),
+      });
+    } 
+    catch (error) {
+      set({ products: [], activePage: 1, totalPages: 1 });
+      throw error;
+    } 
+    finally {
+      set({ isLoadingProducts: false });
+    }
   },
 
+  /**
+   * Change product page (and load)
+   */
   setActivePage: async (page) => {
     await get().fetchProducts(page);
-  },
-
-  // Crear pedido
-  createOrder: async (dto, orderType) => {
-    let createdOrder = null;
-    if (orderType === 'bar') {
-      createdOrder = await orderService.createBarOrder(dto);
-    } 
-    else {
-      createdOrder = await orderService.createDiningOrder(dto);
-    }
-    // Refresca la lista y selecciona el nuevo pedido
-    await get().fetchOrders(orderType);
-    if (createdOrder?.id) {
-      await get().selectOrder(createdOrder.id);
-    }
-    return createdOrder;
-  },
-
-  // Eliminar pedido
-  deleteOrder: async (orderId, orderType) => {
-    if (orderType === 'bar') {
-      await orderService.deleteBarOrder(orderId);
-    } else {
-      await orderService.deleteDiningOrder(orderId);
-    }
-    await get().fetchOrders(orderType);
   },
 }));

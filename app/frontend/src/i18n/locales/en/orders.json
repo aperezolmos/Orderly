@@ -32,7 +32,10 @@
     "created": "Created",
     "totalAmount": "Total",
     "itemCount": "Items",
-    "newOrder": "New Order"
+    "newOrder": "New Order",
+    "type": "Type",
+    "viewOrder": "View order",
+    "noData": "No orders found"
   },
   "types": {
     "bar": "Bar",
@@ -66,6 +69,12 @@
     "total": "Total: {{amount}}"
   },
   "notifications": {
+    "loadingOrders": "Loading orders...",
+    "successOrders": "Orders loaded",
+    "errorOrders": "Error loading orders",
+    "loadingProducts": "Loading products...",
+    "successProducts": "Products loaded",
+    "errorProducts": "Error loading products",
     "createSuccess": "Order created successfully",
     "updateSuccess": "Order updated successfully",
     "deleteSuccess": "Order deleted successfully",

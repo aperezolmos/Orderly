@@ -31,8 +31,7 @@ export const orderService = {
   // ======================
   // BAR ORDER
   // ======================
-  getBarOrders: async ({ drinksOnly, status } = {}) =>
-    apiClient.get('/orders/bar', { drinksOnly, status }),
+  getBarOrders: async ({ drinksOnly, status } = {}) => apiClient.get('/orders/bar', { drinksOnly, status }),
   getBarOrderById: async (id) => apiClient.get(`/orders/bar/${id}`),
   getBarOrdersByEmployee: async (employeeId) => apiClient.get(`/orders/bar/employee/${employeeId}`),
   getBarOrdersByDateRange: async (start, end) => apiClient.get('/orders/bar/date-range', { start, end }),
@@ -46,8 +45,7 @@ export const orderService = {
   // ======================
   // DINING ORDER
   // ======================
-  getDiningOrders: async ({ tableId, status } = {}) =>
-    apiClient.get('/orders/dining', { tableId, status }),
+  getDiningOrders: async ({ tableId, status } = {}) => apiClient.get('/orders/dining', { tableId, status }),
   getDiningOrderById: async (id) => apiClient.get(`/orders/dining/${id}`),
   getDiningOrdersByEmployee: async (employeeId) => apiClient.get(`/orders/dining/employee/${employeeId}`),
   getDiningOrdersByDateRange: async (start, end) => apiClient.get('/orders/dining/date-range', { start, end }),

@@ -12,7 +12,10 @@
     "confirm": "Confirmar",
     "back": "Volver",
     "welcome": "Bienvenido",
-    "welcomeMessage": "Selecciona un módulo para comenzar"
+    "welcomeMessage": "Selecciona un módulo para comenzar",
+    "reload": "Recargar",
+    "pleaseWait": "Por favor, espera mientras la carga se completa",
+    "completed": "Carga completada"
   },
   "navigation": {
     "home": "Inicio",
@@ -76,7 +79,8 @@
   "data": {
     "noData": "No se encontraron datos",
     "loading": "Cargando datos...",
-    "error": "Error cargando datos"
+    "error": "Error cargando datos",
+    "total": "Total: {{count}}"
   },
   "modal": {
     "cancel": "Cancelar",

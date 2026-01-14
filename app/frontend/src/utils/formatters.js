@@ -14,3 +14,11 @@ export const formatDate = (date) => {
     minute: '2-digit'
   });
 };
+
+export const formatTime = (dateTime) => {
+  if (!dateTime) return '';
+  return new Date(dateTime).toLocaleTimeString('es-ES', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
+};

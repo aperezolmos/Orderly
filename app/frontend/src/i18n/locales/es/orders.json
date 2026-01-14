@@ -32,7 +32,10 @@
     "created": "Creado",
     "totalAmount": "Total",
     "itemCount": "Ítems",
-    "newOrder": "Nuevo Pedido"
+    "newOrder": "Nuevo Pedido",
+    "type": "Tipo",
+    "viewOrder": "Ver pedido",
+    "noData": "No hay pedidos"
   },
   "types": {
     "bar": "Barra",
@@ -68,9 +71,15 @@
     "cancel": "@:common.app.cancel"
   },
   "notifications": {
-    "createSuccess": "Pedido creado correctamente",
-    "updateSuccess": "Pedido actualizado correctamente",
-    "deleteSuccess": "Pedido eliminado correctamente",
+    "loadingOrders": "Cargando pedidos...",
+    "successOrders": "Pedidos cargados",
+    "errorOrders": "Error al cargar pedidos",
+    "loadingProducts": "Cargando productos...",
+    "successProducts": "Productos cargados",
+    "errorProducts": "Error al cargar productos",
+    "createSuccess": "Pedido creado exitosamente",
+    "updateSuccess": "Pedido actualizado exitosamente",
+    "deleteSuccess": "Pedido eliminado exitosamente",
     "loadError": "Error cargando pedidos",
     "createError": "Error creando pedido",
     "updateError": "Error actualizando pedido",

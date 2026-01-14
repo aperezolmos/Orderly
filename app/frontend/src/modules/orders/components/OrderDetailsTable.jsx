@@ -1,70 +1,82 @@
 import { useEffect } from 'react';
-import { Table, Badge, Group, Text, Button, ActionIcon, NumberInput, ScrollArea } from '@mantine/core';
+import { Table, Group, Text, Button, ActionIcon, LoadingOverlay,
+         NumberInput, ScrollArea } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
-import { formatCurrency } from '../../../../utils/formatters';
-import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 import { useTranslation } from 'react-i18next';
+import { formatCurrency } from '../../../utils/formatters';
+import { useOrderDashboardStore } from '../store/orderDashboardStore';
+import OrderStatusButton from './elements/OrderStatusButton';
 
 
-const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
+const OrderDetailsTable = ({ viewOnly = false }) => {
   
-  const { editedQuantities, setItemQuantity } = useOrderDashboardStore();
-  const { t } = useTranslation(['common','orders']);
-  
+  const {
+    currentOrder,
+    editedQuantities,
+    setItemQuantity,
+    isLoadingOrderDetails,
+    isUpdatingStatus,
+    updateOrderStatus,
+    removeOrderItem,
+    updateOrder,
+  } = useOrderDashboardStore();
 
+  const { t } = useTranslation(['common', 'orders']);
+
+
+  // Reset edition when current order changes
   useEffect(() => {
-    // Reset edición cuando cambia el pedido actual
-    setItemQuantity({});
-  }, [order?.id]);
+    if (currentOrder?.id) {
+      setItemQuantity({});
+    }
+  }, [currentOrder?.id, setItemQuantity]);
 
-  if (!order) {
+  if (!currentOrder) {
     return (
       <Group justify="center" p="md">
         <Text c="dimmed">{t('orders:dashboard.noPendingOrders')}</Text>
       </Group>
     );
   }
+  
 
-  // Asegura que siempre sea un array
-  const items = Array.isArray(order?.items) ? order.items : [];
+  const items = Array.isArray(currentOrder?.items) ? currentOrder.items : [];
 
-  // Cambia la cantidad localmente en el store
+  // Change the quantity locally (in the store)
   const handleQuantityChange = (itemId, value) => {
-    setItemQuantity(itemId, value);
+    if (!viewOnly) setItemQuantity(itemId, value);
   };
 
-  // Guardar cambios (update completo)
+  // Save changes (full update)
   const handleSave = () => {
-    onSave({ ...order, items });
+    if (!viewOnly) updateOrder({ ...currentOrder, items });
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      'PENDING': 'yellow',
-      'IN_PROGRESS': 'blue',
-      'READY': 'green',
-      'SERVED': 'teal',
-      'PAID': 'gray',
-      'CANCELLED': 'red',
-    };
-    return colors[status?.toUpperCase()] || 'gray';
+  const handleChangeStatus = async (newStatus) => {
+    if (!viewOnly) await updateOrderStatus(newStatus);
   };
+
 
   return (
-    <div className="order-details">
-      <Group justify="apart" mb="md">
+    <div className="order-details" style={{ position: 'relative' }}>
+      <LoadingOverlay visible={isLoadingOrderDetails} />
+
+      <Group justify="space-between" mb="md" align="center">
         <div>
           <Text fw={500}>
-            {t('orders:list.orderNumber') + ' #' + order.orderNumber}
+            {t('orders:list.orderNumber') + ' #' + currentOrder.orderNumber}
           </Text>
           <Text size="sm" c="dimmed">
-            {order.customerName || t('orders:list.customerName')}
+            {currentOrder.customerName || t('orders:list.customerName')}
           </Text>
         </div>
-        <Badge color={getStatusColor(order.status)} size="lg" variant="filled">
-          {t(`orders:status.${order.status}`, order.status)}
-        </Badge>
+        <OrderStatusButton
+          currentStatus={currentOrder.status}
+          onChange={handleChangeStatus}
+          disabled={isUpdatingStatus || viewOnly}
+        />
       </Group>
+      
       <ScrollArea h={260} type="auto">
         <Table.ScrollContainer minWidth={500}>
           <Table verticalSpacing="sm" striped>
@@ -92,20 +104,23 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
                     <Table.Td>{formatCurrency(item.unitPrice)}</Table.Td>
                     <Table.Td>
                       <Group gap="xs">
-                        <ActionIcon
-                          size="sm"
-                          variant="subtle"
-                          color="red"
-                          onClick={() => onRemoveItem(item.id)}
-                        >
-                          <IconTrash size={14} />
-                        </ActionIcon>
+                        {!viewOnly && (
+                          <ActionIcon
+                            size="sm"
+                            variant="subtle"
+                            color="red"
+                            onClick={() => removeOrderItem(item.id)}
+                          >
+                            <IconTrash size={14} />
+                          </ActionIcon>
+                        )}
                         <NumberInput
                           size="xs"
                           min={1}
                           value={editedQuantities[item.id] ?? item.quantity}
                           onChange={(value) => handleQuantityChange(item.id, value)}
                           style={{ width: 60 }}
+                          disabled={viewOnly}
                         />
                       </Group>
                     </Table.Td>
@@ -117,21 +132,26 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave }) => {
           </Table>
         </Table.ScrollContainer>
       </ScrollArea>
+      
       <Group justify="space-between" mt="xl">
         <div style={{ maxWidth: '60%' }}>
           <Text size="sm" c="dimmed">{t('orders:dashboard.notes')}</Text>
           <Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-            {order.notes || t('orders:dashboard.noNotes')}
+            {currentOrder.notes || t('orders:dashboard.noNotes')}
           </Text>
         </div>
 
         <div style={{ textAlign: 'right' }}>
           <Text size="lg" fw={700}>
-            {t('orders:dashboard.total', { amount: formatCurrency(order.totalAmount) })}
+            {t('orders:dashboard.total', { amount: formatCurrency(currentOrder.totalAmount) })}
           </Text>
-          <Group justify="flex-end" mt="md">
-            <Button variant="outline" onClick={handleSave}>{t('common:app.save')}</Button>
-          </Group>
+          {!viewOnly && (
+            <Group justify="flex-end" mt="md">
+              <Button variant="outline" onClick={handleSave} loading={isLoadingOrderDetails}>
+                {t('common:app.save')}
+              </Button>
+            </Group>
+          )}
         </div>
       </Group>
     </div>
