@@ -71,9 +71,15 @@
     "cancel": "@:common.app.cancel"
   },
   "notifications": {
-    "createSuccess": "Pedido creado correctamente",
-    "updateSuccess": "Pedido actualizado correctamente",
-    "deleteSuccess": "Pedido eliminado correctamente",
+    "loadingOrders": "Cargando pedidos...",
+    "successOrders": "Pedidos cargados",
+    "errorOrders": "Error al cargar pedidos",
+    "loadingProducts": "Cargando productos...",
+    "successProducts": "Productos cargados",
+    "errorProducts": "Error al cargar productos",
+    "createSuccess": "Pedido creado exitosamente",
+    "updateSuccess": "Pedido actualizado exitosamente",
+    "deleteSuccess": "Pedido eliminado exitosamente",
     "loadError": "Error cargando pedidos",
     "createError": "Error creando pedido",
     "updateError": "Error actualizando pedido",

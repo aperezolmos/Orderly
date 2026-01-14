@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Group, Button, Loader, Paper, Title, Space,
-         ActionIcon, Modal, Text, useMantineTheme } from '@mantine/core';
+import { useState } from 'react';
+import { Group, Button, Space, ActionIcon, Modal,
+         Text, useMantineTheme } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { IconPencil, IconTrash, IconGlass, IconToolsKitchen2 } from '@tabler/icons-react';
@@ -16,12 +16,8 @@ const OrderDashboardSection = () => {
   const {
     orderType,
     setOrderType,
-    orders,
     currentOrder,
-    isLoadingOrders,
-    fetchOrders,
-    selectOrder,
-    removeOrderItem,
+    isLoadingOrdersList,
     updateOrder,
     createOrder,
     deleteOrder,
@@ -29,8 +25,8 @@ const OrderDashboardSection = () => {
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-  const { t } = useTranslation(['common', 'orders']);
   const theme = useMantineTheme();
+  const { t } = useTranslation(['common', 'orders']);
 
   
   const getOrderTypeIcon = (type) => {
@@ -44,12 +40,7 @@ const OrderDashboardSection = () => {
   };
 
 
-  useEffect(() => {
-    fetchOrders(orderType);
-  }, [orderType]);
-
-
-  // Crear pedido
+  // Create order
   const openCreateOrderModal = () => {
     modals.open({
       title: (
@@ -94,15 +85,14 @@ const OrderDashboardSection = () => {
     });
   };
 
-  // Editar pedido actual
+  // Edit current order
   const openEditOrderModal = () => {
     if (!currentOrder) return;
-    const orderTypeForIcon = orderType;
-    
+
     modals.open({
       title: (
         <Group align="center" gap="xs">
-          {getOrderTypeIcon(orderTypeForIcon)}
+          {getOrderTypeIcon(orderType)}
           <span>{t('orders:management.edit')} #{currentOrder.orderNumber || currentOrder.id}</span>
         </Group>
       ),
@@ -143,7 +133,7 @@ const OrderDashboardSection = () => {
     });
   };
 
-  // Eliminar pedido actual
+  // Delete current order
   const handleDeleteOrder = async () => {
     if (!currentOrder) return;
     setFormLoading(true);
@@ -168,27 +158,17 @@ const OrderDashboardSection = () => {
     }
   };
 
-  if (isLoadingOrders) {
-    return (
-      <Paper p="xl" withBorder>
-        <Group justify="center">
-          <Loader />
-          <Title order={4}>{t('common:app.loading')}</Title>
-        </Group>
-      </Paper>
-    );
-  }
-  
 
   return (
     <div>
-      {/* Botones de alternar tipo y crear */}
+      {/* Toggle order type and create buttons */}
       <Group mb="md">
         <Button
           variant={orderType === 'bar' ? 'filled' : 'outline'}
           onClick={() => setOrderType('bar')}
           leftSection={<IconGlass size={15} />}
           color="teal"
+          disabled={isLoadingOrdersList}
         >
           {t('orders:management.bar')}
         </Button>
@@ -197,6 +177,7 @@ const OrderDashboardSection = () => {
           onClick={() => setOrderType('dining')}
           leftSection={<IconToolsKitchen2 size={15} />}
           color="orange"
+          disabled={isLoadingOrdersList}
         >
           {t('orders:management.dining')}
         </Button>
@@ -206,19 +187,20 @@ const OrderDashboardSection = () => {
           leftSection="+"
           onClick={openCreateOrderModal}
           style={{ marginLeft: 'auto' }}
+          disabled={isLoadingOrdersList}
         >
           {t('orders:form.create')}
         </Button>
       </Group>
 
-      {/* Botones de editar y borrar */}
+      {/* Edit and delete buttons */}
       <Group mb="md" gap="xs" justify="flex-end">
         <ActionIcon
           variant="subtle"
           color="blue"
           size="lg"
           onClick={openEditOrderModal}
-          disabled={!currentOrder}
+          disabled={!currentOrder || isLoadingOrdersList}
           title={t('orders:form.edit')}
         >
           <IconPencil size={20} />
@@ -228,14 +210,14 @@ const OrderDashboardSection = () => {
           color="red"
           size="lg"
           onClick={() => setDeleteModalOpen(true)}
-          disabled={!currentOrder}
+          disabled={!currentOrder || isLoadingOrdersList}
           title={t('orders:dashboard.deleteOrder')}
         >
           <IconTrash size={20} />
         </ActionIcon>
       </Group>
 
-      {/* Modal de confirmación de borrado */}
+      {/* Confirm deletion modal */}
       <Modal
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
@@ -258,18 +240,9 @@ const OrderDashboardSection = () => {
         </Group>
       </Modal>
 
-      {/* Tabla de detalles */}
-      <OrderDetailsTable
-        order={currentOrder}
-        onRemoveItem={removeOrderItem}
-        onSave={updateOrder}
-      />
+      <OrderDetailsTable viewOnly={false} />
       <Space h="md" />
-      <PendingOrdersList
-        orders={orders}
-        currentOrderId={currentOrder?.id}
-        onOrderSelect={selectOrder}
-      />
+      <PendingOrdersList />
     </div>
   );
 };

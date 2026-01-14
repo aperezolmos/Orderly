@@ -13,7 +13,9 @@
     "back": "Volver",
     "welcome": "Bienvenido",
     "welcomeMessage": "Selecciona un módulo para comenzar",
-    "reload": "Recargar"
+    "reload": "Recargar",
+    "pleaseWait": "Por favor, espera mientras la carga se completa",
+    "completed": "Carga completada"
   },
   "navigation": {
     "home": "Inicio",

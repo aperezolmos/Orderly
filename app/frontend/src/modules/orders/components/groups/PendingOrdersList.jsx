@@ -1,26 +1,31 @@
-import { Group, Text, Paper, ScrollArea, Stack, Loader } from '@mantine/core';
+import { Group, Text, Paper, ScrollArea,
+         Stack, Loader, Center } from '@mantine/core';
 import { IconClock } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import PendingOrdersItem from '../elements/PendingOrdersItem';
+import { useOrderDashboardStore } from '../../store/orderDashboardStore';
 
 
-const PendingOrdersList = ({
-  orders,
-  currentOrderId,
-  onOrderSelect,
-  isLoading,
-}) => {
+const PendingOrdersList = () => {
   
+  const {
+    orders,
+    currentOrder,
+    isLoadingOrdersList,
+    selectOrder,
+  } = useOrderDashboardStore();
   const { t } = useTranslation(['orders']);
   
 
-  if (isLoading) {
+  if (isLoadingOrdersList) {
     return (
       <Paper p="lg" withBorder>
-        <Group justify="center">
-          <Loader />
-          <Text>{t('orders:dashboard.pendingOrders')}</Text>
-        </Group>
+        <Center py="xl">
+          <Stack align="center">
+            <Loader />
+            <Text>{t('orders:dashboard.pendingOrders')}</Text>
+          </Stack>
+        </Center>
       </Paper>
     );
   }
@@ -47,8 +52,8 @@ const PendingOrdersList = ({
           <PendingOrdersItem
             key={order.id}
             order={order}
-            selected={order.id === currentOrderId}
-            onClick={() => onOrderSelect(order.id)}
+            selected={order.id === currentOrder?.id}
+            onClick={() => selectOrder(order.id)}
           />
         ))}
       </Stack>

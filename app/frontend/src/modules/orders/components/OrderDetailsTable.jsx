@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Table, Group, Text, Button, ActionIcon,
+import { Table, Group, Text, Button, ActionIcon, LoadingOverlay,
          NumberInput, ScrollArea } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -8,37 +8,48 @@ import { useOrderDashboardStore } from '../store/orderDashboardStore';
 import OrderStatusButton from './elements/OrderStatusButton';
 
 
-const OrderDetailsTable = ({ order, onRemoveItem, onSave, viewOnly = false }) => {
+const OrderDetailsTable = ({ viewOnly = false }) => {
   
-  const { editedQuantities, setItemQuantity,
-          updateOrderStatus, isUpdatingStatus } = useOrderDashboardStore();
-  const { t } = useTranslation(['common','orders']);
+  const {
+    currentOrder,
+    editedQuantities,
+    setItemQuantity,
+    isLoadingOrderDetails,
+    isUpdatingStatus,
+    updateOrderStatus,
+    removeOrderItem,
+    updateOrder,
+  } = useOrderDashboardStore();
 
-  
+  const { t } = useTranslation(['common', 'orders']);
+
+
+  // Reset edition when current order changes
   useEffect(() => {
-    // Reset edición cuando cambia el pedido actual
-    setItemQuantity({});
-  }, [order?.id]);
+    if (currentOrder?.id) {
+      setItemQuantity({});
+    }
+  }, [currentOrder?.id, setItemQuantity]);
 
-  if (!order) {
+  if (!currentOrder) {
     return (
       <Group justify="center" p="md">
         <Text c="dimmed">{t('orders:dashboard.noPendingOrders')}</Text>
       </Group>
     );
   }
+  
 
-  // Asegura que siempre sea un array
-  const items = Array.isArray(order?.items) ? order.items : [];
+  const items = Array.isArray(currentOrder?.items) ? currentOrder.items : [];
 
-  // Cambia la cantidad localmente en el store
+  // Change the quantity locally (in the store)
   const handleQuantityChange = (itemId, value) => {
     if (!viewOnly) setItemQuantity(itemId, value);
   };
 
-  // Guardar cambios (update completo)
+  // Save changes (full update)
   const handleSave = () => {
-    if (!viewOnly) onSave({ ...order, items });
+    if (!viewOnly) updateOrder({ ...currentOrder, items });
   };
 
   const handleChangeStatus = async (newStatus) => {
@@ -47,18 +58,20 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave, viewOnly = false }) =>
 
 
   return (
-    <div className="order-details">
+    <div className="order-details" style={{ position: 'relative' }}>
+      <LoadingOverlay visible={isLoadingOrderDetails} />
+
       <Group justify="space-between" mb="md" align="center">
         <div>
           <Text fw={500}>
-            {t('orders:list.orderNumber') + ' #' + order.orderNumber}
+            {t('orders:list.orderNumber') + ' #' + currentOrder.orderNumber}
           </Text>
           <Text size="sm" c="dimmed">
-            {order.customerName || t('orders:list.customerName')}
+            {currentOrder.customerName || t('orders:list.customerName')}
           </Text>
         </div>
         <OrderStatusButton
-          currentStatus={order.status}
+          currentStatus={currentOrder.status}
           onChange={handleChangeStatus}
           disabled={isUpdatingStatus || viewOnly}
         />
@@ -96,7 +109,7 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave, viewOnly = false }) =>
                             size="sm"
                             variant="subtle"
                             color="red"
-                            onClick={() => onRemoveItem(item.id)}
+                            onClick={() => removeOrderItem(item.id)}
                           >
                             <IconTrash size={14} />
                           </ActionIcon>
@@ -124,17 +137,19 @@ const OrderDetailsTable = ({ order, onRemoveItem, onSave, viewOnly = false }) =>
         <div style={{ maxWidth: '60%' }}>
           <Text size="sm" c="dimmed">{t('orders:dashboard.notes')}</Text>
           <Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-            {order.notes || t('orders:dashboard.noNotes')}
+            {currentOrder.notes || t('orders:dashboard.noNotes')}
           </Text>
         </div>
 
         <div style={{ textAlign: 'right' }}>
           <Text size="lg" fw={700}>
-            {t('orders:dashboard.total', { amount: formatCurrency(order.totalAmount) })}
+            {t('orders:dashboard.total', { amount: formatCurrency(currentOrder.totalAmount) })}
           </Text>
           {!viewOnly && (
             <Group justify="flex-end" mt="md">
-              <Button variant="outline" onClick={handleSave}>{t('common:app.save')}</Button>
+              <Button variant="outline" onClick={handleSave} loading={isLoadingOrderDetails}>
+                {t('common:app.save')}
+              </Button>
             </Group>
           )}
         </div>

@@ -3,11 +3,15 @@ import { IconListCheck, IconChefHat } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ProductGrid from '../components/groups/ProductGrid';
 import OrderDashboardSection from '../components/OrderDashboardSection';
+import { useOrderDashboard } from '../hooks/useOrderDashboard';
 
 
 const OrderDashboardPage = () => {
   
   const { t } = useTranslation(['orders']);
+  
+  // Initialize hook that triggers order and product loading
+  useOrderDashboard();
   
 
   return (

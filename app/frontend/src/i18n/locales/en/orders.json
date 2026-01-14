@@ -69,6 +69,12 @@
     "total": "Total: {{amount}}"
   },
   "notifications": {
+    "loadingOrders": "Loading orders...",
+    "successOrders": "Orders loaded",
+    "errorOrders": "Error loading orders",
+    "loadingProducts": "Loading products...",
+    "successProducts": "Products loaded",
+    "errorProducts": "Error loading products",
     "createSuccess": "Order created successfully",
     "updateSuccess": "Order updated successfully",
     "deleteSuccess": "Order deleted successfully",

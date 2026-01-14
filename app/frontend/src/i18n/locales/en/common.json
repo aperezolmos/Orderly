@@ -13,7 +13,9 @@
     "back": "Back",
     "welcome": "Welcome",
     "welcomeMessage": "Select a module to get started",
-    "reload": "Reload"
+    "reload": "Reload",
+    "pleaseWait": "Please wait while the loading process completes",
+    "completed": "Load completed"
   },
   "navigation": {
     "home": "Home",
