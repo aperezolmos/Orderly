@@ -2,78 +2,152 @@
 
 \section{Introducción}
 
-\todo[inline]{Pendiente escribir.}
+Este apéndice detalla la base técnica y funcional del proyecto, estableciendo el marco de trabajo necesario para el desarrollo del software. En las siguientes secciones se describen tanto las metas estratégicas como el comportamiento esperado del sistema, proporcionando una hoja de ruta clara sobre cómo la aplicación debe interactuar con sus usuarios.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Objetivos generales}
 
-\todo[inline]{Pendiente escribir.}
+Los objetivos generales que definen el propósito y alcance principal de la aplicación son los siguientes:
+
+\begin{enumerate}
+	\item \textbf{Crear un sistema de gestión centralizado para locales de restauración} que unifique las operaciones críticas de gestión de productos, pedidos, reservas y usuarios en una única interfaz web.
+	\item \textbf{Integrar información nutricional externa} de manera automática, mediante el consumo de una API pública, para añadir valor diferencial y promover la transparencia alimentaria.
+	\item \textbf{Facilitar la identificación y gestión de alérgenos}, permitiendo asociarlos a los productos disponibles y ofrecer mecanismos de filtrado que ayuden al personal a identificar opciones seguras.
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Catálogo de requisitos}
 
+A continuación se detallan las funcionalidades que la aplicación debe cumplir para satisfacer los objetivos generales.
+
 \subsection{Requisitos funcionales}
 
-\todo[inline]{Pendiente añadir descripción breve a cada uno.}
+\begin{itemize}
+	
+	\req{RF-1 Gestión de alimentos:}{rf1} la aplicación debe permitir la gestión de alimentos.
+	\begin{itemize}
+		\req{RF-1.1 Crear alimento:}{rf1.1} la aplicación debe permitir crear un alimento, aportando su nombre, porción en gramos e información nutricional asociada.
+		\begin{itemize}
+			\req{RF-1.1.1 Crear alimento manualmente:}{rf1.1.1} el usuario debe poder crear un alimento introduciendo manualmente sus campos.
+			\req{RF-1.1.2 Crear alimento mediante API externa:}{rf1.1.2} el usuario debe poder crear un alimento mediante su búsqueda en una API nutricional externa.
+		\end{itemize}
+		\req{RF-1.2 Editar alimento:}{rf1.2} el usuario debe poder editar la información asociada a un alimento existente.
+		\req{RF-1.3 Eliminar alimento:}{rf1.3} el usuario debe poder eliminar un alimento existente.
+		\req{RF-1.4 Calcular información nutricional:}{rf1.4} la aplicación debe calcular los valores nutricionales de un alimento en base a su cantidad en gramos.
+		\req{RF-1.5 Listar alimentos:}{rf1.5} el usuario debe poder listar todos los alimentos presentes en la aplicación.
+	\end{itemize}
+	
+	\req{RF-2 Gestión de productos:}{rf2} la aplicación debe permitir la gestión de productos.
+	\begin{itemize}
+		\req{RF-2.1 Crear producto:}{rf2.1} el usuario debe poder crear un producto (plato, ración), aportando su nombre y precio unitario.
+		\req{RF-2.2 Editar producto:}{rf2.2} el usuario debe poder editar la información asociada a un producto existente.
+		\req{RF-2.3 Eliminar producto:}{rf2.3} el usuario debe poder eliminar un producto existente.
+		\req{RF-2.4 Gestionar ingredientes de un producto:}{rf2.4} el usuario debe poder gestionar los ingredientes de un producto.
+		\begin{itemize}
+			\req{RF-2.4.1 Agregar ingredientes:}{rf2.4.1} el usuario debe poder agregar ingredientes (alimentos) a un producto.
+			\req{RF-2.4.2 Quitar ingredientes:}{rf2.4.2} el usuario debe poder retirarle ingredientes a un producto.
+			\req{RF-2.4.3 Modificar porciones:}{rf2.4.3} el usuario debe poder modificar la cantidad (en gramos) de un ingrediente perteneciente a un producto.
+		\end{itemize}
+		\req{RF-2.5 Calcular información nutricional:}{rf2.5} la aplicación debe calcular los valores nutricionales totales del producto mediante el sumatorio proporcional de sus ingredientes, basándose en la  cantidad de cada uno de ellos presente en la composición final del producto.
+		\req{RF-2.6 Ver productos:}{rf2.6} el usuario debe poder visualizar toda la información relativa a un producto, incluyendo su información nutricional e ingredientes.
+		\req{RF-2.7 Listar productos:}{rf2.7} el usuario debe poder listar todos los productos presentes en la aplicación.
+	\end{itemize}
+	
+	\req{RF-3 Gestión de mesas:}{rf3} la aplicación debe permitir la gestión de mesas del local.
+	\begin{itemize}
+		\req{RF-3.1 Crear mesa:}{rf3.1} el usuario debe poder crear una mesa, aportando nombre y capacidad máxima de comensales.
+		\req{RF-3.2 Editar mesa:}{rf3.2} el usuario debe poder editar la información asociada a una mesa existente.
+		\req{RF-3.3 Desactivar mesa:}{rf3.3} el usuario debe poder marcar una mesa como ``inactiva'', para realizar un borrado lógico sin perder el historial de reservas.
+		\req{RF-3.4 Eliminar alimento:}{rf3.4} el usuario debe poder eliminar una mesa existente.
+		\req{RF-3.5 Listar alimentos:}{rf3.5} el usuario debe poder listar todas las mesas registradas en la aplicación.
+	\end{itemize}
+	
+	\req{RF-4 Gestión de reservas:}{rf4} la aplicación debe permitir la gestión de reservas de mesas del local.
+	\begin{itemize}
+		\req{RF-4.1 Crear reserva:}{rf4.1} el usuario debe poder reservar una mesa para una fecha concreta.
+		\req{RF-4.2 Editar reserva:}{rf4.2} el usuario debe poder editar la información asociada a una reserva existente, como los datos del cliente, la fecha o el estado de la reserva.
+		\req{RF-4.3 Eliminar reserva:}{rf4.3} el usuario debe poder eliminar una reserva existente.
+		\req{RF-4.4 Listar alimentos:}{rf4.4} el usuario debe poder listar todas las reservas registradas en la aplicación.
+	\end{itemize}
+	
+	\req{RF-5 Gestión de pedidos:}{rf5} la aplicación debe permitir la gestión de pedidos (comandas).
+	\begin{itemize}
+		\req{RF-5.1 Crear pedido:}{rf5.1} el usuario debe poder crear un pedido para la barra o el comedor.
+		\req{RF-5.2 Editar pedido:}{rf5.2} el usuario debe poder editar la información asociada a un pedido existente, como el estado del pedido.
+		\req{RF-5.3 Eliminar pedido:}{rf5.3} el usuario debe poder eliminar un pedido existente que no haya sido finalizado (por pago o cancelación).
+		\req{RF-5.4 Gestionar líneas de pedido:}{rf5.4} el usuario debe poder gestionar los ítems que conforman un pedido.
+		\begin{itemize}
+			\req{RF-5.4.1 Agregar productos:}{rf5.4.1} el usuario debe poder agregar productos a un pedido.
+			\req{RF-5.4.2 Quitar productos:}{rf5.4.2} el usuario debe poder retirar productos de un pedido.
+			\req{RF-5.4.3 Modificar cantidades:}{rf5.4.3} el usuario debe poder modificar la cantidad unitaria de un producto que se incluye en el pedido.
+		\end{itemize}
+		\req{RF-5.5 Calcular precio total:}{rf5.5} la aplicación debe calcular el precio total de un pedido, basándose en los precios unitarios y cantidades de los productos que lo forman.
+		\req{RF-5.6 Ver pedidos:}{rf5.6} el usuario debe poder visualizar toda la información relativa a un pedido.
+		\req{RF-5.7 Listar productos:}{rf5.7} el usuario debe poder visualizar un listado de todos los pedidos registrados en la aplicación.
+		\begin{itemize}
+			\req{RF-5.7.1 Listar pedidos en curso:}{rf5.5.1} el usuario debe poder visualizar los pedidos que no hayan sido finalizados.
+		\end{itemize}
+	\end{itemize}
+
+	\req{RF-6 Gestión de roles:}{rf6} la aplicación debe permitir la gestión de roles y permisos.
+	\begin{itemize}
+		\req{RF-6.1 Crear rol:}{rf6.1} el usuario debe poder crear un rol asociado a una serie de permisos.
+		\req{RF-6.2 Editar rol:}{rf6.2} el usuario debe poder editar la información asociada a un rol existente, incluyendo los permisos asociados.
+		\req{RF-6.3 Eliminar rol}{rf6.3} el usuario debe poder eliminar un rol existente.
+		\req{RF-6.4 Listar alimentos:}{rf6.4} el usuario debe poder listar todos los roles existentes en la aplicación.
+	\end{itemize}
+	
+	\req{RF-7 Gestión de usuarios:}{rf7} la aplicación debe permitir la gestión de usuarios.
+	\begin{itemize}
+		\req{RF-7.1 Crear usuario:}{rf7.1} la aplicación debe permitir crear un usuario, aportando un \textit{username} y una contraseña.
+		\req{RF-7.2 Editar usuario:}{rf7.2} la aplicación debe permitir editar la información asociada a un usuario existente.
+		\begin{itemize}
+			\req{RF-7.2.1 Editar perfil propio:}{rf7.2.1} el usuario debe poder editar su información asociada, exceptuando los roles.
+			\req{RF-7.2.2 Editar perfil ajeno:}{rf7.2.2} el usuario con permisos suficientes debe poder editar la información asociada a otros usuarios, incluyendo sus roles.
+		\end{itemize}
+		\req{RF-7.3 Eliminar usuario:}{rf7.3} la aplicación debe permitir eliminar un usuario existente.
+		\req{RF-7.4 Gestionar roles de un usuario:}{rf7.4} la aplicación debe permitir la gestión de los roles de un usuario.
+		\begin{itemize}
+			\req{RF-7.4.1 Agregar roles:}{rf7.4.1} el usuario con permisos suficientes debe poder agregar roles a un usuario, incluido él mismo.
+			\req{RF-7.4.2 Quitar roles:}{rf7.4.2} el usuario con permisos suficientes debe poder quitarle roles a un usuario, incluido él mismo.
+		\end{itemize}
+		\req{RF-7.5 Ver perfil propio:}{rf7.5} el usuario debe poder visualizar toda la información relativa a sí mismo, incluyendo sus roles.
+		\req{RF-7.6 Listar usuarios:}{rf7.6} la aplicación debe permitir listar todos los usuarios registrados en ella.
+	\end{itemize}
+
+	\req{RF-8 Autenticación de usuarios:}{rf8} la aplicación debe permitir acceder a los usuarios al sistema mediante su \textit{username} y contraseña.
+	
+	\req{RF-9 Búsqueda de alimentos mediante API \textit{Open Food Facts}:}{rf9} la aplicación debe permitir la búsqueda de alimentos presentes en la base de datos de \textit{Open Food Facts}.
+	
+	\req{RF-10 Gráficas y tablas nutricionales:}{rf10} la aplicación debe permitir la visualización de gráficas y tablas que informen al usuario de la proporción de componentes nutricionales de un producto.
+	
+	\req{RF-11 Detección de alérgenos en alimentos y productos:}{rf11} la aplicación debe mostrar los alérgenos presentes en cada alimento y producto.
+\end{itemize}
+
+%---------------------------------------------------------------
+
+\subsection{Requisitos no funcionales}
 
 \begin{itemize}
-	\item \textbf{RF-1 Gestión de productos:} ... 
-	\begin{itemize}
-		\item \textbf{RF-1.1 Agregar o borrar un producto:} ...
-		\item \textbf{RF-1.2 Modificar información de un producto:} ...
-		\item \textbf{RF-1.3 Visualizar información nutricional:} ...
-	\end{itemize}
+	\req{RNF-1 Rendimiento y escalabilidad:}{rnf1} la aplicación debe mantener tiempos de respuesta adecuados bajo carga operativa normal y picos moderados de uso.
 	
-	\item \textbf{RF-2 Gestión de pedidos:} tanto en barra como en comedor...
-	\begin{itemize}
-		\item \textbf{RF-2.1 Creación de nuevos pedidos:} ...
-		\begin{itemize}
-			\item \textbf{RF-2.1.1 Añadir nuevos pedidos:} ...
-			\item \textbf{RF-2.1.2 Incrementar/decrementar cantidades pedidas:} ...
-			\item \textbf{RF-2.1.3 Actualización automática del precio total del pedido:} ...
-		\end{itemize}
-		\item \textbf{RF-2.2 Visualización de los pedidos existentes:} ...
-		\begin{itemize}
-			\item \textbf{RF-2.2.1 Modificación de los pedidos:} ...
-			\item \textbf{RF-2.2.2 Cancelación de los pedidos:} ...
-		\end{itemize}
-		\item \textbf{RF-2.3 Modificación de las raciones ofrecidas:} ...
-		\begin{itemize}
-			\item \textbf{RF-2.3.1 Añadir/borrar productos:} ...
-			\item \textbf{RF-2.3.2 Modificar precio unitario de producto:} ...
-		\end{itemize}
-	\end{itemize}
+	\req{RNF-2 Disponibilidad:}{rnf2} el sistema debe estar operativo durante el horario de apertura típico de un local de restauración.
 	
-	\item \textbf{RF-3 Gestión de reservas de mesas:} ...
-	\begin{itemize}
-		\item \textbf{RF-3.1 Visualización de mesas sin reservar:} ...
-		\begin{itemize}
-			\item \textbf{RF-3.1.1 Asignación de nuevos comensales a mesas:} ...
-		\end{itemize}
-		\item \textbf{RF-3.2 Visualización de mesas reservadas:} ...
-		\begin{itemize}
-			\item \textbf{RF-3.2.1 Visualización del número de mesa y hora de reserva:} ...
-			\item \textbf{RF-3.2.2 Modificación de la reserva de la mesa:} ...
-			\item \textbf{RF-3.2.3 Cancelación de la reserva de la mesa:} ...
-		\end{itemize}
-		\item \textbf{RF-3.3 Modificación de las mesas por administrador:} tamaño, cantidad...
-	\end{itemize}
+	\req{RNF-3 Seguridad y protección de datos:}{rnf3} el sistema debe garantizar la confidencialidad, integridad y autenticación de los datos, especialmente los de usuarios y transacciones.
 	
-	\item \textbf{RF-4 Gestión de usuarios:} ...
-	\begin{itemize}
-		\item \textbf{RF-4.1 Identificación del usuario:} ...
-		\begin{itemize}
-			\item \textbf{RF-4.1.1 Búsqueda del usuario en el sistema:} ...
-			\item \textbf{RF-4.1.2 Validación de contraseña:} ...
-		\end{itemize}
-		\item \textbf{RF-4.2 Información de los usuarios :} ...
-		\begin{itemize}
-			\item \textbf{RF-4.2.1 Añadir o borrar un usuario:} ...
-			\item \textbf{RF-4.2.2 Modificación parámetros de un usuario:} ...
-		\end{itemize}
-	\end{itemize}
+	\req{RNF-4 Usabilidad y experiencia de usuario (UX):}{rnf4} la interfaz debe ser intuitiva, eficiente y requerir un entrenamiento mínimo para el personal. Debe existir \textit{feedback} visual claro para acciones (éxito, error, advertencia).
+	
+	\req{RNF-5 Mantenibilidad y extensibilidad:}{rnf5} el código debe estar estructurado para facilitar su mantenimiento, corrección de errores y adición de nuevas funcionalidades.
+	
+	\req{RNF-6 Interoperabilidad y consumo de API externa:}{rnf6} la integración con la API de \textit{Open Food Facts} (\hyperref[req:rf1.1.2]{RF-1.1.2}, \hyperref[req:rf9]{RF-9}) debe ser robusta y manejar adecuadamente los fallos de la fuente externa.
+	
+	\req{RNF-7 Internacionalización (i18n):}{rnf7} la aplicación debe soportar al menos dos idiomas (español e inglés).
+	
+	\req{RNF-8 Portabilidad y despliegue:}{rnf8} la aplicación debe poder desplegarse de forma sencilla y reproducible.
+	
+	\req{RNF-9 Fiabilidad de los datos:}{rnf9} la integridad y consistencia de los datos, especialmente en relaciones bidireccionales, debe estar garantizada.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,7 +162,7 @@
 
 \subsection{Actores}
 
-\todo[inline]{Explicar brevemente los actores.}
+\todo[inline]{Hay más de 1 actor? Porque existe el administrador, pero también se pueden crear roles con permisos elevados.}
 
 %---------------------------------------------------------------
 

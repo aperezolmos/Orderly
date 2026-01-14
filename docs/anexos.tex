@@ -298,6 +298,15 @@
 \newcommand{\revisionB}[1]{\colorbox{yellow!75}{#1}}
 \newcommand{\revisionC}[1]{\colorbox{green!60}{#1}}
 
+% REQUISITOS (listado ítems) + ETIQUETA. Los parámetros son:
+% 1 -> Texto visible (ej: RF-2.7 Listar productos:)
+% 2 --> Identificador interno (ej: rf2.7)
+\newcommand{\req}[2]{%
+	\item \textbf{#1}%
+	\phantomsection%
+	\label{req:#2}%
+}
+
 % TABLA CASOS DE USO. Los parámetros son:
 % 1 -> Etiqueta (label) para referencias
 % 2 --> Id del caso de uso
