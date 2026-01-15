@@ -2,103 +2,190 @@
 
 \section{Introducción}
 
-\todo[inline]{Pendiente escribir.}
+Este apéndice detalla la base técnica y funcional del proyecto, estableciendo el marco de trabajo necesario para el desarrollo del software. En las siguientes secciones se describen tanto las metas estratégicas como el comportamiento esperado del sistema, proporcionando una hoja de ruta clara sobre cómo la aplicación debe interactuar con sus usuarios.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Objetivos generales}
 
-\todo[inline]{Pendiente escribir.}
+Los objetivos generales que definen el propósito y alcance principal de la aplicación son los siguientes:
+
+\begin{enumerate}
+	\item \textbf{Crear un sistema de gestión centralizado para locales de restauración} que unifique las operaciones críticas de gestión de productos, pedidos, reservas y usuarios en una única interfaz web.
+	\item \textbf{Integrar información nutricional externa} de manera automática, mediante el consumo de una API pública, para añadir valor diferencial y promover la transparencia alimentaria.
+	\item \textbf{Facilitar la identificación y gestión de alérgenos}, permitiendo asociarlos a los productos disponibles y ofrecer mecanismos de filtrado que ayuden al personal a identificar opciones seguras.
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Catálogo de requisitos}
 
+A continuación se detallan las funcionalidades que la aplicación debe cumplir para satisfacer los objetivos generales.
+
 \subsection{Requisitos funcionales}
 
-\todo[inline]{Pendiente añadir descripción breve a cada uno.}
+\begin{itemize}
+	
+	\req{RF-1 Gestión de alimentos:}{rf1} la aplicación debe permitir la gestión de alimentos.
+	\begin{itemize}
+		\req{RF-1.1 Crear alimento:}{rf1.1} la aplicación debe permitir crear un alimento, aportando su nombre, porción en gramos e información nutricional asociada.
+		\begin{itemize}
+			\req{RF-1.1.1 Crear alimento manualmente:}{rf1.1.1} el usuario debe poder crear un alimento introduciendo manualmente sus campos.
+			\req{RF-1.1.2 Crear alimento mediante API externa:}{rf1.1.2} el usuario debe poder crear un alimento mediante su búsqueda en una API nutricional externa.
+		\end{itemize}
+		\req{RF-1.2 Editar alimento:}{rf1.2} el usuario debe poder editar la información asociada a un alimento existente.
+		\req{RF-1.3 Eliminar alimento:}{rf1.3} el usuario debe poder eliminar un alimento existente.
+		\req{RF-1.4 Calcular información nutricional:}{rf1.4} la aplicación debe calcular los valores nutricionales de un alimento en base a su cantidad en gramos.
+		\req{RF-1.5 Listar alimentos:}{rf1.5} el usuario debe poder listar todos los alimentos presentes en la aplicación.
+	\end{itemize}
+	
+	\req{RF-2 Gestión de productos:}{rf2} la aplicación debe permitir la gestión de productos.
+	\begin{itemize}
+		\req{RF-2.1 Crear producto:}{rf2.1} el usuario debe poder crear un producto (plato, ración), aportando su nombre y precio unitario.
+		\req{RF-2.2 Editar producto:}{rf2.2} el usuario debe poder editar la información asociada a un producto existente.
+		\req{RF-2.3 Eliminar producto:}{rf2.3} el usuario debe poder eliminar un producto existente.
+		\req{RF-2.4 Gestionar ingredientes de un producto:}{rf2.4} el usuario debe poder gestionar los ingredientes de un producto.
+		\begin{itemize}
+			\req{RF-2.4.1 Agregar ingredientes:}{rf2.4.1} el usuario debe poder agregar ingredientes (alimentos) a un producto.
+			\req{RF-2.4.2 Quitar ingredientes:}{rf2.4.2} el usuario debe poder retirarle ingredientes a un producto.
+			\req{RF-2.4.3 Modificar porciones:}{rf2.4.3} el usuario debe poder modificar la cantidad (en gramos) de un ingrediente perteneciente a un producto.
+		\end{itemize}
+		\req{RF-2.5 Calcular información nutricional:}{rf2.5} la aplicación debe calcular los valores nutricionales totales del producto mediante el sumatorio proporcional de sus ingredientes, basándose en la  cantidad de cada uno de ellos presente en la composición final del producto.
+		\req{RF-2.6 Ver productos:}{rf2.6} el usuario debe poder visualizar toda la información relativa a un producto, incluyendo su información nutricional e ingredientes.
+		\req{RF-2.7 Listar productos:}{rf2.7} el usuario debe poder listar todos los productos presentes en la aplicación.
+	\end{itemize}
+	
+	\req{RF-3 Gestión de mesas:}{rf3} la aplicación debe permitir la gestión de mesas del local.
+	\begin{itemize}
+		\req{RF-3.1 Crear mesa:}{rf3.1} el usuario debe poder crear una mesa, aportando nombre y capacidad máxima de comensales.
+		\req{RF-3.2 Editar mesa:}{rf3.2} el usuario debe poder editar la información asociada a una mesa existente.
+		\req{RF-3.3 Desactivar mesa:}{rf3.3} el usuario debe poder marcar una mesa como ``inactiva'', para realizar un borrado lógico sin perder el historial de reservas.
+		\req{RF-3.4 Eliminar mesa:}{rf3.4} el usuario debe poder eliminar una mesa existente.
+		\req{RF-3.5 Listar mesas:}{rf3.5} el usuario debe poder listar todas las mesas registradas en la aplicación.
+	\end{itemize}
+	
+	\req{RF-4 Gestión de reservas:}{rf4} la aplicación debe permitir la gestión de reservas de mesas del local.
+	\begin{itemize}
+		\req{RF-4.1 Crear reserva:}{rf4.1} el usuario debe poder reservar una mesa para una fecha concreta.
+		\req{RF-4.2 Editar reserva:}{rf4.2} el usuario debe poder editar la información asociada a una reserva existente, como los datos del cliente, la fecha o el estado de la reserva.
+		\req{RF-4.3 Eliminar reserva:}{rf4.3} el usuario debe poder eliminar una reserva existente.
+		\req{RF-4.4 Listar reservas:}{rf4.4} el usuario debe poder listar todas las reservas registradas en la aplicación.
+	\end{itemize}
+	
+	\req{RF-5 Gestión de pedidos:}{rf5} la aplicación debe permitir la gestión de pedidos (comandas).
+	\begin{itemize}
+		\req{RF-5.1 Crear pedido:}{rf5.1} el usuario debe poder crear un pedido para la barra o el comedor.
+		\req{RF-5.2 Editar pedido:}{rf5.2} el usuario debe poder editar la información asociada a un pedido existente, como el estado del pedido.
+		\req{RF-5.3 Eliminar pedido:}{rf5.3} el usuario debe poder eliminar un pedido existente que no haya sido finalizado (por pago o cancelación).
+		\req{RF-5.4 Gestionar líneas de pedido:}{rf5.4} el usuario debe poder gestionar los ítems que conforman un pedido.
+		\begin{itemize}
+			\req{RF-5.4.1 Agregar productos:}{rf5.4.1} el usuario debe poder agregar productos a un pedido.
+			\req{RF-5.4.2 Quitar productos:}{rf5.4.2} el usuario debe poder retirar productos de un pedido.
+			\req{RF-5.4.3 Modificar cantidades:}{rf5.4.3} el usuario debe poder modificar la cantidad unitaria de un producto que se incluye en el pedido.
+		\end{itemize}
+		\req{RF-5.5 Calcular precio total:}{rf5.5} la aplicación debe calcular el precio total de un pedido, basándose en los precios unitarios y cantidades de los productos que lo forman.
+		\req{RF-5.6 Ver pedidos:}{rf5.6} el usuario debe poder visualizar toda la información relativa a un pedido.
+		\req{RF-5.7 Listar pedidos:}{rf5.7} el usuario debe poder visualizar un listado de todos los pedidos registrados en la aplicación.
+		\begin{itemize}
+			\req{RF-5.7.1 Listar pedidos en curso:}{rf5.5.1} el usuario debe poder visualizar los pedidos que no hayan sido finalizados.
+		\end{itemize}
+	\end{itemize}
+
+	\req{RF-6 Gestión de roles:}{rf6} la aplicación debe permitir la gestión de roles y permisos.
+	\begin{itemize}
+		\req{RF-6.1 Crear rol:}{rf6.1} el usuario debe poder crear un rol asociado a una serie de permisos.
+		\req{RF-6.2 Editar rol:}{rf6.2} el usuario debe poder editar la información asociada a un rol existente, incluyendo los permisos asociados.
+		\req{RF-6.3 Eliminar rol}{rf6.3} el usuario debe poder eliminar un rol existente.
+		\req{RF-6.4 Listar roles:}{rf6.4} el usuario debe poder listar todos los roles existentes en la aplicación.
+	\end{itemize}
+	
+	\req{RF-7 Gestión de usuarios:}{rf7} la aplicación debe permitir la gestión de usuarios.
+	\begin{itemize}
+		\req{RF-7.1 Crear usuario:}{rf7.1} la aplicación debe permitir crear un usuario, aportando un \textit{username} y una contraseña.
+		\req{RF-7.2 Editar usuario:}{rf7.2} la aplicación debe permitir editar la información asociada a un usuario existente.
+		\begin{itemize}
+			\req{RF-7.2.1 Editar perfil propio:}{rf7.2.1} el usuario debe poder editar su información asociada, exceptuando los roles.
+			\req{RF-7.2.2 Editar perfil ajeno:}{rf7.2.2} el usuario con permisos suficientes debe poder editar la información asociada a otros usuarios, incluyendo sus roles.
+		\end{itemize}
+		\req{RF-7.3 Eliminar usuario:}{rf7.3} la aplicación debe permitir eliminar un usuario existente.
+		\req{RF-7.4 Gestionar roles de un usuario:}{rf7.4} la aplicación debe permitir la gestión de los roles de un usuario.
+		\begin{itemize}
+			\req{RF-7.4.1 Agregar roles:}{rf7.4.1} el usuario con permisos suficientes debe poder agregar roles a un usuario, incluido él mismo.
+			\req{RF-7.4.2 Quitar roles:}{rf7.4.2} el usuario con permisos suficientes debe poder quitarle roles a un usuario, incluido él mismo.
+		\end{itemize}
+		\req{RF-7.5 Ver perfil propio:}{rf7.5} el usuario debe poder visualizar toda la información relativa a sí mismo, incluyendo sus roles.
+		\req{RF-7.6 Listar usuarios:}{rf7.6} la aplicación debe permitir listar todos los usuarios registrados en ella.
+	\end{itemize}
+
+	\req{RF-8 Autenticación de usuarios:}{rf8} la aplicación debe permitir acceder a los usuarios al sistema mediante su \textit{username} y contraseña.
+	
+	\req{RF-9 Búsqueda de alimentos mediante API \textit{Open Food Facts}:}{rf9} la aplicación debe permitir la búsqueda de alimentos presentes en la base de datos de \textit{Open Food Facts}.
+	
+	\req{RF-10 Gráficas y tablas nutricionales:}{rf10} la aplicación debe permitir la visualización de gráficas y tablas que informen al usuario de la proporción de componentes nutricionales de un producto.
+	
+	\req{RF-11 Detección de alérgenos en alimentos y productos:}{rf11} la aplicación debe mostrar los alérgenos presentes en cada alimento y producto.
+\end{itemize}
+
+%---------------------------------------------------------------
+
+\subsection{Requisitos no funcionales}
 
 \begin{itemize}
-	\item \textbf{RF-1 Gestión de productos:} ... 
-	\begin{itemize}
-		\item \textbf{RF-1.1 Agregar o borrar un producto:} ...
-		\item \textbf{RF-1.2 Modificar información de un producto:} ...
-		\item \textbf{RF-1.3 Visualizar información nutricional:} ...
-	\end{itemize}
+	\req{RNF-1 Rendimiento y escalabilidad:}{rnf1} la aplicación debe mantener tiempos de respuesta adecuados bajo carga operativa normal y picos moderados de uso.
 	
-	\item \textbf{RF-2 Gestión de pedidos:} tanto en barra como en comedor...
-	\begin{itemize}
-		\item \textbf{RF-2.1 Creación de nuevos pedidos:} ...
-		\begin{itemize}
-			\item \textbf{RF-2.1.1 Añadir nuevos pedidos:} ...
-			\item \textbf{RF-2.1.2 Incrementar/decrementar cantidades pedidas:} ...
-			\item \textbf{RF-2.1.3 Actualización automática del precio total del pedido:} ...
-		\end{itemize}
-		\item \textbf{RF-2.2 Visualización de los pedidos existentes:} ...
-		\begin{itemize}
-			\item \textbf{RF-2.2.1 Modificación de los pedidos:} ...
-			\item \textbf{RF-2.2.2 Cancelación de los pedidos:} ...
-		\end{itemize}
-		\item \textbf{RF-2.3 Modificación de las raciones ofrecidas:} ...
-		\begin{itemize}
-			\item \textbf{RF-2.3.1 Añadir/borrar productos:} ...
-			\item \textbf{RF-2.3.2 Modificar precio unitario de producto:} ...
-		\end{itemize}
-	\end{itemize}
+	\req{RNF-2 Disponibilidad:}{rnf2} el sistema debe estar operativo durante el horario de apertura típico de un local de restauración.
 	
-	\item \textbf{RF-3 Gestión de reservas de mesas:} ...
-	\begin{itemize}
-		\item \textbf{RF-3.1 Visualización de mesas sin reservar:} ...
-		\begin{itemize}
-			\item \textbf{RF-3.1.1 Asignación de nuevos comensales a mesas:} ...
-		\end{itemize}
-		\item \textbf{RF-3.2 Visualización de mesas reservadas:} ...
-		\begin{itemize}
-			\item \textbf{RF-3.2.1 Visualización del número de mesa y hora de reserva:} ...
-			\item \textbf{RF-3.2.2 Modificación de la reserva de la mesa:} ...
-			\item \textbf{RF-3.2.3 Cancelación de la reserva de la mesa:} ...
-		\end{itemize}
-		\item \textbf{RF-3.3 Modificación de las mesas por administrador:} tamaño, cantidad...
-	\end{itemize}
+	\req{RNF-3 Seguridad y protección de datos:}{rnf3} el sistema debe garantizar la confidencialidad, integridad y autenticación de los datos, especialmente los de usuarios y transacciones.
 	
-	\item \textbf{RF-4 Gestión de usuarios:} ...
-	\begin{itemize}
-		\item \textbf{RF-4.1 Identificación del usuario:} ...
-		\begin{itemize}
-			\item \textbf{RF-4.1.1 Búsqueda del usuario en el sistema:} ...
-			\item \textbf{RF-4.1.2 Validación de contraseña:} ...
-		\end{itemize}
-		\item \textbf{RF-4.2 Información de los usuarios :} ...
-		\begin{itemize}
-			\item \textbf{RF-4.2.1 Añadir o borrar un usuario:} ...
-			\item \textbf{RF-4.2.2 Modificación parámetros de un usuario:} ...
-		\end{itemize}
-	\end{itemize}
+	\req{RNF-4 Usabilidad y experiencia de usuario (UX):}{rnf4} la interfaz debe ser intuitiva, eficiente y requerir un entrenamiento mínimo para el personal. Debe existir \textit{feedback} visual claro para acciones (éxito, error, advertencia).
+	
+	\req{RNF-5 Mantenibilidad y extensibilidad:}{rnf5} el código debe estar estructurado para facilitar su mantenimiento, corrección de errores y adición de nuevas funcionalidades.
+	
+	\req{RNF-6 Interoperabilidad y consumo de API externa:}{rnf6} la integración con la API de \textit{Open Food Facts} (\hyperref[req:rf1.1.2]{RF-1.1.2}, \hyperref[req:rf9]{RF-9}) debe ser robusta y manejar adecuadamente los fallos de la fuente externa.
+	
+	\req{RNF-7 Internacionalización (i18n):}{rnf7} la aplicación debe soportar al menos dos idiomas (español e inglés).
+	
+	\req{RNF-8 Portabilidad y despliegue:}{rnf8} la aplicación debe poder desplegarse de forma sencilla y reproducible.
+	
+	\req{RNF-9 Fiabilidad de los datos:}{rnf9} la integridad y consistencia de los datos, especialmente en relaciones bidireccionales, debe estar garantizada.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Especificación de requisitos}
 
-\todo[inline]{Líneas introductorias.}
-
-\missingfigure{Diagrama de casos de uso}
+Este apartado define el comportamiento esperado del sistema, transformando las necesidades del negocio en una estructura técnica detallada para delimitar su alcance funcional. La figura \revisionA{<ref>}\todo{ref a figura} ofrece una visión global de estas interacciones, sirviendo como base para comprender los diversos flujos de la aplicación.
 
 %---------------------------------------------------------------
 
 \subsection{Actores}
 
-\todo[inline]{Explicar brevemente los actores.}
+Los actores representan los roles funcionales identificados en el dominio de la restauración que podrían interactuar con el sistema. Internamente, estos actores se materializan mediante el sistema de \textbf{roles y permisos} descrito en los requisitos funcionales (\hyperref[req:rf6]{RF-6}, \hyperref[req:rf7]{RF-7}). Un usuario concreto puede tener asignados permisos de varios actores si su perfil laboral así lo requiere.
+
+Los actores identificados son los siguientes:
+\begin{itemize}
+	\item \textbf{Administrador del sistema:} usuario con control total sobre la configuración y administración de la aplicación. Gestiona usuarios, roles y todos los aspectos del sistema.
+	
+	\item \textbf{Gerente:} responsable operativo del local. Gestiona el catálogo de productos y alimentos, las mesas, y supervisa reservas y pedidos. No configura aspectos del sistema como roles o permisos.
+	
+	\item \textbf{Camarero:} personal de sala que toma pedidos y atiende a los clientes. Su interacción principal es con los módulos de pedidos, mesas y reservas en tiempo real.
+	
+	\item \textbf{Cocinero:} personal de cocina encargado de la preparación. Requiere acceso a la información de alimentos y productos, de alérgenos y a la visualización de pedidos pendientes.
+	
+	\item \textbf{Usuario autenticado:\todo{O Usuario registrado??}} representa a cualquier miembro del personal que ha accedido al sistema. Sus funciones se limitan a la gestión de su propia cuenta (editar perfil, cambiar contraseña y cerrar sesión). Es el rol \textbf{asignado por defecto} antes de recibir permisos específicos.
+\end{itemize}
+
+\textbf{Nota sobre el alcance inicial:} en la implementación actual, el sistema se despliega con dos roles predefinidos: \texttt{ROLE\_ADMIN} (que agrupa todos los permisos) y \texttt{ROLE\_USER} (con permisos básicos). Sin embargo, mediante el módulo de gestión de roles (\hyperref[req:rf6]{RF-6}), se pueden crear los roles funcionales descritos anteriormente y asignarles los permisos específicos adecuados a cada perfil laboral.
 
 %---------------------------------------------------------------
 
 \subsection{Casos de uso}
 
-% Caso de Uso 1 -> Registrarse (register).
 \BeginCasoUso{tab:CU-1}{CU-1}{Registrarse (\textit{register})}
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
-	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Requisitos asociados} & \hyperref[req:rf7.1]{RF-7.1}, \hyperref[req:rf8]{RF-8} \\
+	\textbf{Actor}                & Visitante sin cuenta en el sistema. \\
 	\textbf{Descripción}          & Visitante crea una nueva cuenta de usuario. \\
 	\textbf{Precondición}         & El usuario no está autenticado. \\
 	\textbf{Acciones}             &
@@ -126,11 +213,11 @@
 \EndCasoUso
 
 
-% Caso de Uso 2 -> Iniciar sesión (login).
 \BeginCasoUso{tab:CU-2}{CU-2}{Iniciar sesión (\textit{login})}
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
-	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Requisitos asociados} & \hyperref[req:rf8]{RF-8} \\
+	\textbf{Actor}                & \todo[inline]{Usuario autenticado}. \\
 	\textbf{Descripción}          & Usuario se autentica y accede a la aplicación. \\
 	\textbf{Precondición}         & 
 	\begin{itemize}
@@ -161,18 +248,18 @@
 \EndCasoUso
 
 
-% Caso de Uso 3 -> Cerrar sesión (logout).
 \BeginCasoUso{tab:CU-3}{CU-3}{Cerrar sesión (\textit{logout})}
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
-	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Requisitos asociados} & \hyperref[req:rf8]{RF-8} \\
+	\textbf{Actor}                & Usuario autenticado. \\
 	\textbf{Descripción}          & Usuario termina su sesión y sale de la aplicación. \\
 	\textbf{Precondición}         & El usuario está autenticado. \\
 	\textbf{Acciones}             &
 	\begin{enumerate}
 		\def\labelenumi{\arabic{enumi}.}
 		\tightlist
-		\item Hacer \textit{click} en el botón \textit{Cerrar sesión} de la barra de navegación (\textit{navbar}).
+		\item Hacer \textit{click} en el botón \textit{Cerrar sesión} de la barra de navegación.
 		\item El sistema invalida la sesión y redirige a la página de inicio.
 		\todo[inline]{inicio o login?}
 	\end{enumerate} \\
@@ -182,21 +269,21 @@
 \EndCasoUso
 
 
-% Caso de Uso 4 -> Editar perfil propio.
 \BeginCasoUso{tab:CU-4}{CU-4}{Editar perfil propio}
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
-	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
+	\textbf{Requisitos asociados} & \hyperref[req:rf7.2.1]{RF-7.2.1}, \hyperref[req:rf7.5]{RF-7.5} \\
+	\textbf{Actor}                & Usuario autenticado. \\
 	\textbf{Descripción}          & Usuario edita la información de su perfil. \\
 	\textbf{Precondición}         & El usuario está autenticado. \\
 	\textbf{Acciones}             &
 	\begin{enumerate}
 		\def\labelenumi{\arabic{enumi}.}
 		\tightlist
-		\item Hacer \textit{click} en el botón \textit{Editar perfil} de la barra de navegación (\textit{navbar}).
+		\item Hacer \textit{click} en el botón \textit{Editar perfil} de la barra de navegación.
 		\item Modificar campos permitidos.
 		\begin{enumerate}
-			\item Solo podrá editar sus roles si tiene permisos de administrador.
+			\item Solo podrá editar sus roles si tiene los permisos necesarios.
 			\item Si se quiere editar la contraseña, se deberá introducir la contraseña actual.
 		\end{enumerate}
 		\item El sistema valida y persiste los cambios.
@@ -217,71 +304,354 @@
 \EndCasoUso
 
 
-% Caso de Uso ? -> Recuperar contraseña.
+\todo[inline]{Aclaración sobre los CU 5 a 8. Diciendo que son casos que engloban todas las entidades de la aplicación.
 
+- También se podría poner una sección de particularidades de cada entidad, en el caso de uso padre.}
 
-% Caso de Uso 5 -> Gestionar usuarios (admin).
-\todo{Caso general o casos separados?}
-\BeginCasoUso{tab:CU-5}{CU-5}{Gestionar usuarios (admin)}
-	\textbf{Versión}              & 1.0    \\
-	\textbf{Autor}                & Amanda Pérez Olmos \\
-	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
-	\textbf{Descripción}          & Administrador accede a vista que muestra todos los usuarios y puede crear, editar o eliminar cualquiera de ellos. \\
-	\textbf{Precondición}         & El usuario está autenticado y tiene rol de administrador. \\
-	\textbf{Acciones}             &
+\BeginCasoUso{tab:CU-5}{CU-5}{Crear entidad}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf1.1]{RF-1.1}, \hyperref[req:rf2.1]{RF-2.1}, \hyperref[req:rf3.1]{RF-3.1}, \hyperref[req:rf4.1]{RF-4.1}, \hyperref[req:rf5.1]{RF-5.1}, \hyperref[req:rf6.1]{RF-6.1}, \hyperref[req:rf7.1]{RF-7.1} \\
+\textbf{Actor}                & Usuario con permiso \texttt{CREATE} sobre la entidad correspondiente. \\
+\textbf{Descripción}          & Usuario crea una nueva instancia de una entidad del sistema (Alimento, Producto, Mesa, Reserva, Pedido, Usuario o Rol). \\
+\textbf{Precondición}         & 
+\begin{itemize}
+	\tightlist
+	\item El usuario está autenticado.
+	\item El usuario tiene permiso para crear la entidad específica.
+	\item Está en la vista de listado o gestión de la entidad.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}
+	\def\labelenumi{\arabic{enumi}.}
+	\tightlist
+	\item Hacer \textit{click} en el botón \textit{Crear nuevo [Entidad]}.
+	\item El sistema muestra un formulario modal o página con los campos requeridos.
+	\item Rellenar los campos del formulario.
+	\item Hacer \textit{click} en el botón de guardado.
+	\item El sistema valida todos los campos del formulario.
 	\begin{enumerate}
-		\def\labelenumi{\arabic{enumi}.}
-		\tightlist
-		\item \textbf{Listar usuarios}: Solicitar listado con datos relevantes (sin campos sensibles) de cada usuario.
-		\item \textbf{Crear usuarios}: Rellenar formulario con datos básicos, incluyendo la asignación de roles.
-		\item \textbf{Editar usuarios}: Modificar cualquier campo editable del formulario, incluyendo la adición y eliminación de roles.
-		\item \textbf{Eliminar usuarios}: Solicitar la eliminación de un usuario, con confirmación.
-	\end{enumerate} \\
-	\textbf{Postcondición}        & 
-	\begin{itemize}
-		\tightlist
-		\item Operaciones reflejadas en la BBDD.
-		\item Cambios de roles afectan permisos en nuevas sesiones.
-	\end{itemize} \\
-	\textbf{Excepciones}          & 
-	\begin{itemize}
-		\tightlist
-		\item Acceso no autorizado.
-		\item \textit{Username} duplicado (en creación o edición).
-		\item Intento de eliminar o desprivilegiar al último administrador activo.
-	\end{itemize} \\
-	\textbf{Importancia}          & Alta \\
+			\item Si la validación es exitosa, persiste la entidad, cierra el formulario y actualiza la vista.
+			\item Si la validación falla, muestra mensajes de error junto a los campos afectados.
+		\end{enumerate}
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}
+	\tightlist
+	\item Nueva entidad persistida en la base de datos.
+	\item La vista se actualiza para reflejar el nuevo elemento.
+	\item El usuario recibe confirmación visual de la creación exitosa.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}
+	\tightlist
+	\item Campos obligatorios vacíos.
+	\item Validación de formato fallida (ej: longitud excedida, número negativo).
+	\item Violación de unicidad (ej: nombre duplicado).
+	\item Error de conexión con el servidor.
+	\item Pérdida de sesión durante la operación.
+\end{itemize} \\
+%\textbf{Particularidades por entidad} & 
+%\begin{itemize}
+%	\tightlist
+%	\item \textbf{Alimento:} Campos nutricionales específicos, opción de búsqueda por API externa.
+%	\item \textbf{Producto:} Asociación de ingredientes (alimentos), gestión de alérgenos.
+%	\item \textbf{Reserva:} Validación de disponibilidad de mesa en fecha/hora.
+%	\item \textbf{Pedido:} Asociación a mesa/cliente, gestión de líneas de pedido.
+%	\item \textbf{Usuario:} Confirmación de contraseña.
+%	\item \textbf{Rol:} Selección de permisos asociados.
+%\end{itemize} \\
+\textbf{Importancia}          & Alta \\
 \EndCasoUso
 
 
-% Caso de Uso 6 -> Gestionar roles (admin).
-% + crear, editar y eliminar + asignar/desasignar a usuarios.
-\BeginCasoUso{tab:CU-6}{CU-6}{Gestionar roles (admin)}
-	\textbf{Versión}              & 1.0    \\
-	\textbf{Autor}                & Amanda Pérez Olmos \\
-	\textbf{Requisitos asociados} & \todo[inline]{RF-xx, RF-xx} \\
-	\textbf{Descripción}          & Administrador accede a vista que muestra todos los roles y puede crear, editar o eliminar cualquiera de ellos. \\
-	\textbf{Precondición}         & El usuario está autenticado y tiene rol de administrador. \\
-	\textbf{Acciones}             &
+\BeginCasoUso{tab:CU-6}{CU-6}{Editar entidad}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf1.2]{RF-1.2}, \hyperref[req:rf2.2]{RF-2.2}, \hyperref[req:rf3.2]{RF-3.2}, \hyperref[req:rf4.2]{RF-4.2}, \hyperref[req:rf5.2]{RF-5.2}, \hyperref[req:rf6.2]{RF-6.2}, \hyperref[req:rf7.2]{RF-7.2} \\
+\textbf{Actor}                & Usuario con permiso \texttt{EDIT} sobre la entidad correspondiente. \\
+\textbf{Descripción}          & Usuario modifica los datos de una entidad existente. \\
+\textbf{Precondición}         & 
+\begin{itemize}
+	\tightlist
+	\item El usuario está autenticado.
+	\item El usuario tiene permiso para editar la entidad específica.
+	\item La entidad a editar existe y es editable.
+	\item Está visualizando la lista o detalle de la entidad.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}
+	\def\labelenumi{\arabic{enumi}.}
+	\tightlist
+	\item Hacer \textit{click} en el botón \textit{Editar} de la entidad deseada (desde lista o vista detalle).
+	\item El sistema muestra formulario pre-rellenado con los datos actuales.
+	\item Modificar los campos deseados.
+	\item Hacer \textit{click} en el botón de guardado.
+	\item El sistema valida los campos modificados.
 	\begin{enumerate}
-		\def\labelenumi{\arabic{enumi}.}
-		\tightlist
-		\item \textbf{Crear roles}: Agregar un nuevo rol, otorgándole un nombre y descripción.
-		\item \textbf{Editar roles}: Editar el nombre o descripción de roles existentes.
-		\item \textbf{Eliminar roles}: Borrar roles existentes que no estén asignados a ningún usuario.
-	\end{enumerate} \\
-	\textbf{Postcondición}        & 
-	\begin{itemize}
-		\tightlist
-		\item Operaciones reflejadas en la BBDD.
-		\item Cambios de roles afectan permisos en nuevas sesiones.
-	\end{itemize} \\
-	\textbf{Excepciones}          & 
-	\begin{itemize}
-		\tightlist
-		\item Acceso no autorizado.
-		\item Nombre duplicado (en creación o edición).
-		\item Rol está asignado a un usuario y no puede eliminarse.
-	\end{itemize} \\
-	\textbf{Importancia}          & Media \\
+			\item Si la validación es exitosa, persiste los cambios y actualiza la vista.
+			\item Si falla, muestra mensajes de error sin cerrar el formulario.
+		\end{enumerate}
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}
+	\tightlist
+	\item Datos de la entidad actualizados en la base de datos.
+	\item Vista actualizada con los nuevos valores.
+	\item Confirmación visual de la edición exitosa.
+\end{itemize} \\
+\textbf{Excepciones}          &
+-
+%\begin{itemize}
+%	\tightlist
+%	\item Entidad eliminada por otro usuario durante la edición.
+%	\item Pérdida de permisos durante la operación.
+%	\item Violación de restricciones de integridad (ej: eliminar alimento usado en producto).
+%\end{itemize} 
+\\
+%\textbf{Particularidades por entidad} & 
+%\begin{itemize}
+%	\tightlist
+%	\item \textbf{Usuario propio (RF-7.2.1):} Restricción para no editar roles propios.
+%	\item \textbf{Usuario ajeno (RF-7.2.2):} Permite edición de roles (requiere permiso especial).
+%	\item \textbf{Pedido:} Restricciones para editar pedidos finalizados.
+%	\item \textbf{Reserva:} Validación de disponibilidad al cambiar mesa/fecha.
+%\end{itemize} \\
+\textbf{Importancia}          & Alta \\
 \EndCasoUso
+
+
+\BeginCasoUso{tab:CU-7}{CU-7}{Eliminar entidad}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf1.3]{RF-1.3}, \hyperref[req:rf2.3]{RF-2.3}, \hyperref[req:rf3.3]{RF-3.3}, \hyperref[req:rf4.3]{RF-4.3}, \hyperref[req:rf5.3]{RF-5.3}, \hyperref[req:rf6.3]{RF-6.3}, \hyperref[req:rf7.3]{RF-7.3} \\
+\textbf{Actor}                & Usuario con permiso \texttt{DELETE} sobre la entidad correspondiente. \\
+\textbf{Descripción}          & Usuario elimina una entidad del sistema, aplicando borrado lógico o físico según la política de la entidad. \\
+\textbf{Precondición}         & 
+\begin{itemize}
+	\tightlist
+	\item El usuario está autenticado.
+	\item El usuario tiene permiso para eliminar la entidad específica.
+	\item La entidad a eliminar existe.
+	\item Está visualizando la lista o detalle de la entidad.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}
+	\def\labelenumi{\arabic{enumi}.}
+	\tightlist
+	\item Hacer \textit{click} en el botón \textit{Eliminar} de la entidad deseada.
+	\item El sistema muestra diálogo de confirmación con:
+	\begin{itemize}
+			\item Nombre/identificador de la entidad.
+			\item Advertencia sobre consecuencias (dependiendo de entidad).
+		\end{itemize}
+	\item Confirmar eliminación.
+%	\item El sistema ejecuta eliminación según política:
+%	\begin{enumerate}
+%			\item \textbf{Borrado lógico:} Marca como inactivo/eliminado (RF-3.3).
+%			\item \textbf{Borrado físico:} Elimina registro de base de datos.
+%			\item \textbf{Borrado restrictivo:} Verifica dependencias antes de eliminar.
+%		\end{enumerate}
+%	\item Actualizar vista para reflejar eliminación.
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}
+	\tightlist
+	%\item Entidad eliminada según política correspondiente.
+	\item Vista actualizada (elemento desaparece). %o se marca como eliminado
+	\item Confirmación visual de la eliminación exitosa.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}
+	\tightlist
+	\item Entidad tiene dependencias que impiden eliminación (ej: alimento usado en producto).
+%	\item Intento de eliminar entidad esencial (ej: último usuario administrador).
+%	\item Entidad ya eliminada por otro usuario.
+	%\item Permisos insuficientes para tipo específico de eliminación.
+\end{itemize} \\
+%\textbf{Políticas por entidad} & 
+%\begin{itemize}
+%	\tightlist
+%	\item \textbf{Mesas:} Borrado lógico (RF-3.3) para preservar historial.
+%	\item \textbf{Usuarios:} Borrado físico, pero con validación de último admin.
+%	\item \textbf{Alimentos/Productos:} Borrado restrictivo si tienen dependencias.
+%	\item \textbf{Pedidos finalizados:} No permitir eliminación, solo cancelación en curso.
+%	\item \textbf{Roles:} Solo si no están asignados a usuarios.
+%\end{itemize} \\
+\textbf{Importancia}          & Media \\
+\EndCasoUso
+
+
+\BeginCasoUso{tab:CU-8}{CU-8}{Listar entidades}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf1.5]{RF-1.5}, \hyperref[req:rf2.7]{RF-2.7}, \hyperref[req:rf3.5]{RF-3.5}, \hyperref[req:rf4.4]{RF-4.4}, \hyperref[req:rf5.7]{RF-5.7}, \hyperref[req:rf6.4]{RF-6.4}, \hyperref[req:rf7.6]{RF-7.6} \\
+\textbf{Actor}                & Usuario con permiso \texttt{VIEW\_LIST} sobre la entidad correspondiente. \\
+\textbf{Descripción}          & Usuario visualiza una lista
+ %paginada y filtrable 
+ de todas las instancias de una entidad. \\
+\textbf{Precondición}         & 
+\begin{itemize}
+	\tightlist
+	\item El usuario está autenticado.
+	\item El usuario tiene permiso para listar la entidad específica.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}
+	\def\labelenumi{\arabic{enumi}.}
+	\tightlist
+	\item Navegar a la sección de la entidad deseada en el menú principal.
+	\item El sistema carga y muestra la lista de elementos.
+%	\item \textbf{Opcional:} Aplicar filtros usando los controles proporcionados (búsqueda por nombre, filtro por estado, rango de fechas, etc.).
+%	\item \textbf{Opcional:} Cambiar página usando la paginación.
+%	\item \textbf{Opcional:} Ordenar por una columna haciendo click en su cabecera.
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}
+	\tightlist
+	\item Vista actualizada con la lista de elementos.
+%	\item Filtros y orden aplicados persistentes durante la sesión.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}
+	\tightlist
+	\item No hay elementos para mostrar (lista vacía).
+	\item Error al cargar datos del servidor.
+%	\item Los filtros aplicados no producen resultados.
+\end{itemize} \\
+%\textbf{Particularidades por entidad} & 
+%\begin{itemize}
+%	\tightlist
+%	\item \textbf{Pedidos:} Filtro por estado (en curso, finalizado, cancelado).
+%	\item \textbf{Reservas:} Filtro por fecha y estado (confirmada, cancelada).
+%	\item \textbf{Productos:} Filtro por categoría o alérgenos.
+%	\item \textbf{Mesas:} Indicación visual de estado (libre, ocupada, reservada).
+%\end{itemize} \\
+\textbf{Importancia}          & Alta \\
+\EndCasoUso
+
+
+\BeginCasoUso{tab:CU-9}{CU-9}{Buscar alimento mediante \textit{Open Food Fact}s}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf1.1.2]{RF-1.1.2}, \hyperref[req:rf9]{RF-9} \\
+\textbf{Actor}                & Cocinero o Gerente (usuario con permiso \texttt{FOOD\_CREATE}). \\
+\textbf{Descripción}          & Usuario busca e importa información nutricional de alimentos desde la API pública \textit{Open Food Facts}. \\
+\textbf{Precondición}         & 
+\begin{itemize}
+	\tightlist
+	\item Usuario autenticado con permiso para crear alimentos.
+	\item Está en el formulario de creación de alimento.
+	\item Conexión a Internet activa.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}
+	\def\labelenumi{\arabic{enumi}.}
+	\tightlist
+	\item Hacer \textit{click} en la sección \textit{Buscar en Open Food Facts} dentro del formulario.
+	\item Introducir término de búsqueda (ej: \textit{``Arroz basmati''}).
+	\item El sistema consulta la API externa y muestra resultados.
+	\item Seleccionar un resultado de la lista.
+	\item El sistema importa automáticamente:
+	\begin{itemize}
+		\tightlist
+		\item Nombre del alimento.
+		\item Información nutricional (calorías, proteínas, grasas, carbohidratos, etc.).
+		\item Lista de alérgenos detectados.
+		\item Métricas nutricionales (\textit{Nutri-Score}, NOVA).
+	\end{itemize}
+%	\item Continuar con el flujo normal de creación/edición.
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}
+	\tightlist
+	\item Alimento persistido en el sistema, con campos pre-rellenados mediante datos externos.
+	\item Alérgenos automáticamente asociados al alimento.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}
+	\tightlist
+	\item API externa no disponible o con \textit{timeout}.
+	\item No se encuentran resultados para la búsqueda.
+	\item Datos incompletos o mal estructurados en la respuesta.
+	\item Pérdida de conexión durante la búsqueda.
+\end{itemize} \\
+\textbf{Importancia}          & Media \\
+\EndCasoUso
+
+
+\BeginCasoUso{tab:CU-10}{CU-10}{Visualizar información nutricional y alérgenos}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf2.6]{RF-2.6}, \hyperref[req:rf10]{RF-10}, \hyperref[req:rf11]{RF-11} \\
+\textbf{Actor}                & Cocinero, Camarero, Gerente. \\
+\textbf{Descripción}          & Usuario consulta la información nutricional detallada y los alérgenos de un producto o alimento, presentada en formatos tabulares y gráficos. \\
+\textbf{Precondición}         & 
+\begin{itemize}
+	\tightlist
+	\item Usuario autenticado.
+	\item Está en la vista de listado de productos.
+	\item Producto/alimento objetivo existe.
+	\item \textbf{Para gráficas:} El producto tiene información nutricional calculada.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}
+	\def\labelenumi{\arabic{enumi}.}
+	\tightlist
+	\item Hacer \textit{click} en el nombre del producto.
+	\item El sistema redirigirá a vista de detalle.
+	\item En la sección nutricional, visualizar:
+	\begin{enumerate}
+		\tightlist
+		\item Gráfico (\textit{donut chart}) de macronutrientes.
+		\item Tablas para macronutrientes, vitaminas y minerales.
+		\item Lista de alérgenos detectados con iconos visuales.
+			%\item \textbf{Opcional:} Filtrar productos por ausencia de alérgeno específico.
+			%\item \textbf{Opcional:} Ver trazas/alérgenos potenciales.
+	\end{enumerate}
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}
+	\tightlist
+	\item Información nutricional y de alérgenos presentada claramente.
+	\item Gráficas renderizadas y actualizadas.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}
+	\tightlist
+	\item Información nutricional incompleta o no calculada.
+	\item Producto sin ingredientes definidos (valores nutricionales nulos).
+	\item Error al renderizar gráficas (datos mal formados).
+\end{itemize} \\
+\textbf{Particularidades}     &
+\begin{itemize}
+	\tightlist
+	\item \textbf{Productos:} Valores calculados a partir de ingredientes.
+	\item \textbf{Alimentos:} Valores directos o importados de API.
+	\item \textbf{Alérgenos:} Herencia automática de ingredientes a productos.
+\end{itemize} \\
+\textbf{Importancia}          & Media \\
+\EndCasoUso
+
+
+\todo[inline]{CASOS PENDIENTES
+
+- Añadir/eliminar ítems a un producto + modificar cantidades -> + cálculo de subtotales y total precio
+
+- Gestionar roles de un usuario
+
+- Gestión de permisos dentro de roles?
+
+- Gestionar ingredientes de un producto
+
+- Crear reservas? comprobación de franja de tiempo libre para esa mesa (validación de disponibilidad). se indicaría que el caso "padre" es el CU-5.
+
+- crear pedido? se indicaría que el caso "padre" es el CU-5.
+
+- Cambiar estado de un pedido (en dashboard. desaparece o no de la lista de pedidos pendientes)
+
+- Cálculo de info nutricional por porción??
+
+}
+
+\missingfigure{Diagrama de casos de uso}
