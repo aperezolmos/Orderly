@@ -1,3 +1,32 @@
 \capitulo{2}{Objetivos del proyecto}
 
-Este apartado explica de forma precisa y concisa cuales son los objetivos que se persiguen con la realización del proyecto. Se puede distinguir entre los objetivos marcados por los requisitos del software a construir y los objetivos de carácter técnico que plantea a la hora de llevar a la práctica el proyecto.
+A continuación, se detallan los objetivos que han guiado el desarrollo del proyecto.
+
+\section{Objetivos generales}
+\begin{enumerate}
+%	\setlength{\itemsep}{1pt}
+%	\setlength{\parskip}{0pt}
+%	\setlength{\parsep}{0pt}
+	\item \textbf{Crear un sistema de gestión centralizado para locales de restauración} que unifique las operaciones críticas de gestión de productos, pedidos, reservas y usuarios en una única interfaz web.
+	\item \textbf{Integrar información nutricional externa} de manera automática, mediante el consumo de una API pública, para añadir valor diferencial y promover la transparencia alimentaria.
+	\item \textbf{Facilitar la identificación y gestión de alérgenos}, permitiendo asociarlos a los productos disponibles y ofrecer mecanismos de filtrado que ayuden al personal a identificar opciones seguras.
+	\item\textbf{Demostrar competencia en el ciclo completo de desarrollo de \textit{software}}, desde el análisis y diseño hasta la implementación, pruebas, despliegue y documentación, aplicando los conocimientos adquiridos durante el grado.
+\end{enumerate}
+
+\section{Objetivos técnicos}
+
+\begin{enumerate}
+%	\setlength{\itemsep}{1pt}
+%	\setlength{\parskip}{0pt}
+%	\setlength{\parsep}{0pt}
+	\item \textbf{Implementar una arquitectura cliente-servidor desacoplada}: desarrollar un \textit{frontend} dinámico con \textit{React} que consuma una API REST construida con \textit{Spring Boot}.
+	\item \textbf{Diseñar un modelo de datos relacional eficiente y mantenible}: utilizar \textit{Spring Data JPA} sobre \textit{MySQL} para definir un esquema de base de datos normalizado, incorporando un modelo de dominio enriquecido que encapsule lógica de negocio.
+	\item \textbf{Diseñar una jerarquía de pedidos escalable}: emplear estrategias de herencia en JPA que optimicen las consultas y faciliten la extensión del modelo.
+	\item \textbf{Separar el modelo interno de la interfaz expuesta}: estructurar la comunicación API mediante DTOs y \textit{mappers} automatizados de \textit{MapStruct} que aseguren conversiones eficientes.
+	\item \textbf{Implementar un sistema de seguridad robusto}: configurar \textit{Spring Security} para gestionar la autenticación y una autorización granular, utilizando un modelo de roles y permisos que permita un control de acceso detallado a los recursos de la API.
+	\item \textbf{Asegurar la calidad y robustez del \textit{backend}}: implementar un sistema completo de validación de entradas, manejo centralizado de excepciones y un conjunto de pruebas automatizadas (unitarias y de integración) para los componentes clave de la API (servicios, \textit{mappers} y lógica de negocio).
+	\item \textbf{Establecer un flujo básico de Integración Continua (CI)}: configurar un \textit{workflow} con \textit{GitHub Actions} para ejecutar automáticamente la \textit{suite} de pruebas del \textit{backend} con cada \textit{commit}, mejorando la detección temprana de errores y la confiabilidad del código base.
+	\item \textbf{Construir una interfaz de usuario moderna, reactiva e internacionalizable}: desarrollar el \textit{frontend} con componentes reutilizables, gestionar el estado de la aplicación de forma eficiente e implementar el soporte a varios idiomas (español/inglés).
+	\item \textbf{Garantizar la portabilidad y reproducibilidad del despliegue}: utilizar \textit{Docker} para \textit{contenerizar} todos los servicios de la aplicación (base de datos, \textit{backend} y \textit{frontend}), creando un entorno de ejecución consistente e independiente de la infraestructura subyacente.
+	\item \textbf{Aplicar metodologías ágiles y control de versiones}: gestionar el proyecto mediante \textit{sprints}, utilizando \textit{Git} con \textit{GitHub Flow} para mantener un historial de cambios claro, trazable y semántico.
+\end{enumerate}

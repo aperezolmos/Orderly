@@ -1,8 +1,65 @@
 \capitulo{6}{Trabajos relacionados}
 
-% Este apartado sería parecido a un estado del arte de una tesis o tesina. En un trabajo final grado no parece obligada su presencia, aunque se puede dejar a juicio del tutor el incluir un pequeño resumen comentado de los trabajos y proyectos ya realizados en el campo del proyecto en curso.
+En el ecosistema de \textit{software} relacionado con la restauración se observan, de forma general, dos líneas predominantes: 
+\begin{enumerate}
+	\item \textbf{Sistemas de punto de venta (TPV\footnote{Terminal Punto de Venta}/\textit{POS}\footnote{\textit{Point of Sale}})} y gestión de locales, orientados a la operativa de sala, caja e integración con \textit{hardware}.
+	\item \textbf{Herramientas y servicios especializados en análisis nutricional}, cálculo de información nutricional y etiquetado de menús.
+\end{enumerate}
 
+Con el objetivo de situar este trabajo en el panorama descrito, se describirá a continuación una aplicación representativa de cada rama. Posteriormente se mostrará una tabla comparativa (ver tabla \ref{tab:6_comparativa_apps}) entre las funcionalidades características de las aplicaciones presentadas y las de \revisionA{NombreApp}\todo{cambiar}.
+
+\section{Floreant POS}
+\textit{Floreant POS} es un sistema \textit{POS} de código abierto orientado a restaurantes, cafeterías y establecimientos de hostelería. Entre sus funcionalidades destacadas se encuentran la gestión de comandas y mesas (\textit{table management}), impresión y enrutamiento a cocina (\textit{kitchen printer / kitchen display}), soporte para pantallas táctiles, manejo de impuestos, gestión de inventario y empleados, funcionalidades de toma de pedidos para distintos modos de servicio (\textit{dine-in, take-away, delivery}), y capacidades de reporting/estadísticas. 
+
+Adicionalmente, \textit{Floreant} está diseñado para funcionar en entornos locales (modo \textit{offline}), admite integración con periféricos típicos de TPV (impresoras de tickets, cajón, etc.) y dispone de \textit{plugins} o extensiones para funcionalidades añadidas como inventario más avanzado. \todo{ref}
+
+%\textbf{Diferencias relevantes con \textit{NombreApp}:} Floreant está concebido como una solución de TPV/operativa completa, con integración a hardware y soporte de flujo de caja; por tanto, su foco principal es la continuidad operativa y la facturación en el punto de venta. En contraste, \textit{NombreApp} prioriza la gestión estructurada de productos e ingredientes y la incorporación de información nutricional (importación desde APIs públicas), manteniendo desacoplados los aspectos físicos y fiscales propios de un TPV (ver requisitos del proyecto). La separación de responsabilidades de \textit{NombreApp} facilita su integración con soluciones POS en escenarios reales, pero no reemplaza la funcionalidad completa de un TPV. \todo{ref}
+
+\section{MenuCalc}
+\textit{MenuCalc} es una plataforma SaaS (\textit{Software as a Service}) especializada en análisis nutricional para la restauración y el sector alimentario. Sus funcionalidades principales son: biblioteca/patrón extensivo de ingredientes (base de datos con cientos de miles de ingredientes), análisis nutricional de recetas y menús, etiquetado y generación de información para cumplimiento normativo (por ejemplo, etiquetado y requisitos de información al consumidor), marcado automático de alérgenos, categorización de recetas y funcionalidades de publicación (\textit{SmartMenu} u opciones para mostrar información al comensal). 
+
+\textit{MenuCalc} está orientado a ofrecer análisis rápidos y conformes a normativa (especialmente dirigido a mercados con requisitos de etiquetado) y es una solución comercial que se integra con flujos de trabajo de restauración en entornos profesionales. \todo{ref}
+
+%\textbf{Diferencias relevantes con \textit{NombreApp}:} MenuCalc es una herramienta especializada en el dominio del análisis nutricional y el cumplimiento de etiquetado; su valor está en la exactitud del cálculo nutricional y en ofrecer herramientas específicas para la gestión de menús a nivel regulatorio. \textit{NombreApp}, por su parte, incorpora capacidades de cálculo nutricional y detección de alérgenos mediante la importación automática desde APIs públicas, pero no pretende competir con soluciones comerciales en cuanto a cobertura de bases de datos comerciales o certificaciones de conformidad normativa; en su lugar, \textit{NombreApp} integra dicho valor nutricional con flujos operativos de gestión (productos, pedidos, reservas, usuarios), aportando una plataforma híbrida entre gestión y nutrición. \todo{ref}
 
 \section{NutriMenu}
 
-La aplicación \textit{\textbf{NutriMenu}}~\cite{nutrimenu2024} fue desarrollada por el alumno Álvaro Manjón Vara como Trabajo de Fin de Grado [...]\todo{completar}
+La aplicación \textit{NutriMenu}~\cite{nutrimenu2024} fue desarrollada por el alumno Álvaro Manjón Vara como Trabajo de Fin de Grado, con el objetivo de generar informes nutricionales para los menús ofrecidos en los centros de restauración de la Universidad de Burgos. Su funcionalidad principal se centra en el ciclo de vida de los menús: creación de alimentos (ingredientes) a partir de la API de \textit{Nutritionix}~\cite{api:nutritionix}, composición de platos, construcción de menús a partir de esos platos y, finalmente, la generación de informes nutricionales detallados para los consumidores.
+
+Mientras que \textit{NutriMenu} es una solución especializada en la transparencia nutricional para entornos multi-centro, \revisionA{NombreApp}\todo{cambiar} evoluciona el concepto hacia una \textbf{plataforma de gestión operativa integral}. Incorpora flujos de negocio esenciales (ventas, reservas), un modelo de seguridad más sofisticado, información de alérgenos e internacionalización, posicionándose como un prototipo más cercano a un sistema de gestión moderno para el sector de la restauración.
+
+\section{Comparativa sobre las funcionalidades cubiertas}
+
+\begin{table}[ht]
+	\centering
+	\caption{Comparativa de características entre aplicaciones}
+	\label{tab:6_comparativa_apps}
+	
+	\begin{scriptsize}
+		\renewcommand{\arraystretch}{1.5} 
+		
+		\begin{tabularx}{\textwidth}{ L | C | C | C | C }
+			\noalign{\hrule height 1.25pt}
+			\textbf{Funcionalidad} & \textbf{NutriMenu} & \textbf{Floreant} & \textbf{MenuCalc} & \textbf{NombreApp} \\
+			\noalign{\hrule height 1pt}
+			Gestión de alimentos & \SI & \PARCIAL & \SI & \SI \\ \hline
+			Importación API & \SI & \NO & \SI & \SI \\ \hline
+			Cálculo nutricional & \SI & \NO & \SI & \SI \\ \hline
+			Gestión de pedidos & \NO & \SI & \NO & \SI \\ \hline
+			Gestión de reservas & \NO & \SI & \NO & \SI \\ \hline
+			Integración TPV & \NO & \SI & \NO & \NO \\ \hline
+			Cumplimiento fiscal & \NO & \PARCIAL & \SI & \NO \\ \hline
+			Roles y usuarios & \PARCIAL & \SI & \SI & \SI \\ \hline
+			Despliegue & Docker & Local & SaaS & Docker \\ \hline
+			\noalign{\hrule height 1.25pt}
+		\end{tabularx}
+	\end{scriptsize}
+\end{table}
+
+
+\vspace{8pt}
+
+El \textbf{valor añadido} de \revisionA{NombreApp}\todo{cambiar} radica en \textbf{combinar} los dos dominios mencionados al inicio: la \textbf{gestión operativa} (productos, pedidos, reservas, usuarios) y la incorporación automatizada de \textbf{información nutricional} y detección de alérgenos mediante consumo de APIs públicas, en una plataforma moderna, modular y fácilmente desplegable mediante contenedores. 
+
+Este enfoque híbrido facilita la replicabilidad y la extensión (por ejemplo, integraciones con bases de datos comerciales o con soluciones TPV) y permite atender tanto las necesidades operativas de un local como la creciente demanda de transparencia nutricional por parte de los consumidores. Para la importación automática de datos nutricionales pueden usarse fuentes públicas como \textit{Open Food Facts}, la actual implementación, o alternativas comerciales (\textit{Spoonacular}, etc.), según precisión y garantías que se requieran en el escenario de despliegue.
+
