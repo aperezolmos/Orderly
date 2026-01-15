@@ -2,35 +2,6 @@
 
 En este capítulo se describen las metodologías y herramientas tecnológicas escogidas para el desarrollo del trabajo, detallando los aspectos principales y justificando los motivos de su selección.
 
-% Se puede encontrar un resumen de las herramientas utilizadas para cada parte del proyecto en la tabla <ref>.
-
-% A continuación....   Se pueden encontrar definiciones de las herramientas en los subapartados que siguen...
-
-% \tablaSmall{Herramientas y tecnologías utilizadas en cada parte del proyecto}{l c c c c}{herramientasportipodeuso}
-% { \multicolumn{1}{l}{Herramientas} & App AngularJS & API REST & BD & Memoria \\}{ 
-	% HTML5 & X & & &\\
-	% CSS3 & X & & &\\
-	% BOOTSTRAP & X & & &\\
-	% JavaScript & X & & &\\
-	% AngularJS & X & & &\\
-	% Bower & X & & &\\
-	% PHP & & X & &\\
-	% Karma + Jasmine & X & & &\\
-	% Slim framework & & X & &\\
-	% Idiorm & & X & &\\
-	% Composer & & X & &\\
-	% JSON & X & X & &\\
-	% PhpStorm & X & X & &\\
-	% MySQL & & & X &\\
-	% PhpMyAdmin & & & X &\\
-	% Git + BitBucket & X & X & X & X\\
-	% Mik\TeX{} & & & & X\\
-	% \TeX{}Maker & & & & X\\
-	% Astah & & & & X\\
-	% Balsamiq Mockups & X & & &\\
-	% VersionOne & X & X & X & X\\
-	% } 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Metodologías y técnicas de gestión}
@@ -58,13 +29,31 @@ A diferencia de los
 \href{https://memobackend.com.ar/2024-06-11-modelos-anemicos-enriquecidos/#:~:text=en%20las%20aplicaciones.-,Modelos%20An%C3%A9micos,negocio%20no%20est%C3%A1%20estrechamente%20ligada%20a%20los%20estados%20de%20los%20objetos.,-Modelos%20Enriquecidos%20o}{modelos anémicos}, 
 en los que las entidades actúan únicamente como contenedores de información, un modelo de dominio enriquecido incluye lógica de negocio relevante dentro de las propias clases del dominio. Este enfoque favorece una mayor cohesión, una mejor representación del dominio del problema y una distribución más natural de las responsabilidades dentro del sistema.
 
-\subsubsection{\textit{Domain-Driven Design}}
-\todo[inline]{Incluir -> no se ha aplicado al 100\%. se ha aplicado en la estructura de directorios y en los métodos que realizan las entidades propietarias (ej: los productos manejan sus propios ingredientes, los pedidos manejan sus líneas de pedido, etc.)}
+\subsubsection{\textit{Domain-Driven Design} (\textit{DDD})}
+El \textit{Domain-Driven Design}~\cite{geeksforgeeks:DDD} es un enfoque de diseño de software orientado a la construcción de sistemas complejos a partir de un modelo de dominio rico y expresivo, alineado con el conocimiento del problema que se desea resolver. \textit{DDD} propone centrar el diseño en el dominio del negocio, fomentando una comunicación constante entre expertos del dominio y desarrolladores, utilizando conceptos como modelos de dominio, agregados, entidades, objetos de valor y contextos delimitados (\textit{bounded contexts}). El objetivo principal es lograr un diseño coherente, mantenible y adaptable a la evolución de los requisitos.
+
+En el desarrollo de este proyecto se han adoptado algunos principios y conceptos inspirados en el \textit{Domain-Driven Design}, sin aplicar la metodología de forma estricta o completa. En particular, se ha priorizado una organización del código orientada a funcionalidades o dominios concretos del sistema (directorios \texttt{user}, \texttt{food}, \texttt{product}...), en lugar de una estructura clásica por capas (directorios \texttt{controller}, \texttt{service}, \texttt{repository}...). También se ha favorecido que las entidades del dominio encapsulen comportamientos y responsabilidades propias, especialmente en la gestión de sus relaciones. No obstante, dado el alcance y complejidad moderada del proyecto, no se ha llevado a cabo una implementación exhaustiva de todos los patrones y prácticas formales de \textit{DDD}, optando por una aplicación selectiva y funcional, adaptada al contexto del trabajo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Patrón de arquitectura}
-\todo[inline]{Introducir brevemente aquí y expandir en anexos}
+\label{sec:4.2_arquitectura}
+
+La aplicación sigue una arquitectura \textbf{Cliente-Servidor} con un \textit{frontend} y un \textit{backend} claramente desacoplados. El \textit{frontend}, desarrollado en \textit{React}, se estructura en componentes reutilizables, páginas y servicios modulares que consumen la API mediante un cliente centralizado.
+
+\imagenConEtiqueta[0.55\textwidth]{img/apdo_4/4_arquitectura_capas.png}{Arquitectura en Capas~\cite{oreilly:architecture}}{4_arquitectura_capas}\todo{No sé si incluir esta imagen o crear una nueva yo}
+\vspace{-1em}
+El \textit{backend} implementa una \textbf{Arquitectura en Capas} (\textit{Layered Architecture}) de cuatro niveles, la cual se puede visualizar en la figura \ref{fig:4_arquitectura_capas}:
+\vspace{-2em}
+\begin{enumerate}
+	\setlength{\itemsep}{0pt}
+	\setlength{\parskip}{2pt}
+%	\setlength{\parsep}{0pt}
+		\item \textbf{Presentación:} controladores REST finos, responsables de manejar las peticiones HTTP y las respuestas.
+		\item \textbf{Aplicación:} servicios encargados de la orquestación de operaciones y control transaccional.
+		\item \textbf{Persistencia:} repositorios JPA que abstraen \textit{MySQL}.
+		\item \textbf{Dominio:} entidades JPA con comportamiento (modelo rico) que se relacionan entre sí.
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -76,7 +65,9 @@ en los que las entidades actúan únicamente como contenedores de información, 
 \textit{Spring Boot}~\cite{tokioschool:springBoot} es un \textit{framework} del ecosistema \textit{Spring}~\cite{spring:springFramework} diseñado para simplificar el desarrollo de aplicaciones \textit{backend} basadas en Java. Proporciona configuración automática, un sistema de dependencias gestionado y un servidor embebido, lo que permite crear aplicaciones listas para producción con un esfuerzo de configuración mínimo. Está especialmente orientado al desarrollo de servicios web y APIs REST.
 
 \subsubsection{Spring Data JPA}
-\textit{Spring Data JPA}~\cite{spring:springJPA} es un módulo de \textit{Spring}~\cite{spring:springFramework} que facilita el acceso y la persistencia de datos mediante la especificación JPA (\textit{Java Persistence API})\todo{ref a url o concepto apdo 3}.
+\textit{Spring Data JPA}~\cite{spring:springJPA} es un módulo de \textit{Spring}~\cite{spring:springFramework} que facilita el acceso y la persistencia de datos mediante la especificación
+\href{https://www.ibm.com/docs/es/was-liberty/nd?topic=liberty-java-persistence-api-jpa}{JPA} 
+(\textit{Java Persistence API}).
 
 JPA define un estándar para el mapeo objeto-relacional (ORM), permitiendo representar tablas de bases de datos como entidades Java. \textit{Spring Data JPA} abstrae gran parte del código repetitivo asociado al acceso a datos, proporcionando repositorios y mecanismos automáticos de generación de consultas.
 
@@ -89,7 +80,8 @@ o accesos no autorizados. Se integra de forma nativa con \textit{Spring Boot} y 
 \textit{Spring Validation}~\cite{spring:validation} es un módulo que permite validar datos de entrada mediante anotaciones declarativas. Se basa en la especificación 
 \href{https://www.baeldung.com/java-validation}{\textit{Bean Validation}} 
 y se utiliza habitualmente para comprobar la validez de los datos recibidos en peticiones, asegurando el cumplimiento de restricciones como valores obligatorios, rangos numéricos o formatos específicos.
-\todo[inline]{dónde lo usamos nosotros -> dtos}
+
+En nuestra aplicación, los datos que se validan con estas anotaciones son DTOs (\textit{Data Transfer Objects}) de petición, es decir, los objetos que toman los controladores como valor de entrada. De esta manera, se pueden definir restricciones rápidas sobre cada campo para liberar a los servicios de comprobaciones exhaustivas.
 
 \subsubsection{Lombok}
 \textit{Lombok}~\cite{spring:lombok} es una biblioteca que reduce la cantidad de código repetitivo (\textit{``boilerplate''}) en aplicaciones Java mediante el uso de anotaciones. Permite generar automáticamente métodos comunes como \textit{getters}, \textit{setters}, constructores o métodos \texttt{equals} y \texttt{hashCode} durante el proceso de compilación, mejorando la legibilidad y mantenibilidad del código.
@@ -105,38 +97,54 @@ y se utiliza habitualmente para comprobar la validez de los datos recibidos en p
 \textit{React}~\cite{react:intro} es una biblioteca de JavaScript para la construcción de interfaces de usuario basadas en componentes reutilizables. Se centra en la creación de vistas declarativas y en la gestión eficiente del estado y la actualización del \href{https://www.geeksforgeeks.org/javascript/dom-document-object-model/}{DOM} (\textit{Document Object Model}) 
 mediante un modelo de renderizado reactivo.
 
-Su elección se justifica frente a alternativas como \textit{Thymeleaf}\todo{ref?} por las necesidades específicas del proyecto: la gestión de un elevado número de entidades (productos, pedidos, reservas, usuarios, etc.) y la exigencia de una interfaz dinámica y reactiva. El paradigma basado en \textbf{componentes} y la \textbf{arquitectura SPA} de \textit{React} permiten un desarrollo más modular, mantenible y con mejor experiencia de usuario.
+Su elección se justifica frente a alternativas como \textit{Thymeleaf}~\cite{thymeleaf:tutorial} por las necesidades específicas del proyecto: la gestión de un elevado número de entidades (productos, pedidos, reservas, usuarios, etc.) y la exigencia de una interfaz dinámica y reactiva. El paradigma basado en \textbf{componentes} y la \textbf{arquitectura SPA} (\textit{Single Page Application}) de \textit{React} permiten un desarrollo más modular, mantenible y con mejor experiencia de usuario.
 
 Pese a no haber utilizado \textit{React} previamente, el análisis del proyecto de referencia NutriMenu~\cite{nutrimenu2024} permitió evaluar su viabilidad y agilizar el aprendizaje inicial. Su adopción supuso, por lo tanto, un reto formativo para dominar una herramienta estándar en el sector
 
 \subsubsection{Vite}
 \textit{Vite}~\cite{vite:intro} es una herramienta de construcción y desarrollo \textit{frontend} que proporciona un entorno de desarrollo rápido y optimizado. Utiliza un servidor de desarrollo basado en 
-\href{https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules}{módulos ES} \todo{revisar}
+\href{https://lenguajejs.com/javascript/modulos/que-es-esm/}{módulos ES}
 y genera \textit{builds} de producción altamente eficientes, reduciendo significativamente los tiempos de arranque y recarga.
 
 \subsubsection{Mantine}
 \textit{Mantine}~\cite{react:mantine} es una biblioteca de componentes para \textit{React} que proporciona elementos de interfaz modernos, accesibles y personalizables. Incluye componentes visuales, utilidades de estilo y \textit{hooks} que facilitan el desarrollo de interfaces coherentes y funcionales.
 
 \subsubsection{React Router}
-\textit{React Router}~\cite{react:router} es una biblioteca de enrutamiento para aplicaciones \textit{React} que permite gestionar la navegación entre distintas vistas sin recargar la página. Facilita la creación de aplicaciones de una sola página (\textit{Single Page Applications}) mediante rutas declarativas y dinámicas.
+\textit{React Router}~\cite{react:router} es una biblioteca de enrutamiento para aplicaciones \textit{React} que permite gestionar la navegación entre distintas vistas sin recargar la página. Facilita la creación de aplicaciones de una sola página mediante rutas declarativas y dinámicas.
 
 \subsubsection{i18next y react-i18next}
 \textit{i18next}~\cite{react:i18next} es un \textit{framework} de internacionalización que permite gestionar traducciones y contenido multilingüe en aplicaciones \textit{frontend}. La librería \textit{react-i18next}~\cite{react:react-i18next} proporciona integración específica con \textit{React}, facilitando la adaptación dinámica de la interfaz al idioma seleccionado por el usuario.
 
+\subsubsection{Recharts}
+\textit{Recharts}~\cite{react:recharts} es una biblioteca de visualización de datos para \textit{React} basada en componentes reutilizables. Permite la creación de gráficos interactivos y personalizables a partir de datos estructurados, facilitando la representación visual de información compleja dentro de aplicaciones web.
+
+Se ha utilizado esta librería para representar la información nutricional de los productos mediante gráficos interactivos, concretamente gráficos de tipo donut anidado. Estos gráficos permiten visualizar de forma intuitiva la distribución de los distintos valores nutricionales y mostrar información detallada al interactuar con ellos, como se observa en el ejemplo presente en la figura \ref{fig:4_recharts_grafico}.
+
+\imagenConEtiqueta[0.8\textwidth]{img/apdo_4/4_recharts_grafico.png}{Gráfico nutricional de un producto usando \textit{Recharts}}{4_recharts_grafico}\todo{Se usa como placeholder pero se cambiará por el gráfico corregido}
+
 \subsubsection{Zustand}
 \textit{Zustand}~\cite{react:zustand} es una biblioteca ligera para la gestión del estado global en aplicaciones \textit{React}. Se caracteriza por su simplicidad, bajo acoplamiento y uso de \textit{hooks}, permitiendo compartir estado entre componentes sin la complejidad de soluciones más pesadas.
 
-\subsection{Contenedores y despliegue}
-\subsubsection{Docker}
-\textit{Docker}~\cite{docker:overview} es una plataforma de contenerización que permite empaquetar aplicaciones junto con sus dependencias en contenedores ligeros y portables. Esto garantiza que la aplicación se ejecute de forma consistente en diferentes entornos, facilitando el despliegue y la reproducibilidad.
-
-\subsubsection{Docker Compose}
-\textit{Docker Compose}~\cite{docker:compose} es una herramienta que permite definir y gestionar aplicaciones compuestas por múltiples contenedores mediante archivos de configuración declarativos. Facilita la orquestación de servicios, la definición de redes y volúmenes, y el despliegue conjunto de todos los componentes de una aplicación.
-
 \subsection{API de información nutricional: \textit{Open Food Facts}}
-\todo[inline]{Redactar...}
 
-%\todo[inline]{Explicar brevemente los endpoints utilizados o los datos extraídos de la api¿?}
+\textit{Open Food Facts} (\textit{OFF})~\cite{api:openFoodFacts} es una base de datos abierta y colaborativa que ofrece información detallada sobre productos alimentarios de todo el mundo a través de una API REST. La información proporcionada incluye datos generales del producto, información nutricional estandarizada, listas de ingredientes y la identificación de alérgenos, lo que la convierte en una fuente especialmente útil para aplicaciones del ámbito de la restauración y la nutrición.
+
+Las principales \textbf{ventajas} que ofrece \textit{Open Food Facts} son las siguientes:
+\begin{itemize}
+	\setlength{\itemsep}{0pt}
+	\item Amplio catálogo de productos, con millones de alimentos registrados y disponibilidad en múltiples idiomas, lo que facilita su uso en aplicaciones multilingües como la nuestra.
+	\item Búsqueda mediante texto libre (\textit{full-text search}), que permite localizar productos a partir de su nombre, etiquetas, categorías o características nutricionales.
+	\item Carácter abierto y acceso gratuito, sin restricciones estrictas en el número de peticiones a la API.
+	\item Información detallada sobre alérgenos y métricas nutricionales. Este aspecto hace destacar a \textit{OFF} respecto al resto de opciones y fue decisivo para escogerla como API nutricional.
+\end{itemize}
+
+No obstante, el uso de \textit{Open Food Facts} también presenta algunas \textbf{limitaciones}:
+\begin{itemize}
+	\setlength{\itemsep}{0pt}
+	\item Presencia de ruido en las búsquedas, debido al gran volumen y heterogeneidad de los datos, lo que puede dificultar la localización de productos concretos.
+	\item Ausencia de alimentos genéricos o no envasados, como frutas, verduras u otros productos comunes que no disponen de código de barras.
+	\item Inconsistencias en la completitud de la información, ya que, al tratarse de una base de datos colaborativa, algunos productos presentan campos incompletos o ausentes.
+\end{itemize}
 
 \subsection{\textit{Testing} y calidad del software}
 \subsubsection{JUnit}
@@ -151,8 +159,18 @@ y genera \textit{builds} de producción altamente eficientes, reduciendo signifi
 \subsubsection{H2}
 \textit{H2}~\cite{medium:h2} es un sistema de base de datos relacional en memoria utilizado habitualmente en entornos de pruebas. Permite ejecutar pruebas de acceso a datos sin depender de una base de datos externa, garantizando rapidez y aislamiento en los tests.
 
+\subsection{Contenedores y despliegue}
+\subsubsection{Docker}
+\textit{Docker}~\cite{docker:overview} es una plataforma de contenerización que permite empaquetar aplicaciones junto con sus dependencias en contenedores ligeros y portables. Esto garantiza que la aplicación se ejecute de forma consistente en diferentes entornos, facilitando el despliegue y la reproducibilidad.
+
+\subsubsection{Docker Compose}
+\textit{Docker Compose}~\cite{docker:compose} es una herramienta que permite definir y gestionar aplicaciones compuestas por múltiples contenedores mediante archivos de configuración declarativos. Facilita la orquestación de servicios, la definición de redes y volúmenes, y el despliegue conjunto de todos los componentes de una aplicación.
+
 \subsection{Automatizaciones}
-\todo[inline]{SonarCloud, Github actions...}
+\todo[inline]{SonarCloud (si se incluye)}
+
+\subsubsection{GitHub Actions}
+\textit{GitHub Actions}~\cite{github:actions} es una herramienta de automatización e integración continua integrada en \textit{GitHub} que permite definir flujos de trabajo (\textit{workflows}) basados en eventos del repositorio, como \textit{pushes}, \textit{pull requests} o cierres de \textit{issues}. Mediante archivos de configuración declarativos, permite automatizar tareas como la ejecución de pruebas, el análisis de código, la construcción de aplicaciones o la ejecución de herramientas externas.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -191,8 +209,7 @@ Para este proyecto se ha hecho uso del
 \href{https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack}{\textit{Extension Pack for Java}}, 
 un conjunto de herramientas que proporciona soporte avanzado para el lenguaje. Incluye autocompletado inteligente, navegación por el código, refactorización, ejecución y depuración de aplicaciones, así como integración con herramientas de construcción y pruebas.
 
-A pesar de que existen entornos específicos para el desarrollo con Java, como \textit{IntelliJ IDEA}%~\cite{intelliJ:docs}
-, se optó por \textit{VS Code} debido a la familiaridad con su flujo de trabajo tras su uso continuado durante el grado. Gracias al mencionado sistema de extensiones, este editor ofrece una experiencia equiparable en potencia y funcionalidad.
+A pesar de que existen entornos específicos para el desarrollo con Java, como \textit{IntelliJ IDEA}~\cite{intelliJ:docs}, se optó por \textit{VS Code} debido a la familiaridad con su flujo de trabajo tras su uso continuado durante el grado. Gracias al mencionado sistema de extensiones, este editor ofrece una experiencia equiparable en potencia y funcionalidad.
 
 \subsubsection{Postman}
 \textit{Postman}~\cite{postman:product} es una herramienta de desarrollo que permite diseñar, ejecutar y analizar peticiones HTTP a servicios web, especialmente APIs REST. Facilita el envío de solicitudes con distintos métodos (\textit{GET, POST, PUT, DELETE}, etc.), la configuración de cabeceras y cuerpos de petición, y la visualización detallada de las respuestas devueltas por el servidor. 
@@ -211,4 +228,4 @@ La herramienta escogida inicialmente fue \textit{Overleaf}~\cite{overleaf:about}
 Es por ello que se trasladó el flujo de trabajo al entorno local mediante, manteniendo la documentación sincronizada tanto en el repositorio de \textit{GitHub} como en la plataforma de \textit{Overleaf}. De este modo, el tutor podría disponer siempre del documento más reciente para su revisión.
 
 \subsubsection{MiKTeX}
-MiK\TeX{}~\cite{miktex:home} es una distribución ligera de \LaTeX{} que incluye los paquetes y herramientas necesarios para compilar documentos. Se caracteriza por su sistema de gestión de paquetes bajo demanda, lo que permite instalar únicamente los componentes necesarios, reduciendo el tamaño de la instalación. Esta particularidad motivó la elección de MiK\TeX{} frente a otras distribuciones como \TeX{}Live\todo{ref?}, la cual realiza instalaciones completas de forma predeterminada.
+MiK\TeX{}~\cite{miktex:home} es una distribución ligera de \LaTeX{} que incluye los paquetes y herramientas necesarios para compilar documentos. Se caracteriza por su sistema de gestión de paquetes bajo demanda, lo que permite instalar únicamente los componentes necesarios, reduciendo el tamaño de la instalación. Esta particularidad motivó la elección de MiK\TeX{} frente a otras distribuciones como \TeX{}Live~\cite{texlive:guide}, la cual realiza instalaciones completas de forma predeterminada.

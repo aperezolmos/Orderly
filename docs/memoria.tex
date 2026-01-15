@@ -4,6 +4,8 @@
 \usepackage{todonotes}
 \setuptodonotes{fancyline, color=blue!15}
 
+\usepackage{tabularx}
+\usepackage{array}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Castellano
@@ -309,6 +311,22 @@
 	\FloatBarrier
 }
 
+
+% TABLA COMPARATIVA (apartado 6)
+% Definición de colores
+\definecolor{verdeSuave}{RGB}{208, 250, 180}
+\definecolor{rojoSuave}{RGB}{255, 205, 210}
+\definecolor{amarilloSuave}{RGB}{252, 252, 162}
+
+% Comandos con alineación y color
+\newcommand{\SI}{\cellcolor{verdeSuave}Sí}
+\newcommand{\NO}{\cellcolor{rojoSuave}No}
+\newcommand{\PARCIAL}{\cellcolor{amarilloSuave}Parcial}
+
+% Definición de columnas
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}p{3.4cm}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -453,12 +471,16 @@ D. Raúl Marticorena Sánchez
 % Abstract en castellano
 \renewcommand*\abstractname{Resumen}
 \begin{abstract}
-En este primer apartado se hace una \textbf{breve} presentación del tema que se aborda en el proyecto.
+\revisionA{NombreApp}\todo{cambiar} es una aplicación web integral diseñada para optimizar y centralizar la gestión operativa de locales de restauración (bares, restaurantes, cafeterías). Su objetivo principal es unificar en una única plataforma los flujos de trabajo fundamentales de este sector: la gestión de productos y su composición, el control de comandas (pedidos de bar y comedor), la administración de reservas de mesas y la gestión de usuarios y permisos del personal.
+
+Una característica diferenciadora de \revisionA{NombreApp}\todo{cambiar} es su integración nativa con \textit{\textbf{Open Food Facts}}, una base de datos colaborativa de información nutricional. Esta funcionalidad permite enriquecer el catálogo de alimentos con datos nutricionales detallados, clasificaciones como el \textit{\textbf{Nutri-Score}} y la identificación de alérgenos de forma semi-automática, respondiendo así a la creciente demanda de transparencia y opciones de alimentación saludable por parte de los consumidores.
+
+El desarrollo se ha abordado con un fuerte énfasis en la calidad del \textit{software}, la escalabilidad y la mantenibilidad. Se ha implementado una arquitectura moderna basada en \textit{\textbf{React}} para el \textit{frontend} y \textbf{\textit{Spring Boot}} para el \textit{backend} (API REST), utilizando contenedores \textit{\textbf{Docker}} para garantizar un despliegue portable y reproducible. La metodología de trabajo ha seguido prácticas ágiles (\textit{Scrum/Kanban}), con un riguroso control de versiones mediante \textit{Git} y \textit{\textbf{GitHub}}.
 \end{abstract}
 
 \renewcommand*\abstractname{Descriptores}
 \begin{abstract}
-Palabras separadas por comas que identifiquen el contenido del proyecto Ej: servidor web, buscador de vuelos, android \ldots
+Gestión de restauración, información nutricional, Nutri-Score, aplicación web, React, Spring Boot, API REST, Open Food Facts, Docker, contenerización, desarrollo ágil.
 \end{abstract}
 
 \clearpage
@@ -466,12 +488,16 @@ Palabras separadas por comas que identifiquen el contenido del proyecto Ej: serv
 % Abstract en inglés
 \renewcommand*\abstractname{Abstract}
 \begin{abstract}
-A \textbf{brief} presentation of the topic addressed in the project.
+\revisionA{NombreApp}\todo{cambiar} is a comprehensive web application designed to optimise and centralise the operational management of hospitality venues (bars, restaurants, cafés). Its main goal is to unify the fundamental workflows of this sector into a single platform: product and recipe management, order control (for both bar and dining areas), table reservation administration, and staff user and permission management.
+
+A key distinguishing feature of \revisionA{NombreApp}\todo{cambiar} is its native integration with \textit{\textbf{Open Food Facts}}, a collaborative database of nutritional information. This functionality enriches the food catalogue with detailed nutritional data, classifications such as \textit{\textbf{Nutri-Score}}, and semi-automatic allergen identification, addressing the growing consumer demand for transparency and healthy food options.
+
+The development has been approached with a strong emphasis on software quality, scalability, and maintainability. A modern architecture based on \textit{\textbf{React}} for the frontend and \textit{\textbf{Spring Boot}} for the backend (REST API) has been implemented, using \textit{\textbf{Docker}} containers to ensure portable and reproducible deployment. The workflow followed agile practices (\textit{Scrum/Kanban}), with rigorous version control using \textit{Git} and \textit{\textbf{GitHub}}.
 \end{abstract}
 
 \renewcommand*\abstractname{Keywords}
 \begin{abstract}
-keywords separated by commas.
+Restaurant management, nutritional information, Nutri-Score, web application, React, Spring Boot, REST API, Open Food Facts, Docker, containerization, agile development.
 \end{abstract}
 
 \clearpage
