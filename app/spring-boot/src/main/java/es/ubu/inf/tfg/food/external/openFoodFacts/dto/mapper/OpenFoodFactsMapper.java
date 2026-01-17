@@ -1,6 +1,8 @@
 package es.ubu.inf.tfg.food.external.openFoodFacts.dto.mapper;
 
 import es.ubu.inf.tfg.food.classification.FoodGroup;
+import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.MineralsDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
@@ -10,7 +12,10 @@ import es.ubu.inf.tfg.food.external.openFoodFacts.dto.OpenFoodFactsProductDTO;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 public class OpenFoodFactsMapper {
@@ -22,53 +27,60 @@ public class OpenFoodFactsMapper {
             name = "Unnamed Food (" + System.currentTimeMillis() + ")";
         }
 
-
         Map<String, Object> nutriments = offDto.getNutriments();
 
         NutritionInfoDTO nutritionInfo = NutritionInfoDTO.builder()
-            .calories(getBigDecimal(nutriments, "energy-kcal_100g"))
-            .carbohydrates(getBigDecimal(nutriments, "carbohydrates_100g"))
-            .fats(getBigDecimal(nutriments, "fat_100g"))
-            .fiber(getBigDecimal(nutriments, "fiber_100g"))
-            .protein(getBigDecimal(nutriments, "proteins_100g"))
-            .salt(getBigDecimal(nutriments, "salt_100g"))
-            .saturatedFats(getBigDecimal(nutriments, "saturated-fat_100g"))
-            .sugars(getBigDecimal(nutriments, "sugars_100g"))
-            .minerals(MineralsDTO.builder()
-                .calcium(getBigDecimal(nutriments, "calcium_100g"))
-                .iron(getBigDecimal(nutriments, "iron_100g"))
-                .magnesium(getBigDecimal(nutriments, "magnesium_100g"))
-                .phosphorus(getBigDecimal(nutriments, "phosphorus_100g"))
-                .potassium(getBigDecimal(nutriments, "potassium_100g"))
-                .selenium(getBigDecimal(nutriments, "selenium_100g"))
-                .sodium(getBigDecimal(nutriments, "sodium_100g"))
-                .zinc(getBigDecimal(nutriments, "zinc_100g"))
-                .build())
-            .vitamins(VitaminsDTO.builder()
-                .vitaminA(getBigDecimal(nutriments, "vitamin-a_100g"))
-                .vitaminB1(getBigDecimal(nutriments, "vitamin-b1_100g"))
-                .vitaminB2(getBigDecimal(nutriments, "vitamin-b2_100g"))
-                .vitaminB3(getBigDecimal(nutriments, "vitamin-pp_100g"))
-                .vitaminB6(getBigDecimal(nutriments, "vitamin-b6_100g"))
-                .vitaminB9(getBigDecimal(nutriments, "vitamin-b9_100g"))
-                .vitaminB12(getBigDecimal(nutriments, "vitamin-b12_100g"))
-                .vitaminC(getBigDecimal(nutriments, "vitamin-c_100g"))
-                .vitaminD(getBigDecimal(nutriments, "vitamin-d_100g"))
-                .vitaminE(getBigDecimal(nutriments, "vitamin-e_100g"))
-                .build())
+            .calories(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.CALORIES))
+            .carbohydrates(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.CARBS))
+            .fats(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.FAT))
+            .fiber(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.FIBER))
+            .protein(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.PROTEIN))
+            .salt(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.SALT))
+            .saturatedFats(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.SATURATED_FAT))
+            .sugars(getBigDecimal(nutriments, OpenFoodFactsRegistry.Nutriments.SUGARS))
+            .minerals(mapMinerals(nutriments))
+            .vitamins(mapVitamins(nutriments))
             .build();
-        
         
         return FoodRequestDTO.builder()
             .name(name)
-            .foodGroup(FoodGroup.NOT_APPLICABLE) //TODO: se deja así por el momento
-            .servingWeightGrams(BigDecimal.valueOf(100)) //TODO: se deja así por el momento
+            .foodGroup(FoodGroup.NOT_APPLICABLE)
+            .servingWeightGrams(BigDecimal.valueOf(100))
+            .allergenInfo(extractAllergenInfoDTO(offDto))
             .nutritionInfo(nutritionInfo)
             .build();
     }
 
 
     // --------------------------------------------------------
+
+    private MineralsDTO mapMinerals(Map<String, Object> n) {
+        return MineralsDTO.builder()
+            .calcium(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.CALCIUM))
+            .iron(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.IRON))
+            .magnesium(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.MAGNESIUM))
+            .phosphorus(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.PHOSPHORUS))
+            .potassium(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.POTASSIUM))
+            .selenium(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.SELENIUM))
+            .sodium(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.SODIUM))
+            .zinc(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.ZINC))
+            .build();
+    }
+
+    private VitaminsDTO mapVitamins(Map<String, Object> n) {
+        return VitaminsDTO.builder()
+            .vitaminA(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_A))
+            .vitaminB1(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_B1))
+            .vitaminB2(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_B2))
+            .vitaminB3(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_B3))
+            .vitaminB6(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_B6))
+            .vitaminB9(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_B9))
+            .vitaminB12(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_B12))
+            .vitaminC(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_C))
+            .vitaminD(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_D))
+            .vitaminE(getBigDecimal(n, OpenFoodFactsRegistry.Nutriments.VIT_E))
+            .build();
+    }
 
     private String extractName(OpenFoodFactsProductDTO dto) {
         
@@ -78,18 +90,35 @@ public class OpenFoodFactsMapper {
         return null;
     }
 
+    private AllergenInfoDTO extractAllergenInfoDTO(OpenFoodFactsProductDTO dto) {
+        
+        Set<Allergen> allergens = (dto.getAllergensTags() != null) 
+            ? mapAllergenTagsToAllergenSet(dto.getAllergensTags()) 
+            : null;
+        return AllergenInfoDTO.builder().allergens(allergens).build();
+    }
+
+    public Set<Allergen> mapAllergenTagsToAllergenSet(List<String> allergenTags) {
+        
+        if (allergenTags == null || allergenTags.isEmpty()) return null;
+        
+        Set<Allergen> result = new HashSet<>();
+        for (String tag : allergenTags) {
+            Allergen allergen = OpenFoodFactsRegistry.ALLERGEN_CODES.get(tag.trim());
+            if (allergen != null) result.add(allergen);
+        }
+        return result.isEmpty() ? null : result;
+    }
+
     private BigDecimal getBigDecimal(Map<String, Object> map, String key) {
         
         if (map == null || !map.containsKey(key) || map.get(key) == null) return null;
         try {
             Object value = map.get(key);
-            if (value instanceof Number) {
-                return new BigDecimal(((Number) value).toString());
-            } 
-            else if (value instanceof String str && !str.isBlank()) {
-                return new BigDecimal(str);
-            }
-        } catch (Exception ignored) {}
+            if (value instanceof Number num) return new BigDecimal(num.toString());
+            if (value instanceof String str && !str.isBlank()) return new BigDecimal(str);
+        } 
+        catch (Exception ignored) {}
         return null;
     }
 }

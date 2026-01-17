@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -19,6 +20,9 @@ public class OpenFoodFactsProductDTO {
 
     @JsonProperty("product_name_en")
     private String productNameEn;
+
+    @JsonProperty("allergens_tags")
+    private List<String> allergensTags;
 
     @JsonProperty("nutriments")
     private Map<String, Object> nutriments;
