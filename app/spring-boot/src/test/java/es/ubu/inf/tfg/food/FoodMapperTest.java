@@ -1,9 +1,9 @@
 package es.ubu.inf.tfg.food;
 
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
 import es.ubu.inf.tfg.food.dto.mapper.FoodMapperImpl;
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.mapper.NutritionInfoMapper;

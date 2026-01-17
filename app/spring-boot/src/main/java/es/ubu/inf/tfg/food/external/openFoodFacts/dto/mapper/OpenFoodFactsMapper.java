@@ -1,11 +1,11 @@
-package es.ubu.inf.tfg.food.external.dto.mapper;
+package es.ubu.inf.tfg.food.external.openFoodFacts.dto.mapper;
 
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.MineralsDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.VitaminsDTO;
-import es.ubu.inf.tfg.food.external.dto.OpenFoodFactsProductDTO;
+import es.ubu.inf.tfg.food.external.openFoodFacts.dto.OpenFoodFactsProductDTO;
 
 import org.springframework.stereotype.Component;
 

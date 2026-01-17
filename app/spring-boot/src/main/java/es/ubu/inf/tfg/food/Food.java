@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
 

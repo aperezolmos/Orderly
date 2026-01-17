@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
 import es.ubu.inf.tfg.food.dto.mapper.FoodMapper;
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 

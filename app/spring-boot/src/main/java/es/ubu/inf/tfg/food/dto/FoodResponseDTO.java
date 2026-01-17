@@ -3,7 +3,7 @@ package es.ubu.inf.tfg.food.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 
 import lombok.AllArgsConstructor;

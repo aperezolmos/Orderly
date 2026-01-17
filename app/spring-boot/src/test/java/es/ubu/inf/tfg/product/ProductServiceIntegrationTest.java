@@ -2,7 +2,7 @@ package es.ubu.inf.tfg.product;
 
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.FoodRepository;
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.food.nutritionInfo.minerals.Minerals;
 import es.ubu.inf.tfg.food.nutritionInfo.vitamins.Vitamins;

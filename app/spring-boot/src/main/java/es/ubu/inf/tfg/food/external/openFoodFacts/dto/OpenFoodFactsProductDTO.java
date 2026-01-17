@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.food.external.dto;
+package es.ubu.inf.tfg.food.external.openFoodFacts.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

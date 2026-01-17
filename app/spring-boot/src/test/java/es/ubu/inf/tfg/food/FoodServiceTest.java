@@ -1,10 +1,10 @@
 package es.ubu.inf.tfg.food;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
 import es.ubu.inf.tfg.food.dto.mapper.FoodMapper;
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
 import jakarta.persistence.EntityNotFoundException;
