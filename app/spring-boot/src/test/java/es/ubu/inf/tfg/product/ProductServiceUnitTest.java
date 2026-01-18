@@ -1,6 +1,11 @@
 package es.ubu.inf.tfg.product;
 
+import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.FoodService;
+import es.ubu.inf.tfg.food.classification.AllergenInfo;
+import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.dto.mapper.AllergenInfoMapper;
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
 import es.ubu.inf.tfg.product.dto.mapper.ProductMapper;
@@ -38,6 +43,8 @@ class ProductServiceUnitTest {
     private FoodService foodService;
     @Mock
     private IngredientMapper ingredientMapper;
+    @Mock
+    private AllergenInfoMapper allergenInfoMapper;
 
     private static final Integer PRODUCT_ID = 1;
     private static final String PRODUCT_NAME = "Pizza";
@@ -50,11 +57,18 @@ class ProductServiceUnitTest {
     private ProductRequestDTO productRequestDTO;
     private ProductResponseDTO productResponseDTO;
     private Ingredient ingredient;
+    private Food mockFood;
+    private AllergenInfo allergenInfo;
+    private AllergenInfoDTO allergenInfoDTO;
 
 
     @BeforeEach
     void setUp() {
+        
         ingredient = mock(Ingredient.class);
+        mockFood = mock(Food.class);
+        allergenInfo = AllergenInfo.builder().allergens(Set.of(Allergen.GLUTEN, Allergen.MILK)).build();
+        allergenInfoDTO = AllergenInfoDTO.builder().allergens(Set.of(Allergen.GLUTEN, Allergen.MILK)).build();
 
         productEntity = Product.builder()
                 .id(PRODUCT_ID)
@@ -193,19 +207,19 @@ class ProductServiceUnitTest {
         
         String NEW_NAME = "Burger";
         String UPD_DESC = "Tasty burger";
-        String UPD_PRICE = "8.99";
+        BigDecimal UPD_PRICE = new BigDecimal("8.99");
 
         ProductRequestDTO updateDTO = ProductRequestDTO.builder()
                 .name(NEW_NAME)
                 .description(UPD_DESC)
-                .price(new BigDecimal(UPD_PRICE))
+                .price(UPD_PRICE)
                 .build();
 
         Product updatedProduct = Product.builder()
                 .id(PRODUCT_ID)
                 .name(NEW_NAME)
                 .description(UPD_DESC)
-                .price(new BigDecimal(UPD_PRICE))
+                .price(UPD_PRICE)
                 .ingredients(new HashSet<>())
                 .createdAt(CREATED_AT)
                 .updatedAt(UPDATED_AT)
@@ -215,7 +229,7 @@ class ProductServiceUnitTest {
                 .id(PRODUCT_ID)
                 .name(NEW_NAME)
                 .description(UPD_DESC)
-                .price(new BigDecimal(UPD_PRICE))
+                .price(UPD_PRICE)
                 .createdAt(CREATED_AT)
                 .updatedAt(UPDATED_AT)
                 .ingredientCount(0)
@@ -260,5 +274,28 @@ class ProductServiceUnitTest {
         productService.delete(PRODUCT_ID);
 
         verify(productRepository).delete(productEntity);
+    }
+
+    @Test
+    void getProductAllergens_ShouldReturnAggregatedAllergens() {
+        
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(Optional.of(productEntity));
+        when(ingredient.getFood()).thenReturn(mockFood);
+        when(mockFood.getAllergenInfo()).thenReturn(allergenInfo);
+        when(allergenInfoMapper.toDTO(any(AllergenInfo.class))).thenReturn(allergenInfoDTO);
+
+        AllergenInfoDTO result = productService.getProductAllergens(PRODUCT_ID);
+
+        assertThat(result).isEqualTo(allergenInfoDTO);
+        verify(allergenInfoMapper).toDTO(any(AllergenInfo.class));
+    }
+
+    @Test
+    void getProductDetailedInfo_NonExistingProduct_ShouldThrowException() {
+        
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> productService.getProductDetailedInfo(PRODUCT_ID, true))
+                .isInstanceOf(EntityNotFoundException.class);
     }
 }

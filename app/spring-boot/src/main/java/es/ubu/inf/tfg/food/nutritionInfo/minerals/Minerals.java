@@ -53,6 +53,7 @@ public class Minerals {
     // --------------------------------------------------------
     
     public Minerals add(Minerals other) {
+        if (other == null) return null;
         return Minerals.builder()
                 .calcium(this.calcium.add(other.calcium))
                 .iron(this.iron.add(other.iron))
@@ -66,6 +67,7 @@ public class Minerals {
     }
     
     public Minerals multiplyByFactor(BigDecimal factor) {
+        if (factor == null) return null;
         return Minerals.builder()
                 .calcium(this.calcium.multiply(factor))
                 .iron(this.iron.multiply(factor))

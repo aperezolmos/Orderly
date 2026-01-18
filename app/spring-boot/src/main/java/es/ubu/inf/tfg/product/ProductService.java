@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.food.Food;
 import es.ubu.inf.tfg.food.FoodService;
+import es.ubu.inf.tfg.food.classification.AllergenInfo;
+import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.dto.mapper.AllergenInfoMapper;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
@@ -34,6 +37,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final FoodService foodService;
     private final IngredientMapper ingredientMapper;
+    private final AllergenInfoMapper allergenInfoMapper;
 
     
     public List<ProductResponseDTO> findAll() {
@@ -184,14 +188,21 @@ public class ProductService {
     public ProductResponseDTO getProductDetailedInfo(Integer productId, boolean includeIngredients) {
         
         Product product = findEntityById(productId);
-        NutritionInfo nutritionInfo = calculateProductNutritionInfo(productId);
+        AllergenInfo allergenInfo = product.calculateTotalAllergens();
+        NutritionInfo nutritionInfo = product.calculateTotalNutrition();
         
         if (includeIngredients) {
-            return productMapper.toCompleteResponseDTO(product, nutritionInfo);
+            return productMapper.toCompleteResponseDTO(product, allergenInfo, nutritionInfo);
         } 
         else {
-            return productMapper.toNutritionalResponseDTO(product, nutritionInfo);
+            return productMapper.toNutritionalResponseDTO(product, allergenInfo, nutritionInfo);
         }
+    }
+
+    public AllergenInfoDTO getProductAllergens(Integer productId) {
+        
+        Product product = findEntityById(productId);
+        return allergenInfoMapper.toDTO(product.calculateTotalAllergens());
     }
 
     public List<IngredientResponseDTO> getProductIngredients(Integer productId) {

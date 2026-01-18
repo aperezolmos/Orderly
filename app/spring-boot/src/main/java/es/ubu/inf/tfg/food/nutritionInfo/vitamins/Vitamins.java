@@ -61,6 +61,7 @@ public class Vitamins {
     // --------------------------------------------------------
     
     public Vitamins add(Vitamins other) {
+        if (other == null) return null;
         return Vitamins.builder()
                 .vitaminA(this.vitaminA.add(other.vitaminA))
                 .vitaminC(this.vitaminC.add(other.vitaminC))
@@ -76,6 +77,7 @@ public class Vitamins {
     }
     
     public Vitamins multiplyByFactor(BigDecimal factor) {
+        if (factor == null) return null;
         return Vitamins.builder()
                 .vitaminA(this.vitaminA.multiply(factor))
                 .vitaminC(this.vitaminC.multiply(factor))
