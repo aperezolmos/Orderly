@@ -14,6 +14,8 @@ const FoodListPage = () => {
   const { foods, loading, deleteFood } = useFoods();
   const [foodToDelete, setFoodToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const [selectedFood, setSelectedFood] = useState(null);
+  const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'foods']);
 
 
@@ -43,7 +45,16 @@ const FoodListPage = () => {
     {
       key: 'name',
       title: t('foods:list.name'),
-      render: (food) => <Text>{food.name}</Text>
+      render: (food) => (
+        <Button
+          variant="subtle"
+          color="blue"
+          onClick={() => { setSelectedFood(food); openModal(); }}
+          style={{ padding: 0, fontWeight: 500 }}
+        >
+          {food.name}
+        </Button>
+      )
     },
     {
       key: 'foodGroup',
@@ -96,6 +107,27 @@ const FoodListPage = () => {
         </div>
         
       </ManagementLayout>
+
+      {/* Modal de detalle de alimento */}
+      <Modal
+        opened={modalOpened}
+        onClose={() => { closeModal(); setSelectedFood(null); }}
+        title={selectedFood?.name}
+        centered
+        size="md"
+      >
+        {selectedFood ? (
+          <div>
+            <Text><b>ID:</b> {selectedFood.id}</Text>
+            <Text><b>Grupo:</b> {t(`foods:foodGroups.${selectedFood.foodGroup}`)}</Text>
+            <Text><b>Alérgenos:</b> {selectedFood.allergenInfo?.allergens?.length > 0
+              ? selectedFood.allergenInfo.allergens.join(', ')
+              : t('foods:form.noAllergens', 'Ninguno')}</Text>
+            <Text><b>Nutri-Score:</b> {selectedFood.nutritionalMetrics?.nutriScore || '-'}</Text>
+            <Text><b>NOVA Group:</b> {selectedFood.nutritionalMetrics?.novaGroup || '-'}</Text>
+          </div>
+        ) : null}
+      </Modal>
 
       <Modal
         opened={deleteModalOpened}

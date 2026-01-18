@@ -1,11 +1,13 @@
 package es.ubu.inf.tfg.food;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
 import es.ubu.inf.tfg.food.classification.FoodGroup;
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
 import es.ubu.inf.tfg.food.dto.mapper.FoodMapper;
@@ -102,6 +104,15 @@ public class FoodService {
         foodRepository.delete(food);
     }
 
+
+    // --------------------------------------------------------
+    // DOMAIN METHODS (allergens)
+
+    public List<String> getAllAllergens() {
+        return Arrays.stream(Allergen.values())
+                .map(Enum::name)
+                .toList();
+    }
 
     // --------------------------------------------------------
 

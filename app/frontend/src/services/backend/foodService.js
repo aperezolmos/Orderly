@@ -13,6 +13,12 @@ export const foodService = {
 
 
   // ======================
+  // ALLERGENS
+  // ======================
+  getAllAllergens: async () => apiClient.get('/foods/allergens'),
+
+
+  // ======================
   // EXTERNAL API (OFF)
   // ======================
   createFoodFromOFFBarcode: async (barcode) => apiClient.post(`/foods/external/${barcode}`),

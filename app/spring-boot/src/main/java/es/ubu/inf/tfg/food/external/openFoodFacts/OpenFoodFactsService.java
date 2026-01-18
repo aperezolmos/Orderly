@@ -25,6 +25,8 @@ public class OpenFoodFactsService {
         "product_name_es," +
         "product_name_en," +
         "allergens_tags," + 
+        "nutrition_grades," + 
+        "nova_group," + 
         "nutriments";
 
     private final RestTemplate restTemplate = new RestTemplate();

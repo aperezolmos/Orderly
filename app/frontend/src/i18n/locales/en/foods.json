@@ -50,7 +50,9 @@
       "vitaminB6": "Vitamin B6",
       "vitaminB9": "Vitamin B9",
       "vitaminB12": "Vitamin B12"
-    }
+    },
+    "allergens": "Allergens",
+    "noAllergens": "None"
   },
   "list": {
     "id": "ID",
@@ -107,5 +109,21 @@
     "noBrand": "No brand",
     "noName": "No name",
     "creatingFood": "Creating food from Open Food Facts..."
+  },
+  "allergens": {
+    "GLUTEN": "Gluten",
+    "CRUSTACEANS": "Crustaceans",
+    "EGGS": "Eggs",
+    "FISH": "Fish",
+    "PEANUTS": "Peanuts",
+    "SOYBEANS": "Soybeans",
+    "MILK": "Milk",
+    "NUTS": "Tree nuts",
+    "CELERY": "Celery",
+    "MUSTARD": "Mustard",
+    "SESAME_SEEDS": "Sesame seeds",
+    "SULPHUR_DIOXIDE_SULPHITES": "Sulphur dioxide and sulphites",
+    "LUPIN": "Lupin",
+    "MOLLUSCS": "Molluscs"
   }
 }

@@ -2,6 +2,7 @@ package es.ubu.inf.tfg.food.external.openFoodFacts.dto.mapper;
 
 import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.dto.NutritionalMetricsDTO;
 import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.MineralsDTO;
@@ -44,10 +45,11 @@ public class OpenFoodFactsMapper {
         
         return FoodRequestDTO.builder()
             .name(name)
-            .foodGroup(FoodGroup.NOT_APPLICABLE)
+            .foodGroup(FoodGroup.COMBINATION) // TODO: se deja así de momento
             .servingWeightGrams(BigDecimal.valueOf(100))
             .allergenInfo(extractAllergenInfoDTO(offDto))
             .nutritionInfo(nutritionInfo)
+            .nutritionalMetrics(extractNutritionalMetrics(offDto))
             .build();
     }
 
@@ -108,6 +110,37 @@ public class OpenFoodFactsMapper {
             if (allergen != null) result.add(allergen);
         }
         return result.isEmpty() ? null : result;
+    }
+
+    private NutritionalMetricsDTO extractNutritionalMetrics(OpenFoodFactsProductDTO dto) {
+        
+        if (dto.getNutriScore() == null && dto.getNovaGroup() == null) return null;
+        
+        return NutritionalMetricsDTO.builder()
+            .nutriScore(processNutriScore(dto.getNutriScore()))
+            .novaGroup(processNovaGroup(dto.getNovaGroup()))
+            .build();
+    }
+
+    private String processNutriScore(String nutriScore) {
+        
+        if (nutriScore == null || nutriScore.isBlank()) return null;
+
+        String processed = nutriScore.trim().toUpperCase();
+        if (processed.matches("^[A-E]$")) {
+            return processed;
+        }
+        return null;
+    }
+
+    private Integer processNovaGroup(Integer novaGroup) {
+        
+        if (novaGroup == null) return null;
+        
+        if (novaGroup >= 1 && novaGroup <= 4) {
+            return novaGroup;
+        }
+        return null;
     }
 
     private BigDecimal getBigDecimal(Map<String, Object> map, String key) {

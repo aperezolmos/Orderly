@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import es.ubu.inf.tfg.food.classification.FoodGroup;
 import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.dto.NutritionalMetricsDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 
 import lombok.AllArgsConstructor;
@@ -26,4 +27,5 @@ public class FoodResponseDTO {
     private Integer recipeCount;
     private AllergenInfoDTO allergenInfo;
     private NutritionInfoDTO nutritionInfo;
+    private NutritionalMetricsDTO nutritionalMetrics;
 }

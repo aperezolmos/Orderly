@@ -24,6 +24,12 @@ public class OpenFoodFactsProductDTO {
     @JsonProperty("allergens_tags")
     private List<String> allergensTags;
 
+    @JsonProperty("nutrition_grades")
+    private String nutriScore;
+
+    @JsonProperty("nova_group")
+    private Integer novaGroup;
+
     @JsonProperty("nutriments")
     private Map<String, Object> nutriments;
 }

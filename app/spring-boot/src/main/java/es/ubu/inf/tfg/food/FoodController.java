@@ -92,4 +92,14 @@ public class FoodController {
     public ResponseEntity<Boolean> checkFoodNameExists(@PathVariable String name) {
         return ResponseEntity.ok(foodService.existsByName(name));
     }
+
+
+    // --------------------------------------------------------
+    // ALLERGEN ENDPOINTS
+
+    @GetMapping("/allergens")
+    @PreAuthorize("hasAuthority('FOOD_VIEW_LIST')")
+    public ResponseEntity<List<String>> getAllAllergens() {
+        return ResponseEntity.ok(foodService.getAllAllergens());
+    }
 }
