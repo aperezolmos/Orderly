@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { TextInput, NumberInput, Button, Group, Select, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,11 @@ const FoodForm = ({
   
   const { t } = useTranslation(['common', 'foods']);
 
+  // Memoize translated options so they are stable between renders
+  const foodGroupOptions = useMemo(
+    () => FOOD_GROUPS.map(g => ({ value: g.value, label: t(g.label) })),
+    [t]
+  );
 
   const form = useForm({
     initialValues: {
@@ -138,10 +143,7 @@ const FoodForm = ({
               label={t('foods:form.foodGroup')}
               placeholder={t('foods:form.foodGroupPlaceholder')}
               required
-              data={FOOD_GROUPS.map(g => ({
-                value: g.value,
-                label: t(g.label)
-              }))}
+              data={foodGroupOptions}
               {...form.getInputProps('foodGroup')}
             />
             <NumberInput

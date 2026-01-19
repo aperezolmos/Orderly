@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { roleService } from '../../../services/backend/roleService';
+import { useState, useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { roleService } from '../../../services/backend/roleService';
 
 
 export const useRoles = () => {
@@ -141,10 +141,6 @@ export const useRoles = () => {
 
   const clearCurrentRole = () => setCurrentRole(null);
   const clearError = () => setError(null);
-
-  useEffect(() => {
-    loadRoles();
-  }, [loadRoles]);
 
 
   return {

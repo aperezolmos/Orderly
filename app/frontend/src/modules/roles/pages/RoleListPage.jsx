@@ -1,21 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconShield } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useRoles } from '../hooks/useRoles';
-import { useTranslation } from 'react-i18next';
 
 
 const RoleListPage = () => {
   
   const navigate = useNavigate();
-  const { roles, loading, deleteRole } = useRoles();
+  const { roles, loading, deleteRole, loadRoles } = useRoles();
   const [roleToDelete, setRoleToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'roles']);
+
+
+  useEffect(() => {
+    loadRoles();
+  }, [loadRoles]);
 
   const handleEdit = (role) => {
     navigate(`/roles/${role.id}/edit`);

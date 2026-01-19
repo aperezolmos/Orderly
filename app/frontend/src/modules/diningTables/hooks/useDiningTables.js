@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { diningTableService } from '../../../services/backend/diningTableService';
+import { useState, useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { diningTableService } from '../../../services/backend/diningTableService';
 
 
 export const useDiningTables = () => {
@@ -141,10 +141,6 @@ export const useDiningTables = () => {
 
   const clearCurrentTable = () => setCurrentTable(null);
   const clearError = () => setError(null);
-
-  useEffect(() => {
-    loadTables();
-  }, [loadTables]);
 
 
   return {

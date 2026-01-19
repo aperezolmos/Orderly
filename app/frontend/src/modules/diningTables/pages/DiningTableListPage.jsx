@@ -1,22 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconDesk } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useDiningTables } from '../hooks/useDiningTables';
-import { useTranslation } from 'react-i18next';
 
 
 const DiningTableListPage = () => {
   
   const navigate = useNavigate();
-  const { tables, loading, deleteTable } = useDiningTables();
+  const { tables, loading, deleteTable, loadTables } = useDiningTables();
   const [tableToDelete, setTableToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'diningTables']);
 
+
+  useEffect(() => {
+    loadTables();
+  }, [loadTables]);
 
   const handleEdit = (table) => {
     navigate(`/tables/${table.id}/edit`);

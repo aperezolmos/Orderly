@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -11,13 +11,17 @@ import { useTranslation } from 'react-i18next';
 const FoodListPage = () => {
   
   const navigate = useNavigate();
-  const { foods, loading, deleteFood } = useFoods();
+  const { foods, loading, deleteFood, loadFoods } = useFoods();
   const [foodToDelete, setFoodToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const [selectedFood, setSelectedFood] = useState(null);
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'foods']);
 
+
+  useEffect(() => {
+    loadFoods();
+  }, [loadFoods]);
 
   const handleEdit = (food) => {
     navigate(`/foods/${food.id}/edit`);
@@ -108,7 +112,7 @@ const FoodListPage = () => {
         
       </ManagementLayout>
 
-      {/* Modal de detalle de alimento */}
+      {/* TODO: internacionalizar - Modal de detalle de alimento*/}
       <Modal
         opened={modalOpened}
         onClose={() => { closeModal(); setSelectedFood(null); }}

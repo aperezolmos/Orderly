@@ -1,22 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconUser } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useReservations } from '../hooks/useReservations';
-import { useTranslation } from 'react-i18next';
 
 
 const ReservationListPage = () => {
   
   const navigate = useNavigate();
-  const { reservations, loading, deleteReservation } = useReservations();
+  const { reservations, loading, deleteReservation, loadReservations } = useReservations();
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'reservations']);
 
+
+  useEffect(() => {
+    loadReservations();
+  }, [loadReservations]);
 
   const handleEdit = (reservation) => {
     navigate(`/reservations/${reservation.id}/edit`);

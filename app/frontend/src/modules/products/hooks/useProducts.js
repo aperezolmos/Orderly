@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { productService } from '../../../services/backend/productService';
+import { useState, useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { productService } from '../../../services/backend/productService';
 
 
 export const useProducts = () => {
@@ -141,10 +141,6 @@ export const useProducts = () => {
 
   const clearCurrentProduct = () => setCurrentProduct(null);
   const clearError = () => setError(null);
-
-  useEffect(() => {
-    loadProducts();
-  }, [loadProducts]);
   
 
   return {

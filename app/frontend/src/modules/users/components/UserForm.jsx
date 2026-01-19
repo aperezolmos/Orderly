@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
          LoadingOverlay, Tabs, Alert, Text, Loader } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle, IconUser, IconShield, IconCheck, IconX } from '@tabler/icons-react';
-import RoleTransferList from '../../roles/components/RoleTransferList';
-import { useUserRoles } from '../hooks/useUserRoles';
+import { IconAlertCircle, IconUser, IconShield,
+         IconCheck, IconX } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
+import RoleTransferList from './RoleTransferList';
+import { useUserRoles } from '../hooks/useUserRoles';
 import { useUsernameCheck } from '../hooks/useUsernameCheck';
 
 
