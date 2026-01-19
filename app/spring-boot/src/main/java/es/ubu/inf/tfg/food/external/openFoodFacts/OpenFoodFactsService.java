@@ -1,9 +1,9 @@
-package es.ubu.inf.tfg.food.external;
+package es.ubu.inf.tfg.food.external.openFoodFacts;
 
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
-import es.ubu.inf.tfg.food.external.dto.OpenFoodFactsProductDTO;
-import es.ubu.inf.tfg.food.external.dto.OpenFoodFactsResponseDTO;
-import es.ubu.inf.tfg.food.external.dto.mapper.OpenFoodFactsMapper;
+import es.ubu.inf.tfg.food.external.openFoodFacts.dto.OpenFoodFactsProductDTO;
+import es.ubu.inf.tfg.food.external.openFoodFacts.dto.OpenFoodFactsResponseDTO;
+import es.ubu.inf.tfg.food.external.openFoodFacts.dto.mapper.OpenFoodFactsMapper;
 import es.ubu.inf.tfg.exception.OpenFoodFactsException;
 
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,14 @@ public class OpenFoodFactsService {
 
     private static final String USER_AGENT = "TFG-Restauracion/0.8.0-beta (apo1004@alu.ubu.es) (https://github.com/aperezolmos)";
     private static final String OFF_API_URL = 
-        "https://world.openfoodfacts.org/api/v2/product/{barcode}" +
-        "?fields=product_name,product_name_es,product_name_en,nutriments";
+        "https://world.openfoodfacts.org/api/v2/product/{barcode}?fields=" +
+        "product_name," +
+        "product_name_es," +
+        "product_name_en," +
+        "allergens_tags," + 
+        "nutrition_grades," + 
+        "nova_group," + 
+        "nutriments";
 
     private final RestTemplate restTemplate = new RestTemplate();
 

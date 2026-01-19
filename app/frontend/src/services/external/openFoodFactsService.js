@@ -13,7 +13,7 @@ export const openFoodFactsService = {
       json: '1',
       page: page.toString(),
       page_size: pageSize.toString(),
-      fields: 'code,product_name,product_name_es,product_name_en,image_url,brands', //TODO: product_name a veces no sale. probar con product_name_es y product_name_en
+      fields: 'code,product_name,image_url,brands',
     });
     const url = `${BASE_URL}?${params.toString()}`;
 

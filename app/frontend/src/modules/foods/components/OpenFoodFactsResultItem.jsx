@@ -12,7 +12,7 @@ const OpenFoodFactsResultItem = ({ product, onAdd, disabled }) => {
 
   const imageUrl = product.image_url || NO_IMAGE_PLACEHOLDER;
   const brands = product.brands || t('foods:off.noBrand');
-  const name = product.product_name || t('foods:off.noName'); //TODO: incluir prioridad según idioma (product_name_es o _en...)? -> tarda bastante más en procesar
+  const name = product.product_name || t('foods:off.noName');
 
 
   const handleAdd = () => {

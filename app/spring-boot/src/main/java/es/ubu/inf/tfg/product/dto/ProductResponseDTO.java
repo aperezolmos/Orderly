@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 import es.ubu.inf.tfg.product.ingredient.dto.IngredientResponseDTO;
 
@@ -24,6 +25,7 @@ public class ProductResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int ingredientCount;
+    private AllergenInfoDTO allergenInfo;
     private NutritionInfoDTO totalNutrition;
     private Set<IngredientResponseDTO> ingredients;
 }

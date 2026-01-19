@@ -1,22 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconUser } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useUsers } from '../hooks/useUsers';
-import { useTranslation } from 'react-i18next';
 
 
 const UserListPage = () => {
   
   const navigate = useNavigate();
-  const { users, loading, deleteUser } = useUsers();
+  const { users, loading, deleteUser, loadUsers } = useUsers();
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'users']);
   
+
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   const handleEdit = (user) => {
     navigate(`/users/${user.id}/edit`);

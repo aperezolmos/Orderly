@@ -1,8 +1,9 @@
+import React from 'react';
 import { NumberInput, Group, Divider, Title, Box } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 
-const MineralsFields = ({ form, prefix = 'nutritionInfo.minerals.' }) => {
+const MineralsFields = React.memo(({ form, prefix = 'nutritionInfo.minerals.' }) => {
   const { t } = useTranslation(['foods']);
   return (
     <Box>
@@ -21,10 +22,10 @@ const MineralsFields = ({ form, prefix = 'nutritionInfo.minerals.' }) => {
       </Group>
     </Box>
   );
-};
+});
 
 
-const VitaminsFields = ({ form, prefix = 'nutritionInfo.vitamins.' }) => {
+const VitaminsFields = React.memo(({ form, prefix = 'nutritionInfo.vitamins.' }) => {
   const { t } = useTranslation(['foods']);
   return (
     <Box>
@@ -45,10 +46,10 @@ const VitaminsFields = ({ form, prefix = 'nutritionInfo.vitamins.' }) => {
       </Group>
     </Box>
   );
-};
+});
 
 
-const NutritionInfoForm = ({ form }) => {
+const NutritionInfoFormInner = ({ form }) => {
   const { t } = useTranslation(['foods']);
   return (
     <Box>
@@ -73,4 +74,7 @@ const NutritionInfoForm = ({ form }) => {
   );
 };
 
+
+// Export memoized wrapper to avoid unnecessary renders
+const NutritionInfoForm = React.memo(NutritionInfoFormInner);
 export default NutritionInfoForm;

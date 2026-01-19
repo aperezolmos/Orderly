@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.food.foodGroup;
+package es.ubu.inf.tfg.food.classification;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

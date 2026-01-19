@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -11,11 +11,17 @@ import { useTranslation } from 'react-i18next';
 const FoodListPage = () => {
   
   const navigate = useNavigate();
-  const { foods, loading, deleteFood } = useFoods();
+  const { foods, loading, deleteFood, loadFoods } = useFoods();
   const [foodToDelete, setFoodToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const [selectedFood, setSelectedFood] = useState(null);
+  const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'foods']);
 
+
+  useEffect(() => {
+    loadFoods();
+  }, [loadFoods]);
 
   const handleEdit = (food) => {
     navigate(`/foods/${food.id}/edit`);
@@ -43,7 +49,16 @@ const FoodListPage = () => {
     {
       key: 'name',
       title: t('foods:list.name'),
-      render: (food) => <Text>{food.name}</Text>
+      render: (food) => (
+        <Button
+          variant="subtle"
+          color="blue"
+          onClick={() => { setSelectedFood(food); openModal(); }}
+          style={{ padding: 0, fontWeight: 500 }}
+        >
+          {food.name}
+        </Button>
+      )
     },
     {
       key: 'foodGroup',
@@ -96,6 +111,27 @@ const FoodListPage = () => {
         </div>
         
       </ManagementLayout>
+
+      {/* Modal de detalle de alimento*/}
+      <Modal
+        opened={modalOpened}
+        onClose={() => { closeModal(); setSelectedFood(null); }}
+        title={selectedFood?.name}
+        centered
+        size="md"
+      >
+        {selectedFood ? (
+          <div>
+            <Text><b>{t('foods:list.id')}:</b> {selectedFood.id}</Text>
+            <Text><b>{t('foods:list.foodGroup')}:</b> {t(`foods:foodGroups.${selectedFood.foodGroup}`)}</Text>
+            <Text><b>{t('foods:allergens.form.title')}:</b> {selectedFood.allergenInfo?.allergens?.length > 0
+              ? selectedFood.allergenInfo.allergens.join(', ')
+              : t('foods:allergens.form.noAllergens')}</Text>
+            <Text><b>{t('foods:form.nutriScore')}:</b> {selectedFood.nutritionalMetrics?.nutriScore || '-'}</Text>
+            <Text><b>{t('foods:form.novaGroup')}:</b> {selectedFood.nutritionalMetrics?.novaGroup || '-'}</Text>
+          </div>
+        ) : null}
+      </Modal>
 
       <Modal
         opened={deleteModalOpened}

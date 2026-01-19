@@ -2,6 +2,8 @@ package es.ubu.inf.tfg.product.ingredient.dto;
 
 import java.math.BigDecimal;
 
+import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.dto.NutritionalMetricsDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +17,6 @@ public class IngredientResponseDTO {
     private Integer foodId;
     private String foodName;
     private BigDecimal quantityInGrams;
+    private AllergenInfoDTO allergenInfo;
+    private NutritionalMetricsDTO nutritionalMetrics;
 }

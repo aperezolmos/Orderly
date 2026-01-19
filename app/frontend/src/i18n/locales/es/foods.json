@@ -50,7 +50,9 @@
       "vitaminB6": "Vitamina B6",
       "vitaminB9": "Vitamina B9",
       "vitaminB12": "Vitamina B12"
-    }    
+    },
+    "nutriScore": "Nutri-Score",
+    "novaGroup": "Grupo NOVA"
   },
   "list": {
     "id": "ID",
@@ -107,5 +109,26 @@
     "noBrand": "Sin marca",
     "noName": "Sin nombre",
     "creatingFood": "Creando alimento desde Open Food Facts..."
+  },
+  "allergens": {
+    "GLUTEN": "Gluten",
+    "CRUSTACEANS": "Crustáceos",
+    "EGGS": "Huevos",
+    "FISH": "Pescado",
+    "PEANUTS": "Cacahuetes",
+    "SOYBEANS": "Soja",
+    "MILK": "Leche",
+    "NUTS": "Frutos de cáscara",
+    "CELERY": "Apio",
+    "MUSTARD": "Mostaza",
+    "SESAME_SEEDS": "Sésamo",
+    "SULPHUR_DIOXIDE_SULPHITES": "Sulfitos",
+    "LUPIN": "Altramuces",
+    "MOLLUSCS": "Moluscos",
+    "form": {
+      "title": "Alérgenos",
+      "helpText": "Selecciona los alérgenos presentes en este alimento",
+      "noAllergens": "Ninguno"
+    }
   }
 }

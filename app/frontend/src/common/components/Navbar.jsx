@@ -135,7 +135,7 @@ const Navbar = ({ opened, toggle }) => {
             }}
             onClick={() => navigate('/')}
           >
-            NombreApp
+            Orderly
           </Text>
         </Box>
 

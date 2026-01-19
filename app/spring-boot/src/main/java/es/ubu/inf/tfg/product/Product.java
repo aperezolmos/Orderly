@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import es.ubu.inf.tfg.food.classification.AllergenInfo;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
 
@@ -35,7 +36,7 @@ public class Product {
 
     private String description;
 
-    private BigDecimal price; // TODO: precio fijo? o precio por unidad/por peso?
+    private BigDecimal price;
 
 
     @Builder.Default
@@ -71,6 +72,16 @@ public class Product {
                 ingredient.remove();
             }
         }
+    }
+
+    public AllergenInfo calculateTotalAllergens() {
+        AllergenInfo total = AllergenInfo.builder().build();
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getFood() != null && ingredient.getFood().getAllergenInfo() != null) {
+                total = total.addAll(ingredient.getFood().getAllergenInfo());
+            }
+        }
+        return total;
     }
     
     public NutritionInfo calculateTotalNutrition() {

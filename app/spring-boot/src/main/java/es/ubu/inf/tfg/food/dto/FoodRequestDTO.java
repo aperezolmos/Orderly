@@ -2,7 +2,9 @@ package es.ubu.inf.tfg.food.dto;
 
 import java.math.BigDecimal;
 
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
+import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.dto.NutritionalMetricsDTO;
 import es.ubu.inf.tfg.food.nutritionInfo.dto.NutritionInfoDTO;
 
 import jakarta.validation.Valid;
@@ -33,5 +35,11 @@ public class FoodRequestDTO {
     private BigDecimal servingWeightGrams;
 
     @Valid
+    private AllergenInfoDTO allergenInfo;
+
+    @Valid
     private NutritionInfoDTO nutritionInfo;
+
+    @Valid
+    private NutritionalMetricsDTO nutritionalMetrics;
 }

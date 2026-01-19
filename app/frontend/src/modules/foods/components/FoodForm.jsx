@@ -1,21 +1,12 @@
-import { useEffect } from 'react';
-import { TextInput, NumberInput, Button, Group, Select, LoadingOverlay, Tabs } from '@mantine/core';
+import { useEffect, useMemo } from 'react';
+import { TextInput, NumberInput, Button, Group,
+         Select, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import NutritionInfoForm from './NutritionInfoForm';
-
-
-const FOOD_GROUPS = [
-  { value: 'DAIRY', label: 'foods:foodGroups.DAIRY' },
-  { value: 'PROTEINS', label: 'foods:foodGroups.PROTEINS' },
-  { value: 'FRUIT', label: 'foods:foodGroups.FRUIT' },
-  { value: 'VEGETABLES', label: 'foods:foodGroups.VEGETABLES' },
-  { value: 'GRAINS', label: 'foods:foodGroups.GRAINS' },
-  { value: 'FATS', label: 'foods:foodGroups.FATS' },
-  { value: 'LEGUMES', label: 'foods:foodGroups.LEGUMES' },
-  { value: 'COMBINATION', label: 'foods:foodGroups.COMBINATION' },
-  { value: 'NOT_APPLICABLE', label: 'foods:foodGroups.NOT_APPLICABLE' },
-];
+import AllergenCheckboxList from './AllergenCheckboxList';
+import { FOOD_GROUPS } from '../../../utils/foodEnums'
+import { useFoods } from '../hooks/useFoods'
 
 
 const FoodForm = ({
@@ -25,8 +16,15 @@ const FoodForm = ({
   submitLabel = "Create Food"
 }) => {
   
+  const { getAllAllergens, allergens: availableAllergens, loading: allergensLoading } = useFoods();
   const { t } = useTranslation(['common', 'foods']);
 
+
+  // Memoize translated options so they are stable between renders
+  const foodGroupOptions = useMemo(
+    () => FOOD_GROUPS.map(g => ({ value: g.value, label: t(g.label) })),
+    [t]
+  );
 
   const form = useForm({
     initialValues: {
@@ -64,6 +62,9 @@ const FoodForm = ({
           vitaminB9: '',
           vitaminB12: '',
         }
+      },
+      allergenInfo: {
+        allergens: []
       }
     },
     validate: {
@@ -82,6 +83,10 @@ const FoodForm = ({
   });
 
   useEffect(() => {
+    getAllAllergens();
+  }, [getAllAllergens]);
+
+  useEffect(() => {
     if (food) {
       form.setValues({
         name: food.name || '',
@@ -91,23 +96,35 @@ const FoodForm = ({
           ...food.nutritionInfo,
           minerals: { ...food.nutritionInfo?.minerals },
           vitamins: { ...food.nutritionInfo?.vitamins },
+        },
+        allergenInfo: {
+          allergens: food.allergenInfo?.allergens || []
         }
       });
     }
   }, [food]);
+  
 
   const handleSubmit = async (values) => {
-    // Clean up empty strings to null
+    // Clean up empty strings to null, but preserve arrays
     const clean = (obj) => {
-      if (typeof obj !== 'object' || obj === null) return obj;
+      if (obj === null || obj === undefined) return obj;
+      if (Array.isArray(obj)) {
+        // keep non-empty items (filter out empty string/undefined)
+        return obj
+          .filter(v => v !== '' && v !== undefined && v !== null)
+          .map(v => (typeof v === 'object' ? clean(v) : v));
+      }
+      if (typeof obj !== 'object') return obj;
       const out = {};
       for (const k in obj) {
-        if (obj[k] === '' || obj[k] === undefined) continue;
-        if (typeof obj[k] === 'object' && obj[k] !== null) {
-          const nested = clean(obj[k]);
-          if (Object.keys(nested).length > 0) out[k] = nested;
+        const v = obj[k];
+        if (v === '' || v === undefined) continue;
+        if (typeof v === 'object' && v !== null) {
+          const nested = clean(v);
+          if (Array.isArray(nested) ? nested.length > 0 : Object.keys(nested).length > 0) out[k] = nested;
         } else {
-          out[k] = obj[k];
+          out[k] = v;
         }
       }
       return out;
@@ -123,7 +140,9 @@ const FoodForm = ({
         <Tabs.List>
           <Tabs.Tab value="basic">{t('common:form.basicInfo')}</Tabs.Tab>
           <Tabs.Tab value="nutrition">{t('foods:form.nutritionInfo.title')}</Tabs.Tab>
+          <Tabs.Tab value="allergens">{t('foods:allergens.form.title')}</Tabs.Tab>
         </Tabs.List>
+
         <Tabs.Panel value="basic" pt="xs">
           <TextInput
             label={t('foods:form.name')}
@@ -138,10 +157,7 @@ const FoodForm = ({
               label={t('foods:form.foodGroup')}
               placeholder={t('foods:form.foodGroupPlaceholder')}
               required
-              data={FOOD_GROUPS.map(g => ({
-                value: g.value,
-                label: t(g.label)
-              }))}
+              data={foodGroupOptions}
               {...form.getInputProps('foodGroup')}
             />
             <NumberInput
@@ -153,9 +169,20 @@ const FoodForm = ({
             />
           </Group>
         </Tabs.Panel>
+
         <Tabs.Panel value="nutrition" pt="xs">
           <NutritionInfoForm form={form} />
         </Tabs.Panel>
+
+        <Tabs.Panel value="allergens" pt="xs">
+          <AllergenCheckboxList
+            allergens={availableAllergens || []}
+            selected={form.values.allergenInfo?.allergens || []}
+            onChange={(selected) => form.setFieldValue('allergenInfo.allergens', selected)}
+            loading={allergensLoading}
+          />
+        </Tabs.Panel>
+
       </Tabs>
       <Group position="right" mt="xl">
         <Button type="submit" loading={loading}>

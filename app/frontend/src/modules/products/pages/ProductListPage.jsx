@@ -1,21 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { useProducts } from '../hooks/useProducts';
-import { useTranslation } from 'react-i18next';
 
 
 const ProductListPage = () => {
   
   const navigate = useNavigate();
-  const { products, loading, deleteProduct } = useProducts();
+  const { products, loading, deleteProduct, loadProducts } = useProducts();
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const { t } = useTranslation(['common', 'products']);
 
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   const handleEdit = (product) => {
     navigate(`/products/${product.id}/edit`);

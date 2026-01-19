@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+import es.ubu.inf.tfg.food.classification.AllergenInfo;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
+import es.ubu.inf.tfg.food.classification.NutritionalMetrics;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
 
@@ -42,7 +44,13 @@ public class Food {
     private BigDecimal servingWeightGrams;
 
     @Embedded
+    private AllergenInfo allergenInfo;
+
+    @Embedded
     private NutritionInfo nutritionInfo;
+
+    @Embedded
+    private NutritionalMetrics nutritionalMetrics;
     
 
     @Builder.Default

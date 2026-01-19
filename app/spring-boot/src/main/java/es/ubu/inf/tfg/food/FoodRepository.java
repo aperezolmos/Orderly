@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
 
 @Repository
 public interface FoodRepository extends JpaRepository<Food, Integer> {

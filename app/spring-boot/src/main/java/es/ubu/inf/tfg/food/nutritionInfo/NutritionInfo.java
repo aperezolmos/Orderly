@@ -65,6 +65,7 @@ public class NutritionInfo {
     // --------------------------------------------------------
     
     public NutritionInfo add(NutritionInfo other) {
+        if (other == null) return null;
         return NutritionInfo.builder()
                 .calories(this.calories.add(other.calories))
                 .carbohydrates(this.carbohydrates.add(other.carbohydrates))
@@ -80,6 +81,7 @@ public class NutritionInfo {
     }
 
     public NutritionInfo multiplyByFactor(BigDecimal factor) {
+        if (factor == null) return null;
         return NutritionInfo.builder()
                 .calories(this.calories.multiply(factor))
                 .carbohydrates(this.carbohydrates.multiply(factor))

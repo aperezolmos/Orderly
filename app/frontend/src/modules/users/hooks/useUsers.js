@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { userService } from '../../../services/backend/userService';
+import { useState, useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { userService } from '../../../services/backend/userService';
 
 
 export const useUsers = () => {
@@ -169,10 +169,6 @@ export const useUsers = () => {
 
   const clearCurrentUser = () => setCurrentUser(null);
   const clearError = () => setError(null);
-
-  useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
   
 
   return {

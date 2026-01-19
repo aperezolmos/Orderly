@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { reservationService } from '../../../services/backend/reservationService';
+import { useState, useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
+import { reservationService } from '../../../services/backend/reservationService';
 
 
 export const useReservations = () => {
@@ -141,10 +141,6 @@ export const useReservations = () => {
 
   const clearCurrentReservation = () => setCurrentReservation(null);
   const clearError = () => setError(null);
-
-  useEffect(() => {
-    loadReservations();
-  }, [loadReservations]);
   
 
   return {

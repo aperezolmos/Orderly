@@ -1,10 +1,13 @@
 package es.ubu.inf.tfg.food;
 
 import es.ubu.inf.tfg.exception.ResourceInUseException;
+import es.ubu.inf.tfg.food.classification.AllergenInfo;
+import es.ubu.inf.tfg.food.classification.FoodGroup;
+import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.food.dto.FoodRequestDTO;
 import es.ubu.inf.tfg.food.dto.FoodResponseDTO;
 import es.ubu.inf.tfg.food.dto.mapper.FoodMapper;
-import es.ubu.inf.tfg.food.foodGroup.FoodGroup;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
 import jakarta.persistence.EntityNotFoundException;
@@ -46,17 +49,23 @@ class FoodServiceTest {
     private Food foodEntity;
     private FoodRequestDTO foodRequestDTO;
     private FoodResponseDTO foodResponseDTO;
+    private AllergenInfo allergenInfo;
+    private AllergenInfoDTO allergenInfoDTO;
 
 
     @BeforeEach
     void setUp() {
         
+        allergenInfo = AllergenInfo.builder().allergens(Set.of(Allergen.GLUTEN, Allergen.MILK)).build();
+        allergenInfoDTO = AllergenInfoDTO.builder().allergens(Set.of(Allergen.GLUTEN, Allergen.MILK)).build();
+
         foodEntity = Food.builder()
                 .id(FOOD_ID)
                 .name(FOOD_NAME)
                 .foodGroup(FOOD_GROUP)
                 .servingWeightGrams(SERVING_WEIGHT)
                 .nutritionInfo(NutritionInfo.builder().build())
+                .allergenInfo(allergenInfo)
                 .usages(new HashSet<>())
                 .createdAt(CREATED_AT)
                 .updatedAt(UPDATED_AT)
@@ -66,6 +75,7 @@ class FoodServiceTest {
                 .name(FOOD_NAME)
                 .foodGroup(FOOD_GROUP)
                 .servingWeightGrams(SERVING_WEIGHT)
+                .allergenInfo(allergenInfoDTO)
                 .build();
 
         foodResponseDTO = FoodResponseDTO.builder()
@@ -76,6 +86,7 @@ class FoodServiceTest {
                 .createdAt(CREATED_AT)
                 .updatedAt(UPDATED_AT)
                 .recipeCount(0)
+                .allergenInfo(allergenInfoDTO)
                 .build();
     }
 
@@ -105,6 +116,19 @@ class FoodServiceTest {
         FoodResponseDTO result = foodService.findById(FOOD_ID);
 
         assertThat(result).isEqualTo(foodResponseDTO);
+    }
+
+    @Test
+    void findById_ExistingId_ShouldReturnDTO_WithAllergens() {
+        
+        when(foodRepository.findById(FOOD_ID)).thenReturn(Optional.of(foodEntity));
+        when(foodMapper.toResponseDTO(foodEntity)).thenReturn(foodResponseDTO);
+
+        FoodResponseDTO result = foodService.findById(FOOD_ID);
+
+        assertThat(result.getAllergenInfo()).isEqualTo(allergenInfoDTO);
+        verify(foodRepository).findById(FOOD_ID);
+        verify(foodMapper).toResponseDTO(foodEntity);
     }
 
     @Test
@@ -199,6 +223,21 @@ class FoodServiceTest {
     }
 
     @Test
+    void create_ValidRequest_ShouldSaveAndReturnDTO_WithAllergens() {
+        
+        when(foodRepository.existsByName(FOOD_NAME)).thenReturn(false);
+        when(foodMapper.toEntity(foodRequestDTO)).thenReturn(foodEntity);
+        when(foodRepository.save(foodEntity)).thenReturn(foodEntity);
+        when(foodMapper.toResponseDTO(foodEntity)).thenReturn(foodResponseDTO);
+
+        FoodResponseDTO result = foodService.create(foodRequestDTO);
+
+        assertThat(result.getAllergenInfo()).isEqualTo(allergenInfoDTO);
+        assertThat(result).isEqualTo(foodResponseDTO);
+        verify(foodRepository).save(foodEntity);
+    }
+
+    @Test
     void create_ExistingFoodName_ShouldThrowException() {
         
         when(foodRepository.existsByName(FOOD_NAME)).thenReturn(true);
@@ -246,6 +285,54 @@ class FoodServiceTest {
 
         FoodResponseDTO result = foodService.update(FOOD_ID, updateDTO);
 
+        assertThat(result).isEqualTo(updatedResponse);
+        verify(foodRepository).save(any(Food.class));
+    }
+
+    @Test
+    void update_ExistingFood_ShouldUpdateAndReturnDTO_WithAllergens() {
+        
+        String newName = "Banana";
+        AllergenInfoDTO newAllergenInfoDTO = AllergenInfoDTO.builder().allergens(Set.of(Allergen.EGGS)).build();
+        FoodRequestDTO updateDTO = FoodRequestDTO.builder()
+                .name(newName)
+                .foodGroup(FoodGroup.FRUIT)
+                .servingWeightGrams(new BigDecimal("120"))
+                .allergenInfo(newAllergenInfoDTO)
+                .build();
+
+        AllergenInfo newAllergenInfo = AllergenInfo.builder().allergens(Set.of(Allergen.EGGS)).build();
+        Food updatedFood = Food.builder()
+                .id(FOOD_ID)
+                .name(newName)
+                .foodGroup(FoodGroup.FRUIT)
+                .servingWeightGrams(new BigDecimal("120"))
+                .nutritionInfo(NutritionInfo.builder().build())
+                .allergenInfo(newAllergenInfo)
+                .usages(new HashSet<>())
+                .createdAt(CREATED_AT)
+                .updatedAt(UPDATED_AT)
+                .build();
+
+        FoodResponseDTO updatedResponse = FoodResponseDTO.builder()
+                .id(FOOD_ID)
+                .name(newName)
+                .foodGroup(FoodGroup.FRUIT)
+                .servingWeightGrams(new BigDecimal("120"))
+                .createdAt(CREATED_AT)
+                .updatedAt(UPDATED_AT)
+                .recipeCount(0)
+                .allergenInfo(newAllergenInfoDTO)
+                .build();
+
+        when(foodRepository.findById(FOOD_ID)).thenReturn(Optional.of(foodEntity));
+        when(foodRepository.existsByName(newName)).thenReturn(false);
+        when(foodMapper.toResponseDTO(updatedFood)).thenReturn(updatedResponse);
+        when(foodRepository.save(any(Food.class))).thenReturn(updatedFood);
+
+        FoodResponseDTO result = foodService.update(FOOD_ID, updateDTO);
+
+        assertThat(result.getAllergenInfo()).isEqualTo(newAllergenInfoDTO);
         assertThat(result).isEqualTo(updatedResponse);
         verify(foodRepository).save(any(Food.class));
     }
