@@ -51,8 +51,8 @@
       "vitaminB9": "Vitamin B9",
       "vitaminB12": "Vitamin B12"
     },
-    "allergens": "Allergens",
-    "noAllergens": "None"
+    "nutriScore": "Nutri-Score",
+    "novaGroup": "NOVA Group"
   },
   "list": {
     "id": "ID",
@@ -124,6 +124,11 @@
     "SESAME_SEEDS": "Sesame seeds",
     "SULPHUR_DIOXIDE_SULPHITES": "Sulphur dioxide and sulphites",
     "LUPIN": "Lupin",
-    "MOLLUSCS": "Molluscs"
+    "MOLLUSCS": "Molluscs",
+    "form": {
+      "title": "Allergens",
+      "helpText": "Select allergens present in this food",
+      "noAllergens": "None"
+    }
   }
 }

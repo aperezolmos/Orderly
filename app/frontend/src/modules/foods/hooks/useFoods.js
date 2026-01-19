@@ -8,6 +8,7 @@ export const useFoods = () => {
   
   const [foods, setFoods] = useState([]);
   const [currentFood, setCurrentFood] = useState(null);
+  const [allergens, setAllergens] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { t } = useTranslation(['common', 'foods']);
@@ -141,6 +142,28 @@ export const useFoods = () => {
     }
   };
 
+  const getAllAllergens = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await foodService.getAllAllergens();
+      setAllergens(data);
+      return data;
+    } 
+    catch (err) {
+      setError(err.message);
+      notifications.show({
+        title: t('foods:notifications.loadError'),
+        message: err.message,
+        color: 'red',
+      });
+      return [];
+    } 
+    finally {
+      setLoading(false);
+    }
+  }, [t]);
+
 
   const clearCurrentFood = () => setCurrentFood(null);
   const clearError = () => setError(null);
@@ -149,6 +172,7 @@ export const useFoods = () => {
   return {
     foods,
     currentFood,
+    allergens,
     loading,
     error,
     loadFoods,
@@ -156,6 +180,7 @@ export const useFoods = () => {
     createFood,
     updateFood,
     deleteFood,
+    getAllAllergens,
     clearCurrentFood,
     clearError,
   };

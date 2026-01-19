@@ -1,4 +1,3 @@
-import React from 'react';
 import { Checkbox, SimpleGrid, Title, Text, LoadingOverlay } from '@mantine/core';
 
 

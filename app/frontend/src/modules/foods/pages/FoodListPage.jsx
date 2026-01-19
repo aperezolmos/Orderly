@@ -112,7 +112,7 @@ const FoodListPage = () => {
         
       </ManagementLayout>
 
-      {/* TODO: internacionalizar - Modal de detalle de alimento*/}
+      {/* Modal de detalle de alimento*/}
       <Modal
         opened={modalOpened}
         onClose={() => { closeModal(); setSelectedFood(null); }}
@@ -122,13 +122,13 @@ const FoodListPage = () => {
       >
         {selectedFood ? (
           <div>
-            <Text><b>ID:</b> {selectedFood.id}</Text>
-            <Text><b>Grupo:</b> {t(`foods:foodGroups.${selectedFood.foodGroup}`)}</Text>
-            <Text><b>Alérgenos:</b> {selectedFood.allergenInfo?.allergens?.length > 0
+            <Text><b>{t('foods:list.id')}:</b> {selectedFood.id}</Text>
+            <Text><b>{t('foods:list.foodGroup')}:</b> {t(`foods:foodGroups.${selectedFood.foodGroup}`)}</Text>
+            <Text><b>{t('foods:allergens.form.title')}:</b> {selectedFood.allergenInfo?.allergens?.length > 0
               ? selectedFood.allergenInfo.allergens.join(', ')
-              : t('foods:form.noAllergens', 'Ninguno')}</Text>
-            <Text><b>Nutri-Score:</b> {selectedFood.nutritionalMetrics?.nutriScore || '-'}</Text>
-            <Text><b>NOVA Group:</b> {selectedFood.nutritionalMetrics?.novaGroup || '-'}</Text>
+              : t('foods:allergens.form.noAllergens')}</Text>
+            <Text><b>{t('foods:form.nutriScore')}:</b> {selectedFood.nutritionalMetrics?.nutriScore || '-'}</Text>
+            <Text><b>{t('foods:form.novaGroup')}:</b> {selectedFood.nutritionalMetrics?.novaGroup || '-'}</Text>
           </div>
         ) : null}
       </Modal>
