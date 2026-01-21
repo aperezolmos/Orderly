@@ -2,10 +2,11 @@ package es.ubu.inf.tfg.auth;
 
 import es.ubu.inf.tfg.auth.dto.LoginRequestDTO;
 import es.ubu.inf.tfg.auth.dto.RegisterRequestDTO;
+import es.ubu.inf.tfg.security.CustomUserDetails;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
-import es.ubu.inf.tfg.user.User;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class AuthController {
 
     private final AuthService authService;
@@ -26,38 +26,38 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<UserResponseDTO> login(
-            @Valid @RequestBody LoginRequestDTO loginRequest,
-            HttpServletRequest request) {
+            @RequestBody @Valid LoginRequestDTO loginRequest, 
+            HttpServletRequest request, 
+            HttpServletResponse response) {
         
-        UserResponseDTO user = authService.login(loginRequest, request);
-        return ResponseEntity.ok(user);
+        UserResponseDTO userDTO = authService.login(loginRequest, request, response);
+        return ResponseEntity.ok(userDTO);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(
-            @Valid @RequestBody RegisterRequestDTO registerRequest,
-            HttpServletRequest request) {
+            @RequestBody @Valid RegisterRequestDTO registerRequest,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         
-        UserResponseDTO createdUser = authService.register(registerRequest, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        UserResponseDTO userDTO = authService.register(registerRequest, request, response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         authService.logout(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponseDTO> getCurrentUser(@AuthenticationPrincipal User user) {
-        if (user == null) {
+    public ResponseEntity<UserResponseDTO> getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        
+        if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(authService.getCurrentUser(user));
-    }
 
-    @GetMapping("/status")
-    public ResponseEntity<String> status() {
-        return ResponseEntity.ok("Auth service is running!");
+        UserResponseDTO userDTO = authService.getCurrentUser(userDetails);
+        return ResponseEntity.ok(userDTO);
     }
 }

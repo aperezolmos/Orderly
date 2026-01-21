@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tables")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
 public class DiningTableController {
 
     private final DiningTableService diningTableService;

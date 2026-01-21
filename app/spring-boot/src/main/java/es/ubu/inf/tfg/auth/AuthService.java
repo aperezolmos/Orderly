@@ -4,20 +4,24 @@ import es.ubu.inf.tfg.auth.dto.LoginRequestDTO;
 import es.ubu.inf.tfg.auth.dto.RegisterRequestDTO;
 import es.ubu.inf.tfg.exception.InvalidCredentialsException;
 import es.ubu.inf.tfg.security.CustomUserDetails;
-import es.ubu.inf.tfg.security.session.SessionManager;
-import es.ubu.inf.tfg.user.User;
 import es.ubu.inf.tfg.user.UserService;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
 import es.ubu.inf.tfg.user.dto.mapper.UserMapper;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
-
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
@@ -26,58 +30,59 @@ public class AuthService {
     
     private final UserService userService;
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
-    private final SessionManager sessionManager;
+    private final AuthenticationManager authenticationManager;
+    private final SecurityContextRepository securityContextRepository;
+    
 
-
-    public UserResponseDTO login(LoginRequestDTO loginRequest, HttpServletRequest request) {
+    public UserResponseDTO login(LoginRequestDTO loginRequest, HttpServletRequest request, HttpServletResponse response) {
         
-        User user = validateCredentials(loginRequest);
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
 
-        CustomUserDetails userDetails = new CustomUserDetails(user);
-        sessionManager.authenticateUser(userDetails, request);
-        
-        return userMapper.toResponseDTO(user);
+            // Set the context and save the session (JSESSIONID)
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
+
+            return userService.findByUsername(loginRequest.getUsername());
+        } 
+        catch (AuthenticationException e) { throw new InvalidCredentialsException(); }
     }
     
-    public UserResponseDTO register(RegisterRequestDTO registerRequest, HttpServletRequest request) {
+    public UserResponseDTO register(RegisterRequestDTO registerRequest, HttpServletRequest request, HttpServletResponse response) {
         
         validatePasswordMatch(registerRequest);
 
-        UserRequestDTO userRequest = userMapper.toRequestFromRegister(registerRequest);
-        UserResponseDTO createdUser = userService.create(userRequest);
-        
-        User user = userService.findEntityByUsername(createdUser.getUsername())
-                .orElseThrow(() -> new IllegalStateException("User not found after creation"));
-        
-        CustomUserDetails userDetails = new CustomUserDetails(user);
-        sessionManager.authenticateUser(userDetails, request);
-        
+        UserRequestDTO userRequest = userMapper.toRequestFromRegister(registerRequest); 
+        UserResponseDTO createdUser = userService.create(userRequest); 
+
+        // The newly created user is authenticated so that they are already logged in
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
+
         return createdUser;
     }
-    
+
     public void logout(HttpServletRequest request) {
-        sessionManager.logoutUser(request);
+
+        var session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        SecurityContextHolder.clearContext();
     }
-    
-    public UserResponseDTO getCurrentUser(User user) {
-        return userMapper.toResponseDTO(user);
+
+    public UserResponseDTO getCurrentUser(CustomUserDetails userDetails) {
+        return userService.findByUsername(userDetails.getUsername());
     }
-    
-    
+
+
     // --------------------------------------------------------
 
-    private User validateCredentials(LoginRequestDTO loginRequest) {
-        
-        User user = userService.findEntityByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new InvalidCredentialsException());
-
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialsException();
-        }
-        return user;
-    }
-    
     private void validatePasswordMatch(RegisterRequestDTO registerRequest) {
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
             throw new IllegalArgumentException("Passwords do not match");
