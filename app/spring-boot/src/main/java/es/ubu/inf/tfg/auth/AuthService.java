@@ -8,13 +8,17 @@ import es.ubu.inf.tfg.user.UserService;
 import es.ubu.inf.tfg.user.dto.UserRequestDTO;
 import es.ubu.inf.tfg.user.dto.UserResponseDTO;
 import es.ubu.inf.tfg.user.dto.mapper.UserMapper;
-
+import es.ubu.inf.tfg.user.role.permission.Permission;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
@@ -77,7 +81,27 @@ public class AuthService {
     }
 
     public UserResponseDTO getCurrentUser(CustomUserDetails userDetails) {
+        if (userDetails == null) return null;
         return userService.findByUsername(userDetails.getUsername());
+    }
+
+    public Set<String> getCurrentUserPermissions(CustomUserDetails userDetails) {
+        
+        if (userDetails == null || userDetails.getAuthorities() == null) {
+            return Set.of();
+        }
+
+        return userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(name -> {
+                    try {
+                        Permission.valueOf(name);
+                        return true;
+                    } catch (IllegalArgumentException ex) {
+                        return false;
+                    }
+                })
+                .collect(Collectors.toSet());
     }
 
 

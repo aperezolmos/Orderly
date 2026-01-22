@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../context/useAuth';
+import { useAuth } from '../../context/AuthContext';
 import { LoadingOverlay, Text, Center } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 

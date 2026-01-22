@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Set;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -59,5 +61,16 @@ public class AuthController {
 
         UserResponseDTO userDTO = authService.getCurrentUser(userDetails);
         return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping("/me/permissions")
+    public ResponseEntity<Set<String>> getCurrentUserPermissions(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Set<String> permissions = authService.getCurrentUserPermissions(userDetails);
+        return ResponseEntity.ok(permissions);
     }
 }

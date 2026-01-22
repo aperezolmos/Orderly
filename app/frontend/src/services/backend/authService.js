@@ -13,12 +13,15 @@ export const authService = {
     await apiClient.post('/auth/logout');
   },
 
-  getCurrentUser: async () => apiClient.get('/auth/me'),
-
-  checkAuthStatus: async () => {
+  getCurrentUser: async () => {
     try {
       return await apiClient.get('/auth/me');
+    } 
+    catch (error) {
+      if (error.status === 401) return null;
+      throw error;
     }
-    catch { return null; }
   },
+
+  getCurrentUserPermissions: async () => apiClient.get('/auth/me/permissions'),
 };
