@@ -6,12 +6,15 @@ import { IconShield } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 import { useRoles } from '../hooks/useRoles';
 
 
 const RoleListPage = () => {
   
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { roles, loading, deleteRole, loadRoles } = useRoles();
   const [roleToDelete, setRoleToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
@@ -88,6 +91,8 @@ const RoleListPage = () => {
             data={roles}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            canEdit={hasPermission(PERMISSIONS.ROLE_EDIT)}
+            canDelete={hasPermission(PERMISSIONS.ROLE_DELETE)}
             loading={loading}
           />
         </div>

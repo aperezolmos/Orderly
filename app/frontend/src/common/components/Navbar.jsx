@@ -8,12 +8,12 @@ import { useMediaQuery } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import { getNavigationConfig, filterModulesByRole } from '../../utils/navigationConfig';
+import { getNavigationConfig, filterModulesBySubItemsPermissions } from '../../utils/navigationConfig';
 
 
 const Navbar = ({ opened, toggle }) => {
   
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, permissions, logout } = useAuth();
   const navigate = useNavigate();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -24,7 +24,7 @@ const Navbar = ({ opened, toggle }) => {
   const [hoveredModule, setHoveredModule] = useState(null);
 
   const modules = getNavigationConfig(t);
-  const visibleModules = filterModulesByRole(modules, user?.roleNames);
+  const visibleModules = filterModulesBySubItemsPermissions(modules, permissions);
 
 
   const handleLogout = async () => {

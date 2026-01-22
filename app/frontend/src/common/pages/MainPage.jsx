@@ -2,17 +2,17 @@ import { Container, Title, Text, Group, Card, SimpleGrid, Button } from '@mantin
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { getNavigationConfig, filterModulesByRole } from '../../utils/navigationConfig';
+import { getNavigationConfig, filterModulesByPermission } from '../../utils/navigationConfig';
 
 
 const MainPage = () => {
   
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, permissions } = useAuth();
   const { t } = useTranslation('common');
 
   const modules = getNavigationConfig(t);
-  const visibleFeatures = filterModulesByRole(modules, user?.roleNames);
+  const visibleFeatures = filterModulesByPermission(modules, permissions);
 
 
   return (

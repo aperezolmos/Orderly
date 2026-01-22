@@ -5,6 +5,7 @@ import ProtectedRoute from './common/components/ProtectedRoute';
 import ErrorBoundary from './common/components/ErrorBoundary';
 import MainLayout from './common/layouts/MainLayout';
 import LoadingFallback from './common/components/LoadingFallback';
+import { PERMISSIONS } from './utils/permissions';
 
 
 // ------- PAGES ------------------------------------------
@@ -54,10 +55,6 @@ const ReservationEdit = React.lazy(() => import('./modules/reservations/pages/Re
 
 // --------------------------------------------------------
 
-
-//TODO: role_admin constante?
-
-
 // Wrapper component for pages that need layout
 const WithLayout = ({ children }) => (
   <MainLayout>
@@ -84,272 +81,204 @@ const AppRouter = () => {
       <ErrorBoundary>
         <React.Suspense fallback={<LoadingFallback />}>
           <Routes>
+
             {/* Public routes */}
-            <Route
-              path="/"
+            <Route path="/"
               element={ <WithLayout><MainPage /></WithLayout> }
             />
-            <Route
-              path="/home"
+            <Route path="/home"
               element={<Navigate to="/" replace />}
             />
-            <Route
-              path="/login"
+            <Route path="/login"
               element={
                 !isAuthenticated ? 
-                <WithoutLayout><Login /></WithoutLayout> : 
+                <WithoutLayout> <Login /> </WithoutLayout> : 
                 <Navigate to="/" replace />
               }
             />
-            <Route
-              path="/register"
+            <Route path="/register"
               element={
                 !isAuthenticated ? 
-                <WithoutLayout><Register /></WithoutLayout> : 
+                <WithoutLayout> <Register /> </WithoutLayout> : 
                 <Navigate to="/" replace />
               }
             />
 
 
             {/* Protected USER routes */}
-            <Route
-              path="/profile"
+            <Route path="/profile"
               element={
                 <ProtectedRoute>
-                  <WithLayout>
-                    <Profile />
-                  </WithLayout>
+                  <WithLayout> <Profile /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
-            <Route
-              path="/orders"
+            {/* TODO: poner permisos requeridos */}
+            <Route path="/orders"
               element={
                 <ProtectedRoute>
-                  <WithLayout><OrdersDashboardPage /></WithLayout>
+                  <WithLayout> <OrdersDashboardPage /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/orders/history"
+            <Route path="/orders/history"
               element={
                 <ProtectedRoute>
-                  <WithLayout><OrderHistoryPage /></WithLayout>
+                  <WithLayout> <OrderHistoryPage /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/orders/:id/view"
+            <Route path="/orders/:id/view"
               element={
                 <ProtectedRoute>
-                  <WithLayout><OrderViewPage /></WithLayout>
+                  <WithLayout> <OrderViewPage /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
-
-            {/* Protected ADMIN routes */}
-            <Route
-              path="/roles"
+            <Route path="/roles"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <RoleList />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_VIEW]}>
+                  <WithLayout> <RoleList /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/roles/new"
+            <Route path="/roles/new"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <RoleCreate />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_CREATE]}>
+                  <WithLayout> <RoleCreate /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/roles/:id/edit"
+            <Route path="/roles/:id/edit"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <RoleEdit />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_EDIT]}>
+                  <WithLayout> <RoleEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
-            <Route
-              path="/users"
+            <Route path="/users"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <UserList />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_VIEW]}>
+                  <WithLayout> <UserList /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/users/new"
+            <Route path="/users/new"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <UserCreate />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_CREATE]}>
+                  <WithLayout> <UserCreate /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/users/:id/edit"
+            <Route path="/users/:id/edit"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <UserEdit />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_EDIT_MYSELF, PERMISSIONS.USER_EDIT_OTHERS]}>
+                  <WithLayout> <UserEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
-            <Route
-              path="/foods"
+            <Route path="/foods"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <FoodList />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_VIEW]}>
+                  <WithLayout> <FoodList /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/foods/new"
+            <Route path="/foods/new"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <FoodCreate />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_CREATE]}>
+                  <WithLayout> <FoodCreate /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/foods/:id/edit"
+            <Route path="/foods/:id/edit"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <FoodEdit />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_EDIT]}>
+                  <WithLayout> <FoodEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
-            <Route
-              path="/products"
+            <Route path="/products"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <ProductList />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.PRODUCT_VIEW]}>
+                  <WithLayout> <ProductList /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/products/:id/view"
+            <Route path="/products/:id/view"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <ProductView />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.PRODUCT_VIEW]}>
+                  <WithLayout> <ProductView /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/products/new"
+            <Route path="/products/new"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <ProductCreate />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.PRODUCT_CREATE]}>
+                  <WithLayout> <ProductCreate /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/products/:id/edit"
+            <Route path="/products/:id/edit"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <ProductEdit />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.PRODUCT_EDIT]}>
+                  <WithLayout> <ProductEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
-            <Route
-              path="/tables"
+            <Route path="/tables"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <DiningTableList />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_VIEW]}>
+                  <WithLayout> <DiningTableList /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/tables/new"
+            <Route path="/tables/new"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <DiningTableCreate />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_CREATE]}>
+                  <WithLayout> <DiningTableCreate /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/tables/:id/edit"
+            <Route path="/tables/:id/edit"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <DiningTableEdit />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_EDIT]}>
+                  <WithLayout> <DiningTableEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
-            <Route
-              path="/reservations"
+            <Route path="/reservations"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <ReservationList />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.RESERVATION_VIEW]}>
+                  <WithLayout> <ReservationList /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/reservations/new"
+            <Route path="/reservations/new"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <ReservationCreate />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.RESERVATION_CREATE]}>
+                  <WithLayout> <ReservationCreate /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/reservations/:id/edit"
+            <Route path="/reservations/:id/edit"
               element={
-                <ProtectedRoute requiredRole="ROLE_ADMIN">
-                  <WithLayout>
-                    <ReservationEdit />
-                  </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.RESERVATION_EDIT]}>
+                  <WithLayout> <ReservationEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />
 
 
             {/* Default route */}
-            <Route
-              path="*"
+            <Route path="*"
               element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
             />
           </Routes>

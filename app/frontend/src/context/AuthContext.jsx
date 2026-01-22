@@ -23,6 +23,17 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       const userData = await authService.getCurrentUser();
       setUser(userData);
+
+      try {
+        const perms = await authService.getCurrentUserPermissions();
+        setPermissions(perms || []);
+        console.log('Permisos obtenidos (checkAuthStatus):', perms);
+      } 
+      catch (pErr) {
+        console.warn('No se pudieron obtener permisos tras recarga:', pErr); //TODO: borrar
+        setPermissions([]);
+      }
+
       setError(null);
     } 
     catch (err) {

@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 import { useFoods } from '../hooks/useFoods';
-import { useTranslation } from 'react-i18next';
 
 
 const FoodListPage = () => {
   
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { foods, loading, deleteFood, loadFoods } = useFoods();
   const [foodToDelete, setFoodToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
@@ -106,6 +109,8 @@ const FoodListPage = () => {
               data={foods}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              canEdit={hasPermission(PERMISSIONS.FOOD_EDIT)}
+              canDelete={hasPermission(PERMISSIONS.FOOD_DELETE)}
               loading={loading}
             />
         </div>

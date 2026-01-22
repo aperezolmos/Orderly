@@ -1,6 +1,7 @@
 import { IconPackage, IconUsers, IconShield, IconDesk, 
          IconCalendar, IconChartBar, IconLayoutDashboard, 
          IconList, IconPlus } from '@tabler/icons-react';
+import { PERMISSIONS } from './permissions';
 
 
 export const getNavigationConfig = (t) => [
@@ -11,10 +12,10 @@ export const getNavigationConfig = (t) => [
     icon: IconPackage,
     color: 'green',
     path: '/foods', // Main path (for cards)
-    requiredRole: 'ROLE_ADMIN',
+    requiredPermission: PERMISSIONS.FOOD_VIEW,
     subItems: [
-      { label: t('common:app.create'), path: '/foods/new', icon: IconPlus },
-      { label: t('common:navigation.list'), path: '/foods', icon: IconList }
+      { label: t('common:app.create'), path: '/foods/new', icon: IconPlus, requiredPermission: PERMISSIONS.FOOD_CREATE },
+      { label: t('common:navigation.list'), path: '/foods', icon: IconList, requiredPermission: PERMISSIONS.FOOD_VIEW }
     ]
   },
   {
@@ -24,10 +25,10 @@ export const getNavigationConfig = (t) => [
     icon: IconPackage,
     color: 'orange',
     path: '/products',
-    requiredRole: 'ROLE_ADMIN',
+    requiredPermission: PERMISSIONS.PRODUCT_VIEW,
     subItems: [
-      { label: t('common:app.create'), path: '/products/new', icon: IconPlus },
-      { label: t('common:navigation.list'), path: '/products', icon: IconList }
+      { label: t('common:app.create'), path: '/products/new', icon: IconPlus, requiredPermission: PERMISSIONS.PRODUCT_CREATE },
+      { label: t('common:navigation.list'), path: '/products', icon: IconList, requiredPermission: PERMISSIONS.PRODUCT_VIEW }
     ]
   },
   {
@@ -37,10 +38,10 @@ export const getNavigationConfig = (t) => [
     icon: IconUsers,
     color: 'blue',
     path: '/users',
-    requiredRole: 'ROLE_ADMIN',
+    requiredPermission: PERMISSIONS.USER_VIEW,
     subItems: [
-      { label: t('common:app.create'), path: '/users/new', icon: IconPlus },
-      { label: t('common:navigation.list'), path: '/users', icon: IconList }
+      { label: t('common:app.create'), path: '/users/new', icon: IconPlus, requiredPermission: PERMISSIONS.USER_CREATE },
+      { label: t('common:navigation.list'), path: '/users', icon: IconList, requiredPermission: PERMISSIONS.USER_VIEW }
     ]
   },
   {
@@ -50,10 +51,10 @@ export const getNavigationConfig = (t) => [
     icon: IconShield,
     color: 'violet',
     path: '/roles',
-    requiredRole: 'ROLE_ADMIN',
+    requiredPermission: PERMISSIONS.ROLE_VIEW,
     subItems: [
-      { label: t('common:app.create'), path: '/roles/new', icon: IconPlus },
-      { label: t('common:navigation.list'), path: '/roles', icon: IconList }
+      { label: t('common:app.create'), path: '/roles/new', icon: IconPlus, requiredPermission: PERMISSIONS.ROLE_CREATE },
+      { label: t('common:navigation.list'), path: '/roles', icon: IconList, requiredPermission: PERMISSIONS.ROLE_VIEW }
     ]
   },
   {
@@ -63,10 +64,10 @@ export const getNavigationConfig = (t) => [
     icon: IconDesk,
     color: 'cyan',
     path: '/tables',
-    requiredRole: 'ROLE_ADMIN',
+    requiredPermission: PERMISSIONS.TABLE_VIEW,
     subItems: [
-      { label: t('common:app.create'), path: '/tables/new', icon: IconPlus },
-      { label: t('common:navigation.list'), path: '/tables', icon: IconList }
+      { label: t('common:app.create'), path: '/tables/new', icon: IconPlus, requiredPermission: PERMISSIONS.TABLE_CREATE },
+      { label: t('common:navigation.list'), path: '/tables', icon: IconList, requiredPermission: PERMISSIONS.TABLE_VIEW}
     ]
   },
   {
@@ -76,10 +77,10 @@ export const getNavigationConfig = (t) => [
     icon: IconCalendar,
     color: 'pink',
     path: '/reservations',
-    requiredRole: 'ROLE_ADMIN',
+    requiredPermission: PERMISSIONS.RESERVATION_VIEW,
     subItems: [
-      { label: t('common:app.create'), path: '/reservations/new', icon: IconPlus },
-      { label: t('common:navigation.list'), path: '/reservations', icon: IconList }
+      { label: t('common:app.create'), path: '/reservations/new', icon: IconPlus, requiredPermission: PERMISSIONS.RESERVATION_CREATE },
+      { label: t('common:navigation.list'), path: '/reservations', icon: IconList, requiredPermission: PERMISSIONS.RESERVATION_VIEW}
     ]
   },
   {
@@ -89,18 +90,45 @@ export const getNavigationConfig = (t) => [
     icon: IconChartBar,
     color: 'grape',
     path: '/orders',
-    requiredRole: null,
+    requiredPermission: null,
     subItems: [
-      { label: t('common:navigation.dashboard'), path: '/orders', icon: IconLayoutDashboard },
-      { label: t('common:navigation.list'), path: '/orders/history', icon: IconList }
+      { label: t('common:navigation.dashboard'), path: '/orders', icon: IconLayoutDashboard, requiredPermission: null },
+      { label: t('common:navigation.history'), path: '/orders/history', icon: IconList, requiredPermission: null }
     ]
   }
 ];
 
 
-export const filterModulesByRole = (modules, userRoleNames = []) => {
-  return modules.filter(m => {
-    if (!m.requiredRole) return true;
-    return userRoleNames.includes(m.requiredRole);
-  });
+/**
+ * Strict top-down filter: modules are hidden if the parent permission is missing, 
+ * regardless of sub-item permissions.
+ */
+export const filterModulesByPermission = (modules, userPermissions) => {
+  return modules
+    .filter(m => !m.requiredPermission || userPermissions.includes(m.requiredPermission))
+    .map(m => ({
+      ...m,
+      subItems: m.subItems?.filter(s => !s.requiredPermission || userPermissions.includes(s.requiredPermission))
+    }));
+};
+
+/**
+ * Content-driven filter: modules stay visible if at least one sub-item is permitted, 
+ * bypassing the parent's own permission check.
+ */
+export const filterModulesBySubItemsPermissions = (modules, userPermissions) => {
+  return modules
+    .map(m => {
+      const filteredSubItems = m.subItems?.filter(s => 
+        !s.requiredPermission || userPermissions.includes(s.requiredPermission)
+      ) || [];
+      return { ...m, subItems: filteredSubItems };
+    })
+    .filter(m => {
+      if (!m.subItems || m.subItems.length === 0) {
+        return !m.requiredPermission || userPermissions.includes(m.requiredPermission);
+      }
+      
+      return m.subItems.length > 0;
+    });
 };

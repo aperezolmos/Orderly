@@ -6,19 +6,19 @@ import { IconLogout, IconChevronRight, IconSun, IconMoon,
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { getNavigationConfig, filterModulesByRole } from '../../utils/navigationConfig';
+import { getNavigationConfig, filterModulesBySubItemsPermissions } from '../../utils/navigationConfig';
 
 
 const Sidebar = ({ closeMobile }) => {
   
-  const { user, logout } = useAuth();
+  const { user, permissions, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation('common');
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   const modules = getNavigationConfig(t);
-  const visibleModules = filterModulesByRole(modules, user?.roleNames);
+  const visibleModules = filterModulesBySubItemsPermissions(modules, permissions);
 
   const handleLogout = async () => {
     if (closeMobile) closeMobile();
@@ -109,14 +109,14 @@ const Sidebar = ({ closeMobile }) => {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Label>{t('common:app.settings')}</Menu.Label>
+            <Menu.Label>{t('common:navigation.settings')}</Menu.Label>
             
             {/* Toggle Theme */}
             <Menu.Item 
               leftSection={colorScheme === 'dark' ? <IconSun size={14}/> : <IconMoon size={14}/>}
               onClick={() => toggleColorScheme()}
             >
-              {colorScheme === 'dark' ? t('common:app.navigation.lightTheme') : t('common:app.navigation.darkTheme')}
+              {colorScheme === 'dark' ? t('common:navigation.lightTheme') : t('common:navigation.darkTheme')}
             </Menu.Item>
             
             {/* Embedded Language Selector */}
