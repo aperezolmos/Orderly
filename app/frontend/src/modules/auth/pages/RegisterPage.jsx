@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoadingOverlay, Box, Text } from '@mantine/core';
-import { useAuth } from '../../../context/useAuth';
+import { useAuth } from '../../../context/AuthContext';
 import AuthLayout from '../layouts/AuthLayout';
 import RegisterForm from '../components/RegisterForm';
 import { useTranslation } from 'react-i18next';

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Text, LoadingOverlay, Box } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../context/useAuth';
+import { useAuth } from '../../../context/AuthContext';
 import { notifications } from '@mantine/notifications';
 import AuthLayout from '../layouts/AuthLayout';
 import LoginForm from '../components/LoginForm';

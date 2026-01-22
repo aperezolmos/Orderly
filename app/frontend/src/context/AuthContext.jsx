@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import { authService } from '../services/backend/authService';
 
 
@@ -6,7 +6,9 @@ const AuthContext = createContext();
 
 
 export const AuthProvider = ({ children }) => {
+  
   const [user, setUser] = useState(null);
+  const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,13 +21,25 @@ export const AuthProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       setLoading(true);
-      const userData = await authService.checkAuthStatus();
+      const userData = await authService.getCurrentUser();
       setUser(userData);
+
+      try {
+        const perms = await authService.getCurrentUserPermissions();
+        setPermissions(perms || []);
+        console.log('Permisos obtenidos (checkAuthStatus):', perms);
+      } 
+      catch (pErr) {
+        console.warn('No se pudieron obtener permisos tras recarga:', pErr); //TODO: borrar
+        setPermissions([]);
+      }
+
       setError(null);
     } 
     catch (err) {
       setError(err.message);
       setUser(null);
+      setPermissions([]);
     } 
     finally {
       setLoading(false);
@@ -36,9 +50,18 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
-      
       const userData = await authService.login(username, password);
       setUser(userData);
+
+      try {
+        const perms = await authService.getCurrentUserPermissions();
+        setPermissions(perms || []);
+        console.log('Permisos obtenidos (login):', perms);
+      } 
+      catch (pErr) {
+        console.warn('No se pudieron obtener permisos tras login:', pErr); //TODO: borrar
+        setPermissions([]);
+      }
       
       return userData;
     } 
@@ -55,9 +78,18 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
-      
       const newUser = await authService.register(userData);
       setUser(newUser);
+
+      try {
+        const perms = await authService.getCurrentUserPermissions();
+        setPermissions(perms || []);
+        console.log('Permisos obtenidos (register):', perms);
+      } 
+      catch (pErr) {
+        console.warn('No se pudieron obtener permisos tras register:', pErr);
+        setPermissions([]);
+      }
       
       return newUser;
     } 
@@ -77,6 +109,7 @@ export const AuthProvider = ({ children }) => {
     } 
     finally {
       setUser(null);
+      setPermissions([]);
       setError(null);
       setLoading(false);
     }
@@ -88,13 +121,15 @@ export const AuthProvider = ({ children }) => {
   // Available values in the context
   const value = {
     user,
+    permissions,
     loading,
     error,
     login,
     register,
     logout,
     clearError,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
+    hasPermission: (perm) => permissions?.includes(perm) || false
   };
 
   return (
@@ -104,4 +139,11 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthContext };
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

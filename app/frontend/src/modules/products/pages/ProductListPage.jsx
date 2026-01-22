@@ -5,12 +5,15 @@ import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 import { useProducts } from '../hooks/useProducts';
 
 
 const ProductListPage = () => {
   
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { products, loading, deleteProduct, loadProducts } = useProducts();
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
@@ -95,6 +98,8 @@ const ProductListPage = () => {
               data={products}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              canEdit={hasPermission(PERMISSIONS.PRODUCT_EDIT)}
+              canDelete={hasPermission(PERMISSIONS.PRODUCT_DELETE)}
               loading={loading}
             />
         </div>

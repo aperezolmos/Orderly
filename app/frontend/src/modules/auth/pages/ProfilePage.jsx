@@ -1,4 +1,4 @@
-import { useAuth } from '../../../context/useAuth';
+import { useAuth } from '../../../context/AuthContext';
 import { Container, Title, Text, Group, Badge,
          Button, Card, SimpleGrid } from '@mantine/core';
 import { IconUser, IconLogout, IconShield } from '@tabler/icons-react';

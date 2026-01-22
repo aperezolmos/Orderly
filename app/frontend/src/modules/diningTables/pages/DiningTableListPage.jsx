@@ -6,12 +6,15 @@ import { IconDesk } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 import { useDiningTables } from '../hooks/useDiningTables';
 
 
 const DiningTableListPage = () => {
   
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { tables, loading, deleteTable, loadTables } = useDiningTables();
   const [tableToDelete, setTableToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
@@ -110,6 +113,8 @@ const DiningTableListPage = () => {
               data={tables}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              canEdit={hasPermission(PERMISSIONS.TABLE_EDIT)}
+              canDelete={hasPermission(PERMISSIONS.TABLE_DELETE)}
               loading={loading}
             />
         </div>

@@ -6,12 +6,15 @@ import { IconUser } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 import { useUsers } from '../hooks/useUsers';
 
 
 const UserListPage = () => {
   
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { users, loading, deleteUser, loadUsers } = useUsers();
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
@@ -114,6 +117,8 @@ const UserListPage = () => {
               data={users}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              canEdit={hasPermission(PERMISSIONS.USER_EDIT_OTHERS)}
+              canDelete={hasPermission(PERMISSIONS.USER_DELETE)}
               loading={loading}
             />
         </div>

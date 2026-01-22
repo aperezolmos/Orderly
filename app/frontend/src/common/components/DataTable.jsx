@@ -8,6 +8,8 @@ const DataTable = ({
   data,
   onEdit,
   onDelete,
+  canEdit = true,
+  canDelete = true,
   actions = true,
   loading = false
 }) => {
@@ -29,7 +31,7 @@ const DataTable = ({
             <ActionIcon
               color="blue"
               onClick={() => onEdit(item)}
-              disabled={loading}
+              disabled={loading || !canEdit}
             >
               <IconEdit size="1rem" />
             </ActionIcon>
@@ -37,7 +39,7 @@ const DataTable = ({
             <ActionIcon
               color="red"
               onClick={() => onDelete(item)}
-              disabled={loading}
+              disabled={loading || !canDelete}
             >
               <IconTrash size="1rem" />
             </ActionIcon>

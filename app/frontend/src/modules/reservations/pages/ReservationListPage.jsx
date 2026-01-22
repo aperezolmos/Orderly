@@ -6,12 +6,15 @@ import { IconUser } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 import { useReservations } from '../hooks/useReservations';
 
 
 const ReservationListPage = () => {
   
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { reservations, loading, deleteReservation, loadReservations } = useReservations();
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
@@ -102,6 +105,8 @@ const ReservationListPage = () => {
               data={reservations}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              canEdit={hasPermission(PERMISSIONS.RESERVATION_EDIT)}
+              canDelete={hasPermission(PERMISSIONS.RESERVATION_DELETE)}
               loading={loading}
             />
         </div>
