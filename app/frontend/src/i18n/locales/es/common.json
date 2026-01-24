@@ -18,14 +18,31 @@
     "pleaseWait": "Por favor, espera mientras la carga se completa",
     "completed": "Carga completada"
   },
+  "hero": {
+    "subtitle": "Plataforma de Gestión para Restauración",
+    "title": {
+      "line1": "Lleva tu restaurante al siguiente nivel con",
+      "highlight": "Orderly",
+      "line2": ""
+    },
+    "description": "Orderly es el centro digital \"todo en uno\" para restaurantes modernos. Gestiona productos, realiza un seguimiento de pedidos, administra reservas y asegura transparencia nutricional — todo desde un único panel intuitivo diseñado para eficiencia y colaboración en equipo.",
+    "buttons": {
+      "getStarted": "Comenzar",
+      "viewDocs": "Ver Documentación"
+    },
+    "moreFeatures": {
+      "title": "Y mucho más...",
+      "description": "Detección de alérgenos, análisis nutricional, importación de alimentos y una arquitectura modular que crece con tus necesidades"
+    }
+  },
   "navigation": {
-    "home": "Inicio",
     "main": "Inicio",
     "profile": "Perfil",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "logout": "Cerrar sesión",
     "access": "Acceder",
+    "changeTheme": "Cambiar tema",
     "lightTheme": "Tema claro",
     "darkTheme": "Tema oscuro",
     "settings": "Ajustes",
@@ -48,7 +65,7 @@
     },
     "products": {
       "name": "Productos",
-      "description": "Manejar el inventario de productos"
+      "description": "Manejar el catálogo de productos"
     },
     "tables": {
       "name": "Mesas",
@@ -101,7 +118,16 @@
       "message": "Ocurrió un error al renderizar este componente",
       "reload": "Recargar página"
     },
-    "accessDenied": "Acceso Denegado - Se requieren privilegios de administrador",
+    "accessDenied": {
+      "title": "Acceso Denegado",
+      "description": "No tienes los permisos necesarios para acceder a este recurso",
+      "backToHome": "Volver a Inicio"
+    },
+    "noModulesToShow": {
+      "title": "No hay módulos para mostrar",
+      "message": "Aún no tienes acceso a ningún módulo de gestión. Tu cuenta se ha creado correctamente, pero necesitas permisos para acceder a funciones específicas",
+      "adminHint": "Contacta con un administrador para que te asignen los permisos adecuados"
+    },
     "notFound": "No se pudo encontrar el recurso solicitado",
     "loadError": "Error cargando datos"
   },

@@ -2,7 +2,7 @@ import { ScrollArea, Stack, NavLink, Avatar, Text, Group,
          Menu, UnstyledButton, rem, Divider, useMantineColorScheme,
          AppShell, ThemeIcon } from '@mantine/core';
 import { IconLogout, IconChevronRight, IconSun, IconMoon, 
-         IconSettings, IconLanguage, IconUser } from '@tabler/icons-react';
+         IconHome, IconLanguage, IconUser } from '@tabler/icons-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
@@ -17,13 +17,18 @@ const Sidebar = ({ closeMobile }) => {
   const { t, i18n } = useTranslation('common');
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
+
   const modules = getNavigationConfig(t);
   const visibleModules = filterModulesBySubItemsPermissions(modules, permissions);
+
+  const ordersModule = modules.find(m => m.id === 'orders');
+  const canViewOrders = permissions.includes(ordersModule?.requiredPermission);
+
 
   const handleLogout = async () => {
     if (closeMobile) closeMobile();
     await logout();
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
 
   const changeLanguage = (lng) => {
@@ -72,10 +77,23 @@ const Sidebar = ({ closeMobile }) => {
         <Stack gap="xs">
             <NavLink 
                 label={t('common:navigation.main')} 
-                leftSection={<ThemeIcon variant="light" size="sm" color="gray"><IconSettings size="0.8rem"/></ThemeIcon>}
+                leftSection={<ThemeIcon variant="light" size="sm" color="gray"><IconHome size="0.8rem"/></ThemeIcon>}
                 onClick={() => { navigate('/'); if(closeMobile) closeMobile(); }}
                 active={location.pathname === '/'}
             />
+
+            {ordersModule && canViewOrders && (
+              <NavLink
+                label={ordersModule.label}
+                leftSection={
+                  <ThemeIcon variant="light" size="sm" color={ordersModule.color}>
+                    <ordersModule.icon size="0.8rem"/>
+                  </ThemeIcon>
+                }
+                onClick={() => { navigate(ordersModule.path); if(closeMobile) closeMobile(); }}
+                active={location.pathname === ordersModule.path}
+              />
+            )}
             
             <Divider my="xs" label={t('common:navigation.management')} labelPosition="left" />
             

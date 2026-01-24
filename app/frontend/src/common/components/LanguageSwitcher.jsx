@@ -22,7 +22,7 @@ const LanguageSwitcher = () => {
     <Menu shadow="md" width={200}>
       <Menu.Target>
         <Tooltip label={t('common:language.change')} position="bottom">
-          <ActionIcon variant="light" size="lg">
+          <ActionIcon variant="subtle" size="lg">
             <IconLanguage size="1.25rem" />
           </ActionIcon>
         </Tooltip>

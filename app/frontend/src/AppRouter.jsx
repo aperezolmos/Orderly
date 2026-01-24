@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './common/components/ProtectedRoute';
-import ErrorBoundary from './common/components/ErrorBoundary';
+import ErrorBoundary from './common/components/feedback/ErrorBoundary';
 import MainLayout from './common/layouts/MainLayout';
-import LoadingFallback from './common/components/LoadingFallback';
+import LoadingFallback from './common/components/feedback/LoadingFallback';
 import { PERMISSIONS } from './utils/permissions';
 
 

@@ -18,14 +18,31 @@
     "pleaseWait": "Please wait while the loading process completes",
     "completed": "Load completed"
   },
+  "hero": {
+    "subtitle": "Restaurant Management Platform",
+    "title": {
+      "line1": "Streamline your restaurant with",
+      "highlight": "Orderly",
+      "line2": "operations"
+    },
+    "description": "Orderly is the all-in-one digital hub for modern restaurants. Manage products, track orders, handle reservations, and ensure nutritional transparency — all from a single, intuitive dashboard designed for efficiency and team collaboration.",
+    "buttons": {
+      "getStarted": "Get Started",
+      "viewDocs": "View Documentation"
+    },
+    "moreFeatures": {
+      "title": "And much more...",
+      "description": "Allergen detection, nutritional analysis, food import, and a modular architecture that grows with your needs"
+    }
+  },
   "navigation": {
-    "home": "Home",
     "main": "Home",
     "profile": "Profile",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
     "access": "Access",
+    "changeTheme": "Change theme",
     "lightTheme": "Light mode",
     "darkTheme": "Dark mode",
     "settings": "Settings",
@@ -48,7 +65,7 @@
     },
     "products": {
       "name": "Products",
-      "description": "Handle product inventory"
+      "description": "Handle product catalog"
     },
     "tables": {
       "name": "Tables",
@@ -101,7 +118,16 @@
       "message": "An error occurred while rendering this component",
       "reload": "Reload page"
     },
-    "accessDenied": "Access Denied - Admin privileges required",
+    "accessDenied": {
+      "title": "Access Denied",
+      "description": "You don't have the required permissions to access this resource",
+      "backToHome": "Back to Home"
+    },
+    "noModulesToShow": {
+      "title": "No modules to show",
+      "message": "You don't have access to any management modules yet. Your account has been created successfully, but you need permissions to access specific features",
+      "adminHint": "Contact an administrator to assign you the appropriate permissions"
+    },
     "notFound": "Could not find the requested resource",
     "loadError": "Error loading data"
   },

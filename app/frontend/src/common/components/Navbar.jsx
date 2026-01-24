@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { Group, Button, Menu, Text, Burger, Divider, useMantineTheme,
-         useMantineColorScheme, Avatar } from '@mantine/core';
+         useMantineColorScheme, Avatar, Tooltip } from '@mantine/core';
 import { IconChevronDown, IconHome, IconSettings, IconSun, IconMoon,
          IconUser, IconLogout, IconChevronRight } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
@@ -26,10 +26,13 @@ const Navbar = ({ opened, toggle }) => {
   const modules = getNavigationConfig(t);
   const visibleModules = filterModulesBySubItemsPermissions(modules, permissions);
 
+  const ordersModule = modules.find(m => m.id === 'orders');
+  const canViewOrders = permissions.includes(ordersModule?.requiredPermission);
+
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
 
 
@@ -60,6 +63,18 @@ const Navbar = ({ opened, toggle }) => {
                 >
                     {t('common:navigation.main')}
                 </Button>
+
+                {ordersModule && canViewOrders && (
+                    <Button
+                        component={NavLink}
+                        to={ordersModule.path}
+                        variant="subtle"
+                        color={ordersModule.color}
+                        leftSection={<ordersModule.icon size={16} />}
+                    >
+                        {ordersModule.label}
+                    </Button>
+                )}
 
                 {visibleModules.length > 0 && (
                     <Menu shadow="md" width={280} trigger="hover" openDelay={100} closeDelay={200} withinPortal>
@@ -119,9 +134,11 @@ const Navbar = ({ opened, toggle }) => {
 
       {/* RIGHT SIDE: Theme, Language & Auth */}
       <Group visibleFrom="sm">
-        <Button variant="subtle" size="sm" px="xs" onClick={toggleColorScheme}>
-             {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
-        </Button>
+        <Tooltip label={t('common:navigation.changeTheme')} position="bottom">
+          <Button variant="subtle" size="sm" px="xs" onClick={toggleColorScheme}>
+            {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+          </Button>
+        </Tooltip>
         
         <LanguageSwitcher />
 

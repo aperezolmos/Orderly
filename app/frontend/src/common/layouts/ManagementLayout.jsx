@@ -1,7 +1,7 @@
-import React from 'react';
 import { Container, Title, Group, Button, Breadcrumbs, Anchor } from '@mantine/core';
 import { IconPlus, IconArrowLeft } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const ManagementLayout = ({
@@ -15,9 +15,10 @@ const ManagementLayout = ({
 }) => {
   
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
 
   const items = [
-    { title: 'Dashboard', href: '/' }, // TODO: cambiar -> home o main
+    { title: t('common:navigation.main'), href: '/' },
     ...breadcrumbs,
   ].map((item, index) => (
     <Anchor href={item.href} key={index} onClick={(e) => {

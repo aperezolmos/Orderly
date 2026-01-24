@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Card, Title, Group, Box, Text, Button, Tabs, Stack, Badge } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import MacroPieChart from '../../../common/components/MacroPieChart';
-import MacroTable from '../../../common/components/MacroTable';
-import MicroTable from '../../../common/components/MicroTable';
+import MacroPieChart from './nutritionalCharts/MacroPieChart';
+import MacroTable from './nutritionalCharts/MacroTable';
+import MicroTable from './nutritionalCharts/MicroTable';
 import { useNutritionChartData } from '../hooks/useNutritionChartData';
 import { REFERENCE_VALUES, REFERENCE_MINERALS,
          REFERENCE_VITAMINS } from '../../../utils/nutritionReferences';
