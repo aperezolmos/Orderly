@@ -1,22 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { roleService } from '../../../services/backend/roleService';
 
 
-export const useUserRoles = (initialUserRoles = []) => {
+export const useUserRoles = (initialIds = []) => {
   
-  const [availableRoles, setAvailableRoles] = useState([]);
-  const [assignedRoles, setAssignedRoles] = useState([]);
+  const [allRoles, setAllRoles] = useState([]);
+  const [selectedIds, setSelectedIds] = useState(new Set());
   const [loading, setLoading] = useState(false);
-  
 
-  // Load all roles from backend
+  
   const loadAllRoles = useCallback(async () => {
-    if (loading) return;
-    
     try {
       setLoading(true);
-      const allRoles = await roleService.getRoles();
-      setAvailableRoles(allRoles);
+      const roles = await roleService.getRoles();
+      setAllRoles(roles);
     } 
     catch (err) {
       console.error('Error loading roles:', err);
@@ -26,50 +23,52 @@ export const useUserRoles = (initialUserRoles = []) => {
     }
   }, []);
 
+  
   useEffect(() => {
-    const uniqueAssignedRoles = initialUserRoles.reduce((acc, role) => {
-      if (!acc.some(r => r.id === role.id)) {
-        acc.push(role);
-      }
-      return acc;
-    }, []);
-    
-    setAssignedRoles(uniqueAssignedRoles);
-  }, [JSON.stringify(initialUserRoles)]);
+    const ids = new Set(initialIds.map(id => parseInt(id, 10)));
+    setSelectedIds(ids);
+  }, [JSON.stringify(initialIds)]); // stringify used to detect changes in the array
 
   useEffect(() => {
     loadAllRoles();
   }, [loadAllRoles]);
+
   
-
-  // Add a role to the user
   const addRole = (role) => {
-    if (!assignedRoles.some(r => r.id === role.id)) {
-      setAssignedRoles(prev => [...prev, role]);
-    }
+    const newSet = new Set(selectedIds);
+    newSet.add(role.id);
+    setSelectedIds(newSet);
   };
 
-  // Remove a role from the user
   const removeRole = (roleId) => {
-    setAssignedRoles(prev => prev.filter(role => role.id !== roleId));
+    const newSet = new Set(selectedIds);
+    newSet.delete(roleId);
+    setSelectedIds(newSet);
   };
 
-  // Get available roles (all roles - assigned)
-  const getAvailableRoles = useCallback(() => {
-    return availableRoles.filter(availableRole => 
-      !assignedRoles.some(assignedRole => assignedRole.id === availableRole.id)
-    );
-  }, [availableRoles, assignedRoles]);
+
+  const assignedRoles = useMemo(() => 
+    allRoles.filter(role => selectedIds.has(role.id)), 
+  [allRoles, selectedIds]);
+
+  const availableRoles = useMemo(() => 
+    allRoles.filter(role => !selectedIds.has(role.id)), 
+  [allRoles, selectedIds]);
 
 
   return {
     assignedRoles,
-    availableRoles: getAvailableRoles(),
+    availableRoles,
     loading,
     addRole,
     removeRole,
-    getAssignedRoleIds: () => assignedRoles.map(role => role.id),
-    resetRoles: () => setAssignedRoles(initialUserRoles),
-    hasChanges: JSON.stringify(assignedRoles) !== JSON.stringify(initialUserRoles)
+    getAssignedRoleIds: () => Array.from(selectedIds),
+    hasChanges: (() => {
+      // Simple comparison of sets
+      if (selectedIds.size !== initialIds.length) return true;
+      const initialSet = new Set(initialIds.map(id => parseInt(id, 10)));
+      for (let id of selectedIds) if (!initialSet.has(id)) return true;
+      return false;
+    })()
   };
 };

@@ -8,7 +8,9 @@ export const useRoles = () => {
   
   const [roles, setRoles] = useState([]);
   const [currentRole, setCurrentRole] = useState(null);
+  const [allPermissions, setAllPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [permissionsLoading, setPermissionsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { t } = useTranslation(['common', 'roles']);
   
@@ -138,6 +140,24 @@ export const useRoles = () => {
     }
   };
 
+  const loadAllPermissions = useCallback(async () => {
+    setPermissionsLoading(true);
+    try {
+      const perms = await roleService.getAllPermissions();
+      setAllPermissions(perms);
+      return perms;
+    } 
+    catch (err) {
+      notifications.show({
+        title: t('roles:notifications.loadError'),
+        message: err.message,
+        color: 'red',
+      });
+    } finally {
+      setPermissionsLoading(false);
+    }
+  }, [t]);
+
 
   const clearCurrentRole = () => setCurrentRole(null);
   const clearError = () => setError(null);
@@ -146,10 +166,13 @@ export const useRoles = () => {
   return {
     roles,
     currentRole,
+    allPermissions,
     loading,
+    permissionsLoading,
     error,
     loadRoles,
     loadRoleById,
+    loadAllPermissions,
     createRole,
     updateRole,
     deleteRole,

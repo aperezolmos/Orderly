@@ -135,7 +135,8 @@
     "submit": "Enviar",
     "reset": "Restablecer",
     "optional": "Opcional",
-    "basicInfo": "Información básica"
+    "basicInfo": "Información básica",
+    "selectAll": "Seleccionar todos"
   },
   "status": {
     "active": "Activo",

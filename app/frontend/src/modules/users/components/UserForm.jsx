@@ -23,13 +23,7 @@ const UserForm = ({
   const { t } = useTranslation(['common', 'users']);
 
 
-  // Initialize user roles
-  const initialUserRoles = user?.roleNames ? 
-    user.roleNames.map((name, index) => ({
-      id: user.roleIds?.[index] || index,
-      name: name
-    })) : [];
-
+  const initialUserRoleIds = user?.roleIds || [];
   const {
     assignedRoles,
     availableRoles,
@@ -38,7 +32,12 @@ const UserForm = ({
     removeRole,
     getAssignedRoleIds,
     hasChanges: rolesHaveChanges
-  } = useUserRoles(initialUserRoles);
+  } = useUserRoles(initialUserRoleIds);
+
+
+  useEffect(() => {
+    form.setFieldValue('roleIds', getAssignedRoleIds());
+  }, [assignedRoles]);
 
   const form = useForm({
     initialValues: {

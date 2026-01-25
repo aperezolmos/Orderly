@@ -135,7 +135,8 @@
     "submit": "Submit",
     "reset": "Reset",
     "optional": "Optional",
-    "basicInfo": "Basic Information"
+    "basicInfo": "Basic Information",
+    "selectAll": "Select all"
   },
   "status": {
     "active": "Active",

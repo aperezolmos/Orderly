@@ -77,7 +77,7 @@ public class RoleService {
         Role role = roleMapper.toEntity(roleRequest);
 
         Role savedRole = roleRepository.save(role);
-        return roleMapper.toResponseDTO(savedRole);
+        return roleMapper.toDetailedResponseDTO(savedRole);
     }
 
     public RoleResponseDTO update(Integer id, RoleRequestDTO roleRequest) {
@@ -89,11 +89,16 @@ public class RoleService {
             existingRole.setName(roleRequest.getName());
         }
 
-        existingRole.setDescription(roleRequest.getDescription());
-        existingRole.setPermissions(roleRequest.getPermissions());
+        if (roleRequest.getDescription() != null) {
+            existingRole.setDescription(roleRequest.getDescription());
+        }
+        
+        if (roleRequest.getPermissions() != null) {
+            existingRole.setPermissions(roleRequest.getPermissions());
+        }
         
         Role updatedRole = roleRepository.save(existingRole);
-        return roleMapper.toResponseDTO(updatedRole);
+        return roleMapper.toDetailedResponseDTO(updatedRole);
     }
     
     public void delete(Integer id) {

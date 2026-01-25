@@ -1,80 +1,127 @@
-import React from 'react';
-import { NumberInput, Group, Divider, Title, Box } from '@mantine/core';
+import { memo } from 'react';
+import { NumberInput, Divider, Title, Box, SimpleGrid } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 
-const MineralsFields = React.memo(({ form, prefix = 'nutritionInfo.minerals.' }) => {
-  const { t } = useTranslation(['foods']);
+// Atomic component that does not cause re-renders on the main form when writing
+const OptimizedNumberInput = memo(({ label, initialValue, onCommit }) => {
   return (
-    <Box>
+    <NumberInput
+      label={label}
+      defaultValue={initialValue ?? ''}
+      // The form is only notified when the user finishes typing (onBlur)
+      onBlur={(e) => {
+        const val = e.target.value === '' ? 0 : parseFloat(e.target.value);
+        onCommit(val);
+      }}
+      min={0}
+      max={9999.99}
+      decimalScale={2}
+      // thousandSeparator=" "
+    />
+  );
+});
+
+
+const MineralsFields = memo(({ values, onFieldChange, foodId }) => {
+  
+  const { t } = useTranslation(['foods']);
+  const keys = ['calcium', 'iron', 'magnesium', 'phosphorus', 'potassium', 'selenium', 'sodium', 'zinc'];
+  
+  return (
+    <Box key={`minerals-${foodId}`}>
       <Title order={5} mb="xs">{t('foods:form.minerals.title')}</Title>
-      <Group grow mb="md">
-        <NumberInput label={t('foods:form.minerals.calcium')} {...form.getInputProps(`${prefix}calcium`)} min={0} />
-        <NumberInput label={t('foods:form.minerals.iron')} {...form.getInputProps(`${prefix}iron`)} min={0} />
-        <NumberInput label={t('foods:form.minerals.magnesium')} {...form.getInputProps(`${prefix}magnesium`)} min={0} />
-        <NumberInput label={t('foods:form.minerals.phosphorus')} {...form.getInputProps(`${prefix}phosphorus`)} min={0} />
-      </Group>
-      <Group grow mb="md">
-        <NumberInput label={t('foods:form.minerals.potassium')} {...form.getInputProps(`${prefix}potassium`)} min={0} />
-        <NumberInput label={t('foods:form.minerals.selenium')} {...form.getInputProps(`${prefix}selenium`)} min={0} />
-        <NumberInput label={t('foods:form.minerals.sodium')} {...form.getInputProps(`${prefix}sodium`)} min={0} />
-        <NumberInput label={t('foods:form.minerals.zinc')} {...form.getInputProps(`${prefix}zinc`)} min={0} />
-      </Group>
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
+        {keys.map(key => (
+          <OptimizedNumberInput
+            key={key}
+            label={t(`foods:form.minerals.${key}`)}
+            initialValue={values?.[key]}
+            onCommit={(val) => onFieldChange('minerals', key, val)}
+          />
+        ))}
+      </SimpleGrid>
     </Box>
   );
 });
 
-
-const VitaminsFields = React.memo(({ form, prefix = 'nutritionInfo.vitamins.' }) => {
+const VitaminsFields = memo(({ values, onFieldChange, foodId }) => {
+  
   const { t } = useTranslation(['foods']);
+  const keys = ['vitaminA', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminB1', 
+                'vitaminB2', 'vitaminB3', 'vitaminB6', 'vitaminB9', 'vitaminB12'];
+
   return (
-    <Box>
+    <Box key={`vitamins-${foodId}`}>
       <Title order={5} mb="xs">{t('foods:form.vitamins.title')}</Title>
-      <Group grow mb="md">
-        <NumberInput label={t('foods:form.vitamins.vitaminA')} {...form.getInputProps(`${prefix}vitaminA`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminC')} {...form.getInputProps(`${prefix}vitaminC`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminD')} {...form.getInputProps(`${prefix}vitaminD`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminE')} {...form.getInputProps(`${prefix}vitaminE`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminB1')} {...form.getInputProps(`${prefix}vitaminB1`)} min={0} />
-      </Group>
-      <Group grow mb="md">
-        <NumberInput label={t('foods:form.vitamins.vitaminB2')} {...form.getInputProps(`${prefix}vitaminB2`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminB3')} {...form.getInputProps(`${prefix}vitaminB3`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminB6')} {...form.getInputProps(`${prefix}vitaminB6`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminB9')} {...form.getInputProps(`${prefix}vitaminB9`)} min={0} />
-        <NumberInput label={t('foods:form.vitamins.vitaminB12')} {...form.getInputProps(`${prefix}vitaminB12`)} min={0} />
-      </Group>
+      <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
+        {keys.map(key => (
+          <OptimizedNumberInput
+            key={key}
+            label={t(`foods:form.vitamins.${key}`)}
+            initialValue={values?.[key]}
+            onCommit={(val) => onFieldChange('vitamins', key, val)}
+          />
+        ))}
+      </SimpleGrid>
     </Box>
   );
 });
 
 
-const NutritionInfoFormInner = ({ form }) => {
+const NutritionInfoForm = ({ form }) => {
+  
   const { t } = useTranslation(['foods']);
+  
+  // Unique id to force reset of defaultValues ​​when changing food
+  const foodId = form.values.id || 'new';
+
+  const handleFieldChange = (field, value) => {
+    form.setFieldValue(`nutritionInfo.${field}`, value);
+  };
+
+  const handleNestedChange = (group, field, value) => {
+    form.setFieldValue(`nutritionInfo.${group}.${field}`, value);
+  };
+
+  const mainMetrics = [
+    'calories', 'carbohydrates', 'fats', 'fiber', 
+    'protein', 'salt', 'saturatedFats', 'sugars'
+  ];
+
+
   return (
     <Box>
       <Title order={4} mb="sm">{t('foods:form.nutritionInfo.title')}</Title>
-      <Group grow mb="md">
-        <NumberInput label={t('foods:form.nutritionInfo.calories')} {...form.getInputProps('nutritionInfo.calories')} min={0} />
-        <NumberInput label={t('foods:form.nutritionInfo.carbohydrates')} {...form.getInputProps('nutritionInfo.carbohydrates')} min={0} />
-        <NumberInput label={t('foods:form.nutritionInfo.fats')} {...form.getInputProps('nutritionInfo.fats')} min={0} />
-        <NumberInput label={t('foods:form.nutritionInfo.fiber')} {...form.getInputProps('nutritionInfo.fiber')} min={0} />
-      </Group>
-      <Group grow mb="md">
-        <NumberInput label={t('foods:form.nutritionInfo.protein')} {...form.getInputProps('nutritionInfo.protein')} min={0} />
-        <NumberInput label={t('foods:form.nutritionInfo.salt')} {...form.getInputProps('nutritionInfo.salt')} min={0} />
-        <NumberInput label={t('foods:form.nutritionInfo.saturatedFats')} {...form.getInputProps('nutritionInfo.saturatedFats')} min={0} />
-        <NumberInput label={t('foods:form.nutritionInfo.sugars')} {...form.getInputProps('nutritionInfo.sugars')} min={0} />
-      </Group>
-      <Divider my="md" />
-      <MineralsFields form={form} />
-      <Divider my="md" />
-      <VitaminsFields form={form} />
+      
+      <Box key={`macros-${foodId}`} mb="md">
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
+          {mainMetrics.map(key => (
+            <OptimizedNumberInput 
+              key={key}
+              label={t(`foods:form.nutritionInfo.${key}`)} 
+              initialValue={form.values.nutritionInfo[key]}
+              onCommit={(val) => handleFieldChange(key, val)}
+            />
+          ))}
+        </SimpleGrid>
+      </Box>
+      
+      <Divider my="md" label={t('foods:form.minerals.title')} labelPosition="center" />
+      <MineralsFields 
+        foodId={foodId}
+        values={form.values.nutritionInfo.minerals} 
+        onFieldChange={handleNestedChange} 
+      />
+      
+      <Divider my="md" label={t('foods:form.vitamins.title')} labelPosition="center" />
+      <VitaminsFields 
+        foodId={foodId}
+        values={form.values.nutritionInfo.vitamins} 
+        onFieldChange={handleNestedChange} 
+      />
     </Box>
   );
 };
 
-
-// Export memoized wrapper to avoid unnecessary renders
-const NutritionInfoForm = React.memo(NutritionInfoFormInner);
 export default NutritionInfoForm;
