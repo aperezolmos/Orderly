@@ -87,9 +87,9 @@ public class FoodController {
         return ResponseEntity.ok(foodService.existsById(id));
     }
 
-    @GetMapping("/name/{name}/exists")
-    public ResponseEntity<Boolean> checkFoodNameExists(@PathVariable String name) {
-        return ResponseEntity.ok(foodService.existsByName(name));
+    @GetMapping("/check-name")
+    public ResponseEntity<Boolean> checkFoodNameAvailability(@RequestParam String name) {
+        return ResponseEntity.ok(!foodService.existsByName(name));
     }
 
 

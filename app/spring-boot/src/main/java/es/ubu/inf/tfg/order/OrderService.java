@@ -80,6 +80,10 @@ public class OrderService {
         return orderRepository.existsById(id);
     }
 
+    public boolean existsByOrderNumber(String orderNumber) {
+        return orderRepository.existsByOrderNumber(orderNumber);
+    }
+
 
     // --------------------------------------------------------
     // CRUD METHODS

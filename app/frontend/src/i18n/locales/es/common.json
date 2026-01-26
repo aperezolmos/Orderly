@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Mi Aplicación",
+    "title": "Orderly",
     "loading": "Cargando...",
     "error": "Ocurrió un error",
     "success": "Éxito",
@@ -96,7 +96,9 @@
     "maxLength": "Este campo no puede exceder {{count}} caracteres",
     "positive": "El valor debe ser positivo",
     "positiveOrZero": "El valor debe ser positivo o cero",
-    "number": "Debe ser un número válido"
+    "number": "Debe ser un número válido",
+    "available": "Disponible",
+    "unavailable": "No disponible"
   },
   "data": {
     "noData": "No se encontraron datos",

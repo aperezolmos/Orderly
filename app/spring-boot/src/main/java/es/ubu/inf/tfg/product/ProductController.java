@@ -94,9 +94,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.existsById(id));
     }
 
-    @GetMapping("/name/{name}/exists")
-    public ResponseEntity<Boolean> checkProductNameExists(@PathVariable String name) {
-        return ResponseEntity.ok(productService.existsByName(name));
+    @GetMapping("/check-name")
+    public ResponseEntity<Boolean> checkProductNameAvailability(@RequestParam String name) {
+        return ResponseEntity.ok(!productService.existsByName(name));
     }
 
     @GetMapping("/food/{foodId}/exists")

@@ -62,7 +62,7 @@ const LoginForm = ({
         disabled={loading}
       />
 
-      <Group position="right" mt="xl">
+      <Group justify="center" mt="xl">
         <Button 
           type="submit" 
           loading={loading}

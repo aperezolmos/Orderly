@@ -126,7 +126,7 @@ public abstract class Order {
 
     // --------------------------------------------------------
 
-    private String generateOrderNumber(LocalDateTime time) { //TODO: usar este formato o un num simple¿?
+    private String generateOrderNumber(LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
         String timestampPart = time.format(formatter);
         return "ORD-" + timestampPart;

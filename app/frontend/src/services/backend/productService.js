@@ -5,7 +5,7 @@ export const productService = {
   
   getProducts: async () => apiClient.get('/products'),
   
-  getProductById: async (id, { detailed = false, includeIngredients = false } = {}) => { //TODO: cambiar
+  getProductById: async (id, { detailed = false, includeIngredients = false } = {}) => {
     let url = `/products/${id}`;
     const params = {};
     if (detailed) params.detailed = true;
@@ -16,6 +16,7 @@ export const productService = {
   createProduct: async (productData) => apiClient.post('/products', productData),
   updateProduct: async (id, productData) => apiClient.put(`/products/${id}`, productData),
   deleteProduct: async (id) => apiClient.delete(`/products/${id}`),
+  checkProductNameAvailability: async (name) => apiClient.get(`/products/check-name`, { name }),
 
 
   // ======================

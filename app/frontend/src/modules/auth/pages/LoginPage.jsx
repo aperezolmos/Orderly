@@ -60,12 +60,6 @@ const LoginPage = () => {
           error={error}
           onClearError={clearError}
         />
-
-        <Text size="sm" color="dimmed" mt="md" align="center">
-          <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
-            {t('auth:login.forgotPassword')}
-          </Link>
-        </Text>
       </Box>
     </AuthLayout>
   );

@@ -214,7 +214,7 @@ class RoleServiceTest {
         when(roleRepository.existsByName(ROLE_NAME)).thenReturn(false);
         when(roleMapper.toEntity(roleRequestDTO)).thenReturn(roleEntity);
         when(roleRepository.save(roleEntity)).thenReturn(roleEntity);
-        when(roleMapper.toResponseDTO(roleEntity)).thenReturn(roleResponseDTO);
+        when(roleMapper.toDetailedResponseDTO(roleEntity)).thenReturn(roleResponseDTO);
 
         RoleResponseDTO result = roleService.save(roleRequestDTO);
 
@@ -255,7 +255,7 @@ class RoleServiceTest {
         when(roleRepository.findById(ROLE_ID_1)).thenReturn(Optional.of(roleEntity));
         when(roleRepository.existsByName(NEW_NAME)).thenReturn(false);
         when(roleRepository.save(any(Role.class))).thenReturn(updatedRole);
-        when(roleMapper.toResponseDTO(updatedRole)).thenReturn(roleResponseDTO);
+        when(roleMapper.toDetailedResponseDTO(updatedRole)).thenReturn(roleResponseDTO);
 
         RoleResponseDTO result = roleService.update(ROLE_ID_1, updateDTO);
 

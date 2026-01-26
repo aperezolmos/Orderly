@@ -15,6 +15,7 @@ export const orderService = {
   cancelOrder: async (id) => apiClient.patch(`/orders/${id}/cancel`),
   markOrderAsPaid: async (id) => apiClient.patch(`/orders/${id}/paid`),
   checkOrderExists: async (id) => apiClient.get(`/orders/${id}/exists`),
+  checkOrderNumberAvailability: async (orderNumber) => apiClient.get(`/orders/check-orderNumber`, { orderNumber }),
 
 
   // ======================

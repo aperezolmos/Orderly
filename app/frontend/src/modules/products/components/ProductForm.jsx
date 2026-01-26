@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { TextInput, NumberInput, Button, Group, Tabs, LoadingOverlay } from '@mantine/core';
+import { Textarea, NumberInput, Button, Group, Tabs, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
 import ProductIngredientsManager from './ProductIngredientsManager';
 
 
@@ -14,6 +16,11 @@ const ProductForm = ({
   onIngredientsChange,
 }) => {
   
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('productName', { minLength: 1, maxLength: 200 });
   const [ingredients, setIngredients] = useState(initialIngredients);
   const { t } = useTranslation(['common', 'products']);
 
@@ -27,7 +34,7 @@ const ProductForm = ({
     validate: {
       name: (value) => {
         if (!value) return t('common:validation.required');
-        if (value.length > 100) return t('common:validation.maxLength', { count: 100 });
+        if (value.length > 200) return t('common:validation.maxLength', { count: 200 });
         return null;
       },
       description: (value) => {
@@ -40,7 +47,9 @@ const ProductForm = ({
         return null;
       },
     },
+    validateInputOnChange: true,
   });
+  
 
   useEffect(() => {
     if (product) {
@@ -53,10 +62,18 @@ const ProductForm = ({
     }
   }, [product]);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.name, product?.name);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.name]);
+
   // Notify ingredient change to parent if desired
   useEffect(() => {
     if (onIngredientsChange) onIngredientsChange(ingredients);
   }, [ingredients]);
+
 
   const handleAddIngredient = (food) => {
     if (!ingredients.some(i => i.foodId === food.id)) {
@@ -105,18 +122,20 @@ const ProductForm = ({
           <Tabs.Tab value="ingredients">{t('products:form.ingredients')}</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="basic" pt="xs">
-          <TextInput
+          <UniqueTextField
             label={t('products:form.name')}
             placeholder={t('products:form.namePlaceholder')}
             required
-            maxLength={100}
+            isChecking={isChecking}
+            isAvailable={isAvailable}
             {...form.getInputProps('name')}
             mb="md"
           />
-          <TextInput
+          <Textarea
             label={t('products:form.description')}
             placeholder={t('products:form.descriptionPlaceholder')}
-            maxLength={255}
+            autosize
+            minRows={3}
             {...form.getInputProps('description')}
             mb="md"
           />
@@ -140,8 +159,12 @@ const ProductForm = ({
           />
         </Tabs.Panel>
       </Tabs>
-      <Group position="right" mt="xl">
-        <Button type="submit" loading={loading}>
+      <Group justify="flex-end" mt="xl">
+        <Button 
+          type="submit" 
+          loading={loading}
+          disabled={loading || isChecking || !isAvailable}
+        >
           {submitLabel}
         </Button>
       </Group>

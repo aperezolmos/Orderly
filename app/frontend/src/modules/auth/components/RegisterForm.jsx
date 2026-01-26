@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { TextInput, PasswordInput, Button, Group, Alert,
-         LoadingOverlay, Box, Loader } from '@mantine/core';
+         LoadingOverlay, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle, IconCheck, IconX } from '@tabler/icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { useUsernameCheck } from '../../users/hooks/useUsernameCheck';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
 
 
 const RegisterForm = ({ 
@@ -14,8 +15,11 @@ const RegisterForm = ({
   onClearError 
 }) => {
   
-  const { checkUsernameAvailability, checkingUsername } = useUsernameCheck();
-  const [usernameAvailable, setUsernameAvailable] = useState(null);
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('username', { minLength: 3, maxLength: 50 });
   const { t } = useTranslation(['common', 'auth', 'users']);
 
 
@@ -32,7 +36,6 @@ const RegisterForm = ({
         if (!value.trim()) return t('common:validation.required');
         if (value.length < 3) return t('common:validation.minLength', { count: 3 });
         if (value.length > 50) return t('common:validation.maxLength', { count: 50 });
-        if (usernameAvailable === false) return t('users:validation.usernameTaken');
         return null;
       },
       firstName: (value) => 
@@ -49,54 +52,17 @@ const RegisterForm = ({
     },
   });
 
-  // Check if username is available
+  
   useEffect(() => {
-    const username = form.values.username.trim();
-    
-    if (username.length >= 3 && username.length <= 50) {
-      const timeoutId = setTimeout(async () => {
-        const available = await checkUsernameAvailability(username);
-        setUsernameAvailable(available);
-      }, 500);
-      return () => clearTimeout(timeoutId);
-    } 
-    else {
-      setUsernameAvailable(null);
-    }
-  }, [form.values.username, checkUsernameAvailability]);
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.username);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.username]);
+
 
   const handleSubmit = (values) => {
-    if (usernameAvailable === false) {
-      form.setFieldError('username', t('users:validation.usernameTaken'));
-      return;
-    }
     onSubmit(values);
-  };
-
-
-  const getUsernameRightSection = () => {
-    const username = form.values.username.trim();
-    if (!username || username.length < 3) return null;
-    if (checkingUsername) {
-      return <Loader size="xs" />;
-    }
-    if (usernameAvailable === true) {
-      return <IconCheck size="1rem" color="green" />;
-    }
-    if (usernameAvailable === false) {
-      return <IconX size="1rem" color="red" />;
-    }
-    return null;
-  };
-
-  const getUsernameDescription = () => {
-    if (usernameAvailable === true) {
-      return t('users:validation.usernameAvailable');
-    }
-    if (usernameAvailable === false) {
-      return t('users:validation.usernameTaken');
-    }
-    return t('auth:register.usernameDescription');
   };
 
 
@@ -118,12 +84,13 @@ const RegisterForm = ({
           </Alert>
         )}
 
-        <TextInput
+        <UniqueTextField
           label={t('users:form.username')}
           placeholder={t('users:form.usernamePlaceholder')}
           required
-          description={getUsernameDescription()}
-          rightSection={getUsernameRightSection()}
+          isChecking={isChecking}
+          isAvailable={isAvailable}
+          description={t('auth:register.usernameDescription')}
           {...form.getInputProps('username')}
           disabled={loading}
         />
@@ -165,11 +132,11 @@ const RegisterForm = ({
           disabled={loading}
         />
 
-        <Group position="right" mt="xl">
+        <Group justify="center" mt="xl">
           <Button 
             type="submit" 
             loading={loading}
-            disabled={loading || checkingUsername || usernameAvailable === false}
+            disabled={loading || isChecking || !isAvailable}
           >
             {t('auth:register.submit')}
           </Button>

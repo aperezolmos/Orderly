@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { TextInput, NumberInput, Button, Group, Select, LoadingOverlay, Tabs } from '@mantine/core';
+import { NumberInput, Button, Group, Select, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import NutritionInfoForm from './NutritionInfoForm';
 import AllergenCheckboxList from './AllergenCheckboxList';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
 import { FOOD_GROUPS } from '../../../utils/foodEnums';
 import { useFoods } from '../hooks/useFoods';
 
@@ -15,7 +17,16 @@ const FoodForm = ({
   submitLabel = "Create Food"
 }) => {
   
-  const { getAllAllergens, allergens: availableAllergens, loading: allergensLoading } = useFoods();
+  const { 
+    getAllAllergens, 
+    allergens: availableAllergens, 
+    loading: allergensLoading 
+  } = useFoods();
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('foodName', { minLength: 1, maxLength: 255 });
   const { t } = useTranslation(['common', 'foods']);
 
 
@@ -44,9 +55,19 @@ const FoodForm = ({
       }
     },
     validate: {
+      name: (value) => {
+        if (!value) return t('common:validation.required');
+        if (value.length > 255) return t('common:validation.maxLength', { count: 255 });
+        return null;
+      },
       foodGroup: (value) => (value ? null : t('common:validation.required')),
-      servingWeightGrams: (value) => (value < 1 ? t('common:validation.positive') : null),
+      servingWeightGrams: (value) => {
+        if (!value) return t('common:validation.required');
+        if (value < 1) return t('common:validation.positive');
+        return null;
+      }
     },
+    //validateInputOnChange: true,
   });
 
 
@@ -64,6 +85,13 @@ const FoodForm = ({
       initialAllergensRef.current = foodAllergens;
     }
   }, [food]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.name, food?.name);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.name]);
 
 
   
@@ -96,10 +124,12 @@ const FoodForm = ({
         </Tabs.List>
 
         <Tabs.Panel value="basic" pt="md">
-          <TextInput
+          <UniqueTextField
             label={t('foods:form.name')}
             placeholder={t('foods:form.namePlaceholder')}
             required
+            isChecking={isChecking}
+            isAvailable={isAvailable}
             {...form.getInputProps('name')}
             mb="md"
           />
@@ -139,7 +169,10 @@ const FoodForm = ({
         <Button 
           type="submit" 
           loading={loading}
-          disabled={!form.isDirty() && !allergensDirty}
+          disabled={
+            loading || isChecking || !isAvailable ||
+            (!form.isDirty() && !allergensDirty)
+          }
         >
           {submitLabel}
         </Button>

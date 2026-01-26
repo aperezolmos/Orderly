@@ -94,8 +94,8 @@ public class DiningTableController {
         return ResponseEntity.ok(diningTableService.existsById(id));
     }
 
-    @GetMapping("/name/{name}/exists")
-    public ResponseEntity<Boolean> checkTableNameExists(@PathVariable String name) {
-        return ResponseEntity.ok(diningTableService.existsByName(name));
+    @GetMapping("/check-name")
+    public ResponseEntity<Boolean> checkTableNameAvailability(@RequestParam String name) {
+        return ResponseEntity.ok(!diningTableService.existsByName(name));
     }
 }

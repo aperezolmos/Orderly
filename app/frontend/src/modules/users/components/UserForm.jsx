@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
-         LoadingOverlay, Tabs, Alert, Text, Loader } from '@mantine/core';
+         LoadingOverlay, Tabs, Alert, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle, IconUser, IconShield,
-         IconCheck, IconX } from '@tabler/icons-react';
+import { IconAlertCircle, IconUser, IconShield } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import RoleTransferList from './RoleTransferList';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
 import { useUserRoles } from '../hooks/useUserRoles';
-import { useUsernameCheck } from '../hooks/useUsernameCheck';
 
 
 const UserForm = ({
@@ -18,8 +18,11 @@ const UserForm = ({
   showRoleManagement = true
 }) => {
   
-  const { checkUsernameAvailability, checkingUsername } = useUsernameCheck();
-  const [usernameAvailable, setUsernameAvailable] = useState(true);
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('username', { minLength: 3, maxLength: 50 });
   const { t } = useTranslation(['common', 'users']);
 
 
@@ -39,6 +42,7 @@ const UserForm = ({
     form.setFieldValue('roleIds', getAssignedRoleIds());
   }, [assignedRoles]);
 
+
   const form = useForm({
     initialValues: {
       username: '',
@@ -53,7 +57,6 @@ const UserForm = ({
         if (value.length < 3) return t('common:validation.minLength', { count: 3 });
         if (value.length > 50) return t('common:validation.maxLength', { count: 50 });
         if (user && user.username === value) return null;
-        if (usernameAvailable === false) return t('users:validation.usernameTaken');
         return null;
       },
       password: (value) => {
@@ -75,30 +78,8 @@ const UserForm = ({
         return null;
       },
     },
+    validateInputOnChange: true,
   });
-
-  
-  // Check if username is available
-  useEffect(() => {
-    const username = form.values.username.trim();
-    if (!username || username.length < 3) {
-      setUsernameAvailable(true);
-      return;
-    }
-    
-    // If editing and username unchanged, skip check
-    if (user && user.username === username) {
-      setUsernameAvailable(true);
-      return;
-    }
-    
-    const timeoutId = setTimeout(async () => {
-      const available = await checkUsernameAvailability(username, user?.username);
-      setUsernameAvailable(available);
-    }, 500);
-    
-    return () => clearTimeout(timeoutId);
-  }, [form.values.username, user, checkUsernameAvailability]);
 
 
   // Load user data when editing
@@ -111,9 +92,16 @@ const UserForm = ({
         password: '', // Do not load password for security
         confirmPassword: '',
       });
-      setUsernameAvailable(true);
     }
   }, [user]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.username, user?.username);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.username]);
+
 
   const handleSubmit = async (values) => {
     const userData = {
@@ -135,26 +123,6 @@ const UserForm = ({
     await onSubmit(userData);
   };
   
-  const getUsernameRightSection = () => {
-    const username = form.values.username.trim();
-    if (!username || username.length < 3) return null;
-
-    // If editing and username unchanged, show green check
-    if (user && user.username === username) {
-      return <IconCheck size="1rem" color="green" />;
-    }
-
-    if (checkingUsername) {
-      return <Loader size="xs" />;
-    }
-    if (usernameAvailable === true) {
-      return <IconCheck size="1rem" color="green" />;
-    }
-    if (usernameAvailable === false) {
-      return <IconX size="1rem" color="red" />;
-    }
-    return null;
-  };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -173,13 +141,13 @@ const UserForm = ({
         </Tabs.List>
 
         <Tabs.Panel value="basic" pt="xs">
-          <TextInput
+          <UniqueTextField
             label={t('users:form.username')}
             placeholder={t('users:form.usernamePlaceholder')}
             required
-            maxLength={50}
+            isChecking={isChecking}
+            isAvailable={isAvailable}
             {...form.getInputProps('username')}
-            rightSection={getUsernameRightSection()}
             mb="md"
             disabled={loading}
           />
@@ -244,11 +212,14 @@ const UserForm = ({
         )}
       </Tabs>
 
-      <Group position="right" mt="xl">
+      <Group justify="flex-end" mt="xl">
         <Button 
           type="submit" 
           loading={loading}
-          disabled={!form.isDirty() && !rolesHaveChanges}
+          disabled={
+            loading || isChecking || !isAvailable ||
+            (!form.isDirty() && !rolesHaveChanges)
+          }
         >
           {submitLabel}
         </Button>

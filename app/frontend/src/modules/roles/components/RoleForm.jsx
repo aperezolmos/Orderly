@@ -3,6 +3,8 @@ import { TextInput, Textarea, Button, Group, LoadingOverlay, Tabs } from '@manti
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import PermissionCheckboxList from './PermissionCheckboxList';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
 import { useRoles } from '../hooks/useRoles';
 
 
@@ -14,6 +16,11 @@ const RoleForm = ({
 }) => {
   
   const { loadAllPermissions, allPermissions, permissionsLoading } = useRoles();
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('roleName', { minLength: 1, maxLength: 50 });
   const { t } = useTranslation(['common', 'roles']);
 
 
@@ -37,6 +44,7 @@ const RoleForm = ({
         return null;
       },
     },
+    validateInputOnChange: true,
   });
 
   
@@ -65,6 +73,13 @@ const RoleForm = ({
       initialPermissionsRef.current = [];
     }
   }, [role]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.name, role?.name);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.name]);
 
 
   const isPermissionsDirty = useMemo(() => {
@@ -96,10 +111,12 @@ const RoleForm = ({
         </Tabs.List>
 
         <Tabs.Panel value="basic" pt="md">
-          <TextInput
+          <UniqueTextField
             label={t('roles:form.name')}
             placeholder={t('roles:form.namePlaceholder')}
             required
+            isChecking={isChecking}
+            isAvailable={isAvailable}
             {...form.getInputProps('name')}
             mb="md"
           />
@@ -126,7 +143,7 @@ const RoleForm = ({
         <Button
           type="submit"
           loading={loading}
-          disabled={!isFormDirty}
+          disabled={loading || isChecking || !isFormDirty || !isAvailable}
         >
           {submitLabel}
         </Button>

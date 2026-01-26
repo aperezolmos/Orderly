@@ -9,7 +9,7 @@ export const roleService = {
   createRole: async (roleData) => apiClient.post('/roles', roleData),
   updateRole: async (id, roleData) => apiClient.put(`/roles/${id}`, roleData),
   deleteRole: async (id) => apiClient.delete(`/roles/${id}`),
-  existsByName: async (name) => apiClient.get(`/roles/name/${name}/exists`),
+  checkRoleNameAvailability: async (name) => apiClient.get(`/roles/check-name`, { name }),
 
 
   // ======================

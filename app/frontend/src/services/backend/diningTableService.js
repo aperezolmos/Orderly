@@ -8,4 +8,5 @@ export const diningTableService = {
   createTable: async (tableData) => apiClient.post('/tables', tableData),
   updateTable: async (id, tableData) => apiClient.put(`/tables/${id}`, tableData),
   deleteTable: async (id) => apiClient.delete(`/tables/${id}`),
+  checkTableNameAvailability: async (name) => apiClient.get(`/tables/check-name`, { name }),
 };

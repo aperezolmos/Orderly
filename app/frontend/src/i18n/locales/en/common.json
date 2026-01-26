@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "My Application",
+    "title": "Orderly",
     "loading": "Loading...",
     "error": "An error occurred",
     "success": "Success",
@@ -96,7 +96,9 @@
     "maxLength": "Field cannot exceed {{count}} characters",
     "positive": "Value must be positive",
     "positiveOrZero": "Value must be positive or zero",
-    "number": "Must be a valid number"
+    "number": "Must be a valid number",
+    "available": "Available",
+    "unavailable": "Unavailable"
   },
   "data": {
     "noData": "No data found",
