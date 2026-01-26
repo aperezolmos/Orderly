@@ -12,16 +12,20 @@
     "firstNamePlaceholder": "Enter first name",
     "lastName": "Last name",
     "lastNamePlaceholder": "Enter last name",
+    "changePasswordTitle": "Password change",
     "password": "Password",
     "passwordPlaceholder": "Enter password",
     "confirmPassword": "Confirm password",
     "confirmPasswordPlaceholder": "Confirm password",
+    "currentPassword": "Current password",
+    "currentPasswordPlaceholder": "Enter current password",
     "newPassword": "New password",
     "create": "Create User",
     "update": "Update User",
     "roleManagement": "Role Management",
     "passwordInfo": "Leave password fields blank to keep the current password",
-    "roleChanges": "Role changes will be saved when you submit the form"
+    "currentPasswordInfo": "If you want to change your password, you will need to enter your current password",
+    "roleChanges": "Role changes will be saved when you submit the form. New permissions will be reflected at the next login"
   },
   "list": {
     "id": "ID",
@@ -37,6 +41,7 @@
     "usernameAvailable": "Username is available",
     "usernameTaken": "Username is already taken",
     "confirmPasswordRequired": "Please confirm password",
+    "currentPasswordRequired": "To change your password, enter your current password",
     "passwordsMatch": "Passwords do not match"
   },
   "notifications": {

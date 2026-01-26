@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { TextInput, PasswordInput, Button, Group, 
-         LoadingOverlay, Tabs, Alert, Text } from '@mantine/core';
+         LoadingOverlay, Tabs, Alert, Text, Divider } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle, IconUser, IconShield } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -14,8 +14,9 @@ const UserForm = ({
   user = null,
   onSubmit,
   loading = false,
-  submitLabel = "Create User",
-  showRoleManagement = true
+  submitLabel = "Save",
+  showRoleManagement = false,
+  isProfileEdit = false
 }) => {
   
   const { 
@@ -31,12 +32,17 @@ const UserForm = ({
     assignedRoles,
     availableRoles,
     loading: rolesLoading,
+    loadAllRoles,
     addRole,
     removeRole,
     getAssignedRoleIds,
     hasChanges: rolesHaveChanges
   } = useUserRoles(initialUserRoleIds);
 
+
+  useEffect(() => {
+    if (showRoleManagement) loadAllRoles();
+  }, [loadAllRoles]);
 
   useEffect(() => {
     form.setFieldValue('roleIds', getAssignedRoleIds());
@@ -48,6 +54,7 @@ const UserForm = ({
       username: '',
       firstName: '',
       lastName: '',
+      currentPassword: '',
       password: '',
       confirmPassword: '',
     },
@@ -59,6 +66,20 @@ const UserForm = ({
         if (user && user.username === value) return null;
         return null;
       },
+      firstName: (value) => {
+        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
+        return null;
+      },
+      lastName: (value) => {
+        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
+        return null;
+      },
+      currentPassword: (value, values) => {
+        if (isProfileEdit && values.password && !value) {
+          return t('users:validation.currentPasswordRequired'); 
+        }
+        return null;
+      },
       password: (value) => {
         if (!user && !value) return t('common:validation.required');
         if (value && value.length < 4) return t('common:validation.minLength', { count: 4 });
@@ -67,14 +88,6 @@ const UserForm = ({
       confirmPassword: (value, values) => {
         if (!user && !value) return t('common:validation.required');
         if (value !== values.password) return t('users:validation.passwordsMatch');
-        return null;
-      },
-      firstName: (value) => {
-        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
-        return null;
-      },
-      lastName: (value) => {
-        if (value && value.length > 100) return t('common:validation.maxLength', { count: 100 });
         return null;
       },
     },
@@ -89,6 +102,7 @@ const UserForm = ({
         username: user.username || '',
         firstName: user.firstName || '',
         lastName: user.lastName || '',
+        currentPassword: '',
         password: '', // Do not load password for security
         confirmPassword: '',
       });
@@ -108,6 +122,7 @@ const UserForm = ({
       username: values.username,
       firstName: values.firstName || null,
       lastName: values.lastName || null,
+      currentPassword: isProfileEdit ? values.currentPassword : undefined,
       password: values.password || undefined, // Only send if provided
       confirmPassword: values.confirmPassword || undefined,
       roleIds: showRoleManagement ? getAssignedRoleIds() : undefined
@@ -115,9 +130,7 @@ const UserForm = ({
 
     // Clean up undefined fields
     Object.keys(userData).forEach(key => {
-      if (userData[key] === undefined) {
-        delete userData[key];
-      }
+      if (userData[key] === undefined || userData[key] === '') delete userData[key];
     });
 
     await onSubmit(userData);
@@ -130,11 +143,11 @@ const UserForm = ({
 
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic" icon={<IconUser size="0.8rem" />}>
+          <Tabs.Tab value="basic" leftSection={<IconUser size="0.8rem" />}>
             {t('common:form.basicInfo')}
           </Tabs.Tab>
           {showRoleManagement && (
-            <Tabs.Tab value="roles" icon={<IconShield size="0.8rem" />}>
+            <Tabs.Tab value="roles" leftSection={<IconShield size="0.8rem" />}>
               {t('users:form.roleManagement')}
             </Tabs.Tab>
           )}
@@ -156,18 +169,25 @@ const UserForm = ({
             <TextInput
               label={t('users:form.firstName')}
               placeholder={t('users:form.firstNamePlaceholder')}
-              maxLength={100}
               {...form.getInputProps('firstName')}
             />
             <TextInput
               label={t('users:form.lastName')}
               placeholder={t('users:form.lastNamePlaceholder')}
-              maxLength={100}
               {...form.getInputProps('lastName')}
             />
           </Group>
 
+          <Divider my="md" mt="xl" label={t('users:form.changePasswordTitle')} labelPosition="left" />
+
           <Group grow mb="xl">
+            {isProfileEdit && (
+              <PasswordInput
+                label={t('users:form.currentPassword')}
+                placeholder={t('users:form.currentPasswordPlaceholder')}
+                {...form.getInputProps('currentPassword')}
+              />
+            )}
             <PasswordInput
               label={user ? t('users:form.newPassword') : t('users:form.password')}
               placeholder={t('users:form.passwordPlaceholder')}
@@ -186,6 +206,7 @@ const UserForm = ({
             <Alert icon={<IconAlertCircle size="1rem" />} color="blue" mb="md">
               <Text size="sm">
                 {t('users:form.passwordInfo')}
+                {isProfileEdit && (". ")}{isProfileEdit && (t('users:form.passwordInfo'))}
               </Text>
             </Alert>
           )}
@@ -202,7 +223,7 @@ const UserForm = ({
             />
             
             {rolesHaveChanges && (
-              <Alert color="yellow" mt="md">
+              <Alert icon={<IconAlertCircle size="1rem" />} color="yellow" mt="md">
                 <Text size="sm">
                   {t('users:form.roleChanges')}
                 </Text>

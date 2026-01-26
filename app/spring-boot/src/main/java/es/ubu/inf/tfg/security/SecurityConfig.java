@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,6 +28,10 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    @Value("${REACT_LOCAL_PORT:5173}")
+    private String reactPort;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,9 +57,8 @@ public class SecurityConfig {
             // Allow React to send cookies
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             
-            // Session management: default -> IF_REQUIRED (creates a session if necessary)
             .sessionManagement(session -> session
-                .maximumSessions(1) // TODO: cambiar? - Only 1 session per user
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Creates a session if necessary
             )
             .httpBasic(Customizer.withDefaults())
             
@@ -75,7 +80,7 @@ public class SecurityConfig {
         
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); 
+        configuration.setAllowedOrigins(List.of("http://localhost:" + reactPort)); 
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));

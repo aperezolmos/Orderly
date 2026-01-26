@@ -20,6 +20,7 @@ const OrderViewPage = React.lazy(() => import('./modules/orders/pages/OrderViewP
 const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
 const Register = React.lazy(() => import('./modules/auth/pages/RegisterPage'));
 const Profile = React.lazy(() => import('./modules/auth/pages/ProfilePage'));
+const ProfileEdit = React.lazy(() => import('./modules/auth/pages/ProfileEditPage'));
 
 // Roles
 const RoleList = React.lazy(() => import('./modules/roles/pages/RoleListPage'));
@@ -110,6 +111,13 @@ const AppRouter = () => {
               element={
                 <ProtectedRoute>
                   <WithLayout> <Profile /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/profile/edit"
+              element={
+                <ProtectedRoute>
+                  <WithLayout> <ProfileEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />

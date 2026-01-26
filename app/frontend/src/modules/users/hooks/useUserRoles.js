@@ -29,10 +29,6 @@ export const useUserRoles = (initialIds = []) => {
     setSelectedIds(ids);
   }, [JSON.stringify(initialIds)]); // stringify used to detect changes in the array
 
-  useEffect(() => {
-    loadAllRoles();
-  }, [loadAllRoles]);
-
   
   const addRole = (role) => {
     const newSet = new Set(selectedIds);
@@ -60,6 +56,7 @@ export const useUserRoles = (initialIds = []) => {
     assignedRoles,
     availableRoles,
     loading,
+    loadAllRoles,
     addRole,
     removeRole,
     getAssignedRoleIds: () => Array.from(selectedIds),

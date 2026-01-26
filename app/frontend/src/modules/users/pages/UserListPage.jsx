@@ -14,7 +14,7 @@ import { useUsers } from '../hooks/useUsers';
 const UserListPage = () => {
   
   const navigate = useNavigate();
-  const { hasPermission } = useAuth();
+  const { user: authUser, hasPermission } = useAuth();
   const { users, loading, deleteUser, loadUsers } = useUsers();
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
@@ -26,7 +26,11 @@ const UserListPage = () => {
   }, [loadUsers]);
 
   const handleEdit = (user) => {
-    navigate(`/users/${user.id}/edit`);
+    if (authUser && user.id === authUser.id) {
+      navigate('/profile/edit');
+    } else {
+      navigate(`/users/${user.id}/edit`);
+    }
   };
 
   const handleDelete = (user) => {
