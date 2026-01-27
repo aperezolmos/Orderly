@@ -6,6 +6,8 @@ import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { reservationService } from '../../../services/backend/reservationService';
 import { useAuth } from '../../../context/AuthContext';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
 
 
 const OrderForm = ({
@@ -22,6 +24,11 @@ const OrderForm = ({
   const [loadingTables, setLoadingTables] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { user } = useAuth();
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('orderNumber', { minLength: 0, maxLength: 30 });
   const { t } = useTranslation(['common', 'orders']);
 
 
@@ -61,7 +68,17 @@ const OrderForm = ({
           ? t('orders:form.tablePlaceholder')
           : null,
     },
+    validateInputOnChange: true,
   });
+
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.orderNumber, initialValues?.orderNumber);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.orderNumber]);
+
 
   const handleSubmit = async (values) => {
     setSubmitting(true);
@@ -80,13 +97,15 @@ const OrderForm = ({
         dto.tableId = Number(values.tableId);
       }
       await onSubmit(dto);
-    } catch (err) {
+    } 
+    catch (err) {
       notifications.show({
         title: t('common:app.error'),
         message: err.message,
         color: 'red',
       });
-    } finally {
+    } 
+    finally {
       setSubmitting(false);
     }
   };
@@ -95,10 +114,11 @@ const OrderForm = ({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)} style={{ position: 'relative', minWidth: 400, minHeight: 200 }}>
       <LoadingOverlay visible={submitting || loadingTables || loading} />
-      <TextInput
+      <UniqueTextField
         label={t('orders:form.orderNumber')}
         placeholder={t('orders:form.orderNumberPlaceholder')}
-        maxLength={30}
+        isChecking={isChecking}
+        isAvailable={isAvailable}
         {...form.getInputProps('orderNumber')}
         mb="md"
         disabled={disabledFields.includes('orderNumber')}
@@ -149,7 +169,11 @@ const OrderForm = ({
         <Button variant="default" onClick={onCancel} disabled={submitting || loading}>
           {t('common:app.cancel')}
         </Button>
-        <Button type="submit" loading={submitting || loading}>
+        <Button 
+          type="submit" 
+          loading={submitting || loading}
+          disabled={loading || isChecking || isAvailable === false}
+        >
           {submitLabel || t('orders:form.create')}
         </Button>
       </Group>

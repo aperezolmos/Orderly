@@ -11,7 +11,7 @@ const statusColors = {
   CANCELLED: 'red',
 };
 
-export default function OrderHistoryTable({ orders, loading }) {
+export default function OrderHistoryTable({ orders, loading, onOrderNumberClick }) {
   const { t } = useTranslation(['orders']);
   const navigate = useNavigate();
 
@@ -50,8 +50,8 @@ export default function OrderHistoryTable({ orders, loading }) {
               <Text
                 variant="link"
                 style={{ cursor: 'pointer', color: '#228be6', fontWeight: 600 }}
-                onClick={() => navigate(`/orders/${order.id}/view`)}
-                title={t('orders:list.viewOrder', { defaultValue: 'View order' })}
+                onClick={() => onOrderNumberClick(order)}
+                title={t('orders:management.view')}
               >
                 #{order.orderNumber}
               </Text>

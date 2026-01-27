@@ -3,6 +3,7 @@ import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { orderService } from '../../../services/backend/orderService';
 
+
 const PAGE_SIZE = 15;
 
 export const ORDER_HISTORY_VIEW = {
@@ -11,13 +12,22 @@ export const ORDER_HISTORY_VIEW = {
   DINING: 'dining',
 };
 
+
 export function useOrderHistory() {
+  // List states
   const [orders, setOrders] = useState([]);
   const [view, setView] = useState(ORDER_HISTORY_VIEW.ALL);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // Detail states (Modal)
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loadingDetails, setLoadingDetails] = useState(false);
+
+  // Pagination
   const [activePage, setActivePage] = useState(1);
   const { t } = useTranslation(['orders', 'common']);
+
 
   const fetchOrders = useCallback(async (selectedView = view) => {
     setLoading(true);
@@ -50,11 +60,45 @@ export function useOrderHistory() {
     setActivePage(1);
   }, [view, fetchOrders]);
 
-  // Paginación manual
+  
+  const fetchOrderDetails = useCallback(async (order) => {
+    setSelectedOrder(null); // Clean previous order
+    setLoadingDetails(true);
+    
+    try {
+      let fullOrder = null;
+      const orderType = (order.orderType || '').toLowerCase();
+      
+      if (orderType === 'bar') {
+        fullOrder = await orderService.getBarOrderById(order.id);
+      } else if (orderType === 'dining') {
+        fullOrder = await orderService.getDiningOrderById(order.id);
+      } else {
+        fullOrder = await orderService.getOrderById(order.id);
+      }
+      setSelectedOrder(fullOrder);
+    } 
+    catch (err) {
+      notifications.show({
+        title: t('orders:notifications.loadError'),
+        message: err.message,
+        color: 'red',
+      });
+      setSelectedOrder(null);
+    } 
+    finally {
+      setLoadingDetails(false);
+    }
+  }, [t]);
+  
+
+  // Pagination
   const totalPages = Math.max(1, Math.ceil(orders.length / PAGE_SIZE));
   const paginatedOrders = orders.slice((activePage - 1) * PAGE_SIZE, activePage * PAGE_SIZE);
 
+
   return {
+    // List
     orders: paginatedOrders,
     loading,
     error,
@@ -66,5 +110,10 @@ export function useOrderHistory() {
     PAGE_SIZE,
     allOrdersCount: orders.length,
     refetch: () => fetchOrders(view),
+    
+    // Details
+    selectedOrder,
+    loadingDetails,
+    fetchOrderDetails,
   };
 }

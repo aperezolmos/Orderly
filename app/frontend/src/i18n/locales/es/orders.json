@@ -7,7 +7,8 @@
     "dining": "Pedidos de Comedor",
     "create": "Crear Pedido",
     "edit": "Editar Pedido",
-    "view": "Ver Pedido"
+    "view": "Ver Pedido",
+    "orderDetails": "Detalles del pedido"
   },
   "form": {
     "orderNumber": "Número de pedido",
@@ -34,7 +35,6 @@
     "itemCount": "Ítems",
     "newOrder": "Nuevo Pedido",
     "type": "Tipo",
-    "viewOrder": "Ver pedido",
     "noData": "No hay pedidos"
   },
   "types": {
@@ -55,7 +55,6 @@
     "allCompleted": "Todos los pedidos están completados",
     "productsAvailable": "Productos disponibles",
     "pageFooter": "Página {{page}} de {{totalPages}} • {{count}} productos mostrados",
-    "orderDetails": "Detalles del pedido",
     "addProduct": "Añadir producto",
     "removeProduct": "Eliminar producto",
     "editOrder": "Editar pedido",
@@ -66,9 +65,8 @@
     "notes": "Notas",
     "noNotes": "Sin notas",
     "noProducts": "Este pedido no tiene ningún producto.",
-    "total": "Total: {{amount}}",
-    "save": "@:common.app.save",
-    "cancel": "@:common.app.cancel"
+    "total": "Total",
+    "totalWithAmount": "Total: {{amount}}"
   },
   "notifications": {
     "loadingOrders": "Cargando pedidos...",

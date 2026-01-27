@@ -15,35 +15,25 @@ const ProductGrid = () => {
     setActivePage,
     addProductToOrder,
   } = useOrderDashboardStore();
-
   const { t } = useTranslation(['orders']);
 
-
-  //const categories = ['Food', 'Drink', 'Dessert']; // TODO: Ejemplo. Ajustar cuando haya categorías reales
 
   const skeletonCount = 8;
 
 
   return (
     <div className="product-grid">
-      {/* <Group mb="md" gap="xs">
-        {categories.map(category => (
-          <Badge key={category} variant="light" color="blue">
-            {category}
-          </Badge>
-        ))}
-      </Group> */}
       <Grid gutter="md">
         {isLoadingProducts
           ? // Show skeletons while loading
             Array.from({ length: skeletonCount }).map((_, i) => (
-              <Grid.Col key={`skeleton-${i}`} span={{ base: 6, sm: 4, md: 3, lg: 3 }}>
+              <Grid.Col key={`skeleton-${i}`} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
                 <ProductCardSkeleton />
               </Grid.Col>
             ))
           : // Show actual products
             products.map((product) => (
-              <Grid.Col key={product.id} span={{ base: 6, sm: 4, md: 3, lg: 3 }}>
+              <Grid.Col key={product.id} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
                 <ProductCard
                   product={product}
                   onSelect={() => addProductToOrder(product)}

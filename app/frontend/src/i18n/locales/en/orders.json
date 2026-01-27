@@ -7,7 +7,8 @@
     "dining": "Dining Orders",
     "create": "Create Order",
     "edit": "Edit Order",
-    "view": "View Order"
+    "view": "View Order",
+    "orderDetails": "Order details"
   },
   "form": {
     "orderNumber": "Order Number",
@@ -34,7 +35,6 @@
     "itemCount": "Items",
     "newOrder": "New Order",
     "type": "Type",
-    "viewOrder": "View order",
     "noData": "No orders found"
   },
   "types": {
@@ -55,7 +55,6 @@
     "allCompleted": "All orders are completed",
     "productsAvailable": "Available products",
     "pageFooter": "Page {{page}} of {{totalPages}} • {{count}} products shown",
-    "orderDetails": "Order details",
     "addProduct": "Add product",
     "removeProduct": "Remove product",
     "editOrder": "Edit order",
@@ -66,7 +65,8 @@
     "notes": "Notes",
     "noNotes": "No notes",
     "noProducts": "This order has no products.",
-    "total": "Total: {{amount}}"
+    "total": "Total",
+    "totalWithAmount": "Total: {{amount}}"
   },
   "notifications": {
     "loadingOrders": "Loading orders...",

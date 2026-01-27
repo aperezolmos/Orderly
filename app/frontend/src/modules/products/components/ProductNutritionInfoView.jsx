@@ -89,14 +89,14 @@ const ProductNutritionInfoView = ({ nutritionInfo }) => {
               </Group>
               
               {hasData ? (
-                <Box style={{ minWidth: 300 }}>
+                <Box w="100%" maw={500} mx="auto"> 
                   <MacroPieChart
                     chartData={chartData}
                     t={t}
                   />
                 </Box>
               ) : (
-                <Text color="dimmed" align="center" mt="md">
+                <Text c="dimmed" ta="center" mt="md">
                   {t('common:data.noData')}
                 </Text>
               )}

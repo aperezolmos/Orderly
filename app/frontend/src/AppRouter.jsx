@@ -14,7 +14,6 @@ const MainPage = React.lazy(() => import('./common/pages/MainPage'));
 // Orders
 const OrdersDashboardPage = React.lazy(() => import('./modules/orders/pages/OrderDashboardPage'));
 const OrderHistoryPage = React.lazy(() => import('./modules/orders/pages/OrderHistoryPage'));
-const OrderViewPage = React.lazy(() => import('./modules/orders/pages/OrderViewPage'));
 
 // Auth
 const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
@@ -122,25 +121,17 @@ const AppRouter = () => {
               }
             />
 
-            {/* TODO: poner permisos requeridos */}
             <Route path="/orders"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ORDER_VIEW]}>
                   <WithLayout> <OrdersDashboardPage /> </WithLayout>
                 </ProtectedRoute>
               }
             />
             <Route path="/orders/history"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ORDER_VIEW]}>
                   <WithLayout> <OrderHistoryPage /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/orders/:id/view"
-              element={
-                <ProtectedRoute>
-                  <WithLayout> <OrderViewPage /> </WithLayout>
                 </ProtectedRoute>
               }
             />

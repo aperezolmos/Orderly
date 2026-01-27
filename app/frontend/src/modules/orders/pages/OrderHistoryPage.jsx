@@ -1,8 +1,10 @@
-import { useCallback } from 'react';
-import { Button, Group, Pagination, Paper, Title, Space, Container } from '@mantine/core';
+import { useCallback, useState } from 'react';
+import { Button, Group, Pagination, Paper, Title, Space,
+         Container, Modal, Loader, Center, Box } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import OrderHistoryTable from '../components/OrderHistoryTable';
+import OrderDetailsTable from '../components/OrderDetailsTable';
 import { useOrderHistory, ORDER_HISTORY_VIEW } from '../hooks/useOrderHistory';
 
 
@@ -13,30 +15,35 @@ const viewButtons = [
 ];
 
 export default function OrderHistoryPage() {
+  
   const {
     orders,
     loading,
-    //error,
     view,
     setView,
     activePage,
     setActivePage,
     totalPages,
     allOrdersCount,
-    PAGE_SIZE,
     refetch,
+    selectedOrder,
+    loadingDetails,
+    fetchOrderDetails,
   } = useOrderHistory();
+  const [modalOpen, setModalOpen] = useState(false);
   const { t } = useTranslation(['orders', 'common']);
 
+  
   const handleOrderNumberClick = useCallback((order) => {
-    // TODO: aquí se puede redirigir o abrir modal en el futuro
-    console.log('Order selected:', order.id, order.orderNumber);
-  }, []);
+    setModalOpen(true);
+    fetchOrderDetails(order);
+  }, [fetchOrderDetails]);
 
   const breadcrumbs = [
     { title: t('orders:management.dashboard'), href: '/orders' },
     { title: t('orders:management.list'), href: '/orders/history' },
   ];
+
 
   return (
     <ManagementLayout
@@ -97,6 +104,36 @@ export default function OrderHistoryPage() {
           </Group>
         </Paper>
       </Container>
+
+      <Modal
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={t('orders:management.orderDetails')}
+        size="xl"
+        centered
+        withCloseButton
+        overlayProps={{ blur: 2 }}
+        styles={{
+          body: { padding: 30 },
+        }}
+      >
+        <Box mih={400}>
+          {loadingDetails ? (
+            <Center h={400}>
+              <Loader size="xl" type="oval" /> 
+            </Center>
+          ) : selectedOrder ? (
+            <OrderDetailsTable
+              viewOnly={true}
+              order={selectedOrder}
+            />
+          ) : (
+            <Center h={400}>
+               <Title order={4} c="red">{t('orders:errors.notFound')}</Title>
+            </Center>
+          )}
+        </Box>
+      </Modal>
     </ManagementLayout>
   );
 }

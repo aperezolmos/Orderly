@@ -332,7 +332,11 @@ export const useOrderDashboardStore = create((set, get) => ({
    * Refresh the list and select the new one
    */
   createOrder: async (dto, orderType) => {
-    set({ isLoadingOrdersList: true, isLoadingCurrentOrder: true });
+    set({ 
+      isLoadingOrdersList: true, 
+      isLoadingCurrentOrder: true,
+      editedQuantities: {}
+    });
     try {
       let createdOrder = null;
       if (orderType === 'bar') {
@@ -384,7 +388,7 @@ export const useOrderDashboardStore = create((set, get) => ({
   /**
    * Load products (pagination)
    */
-  fetchProducts: async (page = 1, itemsPerPage = 10) => {
+  fetchProducts: async (page = 1, itemsPerPage = 12) => {
     set({ isLoadingProducts: true });
     try {
       const res = await productService.getProducts();

@@ -33,7 +33,9 @@ const PendingOrdersItem = ({
     backgroundColor,
     cursor: 'pointer',
     transition: 'all 0.2s',
-    boxShadow: selected ? theme.shadows.sm : undefined,
+    boxShadow: colorScheme === 'dark' 
+      ? '1px 3px 3px rgba(0, 0, 0, 0.8)'
+      : theme.shadows.sm
   };
 
 

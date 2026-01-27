@@ -16,7 +16,8 @@
     "welcomeMessage": "Select a module to get started",
     "reload": "Reload",
     "pleaseWait": "Please wait while the loading process completes",
-    "completed": "Load completed"
+    "completed": "Load completed",
+    "others": "Others"
   },
   "hero": {
     "subtitle": "Restaurant Management Platform",

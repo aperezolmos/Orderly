@@ -16,7 +16,8 @@
     "welcomeMessage": "Selecciona un módulo para comenzar",
     "reload": "Recargar",
     "pleaseWait": "Por favor, espera mientras la carga se completa",
-    "completed": "Carga completada"
+    "completed": "Carga completada",
+    "others": "Otros"
   },
   "hero": {
     "subtitle": "Plataforma de Gestión para Restauración",
