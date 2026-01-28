@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
 import { useRoles } from '../hooks/useRoles';
-import { useTranslation } from 'react-i18next';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const RoleCreatePage = () => {
@@ -16,6 +17,9 @@ const RoleCreatePage = () => {
     await createRole(roleData);
     navigate('/roles', { replace: true });
   };
+  
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'roles');
 
   const breadcrumbs = [
     { title: t('roles:management.list'), href: '/roles' },
@@ -26,6 +30,8 @@ const RoleCreatePage = () => {
   return (
     <FormLayout
       title={t('roles:management.create')}
+      icon={moduleConfig?.icon}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

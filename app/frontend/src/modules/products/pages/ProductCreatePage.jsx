@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ProductForm from '../components/ProductForm';
 import { useProducts } from '../hooks/useProducts';
-import { useTranslation } from 'react-i18next';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const ProductCreatePage = () => {
@@ -17,6 +18,9 @@ const ProductCreatePage = () => {
     navigate('/products', { replace: true });
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'products');
+
   const breadcrumbs = [
     { title: t('products:management.list'), href: '/products' },
     { title: t('products:management.create'), href: '/products/new' }
@@ -26,6 +30,8 @@ const ProductCreatePage = () => {
   return (
     <FormLayout
       title={t('products:management.create')}
+      icon={moduleConfig?.icon}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

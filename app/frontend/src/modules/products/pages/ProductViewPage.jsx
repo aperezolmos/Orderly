@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Title, Text, Group, Box, Button,
-         LoadingOverlay, ScrollArea, useMantineTheme } from '@mantine/core';
+         LoadingOverlay, ScrollArea } from '@mantine/core';
 import { IconEdit } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
@@ -9,12 +9,12 @@ import ProductNutritionInfoView from '../components/ProductNutritionInfoView';
 import { useProducts } from '../hooks/useProducts';
 import ProductIngredientCard from '../components/ProductIngredientCard';
 import AllergensList from '../components/AllergensList';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const ProductViewPage = () => {
 
   const { id } = useParams();
-  const theme = useMantineTheme();
   const navigate = useNavigate();
   const {
     currentProduct,
@@ -30,10 +30,15 @@ const ProductViewPage = () => {
   }, [id, loadProductById]);
 
 
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'products');
+
+
   if (loading) {
     return (
       <ManagementLayout
         title={t('products:management.view')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[]}
       >
         <Box style={{ height: '200px', position: 'relative' }}>
@@ -47,6 +52,8 @@ const ProductViewPage = () => {
     return (
       <ManagementLayout
         title={t('products:management.view')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[
           { title: t('products:management.list'), href: '/products' },
           { title: t('products:management.view'), href: `/products/${id}/view` }
@@ -63,6 +70,8 @@ const ProductViewPage = () => {
   return (
     <ManagementLayout
       title={t('products:management.view')}
+      icon={moduleConfig?.icon}
+      iconColor={moduleConfig?.color}
       breadcrumbs={[
         { title: t('products:management.list'), href: '/products' },
         { title: product.name, href: `/products/${id}/view` }

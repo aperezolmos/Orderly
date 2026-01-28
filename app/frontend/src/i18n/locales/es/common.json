@@ -105,7 +105,12 @@
     "noData": "No se encontraron datos",
     "loading": "Cargando datos...",
     "error": "Error cargando datos",
-    "total": "Total: {{count}}"
+    "total": "Total: {{count}}",
+    "pagination": {
+      "showing": "Mostrando",
+      "perPage": "elementos por página",
+      "footer": "Página {{page}} de {{totalPages}} • {{count}} elementos en total"
+    }
   },
   "modal": {
     "cancel": "Cancelar",

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { Group, Button, Menu, Text, Burger, Divider, useMantineTheme,
          useMantineColorScheme, Avatar, Tooltip } from '@mantine/core';
@@ -20,8 +19,6 @@ const Navbar = ({ opened, toggle }) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { t } = useTranslation('common');
   
-
-  const [hoveredModule, setHoveredModule] = useState(null);
 
   const modules = getNavigationConfig(t);
   const visibleModules = filterModulesBySubItemsPermissions(modules, permissions);
@@ -98,14 +95,11 @@ const Navbar = ({ opened, toggle }) => {
                                     openDelay={100}
                                     closeDelay={200}
                                     withinPortal
-                                    onOpen={() => setHoveredModule(module.id)}
-                                    onClose={() => setHoveredModule(null)}
                                 >
                                     <Menu.Target>
                                         <Menu.Item 
                                             leftSection={<module.icon size={16} color={`var(--mantine-color-${module.color}-6)`} />}
                                             rightSection={<IconChevronRight size={14} />}
-                                            style={{ backgroundColor: hoveredModule === module.id ? 'var(--mantine-color-gray-1)' : undefined }}
                                         >
                                             {module.label}
                                         </Menu.Item>

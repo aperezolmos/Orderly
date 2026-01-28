@@ -7,6 +7,8 @@ import ManagementLayout from './ManagementLayout';
 const FormLayout = ({
   title,
   children,
+  icon,
+  iconColor,
   loading = false,
   error = null,
   onClearError,
@@ -14,7 +16,12 @@ const FormLayout = ({
 }) => {
   
   return (
-    <ManagementLayout title={title} {...managementProps}>
+    <ManagementLayout 
+      title={title} 
+      icon={icon} 
+      iconColor={iconColor} 
+      {...managementProps}
+    >
       <div style={{ position: 'relative' }}>
         <LoadingOverlay visible={loading} blur={2} />
         

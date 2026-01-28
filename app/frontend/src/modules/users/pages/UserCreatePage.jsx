@@ -5,6 +5,7 @@ import UserForm from '../components/UserForm';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useAuth } from '../../../context/AuthContext';
 import { useUsers } from '../hooks/useUsers';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const UserCreatePage = () => {
@@ -19,6 +20,9 @@ const UserCreatePage = () => {
     await createUser(userData);
     navigate('/users', { replace: true });
   };
+  
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'users');
 
   const breadcrumbs = [
     { title: t('users:management.list'), href: '/users' },
@@ -29,6 +33,8 @@ const UserCreatePage = () => {
   return (
     <FormLayout
       title={t('users:management.create')}
+      icon={moduleConfig?.icon}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

@@ -6,9 +6,11 @@ import { IconUser } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
 import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useReservations } from '../hooks/useReservations';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const ReservationListPage = () => {
@@ -18,6 +20,7 @@ const ReservationListPage = () => {
   const { reservations, loading, deleteReservation, loadReservations } = useReservations();
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const pagination = usePagination(reservations, DEFAULT_PAGE_SIZE);
   const { t } = useTranslation(['common', 'reservations']);
 
 
@@ -41,6 +44,9 @@ const ReservationListPage = () => {
       setReservationToDelete(null);
     }
   };
+
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'reservations');
 
   const columns = [
     {
@@ -93,6 +99,8 @@ const ReservationListPage = () => {
     <>
       <ManagementLayout
         title={t('reservations:management.title')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('reservations:management.list'), href: '/reservations' }]}
         showCreateButton={true}
         createButtonLabel={t('reservations:list.newReservation')}
@@ -102,12 +110,13 @@ const ReservationListPage = () => {
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
             <DataTable
               columns={columns}
-              data={reservations}
+              data={pagination.paginatedData}
               onEdit={handleEdit}
               onDelete={handleDelete}
               canEdit={hasPermission(PERMISSIONS.RESERVATION_EDIT)}
               canDelete={hasPermission(PERMISSIONS.RESERVATION_DELETE)}
               loading={loading}
+              paginationProps={pagination}
             />
         </div>
       </ManagementLayout>

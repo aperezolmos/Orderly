@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ProductForm from '../components/ProductForm';
 import { useProducts } from '../hooks/useProducts';
-import { useTranslation } from 'react-i18next';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const ProductEditPage = () => {
@@ -32,6 +33,9 @@ const ProductEditPage = () => {
     navigate('/products', { replace: true });
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'products');
+
   const breadcrumbs = [
     { title: t('products:management.list'), href: '/products' },
     { title: t('products:management.edit'), href: `/products/${id}/edit` }
@@ -42,6 +46,8 @@ const ProductEditPage = () => {
     return (
       <FormLayout
         title={t('products:management.edit')}
+        icon={IconEdit}
+        iconColor={moduleConfig?.color}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -65,6 +71,8 @@ const ProductEditPage = () => {
   return (
     <FormLayout
       title={t('products:management.edit')}
+      icon={IconEdit}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

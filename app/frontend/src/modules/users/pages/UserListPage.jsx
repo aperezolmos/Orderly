@@ -6,9 +6,11 @@ import { IconUser } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
 import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useUsers } from '../hooks/useUsers';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const UserListPage = () => {
@@ -18,6 +20,7 @@ const UserListPage = () => {
   const { users, loading, deleteUser, loadUsers } = useUsers();
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const pagination = usePagination(users, DEFAULT_PAGE_SIZE);
   const { t } = useTranslation(['common', 'users']);
   
 
@@ -45,6 +48,9 @@ const UserListPage = () => {
       setUserToDelete(null);
     }
   };
+
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'users');
 
   const columns = [
     {
@@ -109,6 +115,8 @@ const UserListPage = () => {
     <>
       <ManagementLayout
         title={t('users:management.title')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('users:management.list'), href: '/users' }]}
         showCreateButton={true}
         createButtonLabel={t('users:list.newUser')}
@@ -118,12 +126,13 @@ const UserListPage = () => {
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
             <DataTable
               columns={columns}
-              data={users}
+              data={pagination.paginatedData}
               onEdit={handleEdit}
               onDelete={handleDelete}
               canEdit={hasPermission(PERMISSIONS.USER_EDIT_OTHERS)}
               canDelete={hasPermission(PERMISSIONS.USER_DELETE)}
               loading={loading}
+              paginationProps={pagination}
             />
         </div>
       </ManagementLayout>

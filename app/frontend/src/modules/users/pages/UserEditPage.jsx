@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useAuth } from '../../../context/AuthContext';
 import { useUsers } from '../hooks/useUsers';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const UserEditPage = () => {
@@ -35,6 +36,9 @@ const UserEditPage = () => {
     navigate('/users', { replace: true });
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'users');
+
   const breadcrumbs = [
     { title: t('users:management.list'), href: '/users' },
     { title: t('users:management.edit'), href: `/users/${id}/edit` }
@@ -45,6 +49,8 @@ const UserEditPage = () => {
     return (
       <FormLayout
         title={t('users:management.edit')}
+        icon={IconEdit}
+        iconColor={moduleConfig?.color}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -68,6 +74,8 @@ const UserEditPage = () => {
   return (
     <FormLayout
       title={t('users:management.edit')}
+      icon={IconEdit}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

@@ -5,9 +5,11 @@ import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
 import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useProducts } from '../hooks/useProducts';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const ProductListPage = () => {
@@ -17,6 +19,7 @@ const ProductListPage = () => {
   const { products, loading, deleteProduct, loadProducts } = useProducts();
   const [productToDelete, setProductToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const pagination = usePagination(products, DEFAULT_PAGE_SIZE);
   const { t } = useTranslation(['common', 'products']);
 
 
@@ -44,6 +47,9 @@ const ProductListPage = () => {
       setProductToDelete(null);
     }
   };
+
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'products');
 
   const columns = [
     {
@@ -86,6 +92,8 @@ const ProductListPage = () => {
     <>
       <ManagementLayout
         title={t('products:management.title')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('products:management.list'), href: '/products' }]}
         showCreateButton={true}
         createButtonLabel={t('products:list.newProduct')}
@@ -95,12 +103,13 @@ const ProductListPage = () => {
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
             <DataTable
               columns={columns}
-              data={products}
+              data={pagination.paginatedData}
               onEdit={handleEdit}
               onDelete={handleDelete}
               canEdit={hasPermission(PERMISSIONS.PRODUCT_EDIT)}
               canDelete={hasPermission(PERMISSIONS.PRODUCT_DELETE)}
               loading={loading}
+              paginationProps={pagination}
             />
         </div>
       </ManagementLayout>
