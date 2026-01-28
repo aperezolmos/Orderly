@@ -138,6 +138,34 @@ export const useReservations = () => {
     }
   };
 
+  const updateReservationStatus = async (id, status) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const updated = await reservationService.updateReservationStatus(id, status);
+      setReservations(prev => prev.map(r => r.id === id ? updated : r));
+      setCurrentReservation(updated);
+      notifications.show({
+        title: t('common:app.success'),
+        message: t('reservations:notifications.updateSuccess'),
+        color: 'green',
+      });
+      return updated;
+    }
+    catch (err) {
+      setError(err.message);
+      notifications.show({
+        title: t('reservations:notifications.updateError'),
+        message: err.message,
+        color: 'red',
+      });
+      throw err;
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
 
   const clearCurrentReservation = () => setCurrentReservation(null);
   const clearError = () => setError(null);
@@ -153,6 +181,7 @@ export const useReservations = () => {
     createReservation,
     updateReservation,
     deleteReservation,
+    updateReservationStatus,
     clearCurrentReservation,
     clearError,
   };

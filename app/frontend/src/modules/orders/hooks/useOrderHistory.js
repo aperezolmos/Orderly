@@ -4,8 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { orderService } from '../../../services/backend/orderService';
 
 
-const PAGE_SIZE = 15;
-
 export const ORDER_HISTORY_VIEW = {
   ALL: 'all',
   BAR: 'bar',
@@ -23,9 +21,6 @@ export function useOrderHistory() {
   // Detail states (Modal)
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
-
-  // Pagination
-  const [activePage, setActivePage] = useState(1);
   const { t } = useTranslation(['orders', 'common']);
 
 
@@ -42,7 +37,8 @@ export function useOrderHistory() {
         data = await orderService.getDiningOrders();
       }
       setOrders(Array.isArray(data) ? data : []);
-    } catch (err) {
+    } 
+    catch (err) {
       setError(err.message);
       setOrders([]);
       notifications.show({
@@ -50,25 +46,24 @@ export function useOrderHistory() {
         message: err.message,
         color: 'red',
       });
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   }, [view, t]);
 
+
   useEffect(() => {
     fetchOrders(view);
-    setActivePage(1);
   }, [view, fetchOrders]);
 
   
   const fetchOrderDetails = useCallback(async (order) => {
-    setSelectedOrder(null); // Clean previous order
+    setSelectedOrder(null);
     setLoadingDetails(true);
-    
     try {
       let fullOrder = null;
       const orderType = (order.orderType || '').toLowerCase();
-      
       if (orderType === 'bar') {
         fullOrder = await orderService.getBarOrderById(order.id);
       } else if (orderType === 'dining') {
@@ -84,34 +79,20 @@ export function useOrderHistory() {
         message: err.message,
         color: 'red',
       });
-      setSelectedOrder(null);
     } 
     finally {
       setLoadingDetails(false);
     }
   }, [t]);
-  
-
-  // Pagination
-  const totalPages = Math.max(1, Math.ceil(orders.length / PAGE_SIZE));
-  const paginatedOrders = orders.slice((activePage - 1) * PAGE_SIZE, activePage * PAGE_SIZE);
 
 
   return {
-    // List
-    orders: paginatedOrders,
+    orders,
     loading,
     error,
     view,
     setView,
-    activePage,
-    setActivePage,
-    totalPages,
-    PAGE_SIZE,
-    allOrdersCount: orders.length,
     refetch: () => fetchOrders(view),
-    
-    // Details
     selectedOrder,
     loadingDetails,
     fetchOrderDetails,

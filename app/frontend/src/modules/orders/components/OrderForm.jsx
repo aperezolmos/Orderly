@@ -4,7 +4,7 @@ import { TextInput, Textarea, Select, Checkbox,
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
-import { reservationService } from '../../../services/backend/reservationService';
+import { diningTableService } from '../../../services/backend/diningTableService';
 import { useAuth } from '../../../context/AuthContext';
 import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
 import UniqueTextField from '../../../common/components/UniqueTextField';
@@ -35,7 +35,7 @@ const OrderForm = ({
   useEffect(() => {
     if (orderType === 'dining') {
       setLoadingTables(true);
-      reservationService.getActiveTables()
+      diningTableService.getActiveTables()
         .then(setTables)
         .catch(() => setTables([]))
         .finally(() => setLoadingTables(false));

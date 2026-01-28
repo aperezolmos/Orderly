@@ -60,10 +60,11 @@ const FoodListPage = () => {
       title: t('foods:list.name'),
       render: (food) => (
         <Button
-          variant="subtle"
+          variant="transparent"
           color="blue"
           onClick={() => { setSelectedFood(food); openModal(); }}
           style={{ padding: 0, fontWeight: 500 }}
+          title={t('common:form.details')}
         >
           {food.name}
         </Button>

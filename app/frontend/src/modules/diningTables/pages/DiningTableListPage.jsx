@@ -11,13 +11,20 @@ import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useDiningTables } from '../hooks/useDiningTables';
 import { getNavigationConfig } from '../../../utils/navigationConfig';
+import StatusButton from '../../../common/components/StatusButton';
 
 
 const DiningTableListPage = () => {
   
   const navigate = useNavigate();
   const { hasPermission } = useAuth();
-  const { tables, loading, deleteTable, loadTables } = useDiningTables();
+  const { 
+    tables, 
+    loading, 
+    loadTables,
+    deleteTable, 
+    updateTableStatus
+  } = useDiningTables();
   const [tableToDelete, setTableToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const pagination = usePagination(tables, DEFAULT_PAGE_SIZE);
@@ -83,13 +90,20 @@ const DiningTableListPage = () => {
       )
     },
     {
-      key: 'isActive',
+      key: 'status',
       title: t('diningTables:list.isActive'),
-      render: (table) => (
-        <Badge color={table.isActive ? 'green' : 'gray'} variant="light">
-          {table.isActive ? t('diningTables:list.active') : t('diningTables:list.inactive')}
-        </Badge>
-      )
+      render: (table) => {
+        const currentStatus = table.isActive ? 'ACTIVE' : 'INACTIVE';
+        return (
+          <StatusButton
+            module="diningTables"
+            currentStatus={currentStatus}
+            size="sm"
+            onChange={(newStatus) => updateTableStatus(table.id, newStatus)}
+            disabled={loading}
+          />
+        );
+      }
     },
     {
       key: 'createdAt',

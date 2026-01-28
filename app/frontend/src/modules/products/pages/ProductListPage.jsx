@@ -61,7 +61,13 @@ const ProductListPage = () => {
       key: 'name',
       title: t('products:list.name'),
       render: (product) => (
-        <Button variant="subtle" onClick={() => handleView(product)}>
+        <Button 
+          variant="transparent"
+          color="blue"
+          onClick={() => handleView(product)}
+          style={{ padding: 0, fontWeight: 500 }}
+          title={t('products:management.view')}
+        >
           {product.name}
         </Button>
       )

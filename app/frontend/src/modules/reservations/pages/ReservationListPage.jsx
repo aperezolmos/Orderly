@@ -11,13 +11,20 @@ import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useReservations } from '../hooks/useReservations';
 import { getNavigationConfig } from '../../../utils/navigationConfig';
+import StatusButton from '../../../common/components/StatusButton';
 
 
 const ReservationListPage = () => {
   
   const navigate = useNavigate();
   const { hasPermission } = useAuth();
-  const { reservations, loading, deleteReservation, loadReservations } = useReservations();
+  const { 
+    reservations, 
+    loading,
+    loadReservations,
+    deleteReservation, 
+    updateReservationStatus
+  } = useReservations();
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const pagination = usePagination(reservations, DEFAULT_PAGE_SIZE);
@@ -62,11 +69,15 @@ const ReservationListPage = () => {
     {
       key: 'status',
       title: t('reservations:list.status'),
-      render: (r) => (
-        <Badge color={r.status === 'CONFIRMED' ? 'blue' : r.status === 'SEATED' ? 'green' : r.status === 'COMPLETED' ? 'gray' : 'red'}>
-          {t(`reservations:status.${r.status}`)}
-        </Badge>
-      )
+      render: (reservation) => (
+        <StatusButton
+          module="reservations"
+          currentStatus={reservation.status}
+          size="sm"
+          onChange={(newStatus) => updateReservationStatus(reservation.id, newStatus)}
+          disabled={loading}
+        />
+      ),
     },
     {
       key: 'guest',
@@ -128,7 +139,7 @@ const ReservationListPage = () => {
         size="sm"
       >
         <Text mb="md">
-          {t('common:modal.messageDelete', { id: reservationToDelete?.id })}
+          {t('common:modal.messageDeleteWithId', { id: reservationToDelete?.id })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>

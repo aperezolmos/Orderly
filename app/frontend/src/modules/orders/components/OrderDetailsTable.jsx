@@ -5,7 +5,7 @@ import { IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { formatCurrency } from '../../../utils/formatters';
 import { useOrderDashboardStore } from '../store/orderDashboardStore';
-import OrderStatusButton from './elements/OrderStatusButton';
+import StatusButton from '../../../common/components/StatusButton';
 
 
 const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
@@ -91,10 +91,12 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
             {orderToShow.customerName || t('orders:list.customerName')}
           </Text>
         </div>
-        <OrderStatusButton
+        <StatusButton
+          module="orders"
           currentStatus={orderToShow.status}
           onChange={handleChangeStatus}
           disabled={isUpdatingStatus || viewOnly}
+          size="md"
         />
       </Group>
       

@@ -2,7 +2,7 @@
   "management": {
     "title": "Order Management",
     "dashboard": "Order Dashboard",
-    "list": "Orders",
+    "history": "Orders History",
     "bar": "Bar Orders",
     "dining": "Dining Orders",
     "create": "Create Order",

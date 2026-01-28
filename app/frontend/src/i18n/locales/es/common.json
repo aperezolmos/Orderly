@@ -17,6 +17,7 @@
     "reload": "Recargar",
     "pleaseWait": "Por favor, espera mientras la carga se completa",
     "completed": "Carga completada",
+    "general": "General",
     "others": "Otros"
   },
   "hero": {
@@ -117,7 +118,8 @@
     "confirm": "Confirmar",
     "delete": "Eliminar",
     "titleDelete": "Confirmar eliminación",
-    "messageDelete": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer"
+    "messageDelete": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer",
+    "messageDeleteWithId": "¿Estás seguro de que quieres eliminar el elemento con id \"#{{id}}\"? Esta acción no se puede deshacer"
   },
   "error": {
     "generic": "Error",
@@ -144,7 +146,8 @@
     "reset": "Restablecer",
     "optional": "Opcional",
     "basicInfo": "Información básica",
-    "selectAll": "Seleccionar todos"
+    "selectAll": "Seleccionar todos",
+    "details": "Detalles"
   },
   "status": {
     "active": "Activo",

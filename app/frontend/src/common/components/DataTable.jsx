@@ -25,33 +25,43 @@ const DataTable = ({
   }));
 
   const rows = data.map((item) => (
-    <tr key={item.id}>
+    <Table.Tr key={item.id}>
       {columns.map((column) => (
-        <td key={column.key}>
+        <Table.Td key={column.key}>
           {column.render ? column.render(item) : item[column.key]}
-        </td>
+        </Table.Td>
       ))}
       {actions && (
-        <td>
-          <Group spacing="xs" position="right">
-            <ActionIcon color="blue" onClick={() => onEdit(item)} disabled={loading || !canEdit}>
-              <IconEdit size="1rem" />
+        <Table.Td>
+          <Group gap="xs" justify="flex-start">
+            <ActionIcon 
+              variant="subtle" 
+              color="blue" 
+              onClick={() => onEdit(item)} 
+              disabled={loading || !canEdit}
+            >
+              <IconEdit size="1.2rem" />
             </ActionIcon>
-            <ActionIcon color="red" onClick={() => onDelete(item)} disabled={loading || !canDelete}>
-              <IconTrash size="1rem" />
+            <ActionIcon 
+              variant="subtle" 
+              color="red" 
+              onClick={() => onDelete(item)} 
+              disabled={loading || !canDelete}
+            >
+              <IconTrash size="1.2rem" />
             </ActionIcon>
           </Group>
-        </td>
+        </Table.Td>
       )}
-    </tr>
+    </Table.Tr>
   ));
 
   
   return (
-    <Stack spacing="md">
+    <Stack gap="md">
 
       {paginationProps && (
-        <Group gap="xs" align="center" justify="flex-end" mb="md">
+        <Group gap="xs" justify="flex-end">
           <Text size="xs" c="dimmed" fs="italic">{t('common:data.pagination.showing')}</Text>
           <Select
             size="xs"
@@ -59,35 +69,48 @@ const DataTable = ({
             value={paginationProps.pageSize.toString()}
             onChange={(val) => paginationProps.setPageSize(Number(val))}
             styles={{
-              input: { width: '60px', textAlign: 'center' }
+              input: { width: '60px', textalign: 'center' }
             }}
           />
           <Text size="xs" c="dimmed" fs="italic">{t('common:data.pagination.perPage')}</Text>
         </Group>
       )}
       
-      <Table striped highlightOnHover>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column.key}>{column.title}</th>
-            ))}
-            {actions && <th style={{ width: '100px' }}>{t('common:navigation.actions')}</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.length > 0 ? rows : (
-            <tr>
-              <td colSpan={columns.length + (actions ? 1 : 0)}>
-                <Text align="center" color="dimmed" py="xl">{t('common:app.noData')}</Text>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
+      <Table.ScrollContainer minWidth={800}>
+        <Table 
+          striped 
+          highlightOnHover 
+          withTableBorder
+          horizontalSpacing="sm"
+        >
+          <Table.Thead>
+            <Table.Tr>
+              {columns.map((column) => (
+                <Table.Th key={column.key}>{column.title}</Table.Th>
+              ))}
+              {actions && (
+                <Table.Th style={{ width: '100px' }}>
+                  <Text size="sm" fw={700} textAlign="right">
+                    {t('common:navigation.actions')}
+                  </Text>
+                </Table.Th>
+              )}
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {rows.length > 0 ? rows : (
+              <Table.Tr>
+                <Table.Td colSpan={columns.length + (actions ? 1 : 0)}>
+                  <Text align="center" c="dimmed" py="xl">{t('common:app.noData')}</Text>
+                </Table.Td>
+              </Table.Tr>
+            )}
+          </Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
 
       {paginationProps && (
-        <Stack align="center" mt="xl">
+        <Stack align="center">
           <Pagination 
             total={paginationProps.totalPages} 
             value={paginationProps.activePage} 
@@ -96,7 +119,7 @@ const DataTable = ({
             radius="md"
             withEdges
           />
-          <Text size="xs" color="dimmed" mt={4}>
+          <Text size="xs" color="dimmed">
             {t('common:data.pagination.footer', {
               page: paginationProps.activePage,
               totalPages: paginationProps.totalPages,

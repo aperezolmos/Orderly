@@ -17,6 +17,7 @@
     "reload": "Reload",
     "pleaseWait": "Please wait while the loading process completes",
     "completed": "Load completed",
+    "general": "General",
     "others": "Others"
   },
   "hero": {
@@ -117,7 +118,8 @@
     "confirm": "Confirm",
     "delete": "Delete",
     "titleDelete": "Confirm deletion",
-    "messageDelete": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone"
+    "messageDelete": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone",
+    "messageDeleteWithId": "Are you sure you want to delete element with \"{{id}}\"? This action cannot be undone"
   },
   "error": {
     "generic": "Error",
@@ -144,7 +146,8 @@
     "reset": "Reset",
     "optional": "Optional",
     "basicInfo": "Basic Information",
-    "selectAll": "Select all"
+    "selectAll": "Select all",
+    "details": "Details"
   },
   "status": {
     "active": "Active",

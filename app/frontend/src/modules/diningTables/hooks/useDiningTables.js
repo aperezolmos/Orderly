@@ -137,6 +137,34 @@ export const useDiningTables = () => {
       setLoading(false);
     }
   };
+
+  const updateTableStatus = async (id, status) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const updatedTable = await diningTableService.updateTableStatus(id, status);
+      setTables(prev => prev.map(table => table.id === id ? updatedTable : table));
+      setCurrentTable(updatedTable);
+      notifications.show({
+        title: t('common:app.success'),
+        message: t('diningTables:notifications.updateSuccess'),
+        color: 'green',
+      });
+      return updatedTable;
+    }
+    catch (err) {
+      setError(err.message);
+      notifications.show({
+        title: t('diningTables:notifications.updateError'),
+        message: err.message,
+        color: 'red',
+      });
+      throw err;
+    }
+    finally {
+      setLoading(false);
+    }
+  };
   
 
   const clearCurrentTable = () => setCurrentTable(null);
@@ -153,6 +181,7 @@ export const useDiningTables = () => {
     createTable,
     updateTable,
     deleteTable,
+    updateTableStatus,
     clearCurrentTable,
     clearError,
   };

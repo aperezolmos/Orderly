@@ -2,7 +2,7 @@
   "management": {
     "title": "Gestión de Pedidos",
     "dashboard": "Panel de Pedidos",
-    "list": "Pedidos",
+    "history": "Historial de Pedidos",
     "bar": "Pedidos de Barra",
     "dining": "Pedidos de Comedor",
     "create": "Crear Pedido",

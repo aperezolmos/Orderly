@@ -1,11 +1,13 @@
-import { useCallback, useState } from 'react';
-import { Button, Group, Pagination, Paper, Title, Space,
-         Container, Modal, Loader, Center, Box } from '@mantine/core';
+import { useCallback, useState, useMemo } from 'react';
+import { Button, Group, Paper, Title, Container, Modal, Loader, Center, Box, Text, Badge } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { IconShoppingCartSearch } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
-import OrderHistoryTable from '../components/OrderHistoryTable';
+import DataTable from '../../../common/components/DataTable';
+import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
 import OrderDetailsTable from '../components/OrderDetailsTable';
 import { useOrderHistory, ORDER_HISTORY_VIEW } from '../hooks/useOrderHistory';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const viewButtons = [
@@ -14,6 +16,16 @@ const viewButtons = [
   { key: ORDER_HISTORY_VIEW.DINING, color: 'orange' },
 ];
 
+const statusColors = {
+  PENDING: 'yellow',
+  IN_PROGRESS: 'blue',
+  READY: 'teal',
+  SERVED: 'green',
+  PAID: 'gray',
+  CANCELLED: 'red',
+};
+
+
 export default function OrderHistoryPage() {
   
   const {
@@ -21,48 +33,90 @@ export default function OrderHistoryPage() {
     loading,
     view,
     setView,
-    activePage,
-    setActivePage,
-    totalPages,
-    allOrdersCount,
     refetch,
     selectedOrder,
     loadingDetails,
     fetchOrderDetails,
   } = useOrderHistory();
   const [modalOpen, setModalOpen] = useState(false);
+  const pagination = usePagination(orders, DEFAULT_PAGE_SIZE);
   const { t } = useTranslation(['orders', 'common']);
-
   
+
   const handleOrderNumberClick = useCallback((order) => {
     setModalOpen(true);
     fetchOrderDetails(order);
   }, [fetchOrderDetails]);
 
-  const breadcrumbs = [
-    { title: t('orders:management.dashboard'), href: '/orders' },
-    { title: t('orders:management.list'), href: '/orders/history' },
-  ];
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'orders');
+  
+  const columns = useMemo(() => [
+    {
+      key: 'orderNumber',
+      title: t('orders:list.orderNumber'),
+      render: (order) => (
+        <Button
+          variant="transparent"
+          color="blue"
+          onClick={() => handleOrderNumberClick(order)}
+          style={{ padding: 0, fontWeight: 500 }}
+          title={t('orders:management.view')}
+        >
+          #{order.orderNumber}
+        </Button>
+      )
+    },
+    {
+      key: 'createdAt',
+      title: t('orders:list.created'),
+      render: (order) => order.createdAt ? new Date(order.createdAt).toLocaleString() : '-'
+    },
+    {
+      key: 'tableName',
+      title: t('orders:list.table'),
+      render: (order) => order.tableName || (order.tableId ? order.tableId : '-')
+    },
+    {
+      key: 'status',
+      title: t('orders:list.status'),
+      render: (order) => (
+        <Badge color={statusColors[order.status] || 'gray'}>
+          {t(`orders:status.${order.status}`, order.status)}
+        </Badge>
+      )
+    },
+    {
+      key: 'orderType',
+      title: t('orders:list.type'),
+      render: (order) => t(`orders:types.${(order.orderType || '').toLowerCase()}`, order.orderType)
+    }
+  ], [t, handleOrderNumberClick]);
 
 
   return (
     <ManagementLayout
-      title={t('orders:management.list')}
-      breadcrumbs={breadcrumbs}
+      title={t('orders:management.history')}
+      icon={IconShoppingCartSearch}
+      iconColor={moduleConfig?.color}
+      breadcrumbs={[{ title: t('orders:management.history'), href: '/orders/history' }]}
       showBackButton={true}
     >
-      <Container size="lg" px={0}>
+      <Container size="xl" px={0}>
         <Group mb="md">
           {viewButtons.map(btn => (
             <Button
               key={btn.key}
               color={btn.color}
               variant={view === btn.key ? 'filled' : 'outline'}
-              onClick={() => setView(btn.key)}
+              onClick={() => {
+                setView(btn.key);
+                pagination.setPage(1);
+              }}
             >
               {t(
                 btn.key === ORDER_HISTORY_VIEW.ALL
-                  ? 'orders:management.list'
+                  ? 'common:app.general'
                   : btn.key === ORDER_HISTORY_VIEW.BAR
                   ? 'orders:management.bar'
                   : 'orders:management.dining'
@@ -70,39 +124,17 @@ export default function OrderHistoryPage() {
             </Button>
           ))}
           <Button variant="subtle" onClick={refetch} ml="auto">
-            {t('common:app.reload', { defaultValue: 'Reload' })}
+            {t('common:app.reload')}
           </Button>
         </Group>
-        <Paper shadow="xs" p="md" withBorder>
-          <OrderHistoryTable
-            orders={orders}
-            loading={loading}
-            onOrderNumberClick={handleOrderNumberClick}
-          />
-          <Space h="md" />
-          {totalPages > 1 && (
-            <Group justify="center" mt="md">
-              <Pagination
-                value={activePage}
-                onChange={setActivePage}
-                total={totalPages}
-                withEdges
-                size="md"
-              />
-            </Group>
-          )}
-          <Group justify="center" mt="xs">
-            <span style={{ color: '#888', fontSize: 13 }}>
-              {t('orders:dashboard.pageFooter', {
-                page: activePage,
-                totalPages,
-                count: orders.length,
-              })}
-              {' '}
-              • {t('common:data.total', { count: allOrdersCount, defaultValue: `Total: ${allOrdersCount}` })}
-            </span>
-          </Group>
-        </Paper>
+
+        <DataTable
+          columns={columns}
+          data={pagination.paginatedData}
+          loading={loading}
+          actions={false}
+          paginationProps={pagination}
+        />
       </Container>
 
       <Modal
@@ -111,7 +143,6 @@ export default function OrderHistoryPage() {
         title={t('orders:management.orderDetails')}
         size="xl"
         centered
-        withCloseButton
         overlayProps={{ blur: 2 }}
         styles={{
           body: { padding: 30 },
@@ -119,9 +150,7 @@ export default function OrderHistoryPage() {
       >
         <Box mih={400}>
           {loadingDetails ? (
-            <Center h={400}>
-              <Loader size="xl" type="oval" /> 
-            </Center>
+            <Center h={400}><Loader size="xl" /></Center>
           ) : selectedOrder ? (
             <OrderDetailsTable
               viewOnly={true}
