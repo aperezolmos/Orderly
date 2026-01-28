@@ -90,7 +90,7 @@ const DataTable = ({
               ))}
               {actions && (
                 <Table.Th style={{ width: '100px' }}>
-                  <Text size="sm" fw={700} textAlign="right">
+                  <Text size="sm" fw={700} ta="right">
                     {t('common:navigation.actions')}
                   </Text>
                 </Table.Th>
@@ -101,7 +101,7 @@ const DataTable = ({
             {rows.length > 0 ? rows : (
               <Table.Tr>
                 <Table.Td colSpan={columns.length + (actions ? 1 : 0)}>
-                  <Text align="center" c="dimmed" py="xl">{t('common:app.noData')}</Text>
+                  <Text align="center" c="dimmed" py="xl">{t('common:data.noData')}</Text>
                 </Table.Td>
               </Table.Tr>
             )}

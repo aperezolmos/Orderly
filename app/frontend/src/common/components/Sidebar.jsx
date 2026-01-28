@@ -119,7 +119,7 @@ const Sidebar = ({ closeMobile }) => {
                 </Avatar>
                 <div style={{ flex: 1, overflow: 'hidden' }}>
                   <Text size="sm" fw={500} truncate>{user?.username}</Text>
-                  <Text c="dimmed" size="xs" truncate>{user?.email || 'User'}</Text>
+                  <Text c="dimmed" size="xs" truncate>{user?.email || t('common:navigation.user')}</Text>
                 </div>
                 <IconChevronRight style={{ width: rem(14), height: rem(14) }} stroke={1.5} />
               </Group>

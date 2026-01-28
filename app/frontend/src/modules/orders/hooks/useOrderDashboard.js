@@ -20,7 +20,6 @@ export function useOrderDashboard() {
   
   const {
     orderType,
-    activePage,
     fetchOrders,
     fetchProducts,
   } = useOrderDashboardStore();
@@ -40,7 +39,6 @@ export function useOrderDashboard() {
       } 
       catch (error) {
         console.error('Error loading orders:', error);
-        // TODO: borrar. Error ya mostrado en la notificación
       }
     };
 
@@ -55,15 +53,14 @@ export function useOrderDashboard() {
         await showProgressNotification(
           'products_load_init',
           'orders:notifications.loadingProducts',
-          () => fetchProducts(activePage)
+          () => fetchProducts()
         );
       } 
       catch (error) {
         console.error('Error loading products:', error);
-        // TODO: borrar. Error ya mostrado en la notificación
       }
     };
 
     loadProducts();
-  }, [activePage]); // Triggers when the page changes
+  }, []);
 }

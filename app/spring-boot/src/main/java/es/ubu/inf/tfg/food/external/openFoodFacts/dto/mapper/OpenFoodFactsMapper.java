@@ -45,7 +45,7 @@ public class OpenFoodFactsMapper {
         
         return FoodRequestDTO.builder()
             .name(name)
-            .foodGroup(FoodGroup.COMBINATION) // TODO: se deja así de momento
+            .foodGroup(FoodGroup.COMBINATION)
             .servingWeightGrams(BigDecimal.valueOf(100))
             .allergenInfo(extractAllergenInfoDTO(offDto))
             .nutritionInfo(nutritionInfo)

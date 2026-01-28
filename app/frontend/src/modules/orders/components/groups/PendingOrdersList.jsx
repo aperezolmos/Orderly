@@ -47,7 +47,7 @@ const PendingOrdersList = () => {
 
   return (
     <ScrollArea h={350}>
-      <Stack gap="xs">
+      <Stack gap="xs" mb="xs">
         {orders.map((order) => (
           <PendingOrdersItem
             key={order.id}

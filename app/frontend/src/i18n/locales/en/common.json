@@ -40,6 +40,7 @@
   "navigation": {
     "main": "Home",
     "profile": "Profile",
+    "user": "User",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
@@ -55,31 +56,38 @@
     "dashboard": "Dashboard",
     "users": {
       "name": "Users",
-      "description": "Manage users and assign system permissions"
+      "description": "Manage users and assign system permissions",
+      "descriptionLong": "Manage users and assign them custom roles tailored to their occupation, ensuring secure access to the system"
     },
     "roles": {
       "name": "Roles",
-      "description": "Configure user roles and permissions"
+      "description": "Configure user roles and permissions",
+      "descriptionLong": "Limit the actions users can perform in the app by configuring specific roles and permissions associated with each module"
     },
     "foods": {
       "name": "Foods",
-      "description": "Manage food items and categories"
+      "description": "Manage food items and categories",
+      "descriptionLong": "Manage the ingredients that make up your dishes and associate detailed nutritional information with external API support"
     },
     "products": {
       "name": "Products",
-      "description": "Handle product catalog"
+      "description": "Handle product catalog",
+      "descriptionLong": "Create a catalog of the products offered in your store, automatically calculate their nutritional components, and view informative graphs"
     },
     "tables": {
       "name": "Tables",
-      "description": "Manage dining tables and availability"
+      "description": "Manage dining tables and availability",
+      "descriptionLong": "Manage your establishment's tables, define their seating capacity, and control which tables are available for reservations or orders."
     },
     "reservations": {
       "name": "Reservations",
-      "description": "Handle table reservations"
+      "description": "Handle table reservations",
+      "descriptionLong": "Store table booking information with automatic availability checks and view a history of past bookings"
     },
     "orders": {
       "name": "Orders",
-      "description": "View and manage customer orders"
+      "description": "View and manage customer orders",
+      "descriptionLong": "Add products and modify quantities with automatic price calculation, modify statuses and switch between bar or dining view"
     }
   },
   "userMenu": {

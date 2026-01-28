@@ -88,7 +88,7 @@ export const Hero = () => {
 
                   <Text fw={600}>{module.label}</Text>
                   <Text size="sm" c="dimmed" maw={300}>
-                    {module.description}
+                    {module.descriptionLong}
                   </Text>
                 </Stack>
               );

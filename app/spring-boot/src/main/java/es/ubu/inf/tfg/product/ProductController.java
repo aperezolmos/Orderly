@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.product;
 
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
 import es.ubu.inf.tfg.product.ingredient.dto.IngredientRequestDTO;
@@ -63,6 +64,13 @@ public class ProductController {
             products = productService.findAll();
         }
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter-safe")
+    @PreAuthorize("hasAuthority('PRODUCT_VIEW_LIST')")
+    public ResponseEntity<List<ProductResponseDTO>> getSafeProducts(
+            @RequestParam List<Allergen> exclude) {
+        return ResponseEntity.ok(productService.findByExcludingAllergens(exclude));
     }
 
     @PostMapping

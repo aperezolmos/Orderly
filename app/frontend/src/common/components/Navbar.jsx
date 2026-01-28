@@ -143,7 +143,7 @@ const Navbar = ({ opened, toggle }) => {
                       variant="subtle" 
                       leftSection={
                         <Avatar size="sm" radius="xl" color="blue">
-                          <IconUser size={16}/>
+                          {user?.username?.charAt(0).toUpperCase()}
                         </Avatar>
                       } 
                       rightSection={<IconChevronDown size={12}/>}

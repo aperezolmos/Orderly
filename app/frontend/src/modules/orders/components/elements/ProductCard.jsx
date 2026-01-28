@@ -9,37 +9,6 @@ const ProductCard = ({ product, onSelect }) => {
   
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  const { t } = useTranslation(['orders']);
-
-
-  const getCategoryIcon = (category) => {
-    switch (category?.toLowerCase()) {
-      case 'drink':
-        return <IconGlass size={16} />;
-      case 'food':
-        return <IconChefHat size={16} />;
-      case 'dessert':
-        return <IconShoppingCartPlus size={16} />;
-      default:
-        return <IconChefHat size={16} />;
-    }
-  };
-
-  const getCategoryColor = (category) => {
-    switch (category?.toLowerCase()) {
-      case 'drink':
-        return 'blue';
-      case 'food':
-        return 'orange';
-      case 'dessert':
-        return 'pink';
-      default:
-        return 'gray';
-    }
-  };
-
-  // TODO: Assuming product.category exists and is 'food', 'drink', etc.
-  const categoryKey = product.category ? product.category.toLowerCase() : 'food';
 
 
   const boxShadowIdle = colorScheme === 'dark' 
@@ -75,14 +44,7 @@ const ProductCard = ({ product, onSelect }) => {
         e.currentTarget.style.boxShadow = boxShadowIdle;
       }}
     >
-      <Group justify="apart" align="start" mb="xs">
-        <Badge
-          leftSection={getCategoryIcon(categoryKey)}
-          color={getCategoryColor(categoryKey)}
-          variant="light"
-        >
-          {t(`orders:types.${categoryKey}`, categoryKey)}
-        </Badge>
+      <Group justify="flex-start" mb="xs">
         <ActionIcon
           variant="filled"
           color="green"
@@ -101,7 +63,7 @@ const ProductCard = ({ product, onSelect }) => {
       <Text size="sm" c="dimmed" lineClamp={2} style={{ flexGrow: 1 }}>
         {product.description}
       </Text>
-      <Group justify="apart" mt="md" style={{ marginTop: 'auto' }}>
+      <Group justify="flex-end" mt="md" style={{ marginTop: 'auto' }}>
         <Text fw={700} size="xl" c="green">
           {formatCurrency(product.price)}
         </Text>

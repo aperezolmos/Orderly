@@ -45,9 +45,8 @@ export const useOrderDashboardStore = create((set, get) => ({
 
   // PRODUCT STATES
   products: [],
-  activePage: 1,
-  totalPages: 1,
   isLoadingProducts: false,
+  allergenFilter: [],
 
 
 
@@ -386,27 +385,17 @@ export const useOrderDashboardStore = create((set, get) => ({
   // =============================
 
   /**
-   * Load products (pagination)
+   * Load products filtered by allergens
+   * @param {Array<string>} allergens - Allergens to exclude
    */
-  fetchProducts: async (page = 1, itemsPerPage = 12) => {
+  fetchFilteredProducts: async (allergens = get().allergenFilter) => {
     set({ isLoadingProducts: true });
     try {
-      const res = await productService.getProducts();
-      const products = Array.isArray(res) ? res : [];
-      const totalPages = Math.ceil(products.length / itemsPerPage);
-      const paginatedProducts = products.slice(
-        (page - 1) * itemsPerPage,
-        page * itemsPerPage
-      );
-      
-      set({
-        products: paginatedProducts,
-        activePage: page,
-        totalPages: Math.max(1, totalPages),
-      });
+      const products = await productService.getSafeProducts(allergens);
+      set({ products: Array.isArray(products) ? products : [] });
     } 
     catch (error) {
-      set({ products: [], activePage: 1, totalPages: 1 });
+      set({ products: [] });
       throw error;
     } 
     finally {
@@ -415,9 +404,14 @@ export const useOrderDashboardStore = create((set, get) => ({
   },
 
   /**
-   * Change product page (and load)
+   * Modifies selected allergens for the filter
    */
-  setActivePage: async (page) => {
-    await get().fetchProducts(page);
+  setAllergenFilter: (allergens) => set({ allergenFilter: allergens }),
+
+  /**
+   * Initial load (without allergen filter)
+   */
+  fetchProducts: async () => {
+    await get().fetchFilteredProducts([]);
   },
 }));

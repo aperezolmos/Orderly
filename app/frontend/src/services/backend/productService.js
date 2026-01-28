@@ -12,6 +12,11 @@ export const productService = {
     if (includeIngredients) params.includeIngredients = true;
     return apiClient.get(url, Object.keys(params).length ? params : undefined);
   },
+
+  getSafeProducts: async (allergensToExclude) => {
+    const params = { exclude: (allergensToExclude || []).join(',') };
+    return apiClient.get('/products/filter-safe', params);
+  },
   
   createProduct: async (productData) => apiClient.post('/products', productData),
   updateProduct: async (id, productData) => apiClient.put(`/products/${id}`, productData),

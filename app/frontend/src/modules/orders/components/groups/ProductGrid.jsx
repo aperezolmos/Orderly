@@ -3,65 +3,87 @@ import { useTranslation } from 'react-i18next';
 import ProductCard from '../elements/ProductCard';
 import ProductCardSkeleton from '../elements/ProductCardSkeleton';
 import { useOrderDashboardStore } from '../../store/orderDashboardStore';
+import ProductAllergenFilter from '../elements/ProductAllergenFilter';
+import { usePagination } from '../../../../common/hooks/usePagination';
+
+
+const PAGE_SIZE = 12;
 
 
 const ProductGrid = () => {
   
   const {
     products,
-    activePage,
-    totalPages,
     isLoadingProducts,
-    setActivePage,
-    addProductToOrder,
+    allergenFilter,
+    setAllergenFilter,
+    fetchFilteredProducts,
   } = useOrderDashboardStore();
   const { t } = useTranslation(['orders']);
 
-
-  const skeletonCount = 8;
+  
+  const pagination = usePagination(products, PAGE_SIZE);
+  const skeletonCount = PAGE_SIZE;
 
 
   return (
-    <div className="product-grid">
-      <Grid gutter="md">
-        {isLoadingProducts
-          ? // Show skeletons while loading
-            Array.from({ length: skeletonCount }).map((_, i) => (
-              <Grid.Col key={`skeleton-${i}`} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
-                <ProductCardSkeleton />
-              </Grid.Col>
-            ))
-          : // Show actual products
-            products.map((product) => (
-              <Grid.Col key={product.id} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
-                <ProductCard
-                  product={product}
-                  onSelect={() => addProductToOrder(product)}
-                />
-              </Grid.Col>
-            ))}
-      </Grid>
-      {!isLoadingProducts && totalPages > 1 && (
-        <Group justify="center" mt="xl">
-          <Pagination
-            value={activePage}
-            onChange={setActivePage}
-            total={totalPages}
-            withEdges
-          />
-        </Group>
-      )}
-      {!isLoadingProducts && (
-        <Group justify="center" mt="md">
-          <Text size="sm" c="dimmed">
-            {t('orders:dashboard.pageFooter', {
-              page: activePage,
-              totalPages,
-              count: products.length,
-            })}
-          </Text>
-        </Group>
-      )}
+    <div className="product-grid" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      
+      <Group justify="flex-end" mb="md">
+        <ProductAllergenFilter
+          value={allergenFilter}
+          onChange={setAllergenFilter}
+          onFilter={() => fetchFilteredProducts()}
+          loading={isLoadingProducts}
+        />
+      </Group>
+
+      <div style={{ flex: 1 }}>
+        <Grid gutter="md">
+          {isLoadingProducts
+            ? // Show skeletons while loading
+              Array.from({ length: skeletonCount }).map((_, i) => (
+                <Grid.Col key={`skeleton-${i}`} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
+                  <ProductCardSkeleton />
+                </Grid.Col>
+              ))
+            : // Show actual products
+              pagination.paginatedData.map((product) => (
+                <Grid.Col key={product.id} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
+                  <ProductCard
+                    product={product}
+                    onSelect={() => useOrderDashboardStore.getState().addProductToOrder(product)}
+                  />
+                </Grid.Col>
+              ))}
+        </Grid>
+      </div>
+      
+
+      <div style={{ marginTop: 'auto' }}>
+        {!isLoadingProducts && pagination.totalPages > 1 && (
+          <Group justify="center" mt="xl">
+            <Pagination
+              value={pagination.activePage}
+              onChange={pagination.setPage}
+              total={pagination.totalPages}
+              withEdges
+            />
+          </Group>
+        )}
+        {!isLoadingProducts && (
+          <Group justify="center" mt="md">
+            <Text size="sm" c="dimmed">
+              {t('orders:dashboard.pageFooter', {
+                page: pagination.activePage,
+                totalPages: pagination.totalPages,
+                count: products.length,
+              })}
+            </Text>
+          </Group>
+        )}
+      </div>
+      
     </div>
   );
 };

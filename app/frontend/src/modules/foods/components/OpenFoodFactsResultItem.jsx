@@ -32,7 +32,7 @@ const OpenFoodFactsResultItem = ({ product, onAdd, disabled }) => {
           alignItems: 'center', 
           justifyContent: 'center',
           flexShrink: 0,
-          backgroundColor: '#f8f9fa', //TODO: cambiar con estilos mantine
+          backgroundColor: '#93969918',
           borderRadius: '8px',
           overflow: 'hidden'
         }}>

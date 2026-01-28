@@ -3,12 +3,14 @@ package es.ubu.inf.tfg.product;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.product.ingredient.Ingredient;
 
 @Repository
@@ -23,6 +25,18 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
     @Query("SELECT CASE WHEN COUNT(i) > 0 THEN true ELSE false END FROM Product p JOIN p.ingredients i WHERE p.id = :productId AND i.food.id = :foodId")
     boolean existsIngredientByProductIdAndFoodId(@Param("productId") Integer productId, @Param("foodId") Integer foodId);
+
+
+    // Filter allergens
+    @Query("SELECT DISTINCT p FROM Product p " +
+           "WHERE p.id NOT IN (" +
+           "    SELECT p2.id FROM Product p2 " +
+           "    JOIN p2.ingredients i " +
+           "    JOIN i.food f " +
+           "    JOIN f.allergenInfo.allergens a " +
+           "    WHERE a IN :allergens" +
+           ")")
+    List<Product> findByAllergensNotContaining(@Param("allergens") Set<Allergen> allergens);
     
 
     // Domain-specific queries using the 'ingredients' relationship

@@ -129,6 +129,12 @@
       "title": "Alérgenos",
       "helpText": "Selecciona los alérgenos presentes en este alimento",
       "noAllergens": "Ninguno"
+    },
+    "filter": {
+      "filterAllergens": "Excluir alérgenos",
+      "selectAllergens": "Selecciona alérgenos para excluir",
+      "noAllergens": "No se encontraron alérgenos",
+      "filterButton": "Filtrar"
     }
   }
 }

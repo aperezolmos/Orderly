@@ -29,7 +29,8 @@ public class DiningTableController {
     }
 
     @GetMapping("/active")
-    @PreAuthorize("hasAuthority('TABLE_VIEW_LIST')")
+    @PreAuthorize("hasAnyAuthority('TABLE_VIEW_LIST', 'RESERVATION_CREATE', 'RESERVATION_EDIT', " +
+        "'ORDER_DINING_CREATE', 'ORDER_DINING_EDIT')")
     public ResponseEntity<List<DiningTableResponseDTO>> getAvailableTables(
             @RequestParam(required = false) Integer capacity) {
         

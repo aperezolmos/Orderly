@@ -40,6 +40,7 @@
   "navigation": {
     "main": "Inicio",
     "profile": "Perfil",
+    "user": "Usuario",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "logout": "Cerrar sesión",
@@ -55,31 +56,38 @@
     "dashboard": "Panel",
     "users": {
       "name": "Usuarios",
-      "description": "Administrar usuarios y asignar permisos del sistema"
+      "description": "Administrar usuarios y asignar permisos del sistema",
+      "descriptionLong": "Administra usuarios y asigna roles personalizados para cada puesto de trabajo, garantizando un acceso seguro al sistema"
     },
     "roles": {
       "name": "Roles",
-      "description": "Configurar roles y permisos de usuario"
+      "description": "Configurar roles y permisos de usuario",
+      "descriptionLong": "Limita las acciones que los usuarios pueden realizar en la app configurando roles y permisos específicos asociados a cada módulo"
     },
     "foods": {
       "name": "Alimentos",
-      "description": "Gestionar alimentos y categorías"
+      "description": "Gestionar alimentos y categorías",
+      "descriptionLong": "Gestiona los ingredientes que conforman tus platos y asocia información nutricional detallada con soporte de API externa"
     },
     "products": {
       "name": "Productos",
-      "description": "Manejar el catálogo de productos"
+      "description": "Manejar el catálogo de productos",
+      "descriptionLong": "Crea un catálogo de los productos ofertados, calcula automáticamente sus componentes nutricionales y visualiza gráficas informativas"
     },
     "tables": {
       "name": "Mesas",
-      "description": "Gestionar las mesas de comedor y su disponibilidad"
+      "description": "Gestionar las mesas de comedor y su disponibilidad",
+      "descriptionLong": "Administra las mesas de tu local, define su capacidad de comensales y controla qué mesas están activas para recibir reservas o pedidos"
     },
     "reservations": {
       "name": "Reservas",
-      "description": "Gestionar las reservas de mesas"
+      "description": "Gestionar las reservas de mesas",
+      "descriptionLong": "Almacena información de reservas con comprobación automática de disponibilidad y visualiza un historial de las reservas pasadas"
     },
     "orders": {
       "name": "Pedidos",
-      "description": "Ver y gestionar los pedidos de los clientes"
+      "description": "Ver y gestionar los pedidos de los clientes",
+      "descriptionLong": "Añade productos y modifica cantidades con cálculo automático del precio total, modifica estados y alterna entre vista de bar o comedor"
     }
   },
   "userMenu": {

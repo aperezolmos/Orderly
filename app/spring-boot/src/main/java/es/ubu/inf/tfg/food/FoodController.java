@@ -97,7 +97,7 @@ public class FoodController {
     // ALLERGEN ENDPOINTS
 
     @GetMapping("/allergens")
-    @PreAuthorize("hasAuthority('FOOD_VIEW_LIST')")
+    @PreAuthorize("hasAnyAuthority('FOOD_VIEW_LIST', 'FOOD_CREATE', 'FOOD_EDIT')")
     public ResponseEntity<List<String>> getAllAllergens() {
         return ResponseEntity.ok(foodService.getAllAllergens());
     }
