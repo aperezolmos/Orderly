@@ -20,7 +20,13 @@ const OrderDashboardPage = () => {
 
         {/* Left section: ORDERS */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
-          <Paper shadow="md" p="md" withBorder>
+          <Paper 
+            shadow="md" 
+            p="md" 
+            withBorder 
+            h="100%"
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
             <Group mb="md">
               <IconChefHat size={24} />
               <Title order={2}>{t('orders:management.title')}</Title>
@@ -32,7 +38,13 @@ const OrderDashboardPage = () => {
 
         {/* Right section: PRODUCTS */}
         <Grid.Col span={{ base: 12, lg: 6 }}>
-          <Paper shadow="md" p="md" withBorder>
+          <Paper 
+            shadow="md" 
+            p="md" 
+            withBorder 
+            h="100%"
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
             <Group mb="md">
               <IconListCheck size={24} />
               <Title order={2}>{t('orders:dashboard.productsAvailable')}</Title>

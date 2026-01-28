@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Mi Aplicación",
+    "title": "Orderly",
     "loading": "Cargando...",
     "error": "Ocurrió un error",
     "success": "Éxito",
@@ -16,16 +16,36 @@
     "welcomeMessage": "Selecciona un módulo para comenzar",
     "reload": "Recargar",
     "pleaseWait": "Por favor, espera mientras la carga se completa",
-    "completed": "Carga completada"
+    "completed": "Carga completada",
+    "general": "General",
+    "others": "Otros"
+  },
+  "hero": {
+    "subtitle": "Plataforma de Gestión para Restauración",
+    "title": {
+      "line1": "Lleva tu restaurante al siguiente nivel con",
+      "highlight": "Orderly",
+      "line2": ""
+    },
+    "description": "Orderly es el centro digital \"todo en uno\" para restaurantes modernos. Gestiona productos, realiza un seguimiento de pedidos, administra reservas y asegura transparencia nutricional — todo desde un único panel intuitivo diseñado para eficiencia y colaboración en equipo.",
+    "buttons": {
+      "getStarted": "Comenzar",
+      "viewDocs": "Ver Documentación"
+    },
+    "moreFeatures": {
+      "title": "Y mucho más...",
+      "description": "Detección de alérgenos, análisis nutricional, importación de alimentos y una arquitectura modular que crece con tus necesidades"
+    }
   },
   "navigation": {
-    "home": "Inicio",
     "main": "Inicio",
     "profile": "Perfil",
+    "user": "Usuario",
     "login": "Iniciar sesión",
     "register": "Registrarse",
     "logout": "Cerrar sesión",
     "access": "Acceder",
+    "changeTheme": "Cambiar tema",
     "lightTheme": "Tema claro",
     "darkTheme": "Tema oscuro",
     "settings": "Ajustes",
@@ -36,31 +56,38 @@
     "dashboard": "Panel",
     "users": {
       "name": "Usuarios",
-      "description": "Administrar usuarios y asignar permisos del sistema"
+      "description": "Administrar usuarios y asignar permisos del sistema",
+      "descriptionLong": "Administra usuarios y asigna roles personalizados para cada puesto de trabajo, garantizando un acceso seguro al sistema"
     },
     "roles": {
       "name": "Roles",
-      "description": "Configurar roles y permisos de usuario"
+      "description": "Configurar roles y permisos de usuario",
+      "descriptionLong": "Limita las acciones que los usuarios pueden realizar en la app configurando roles y permisos específicos asociados a cada módulo"
     },
     "foods": {
       "name": "Alimentos",
-      "description": "Gestionar alimentos y categorías"
+      "description": "Gestionar alimentos y categorías",
+      "descriptionLong": "Gestiona los ingredientes que conforman tus platos y asocia información nutricional detallada con soporte de API externa"
     },
     "products": {
       "name": "Productos",
-      "description": "Manejar el inventario de productos"
+      "description": "Manejar el catálogo de productos",
+      "descriptionLong": "Crea un catálogo de los productos ofertados, calcula automáticamente sus componentes nutricionales y visualiza gráficas informativas"
     },
     "tables": {
       "name": "Mesas",
-      "description": "Gestionar las mesas de comedor y su disponibilidad"
+      "description": "Gestionar las mesas de comedor y su disponibilidad",
+      "descriptionLong": "Administra las mesas de tu local, define su capacidad de comensales y controla qué mesas están activas para recibir reservas o pedidos"
     },
     "reservations": {
       "name": "Reservas",
-      "description": "Gestionar las reservas de mesas"
+      "description": "Gestionar las reservas de mesas",
+      "descriptionLong": "Almacena información de reservas con comprobación automática de disponibilidad y visualiza un historial de las reservas pasadas"
     },
     "orders": {
       "name": "Pedidos",
-      "description": "Ver y gestionar los pedidos de los clientes"
+      "description": "Ver y gestionar los pedidos de los clientes",
+      "descriptionLong": "Añade productos y modifica cantidades con cálculo automático del precio total, modifica estados y alterna entre vista de bar o comedor"
     }
   },
   "userMenu": {
@@ -79,20 +106,28 @@
     "maxLength": "Este campo no puede exceder {{count}} caracteres",
     "positive": "El valor debe ser positivo",
     "positiveOrZero": "El valor debe ser positivo o cero",
-    "number": "Debe ser un número válido"
+    "number": "Debe ser un número válido",
+    "available": "Disponible",
+    "unavailable": "No disponible"
   },
   "data": {
     "noData": "No se encontraron datos",
     "loading": "Cargando datos...",
     "error": "Error cargando datos",
-    "total": "Total: {{count}}"
+    "total": "Total: {{count}}",
+    "pagination": {
+      "showing": "Mostrando",
+      "perPage": "elementos por página",
+      "footer": "Página {{page}} de {{totalPages}} • {{count}} elementos en total"
+    }
   },
   "modal": {
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "delete": "Eliminar",
     "titleDelete": "Confirmar eliminación",
-    "messageDelete": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer"
+    "messageDelete": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer",
+    "messageDeleteWithId": "¿Estás seguro de que quieres eliminar el elemento con id \"#{{id}}\"? Esta acción no se puede deshacer"
   },
   "error": {
     "generic": "Error",
@@ -101,7 +136,16 @@
       "message": "Ocurrió un error al renderizar este componente",
       "reload": "Recargar página"
     },
-    "accessDenied": "Acceso Denegado - Se requieren privilegios de administrador",
+    "accessDenied": {
+      "title": "Acceso Denegado",
+      "description": "No tienes los permisos necesarios para acceder a este recurso",
+      "backToHome": "Volver a Inicio"
+    },
+    "noModulesToShow": {
+      "title": "No hay módulos para mostrar",
+      "message": "Aún no tienes acceso a ningún módulo de gestión. Tu cuenta se ha creado correctamente, pero necesitas permisos para acceder a funciones específicas",
+      "adminHint": "Contacta con un administrador para que te asignen los permisos adecuados"
+    },
     "notFound": "No se pudo encontrar el recurso solicitado",
     "loadError": "Error cargando datos"
   },
@@ -109,7 +153,9 @@
     "submit": "Enviar",
     "reset": "Restablecer",
     "optional": "Opcional",
-    "basicInfo": "Información básica"
+    "basicInfo": "Información básica",
+    "selectAll": "Seleccionar todos",
+    "details": "Detalles"
   },
   "status": {
     "active": "Activo",

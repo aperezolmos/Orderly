@@ -9,11 +9,11 @@
   "form": {
     "ingredients": "Ingredientes",
     "name": "Nombre",
-    "namePlaceholder": "Ingresar nombre del producto",
+    "namePlaceholder": "Introducir nombre del producto",
     "description": "Descripción",
-    "descriptionPlaceholder": "Ingresar descripción",
+    "descriptionPlaceholder": "Introducir descripción",
     "price": "Precio",
-    "pricePlaceholder": "Ingresar precio",
+    "pricePlaceholder": "Introducir precio",
     "create": "Crear Producto",
     "update": "Actualizar Producto",
     "edit": "Editar Producto"

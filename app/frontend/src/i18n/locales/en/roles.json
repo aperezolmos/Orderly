@@ -24,8 +24,8 @@
     "newRole": "New Role"
   },
   "transferList": {
-    "assigned": "Assigned Roles",
-    "available": "Available Roles",
+    "assigned": "Assigned roles",
+    "available": "Available roles",
     "currentRoles": "Current user roles (click to remove)",
     "clickToAssign": "Click to assign to user",
     "noRolesAssigned": "No roles assigned",

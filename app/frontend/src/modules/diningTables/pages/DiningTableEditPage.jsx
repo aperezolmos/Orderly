@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import DiningTableForm from '../components/DiningTableForm';
 import { useDiningTables } from '../hooks/useDiningTables';
-import { useTranslation } from 'react-i18next';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const DiningTableEditPage = () => {
@@ -32,6 +33,9 @@ const DiningTableEditPage = () => {
     navigate('/tables', { replace: true });
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'tables');
+
   const breadcrumbs = [
     { title: t('diningTables:management.list'), href: '/tables' },
     { title: t('diningTables:management.edit'), href: `/tables/${id}/edit` }
@@ -42,6 +46,8 @@ const DiningTableEditPage = () => {
     return (
       <FormLayout
         title={t('diningTables:management.edit')}
+        icon={IconEdit}
+        iconColor={moduleConfig?.color}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -65,6 +71,8 @@ const DiningTableEditPage = () => {
   return (
     <FormLayout
       title={t('diningTables:management.edit')}
+      icon={IconEdit}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import RoleForm from '../components/RoleForm';
 import { useRoles } from '../hooks/useRoles';
-import { useTranslation } from 'react-i18next';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const RoleEditPage = () => {
@@ -32,6 +33,9 @@ const RoleEditPage = () => {
     navigate('/roles', { replace: true });
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'roles');
+
   const breadcrumbs = [
     { title: t('roles:management.list'), href: '/roles' },
     { title: t('roles:management.edit'), href: `/roles/${id}/edit` }
@@ -42,6 +46,8 @@ const RoleEditPage = () => {
     return (
       <FormLayout
         title={t('roles:management.edit')}
+        icon={IconEdit}
+        iconColor={moduleConfig?.color}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -65,6 +71,8 @@ const RoleEditPage = () => {
   return (
     <FormLayout
       title={t('roles:management.edit')}
+      icon={IconEdit}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

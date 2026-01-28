@@ -37,12 +37,12 @@ export function useLoadingNotification() {
         // Update to success
         notifications.update({
           id: notifId,
-          color: 'teal',
+          color: 'green',
           title: t(titleKey.replace('loading', 'success')),
           message: t('common:app.completed'),
           icon: <IconCheck size={18} />,
           loading: false,
-          autoClose: 3000,
+          autoClose: 2000,
         });
 
         return result;

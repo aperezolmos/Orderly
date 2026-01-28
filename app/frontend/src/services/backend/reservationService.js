@@ -8,5 +8,5 @@ export const reservationService = {
   createReservation: async (reservationData) => apiClient.post('/reservations', reservationData),
   updateReservation: async (id, reservationData) => apiClient.put(`/reservations/${id}`, reservationData),
   deleteReservation: async (id) => apiClient.delete(`/reservations/${id}`),
-  getActiveTables: async () => apiClient.get('/tables/active'), //TODO: trasladar
+  updateReservationStatus: async (id, status) => apiClient.patch(`/reservations/${id}/status?status=${status}`),
 };

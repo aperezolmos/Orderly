@@ -7,9 +7,9 @@
   },
   "form": {
     "name": "Nombre del Rol",
-    "namePlaceholder": "Ingresar nombre del rol",
+    "namePlaceholder": "Introducir nombre del rol",
     "description": "Descripción",
-    "descriptionPlaceholder": "Ingresar descripción del rol",
+    "descriptionPlaceholder": "Introducir descripción del rol",
     "create": "Crear Rol",
     "update": "Actualizar Rol",
     "permissions": "Permisos",

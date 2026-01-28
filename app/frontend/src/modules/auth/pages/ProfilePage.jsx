@@ -1,7 +1,7 @@
 import { useAuth } from '../../../context/AuthContext';
 import { Container, Title, Text, Group, Badge,
          Button, Card, SimpleGrid } from '@mantine/core';
-import { IconUser, IconLogout, IconShield } from '@tabler/icons-react';
+import { IconEdit, IconUser, IconLogout, IconShield } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -15,63 +15,81 @@ const ProfilePage = () => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
   
 
   return (
     <Container size="lg" py="xl">
-      <Group position="apart" mb="xl">
+      <Group justify="space-between" mb="xl">
         <Title order={1}>{t('auth:profile.title')}</Title>
-        <Button
-          variant="outline"
-          color="red"
-          leftSection={<IconLogout size="1rem" />}
-          onClick={handleLogout}
-        >
-          {t('common:navigation.logout')}
-        </Button>
+        <Group>
+          <Button
+            variant="light"
+            leftSection={<IconEdit size="1rem" />}
+            onClick={() => navigate('/profile/edit')}
+          >
+            {t('auth:profile.editTitle')}
+          </Button>
+          <Button
+            variant="outline"
+            color="red"
+            leftSection={<IconLogout size="1rem" />}
+            onClick={handleLogout}
+          >
+            {t('common:navigation.logout')}
+          </Button>
+        </Group>
       </Group>
 
-      <SimpleGrid cols={1} breakpoints={[{ minWidth: 'md', cols: 2 }]}>
+      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
         <Card shadow="sm" p="lg" radius="md" withBorder>
           <Group mb="md">
             <IconUser size="2rem" />
             <div>
-              <Text weight={500}>{t('auth:profile.personalInfo')}</Text>
-              <Text size="sm" color="dimmed">
+              <Text fw={500}>{t('auth:profile.personalInfo')}</Text>
+              <Text size="sm" c="dimmed">
                 {t('auth:profile.basicDetails')}
               </Text>
             </div>
           </Group>
 
-          <Group position="apart" mb="xs">
-            <Text weight={500}>{t('users:form.username')}</Text>
+          <Group justify="space-between" mb="xs">
+            <Text fw={500}>{t('users:form.username')}</Text>
             <Text>{user.username}</Text>
           </Group>
 
           {user.firstName && (
-            <Group position="apart" mb="xs">
-              <Text weight={500}>{t('users:form.firstName')}</Text>
+            <Group justify="space-between" mb="xs">
+              <Text fw={500}>{t('users:form.firstName')}</Text>
               <Text>{user.firstName}</Text>
             </Group>
           )}
 
           {user.lastName && (
-            <Group position="apart" mb="xs">
-              <Text weight={500}>{t('users:form.lastName')}</Text>
+            <Group justify="space-between" mb="xs">
+              <Text fw={500}>{t('users:form.lastName')}</Text>
               <Text>{user.lastName}</Text>
             </Group>
           )}
 
           {user.createdAt && (
-            <Group position="apart">
-              <Text weight={500}>{t('auth:profile.memberSince')}</Text>
-              <Text>{new Date(user.createdAt).toLocaleDateString()}</Text>
+            <Group justify="space-between" mb="xs">
+              <Text fw={500}>{t('auth:profile.memberSince')}</Text>
+              <Text size="sm" color="dimmed">
+                {new Date(user.createdAt).toLocaleString()}
+              </Text>
+            </Group>
+          )}
+
+          {user.updatedAt && (
+            <Group justify="space-between">
+              <Text fw={500}>{t('auth:profile.lastUpdated')}</Text>
+              <Text size="sm" color="dimmed">
+                {new Date(user.updatedAt).toLocaleString()}
+              </Text>
             </Group>
           )}
         </Card>
@@ -80,15 +98,15 @@ const ProfilePage = () => {
           <Group mb="md">
             <IconShield size="2rem" />
             <div>
-              <Text weight={500}>{t('auth:profile.rolesPermissions')}</Text>
+              <Text fw={500}>{t('auth:profile.rolesPermissions')}</Text>
               <Text size="sm" color="dimmed">
                 {t('auth:profile.userRoles')}
               </Text>
             </div>
           </Group>
 
-          <Text weight={500} mb="sm">{t('auth:profile.assignedRoles')}</Text>
-          <Group spacing="xs">
+          <Text fw={500} mb="sm">{t('auth:profile.assignedRoles')}</Text>
+          <Group gap="xs">
             {user.roleNames && user.roleNames.length > 0 ? (
               user.roleNames.map((role, index) => (
                 <Badge key={index} variant="filled" color="blue">

@@ -6,18 +6,28 @@ import { IconDesk } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
 import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useDiningTables } from '../hooks/useDiningTables';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
+import StatusButton from '../../../common/components/StatusButton';
 
 
 const DiningTableListPage = () => {
   
   const navigate = useNavigate();
   const { hasPermission } = useAuth();
-  const { tables, loading, deleteTable, loadTables } = useDiningTables();
+  const { 
+    tables, 
+    loading, 
+    loadTables,
+    deleteTable, 
+    updateTableStatus
+  } = useDiningTables();
   const [tableToDelete, setTableToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const pagination = usePagination(tables, DEFAULT_PAGE_SIZE);
   const { t } = useTranslation(['common', 'diningTables']);
 
 
@@ -41,6 +51,9 @@ const DiningTableListPage = () => {
       setTableToDelete(null);
     }
   };
+
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'tables');
 
   const columns = [
     {
@@ -77,13 +90,20 @@ const DiningTableListPage = () => {
       )
     },
     {
-      key: 'isActive',
+      key: 'status',
       title: t('diningTables:list.isActive'),
-      render: (table) => (
-        <Badge color={table.isActive ? 'green' : 'gray'} variant="light">
-          {table.isActive ? t('diningTables:list.active') : t('diningTables:list.inactive')}
-        </Badge>
-      )
+      render: (table) => {
+        const currentStatus = table.isActive ? 'ACTIVE' : 'INACTIVE';
+        return (
+          <StatusButton
+            module="diningTables"
+            currentStatus={currentStatus}
+            size="sm"
+            onChange={(newStatus) => updateTableStatus(table.id, newStatus)}
+            disabled={loading}
+          />
+        );
+      }
     },
     {
       key: 'createdAt',
@@ -101,6 +121,8 @@ const DiningTableListPage = () => {
     <>
       <ManagementLayout
         title={t('diningTables:management.title')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('diningTables:management.list'), href: '/tables' }]}
         showCreateButton={true}
         createButtonLabel={t('diningTables:list.newTable')}
@@ -110,12 +132,13 @@ const DiningTableListPage = () => {
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
             <DataTable
               columns={columns}
-              data={tables}
+              data={pagination.paginatedData}
               onEdit={handleEdit}
               onDelete={handleDelete}
               canEdit={hasPermission(PERMISSIONS.TABLE_EDIT)}
               canDelete={hasPermission(PERMISSIONS.TABLE_DELETE)}
               loading={loading}
+              paginationProps={pagination}
             />
         </div>
       </ManagementLayout>

@@ -93,6 +93,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.existsById(id));
     }
 
+    @GetMapping("/check-orderNumber")
+    public ResponseEntity<Boolean> checkOrderNumberAvailability(@RequestParam String orderNumber) {
+        return ResponseEntity.ok(!orderService.existsByOrderNumber(orderNumber));
+    }
+
 
     // --------------------------------------------------------
     // ORDER ITEM ENDPOINTS

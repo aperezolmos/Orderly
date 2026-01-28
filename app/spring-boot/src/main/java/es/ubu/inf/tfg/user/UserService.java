@@ -114,7 +114,7 @@ public class UserService {
         userMapper.updateEntityFromDTO(userRequest, existingUser);
 
         // Update roles if provided
-        if (userRequest.getRoleIds() != null && !userRequest.getRoleIds().isEmpty()) {
+        if (userRequest.getRoleIds() != null) {
             setUserRoles(id, userRequest.getRoleIds());
         }
 

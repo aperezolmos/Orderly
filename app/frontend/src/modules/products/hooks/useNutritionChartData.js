@@ -4,11 +4,11 @@ import { useMantineTheme } from '@mantine/core';
 
 // Fixed color map for each macronutrient
 const MACRO_COLORS = {
-  carbohydrates: 'red',
-  sugars: 'pink',
-  protein: 'blue',
-  fats: 'orange',
-  saturatedFats: 'yellow',
+  carbohydrates: 'blue',
+  sugars: 'cyan',
+  protein: 'orange',
+  fats: 'red',
+  saturatedFats: 'pink',
   fiber: 'green'
 };
 
@@ -27,16 +27,12 @@ export const useNutritionChartData = (nutritionInfo) => {
   const theme = useMantineTheme();
 
 
-  const getMantineColor = (colorName) => {
-    const colorMap = {
-      red: theme.colors.red[6],
-      pink: theme.colors.pink[6],
-      blue: theme.colors.blue[6],
-      orange: theme.colors.orange[6],
-      yellow: theme.colors.yellow[6],
-      green: theme.colors.green[6]
-    };
-    return colorMap[colorName] || theme.colors.gray[6];
+  const getMantineColor = (colorName, isOther = false) => {
+    
+    const colorFamily = theme.colors[colorName] || theme.colors.gray;
+    
+    if (isOther) return colorFamily[3]; 
+    return colorFamily[6];
   };
   
 
@@ -50,12 +46,10 @@ export const useNutritionChartData = (nutritionInfo) => {
     if ((!data.carbohydrates || data.carbohydrates === 0) && data.sugars && data.sugars > 0) {
       data.carbohydrates = data.sugars;
     }
-    
     // Correct fats if it is 0 but saturatedFats > 0
     if ((!data.fats || data.fats === 0) && data.saturatedFats && data.saturatedFats > 0) {
       data.fats = data.saturatedFats;
     }
-    
     // Ensure the values are numbers
     Object.keys(data).forEach(key => {
       if (typeof data[key] === 'object') return;
@@ -69,12 +63,13 @@ export const useNutritionChartData = (nutritionInfo) => {
   const chartData = useMemo(() => {
     if (!correctedData) return { outerData: [], innerData: [] };
     
-    // Filtrar macronutrientes principales con valor > 0
+    // Filter main macronutrients with a value > 0
     const mainMacrosWithValue = MAIN_MACROS
       .map(key => ({
         key,
         value: correctedData[key] || 0,
-        color: getMantineColor(MACRO_COLORS[key])
+        color: getMantineColor(MACRO_COLORS[key]),
+        hasSubs: false
       }))
       .filter(item => item.value > 0);
     
@@ -82,24 +77,27 @@ export const useNutritionChartData = (nutritionInfo) => {
       return { outerData: [], innerData: [] };
     }
     
-    // Datos para el nivel exterior (macronutrientes principales)
+    // Data for the external level (main macronutrients)
     const outerData = mainMacrosWithValue.map(item => ({
       name: item.key,
       value: item.value,
       color: item.color,
       fill: item.color,
-      key: item.key
+      key: item.key,
+      hasSubs: false,
+      isMain: true
     }));
     
-    // Datos para el nivel interior (submacronutrientes)
+    // Data for the internal level (sub-macronutrients)
     const innerData = [];
+    const macrosWithSubs = new Set();
     
     mainMacrosWithValue.forEach(macro => {
       const subMacros = Object.entries(SUB_MACRO_RELATIONS)
         .filter(([, parent]) => parent === macro.key)
         .map(([subKey]) => subKey);
       
-      // Encontrar submacronutrientes que pertenecen a este macro
+      // Find sub-macronutrients that belong to this macro
       const relevantSubs = subMacros
         .map(subKey => ({
           key: subKey,
@@ -110,7 +108,8 @@ export const useNutritionChartData = (nutritionInfo) => {
         .filter(sub => sub.value > 0);
       
       if (relevantSubs.length > 0) {
-        // Añadir submacronutrientes
+        macrosWithSubs.add(macro.key);
+        
         relevantSubs.forEach(sub => {
           innerData.push({
             name: sub.key,
@@ -118,11 +117,13 @@ export const useNutritionChartData = (nutritionInfo) => {
             color: sub.color,
             fill: sub.color,
             parent: macro.key,
-            key: `${macro.key}-${sub.key}`
+            key: `${macro.key}-${sub.key}`,
+            isSub: true,
+            isMain: false
           });
         });
         
-        // Calcular la porción restante del macro principal
+        // Calculate the remaining portion of the main macro
         const subTotal = relevantSubs.reduce((sum, sub) => sum + sub.value, 0);
         const remaining = macro.value - subTotal;
         
@@ -130,27 +131,40 @@ export const useNutritionChartData = (nutritionInfo) => {
           innerData.push({
             name: `${macro.key}_other`,
             value: remaining,
-            color: macro.color,
-            fill: macro.color,
+            color: getMantineColor(MACRO_COLORS[macro.key], true), 
+            fill: getMantineColor(MACRO_COLORS[macro.key], true),
             parent: macro.key,
-            key: `${macro.key}-other`
+            key: `${macro.key}-other`,
+            isSub: true,
+            isOther: true
           });
         }
       } 
       else {
-        // Si no hay submacronutrientes, mostrar todo el macro en el nivel interior
+        // If there are no sub-macronutrients, show all macronutrients at the inner level
         innerData.push({
           name: macro.key,
           value: macro.value,
           color: macro.color,
           fill: macro.color,
           parent: macro.key,
-          key: `${macro.key}-only`
+          key: `${macro.key}-only`,
+          isSub: false,
+          isMain: false
         });
       }
     });
     
-    return { outerData, innerData };
+    // Mark which macros have subportions
+    outerData.forEach(item => {
+      item.hasSubs = macrosWithSubs.has(item.key);
+    });
+    
+    return { 
+      outerData, 
+      innerData,
+      macrosWithSubs: Array.from(macrosWithSubs)
+    };
   }, [correctedData, theme]);
 
 

@@ -3,7 +3,7 @@ import { TextInput, NumberInput, Button, Group,
         LoadingOverlay, Tabs, Select } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import { reservationService } from '../../../services/backend/reservationService';
+import { diningTableService } from '../../../services/backend/diningTableService';
 import { useTranslation } from 'react-i18next';
 import { IconUser, IconInfoCircle } from '@tabler/icons-react';
 
@@ -48,7 +48,7 @@ const ReservationForm = ({
     const fetchTables = async () => {
       setTablesLoading(true);
       try {
-        const activeTables = await reservationService.getActiveTables();
+        const activeTables = await diningTableService.getActiveTables();
         setTables(activeTables);
       } 
       catch (err) {

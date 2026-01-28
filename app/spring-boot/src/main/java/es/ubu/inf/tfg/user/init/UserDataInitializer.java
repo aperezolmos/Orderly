@@ -65,6 +65,9 @@ public class UserDataInitializer implements CommandLineRunner {
                 role.setPermissions(allPermissions);
                 log.info("Assigned ALL permissions to role: {}", roleName);
             }
+            else if (userRoleName.equals(roleName)) {
+                role.addPermission(Permission.USER_EDIT_MYSELF);
+            }
             
             roleRepository.save(role);
             log.info("Created role: {}", roleName);

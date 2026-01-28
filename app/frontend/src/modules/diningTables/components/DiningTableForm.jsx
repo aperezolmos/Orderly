@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
-import { TextInput, NumberInput, Button, Group, LoadingOverlay } from '@mantine/core';
+import { Textarea, NumberInput, Button, Group, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
 
 
 const DiningTableForm = ({
@@ -11,6 +13,12 @@ const DiningTableForm = ({
   submitLabel = "Create Table"
 }) => {
   
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('diningTableName', { minLength: 1, maxLength: 10 });
+
   const { t } = useTranslation(['common', 'diningTables']);
 
 
@@ -35,7 +43,9 @@ const DiningTableForm = ({
         return null;
       },
     },
+    validateInputOnChange: true,
   });
+
 
   useEffect(() => {
     if (table) {
@@ -47,6 +57,14 @@ const DiningTableForm = ({
     }
   }, [table]);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.name, table?.name);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.name]);
+
+
   const handleSubmit = async (values) => {
     await onSubmit(values);
   };
@@ -55,11 +73,12 @@ const DiningTableForm = ({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <LoadingOverlay visible={loading} />
-      <TextInput
+      <UniqueTextField
         label={t('diningTables:form.name')}
         placeholder={t('diningTables:form.namePlaceholder')}
         required
-        maxLength={10}
+        isChecking={isChecking}
+        isAvailable={isAvailable}
         {...form.getInputProps('name')}
         mb="md"
       />
@@ -71,15 +90,20 @@ const DiningTableForm = ({
         {...form.getInputProps('capacity')}
         mb="md"
       />
-      <TextInput
+      <Textarea
         label={t('diningTables:form.locationDescription')}
         placeholder={t('diningTables:form.locationDescriptionPlaceholder')}
-        maxLength={100}
+        autosize
+        minRows={3}
         {...form.getInputProps('locationDescription')}
         mb="md"
       />
-      <Group position="right" mt="xl">
-        <Button type="submit" loading={loading}>
+      <Group justify="flex-end" mt="xl">
+        <Button 
+          type="submit" 
+          loading={loading}
+          disabled={loading || isChecking || !isAvailable}
+        >
           {submitLabel}
         </Button>
       </Group>

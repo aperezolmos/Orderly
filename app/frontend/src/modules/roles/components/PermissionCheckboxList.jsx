@@ -1,62 +1,71 @@
-import { Checkbox, SimpleGrid, Title, Text, LoadingOverlay } from '@mantine/core';
+import { memo } from 'react';
+import { Checkbox, SimpleGrid, Title, Text, LoadingOverlay,
+         Group, Stack } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 
-const MAX_COLUMNS = 3;
-
-const groupPermissionsInColumns = (permissions, columns) => {
-  const perColumn = Math.ceil(permissions.length / columns);
-  return Array.from({ length: columns }, (_, i) =>
-    permissions.slice(i * perColumn, (i + 1) * perColumn)
-  );
-};
-
-
-const PermissionCheckboxList = ({
+const PermissionCheckboxList = memo(({
   permissions = [],
   selected = [],
   onChange,
-  loading = false,
-  title,
-  helpText
+  loading = false
 }) => {
+  
+  const { t } = useTranslation(['common', 'roles']);
 
-  const columns = Math.min(MAX_COLUMNS, permissions.length);
-  const permissionColumns = groupPermissionsInColumns(permissions, columns);
 
+  const allSelected = permissions.length > 0 && selected.length === permissions.length;
+  const isIndeterminate = selected.length > 0 && selected.length < permissions.length;
+  
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      onChange([]);
+    } else {
+      onChange([...permissions]);
+    }
+  };
 
   const handleCheckboxChange = (perm, checked) => {
     if (checked) {
       onChange([...selected, perm]);
-    } 
-    else {
+    } else {
       onChange(selected.filter((p) => p !== perm));
     }
   };
 
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', minHeight: '100px' }}>
       <LoadingOverlay visible={loading} />
-      {title && <Title order={5} mb="sm">{title}</Title>}
-      {helpText && <Text size="sm" color="dimmed" mb="md">{helpText}</Text>}
-      <SimpleGrid cols={columns} spacing="md">
-        {permissionColumns.map((group, colIdx) => (
-          <div key={colIdx}>
-            {group.map((perm) => (
-              <Checkbox
-                key={perm}
-                label={perm}
-                value={perm}
-                checked={selected.includes(perm)}
-                onChange={(event) => handleCheckboxChange(perm, event.currentTarget.checked)}
-                mb="xs"
-              />
-            ))}
-          </div>
+      
+      <Group justify="space-between" align="flex-end" mb="md">
+        <Stack gap={0}>
+          <Title order={5}>{t('roles:form.permissions')}</Title>
+          <Text size="sm" c="dimmed">{t('roles:form.permissionsHelp')}</Text>
+        </Stack>
+        
+        <Checkbox
+          label={t('common:form.selectAll')}
+          checked={allSelected}
+          indeterminate={isIndeterminate}
+          onChange={handleSelectAll}
+          styles={{ label: { fontWeight: 600 } }}
+        />
+      </Group>
+
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+        {permissions.map((perm) => (
+          <Checkbox
+            key={perm}
+            label={perm}
+            checked={selected.includes(perm)}
+            onChange={(event) => handleCheckboxChange(perm, event.currentTarget.checked)}
+          />
         ))}
       </SimpleGrid>
     </div>
   );
-};
+});
 
 export default PermissionCheckboxList;

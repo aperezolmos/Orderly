@@ -14,11 +14,12 @@ const LoadingFallback = () => {
       left={0} 
       w="100vw" 
       h="100vh" 
-      style={{ zIndex: 9999 }}
-      bg="rgba(255, 255, 255, 0.9)"
+      style={{ 
+        zIndex: 9999
+      }}
     >
       <Center h="100%">
-        <Stack align="center" spacing="md">
+        <Stack align="center" gap="md">
           <Loader size="lg" type="dots" />
           <Text size="md" fw={600}>
             {t('common:app.loading')}

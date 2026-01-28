@@ -29,7 +29,8 @@ public class DiningTableController {
     }
 
     @GetMapping("/active")
-    @PreAuthorize("hasAuthority('TABLE_VIEW_LIST')")
+    @PreAuthorize("hasAnyAuthority('TABLE_VIEW_LIST', 'RESERVATION_CREATE', 'RESERVATION_EDIT', " +
+        "'ORDER_DINING_CREATE', 'ORDER_DINING_EDIT')")
     public ResponseEntity<List<DiningTableResponseDTO>> getAvailableTables(
             @RequestParam(required = false) Integer capacity) {
         
@@ -94,8 +95,8 @@ public class DiningTableController {
         return ResponseEntity.ok(diningTableService.existsById(id));
     }
 
-    @GetMapping("/name/{name}/exists")
-    public ResponseEntity<Boolean> checkTableNameExists(@PathVariable String name) {
-        return ResponseEntity.ok(diningTableService.existsByName(name));
+    @GetMapping("/check-name")
+    public ResponseEntity<Boolean> checkTableNameAvailability(@RequestParam String name) {
+        return ResponseEntity.ok(!diningTableService.existsByName(name));
     }
 }

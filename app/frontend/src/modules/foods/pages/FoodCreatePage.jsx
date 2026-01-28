@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, Box } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import FoodForm from '../components/FoodForm';
 import { useFoods } from '../hooks/useFoods';
-import { useTranslation } from 'react-i18next';
 import OpenFoodFactsSearchTab from '../components/OpenFoodFactsSearchTab';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
+
 
 const FoodCreatePage = () => {
   
@@ -20,6 +22,9 @@ const FoodCreatePage = () => {
     navigate('/foods', { replace: true });
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'foods');
+
   const breadcrumbs = [
     { title: t('foods:management.list'), href: '/foods' },
     { title: t('foods:management.create'), href: '/foods/new' }
@@ -29,6 +34,8 @@ const FoodCreatePage = () => {
   return (
     <FormLayout
       title={t('foods:management.create')}
+      icon={moduleConfig?.icon}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

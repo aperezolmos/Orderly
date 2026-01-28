@@ -1,5 +1,6 @@
 package es.ubu.inf.tfg.product;
 
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
 import es.ubu.inf.tfg.product.dto.ProductResponseDTO;
 import es.ubu.inf.tfg.product.ingredient.dto.IngredientRequestDTO;
@@ -65,6 +66,13 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/filter-safe")
+    @PreAuthorize("hasAuthority('PRODUCT_VIEW_LIST')")
+    public ResponseEntity<List<ProductResponseDTO>> getSafeProducts(
+            @RequestParam List<Allergen> exclude) {
+        return ResponseEntity.ok(productService.findByExcludingAllergens(exclude));
+    }
+
     @PostMapping
     @PreAuthorize("hasAuthority('PRODUCT_CREATE')")
     public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO productRequest) {
@@ -94,9 +102,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.existsById(id));
     }
 
-    @GetMapping("/name/{name}/exists")
-    public ResponseEntity<Boolean> checkProductNameExists(@PathVariable String name) {
-        return ResponseEntity.ok(productService.existsByName(name));
+    @GetMapping("/check-name")
+    public ResponseEntity<Boolean> checkProductNameAvailability(@RequestParam String name) {
+        return ResponseEntity.ok(!productService.existsByName(name));
     }
 
     @GetMapping("/food/{foodId}/exists")

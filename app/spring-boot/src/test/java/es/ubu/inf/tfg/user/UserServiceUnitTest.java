@@ -80,7 +80,7 @@ class UserServiceUnitTest {
                 .lastName("User")
                 .password(PASSWORD)
                 .currentPassword(CURRENT_PASSWORD)
-                .roleIds(new HashSet<>())
+                .roleIds(null)
                 .build();
 
         

@@ -14,6 +14,7 @@ import es.ubu.inf.tfg.order.status.OrderStatus;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findByOrderNumber(String orderNumber);
+    boolean existsByOrderNumber(String orderNumber);
     List<Order> findByStatus(OrderStatus status);
     List<Order> findByCustomerNameContainingIgnoreCase(String customerName);
     List<Order> findByEmployeeId(Integer employeeId);

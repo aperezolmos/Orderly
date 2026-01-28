@@ -46,6 +46,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUserContext = (userData) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...userData
+    }));
+  };
+
   const login = async (username, password) => {
     try {
       setLoading(true);
@@ -124,6 +131,7 @@ export const AuthProvider = ({ children }) => {
     permissions,
     loading,
     error,
+    updateUserContext,
     login,
     register,
     logout,

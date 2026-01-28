@@ -160,7 +160,7 @@ const OrderDashboardSection = () => {
 
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Toggle order type and create buttons */}
       <Group mb="md">
         <Button
@@ -170,7 +170,7 @@ const OrderDashboardSection = () => {
           color="teal"
           disabled={isLoadingOrdersList}
         >
-          {t('orders:management.bar')}
+          {t('orders:types.bar')}
         </Button>
         <Button
           variant={orderType === 'dining' ? 'filled' : 'outline'}
@@ -179,7 +179,7 @@ const OrderDashboardSection = () => {
           color="orange"
           disabled={isLoadingOrdersList}
         >
-          {t('orders:management.dining')}
+          {t('orders:types.dining')}
         </Button>
         <Button
           variant="light"

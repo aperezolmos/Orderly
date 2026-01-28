@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "My Application",
+    "title": "Orderly",
     "loading": "Loading...",
     "error": "An error occurred",
     "success": "Success",
@@ -16,16 +16,36 @@
     "welcomeMessage": "Select a module to get started",
     "reload": "Reload",
     "pleaseWait": "Please wait while the loading process completes",
-    "completed": "Load completed"
+    "completed": "Load completed",
+    "general": "General",
+    "others": "Others"
+  },
+  "hero": {
+    "subtitle": "Restaurant Management Platform",
+    "title": {
+      "line1": "Streamline your restaurant with",
+      "highlight": "Orderly",
+      "line2": "operations"
+    },
+    "description": "Orderly is the all-in-one digital hub for modern restaurants. Manage products, track orders, handle reservations, and ensure nutritional transparency — all from a single, intuitive dashboard designed for efficiency and team collaboration.",
+    "buttons": {
+      "getStarted": "Get Started",
+      "viewDocs": "View Documentation"
+    },
+    "moreFeatures": {
+      "title": "And much more...",
+      "description": "Allergen detection, nutritional analysis, food import, and a modular architecture that grows with your needs"
+    }
   },
   "navigation": {
-    "home": "Home",
     "main": "Home",
     "profile": "Profile",
+    "user": "User",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
     "access": "Access",
+    "changeTheme": "Change theme",
     "lightTheme": "Light mode",
     "darkTheme": "Dark mode",
     "settings": "Settings",
@@ -36,31 +56,38 @@
     "dashboard": "Dashboard",
     "users": {
       "name": "Users",
-      "description": "Manage users and assign system permissions"
+      "description": "Manage users and assign system permissions",
+      "descriptionLong": "Manage users and assign them custom roles tailored to their occupation, ensuring secure access to the system"
     },
     "roles": {
       "name": "Roles",
-      "description": "Configure user roles and permissions"
+      "description": "Configure user roles and permissions",
+      "descriptionLong": "Limit the actions users can perform in the app by configuring specific roles and permissions associated with each module"
     },
     "foods": {
       "name": "Foods",
-      "description": "Manage food items and categories"
+      "description": "Manage food items and categories",
+      "descriptionLong": "Manage the ingredients that make up your dishes and associate detailed nutritional information with external API support"
     },
     "products": {
       "name": "Products",
-      "description": "Handle product inventory"
+      "description": "Handle product catalog",
+      "descriptionLong": "Create a catalog of the products offered in your store, automatically calculate their nutritional components, and view informative graphs"
     },
     "tables": {
       "name": "Tables",
-      "description": "Manage dining tables and availability"
+      "description": "Manage dining tables and availability",
+      "descriptionLong": "Manage your establishment's tables, define their seating capacity, and control which tables are available for reservations or orders."
     },
     "reservations": {
       "name": "Reservations",
-      "description": "Handle table reservations"
+      "description": "Handle table reservations",
+      "descriptionLong": "Store table booking information with automatic availability checks and view a history of past bookings"
     },
     "orders": {
       "name": "Orders",
-      "description": "View and manage customer orders"
+      "description": "View and manage customer orders",
+      "descriptionLong": "Add products and modify quantities with automatic price calculation, modify statuses and switch between bar or dining view"
     }
   },
   "userMenu": {
@@ -79,20 +106,28 @@
     "maxLength": "Field cannot exceed {{count}} characters",
     "positive": "Value must be positive",
     "positiveOrZero": "Value must be positive or zero",
-    "number": "Must be a valid number"
+    "number": "Must be a valid number",
+    "available": "Available",
+    "unavailable": "Unavailable"
   },
   "data": {
     "noData": "No data found",
     "loading": "Loading data...",
     "error": "Error loading data",
-    "total": "Total: {{count}}"
+    "total": "Total: {{count}}",
+    "pagination": {
+      "showing": "Showing",
+      "perPage": "elements per page",
+      "footer": "Page {{page}} of {{totalPages}} • {{count}} elements in total"
+    }
   },
   "modal": {
     "cancel": "Cancel",
     "confirm": "Confirm",
     "delete": "Delete",
     "titleDelete": "Confirm deletion",
-    "messageDelete": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone"
+    "messageDelete": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone",
+    "messageDeleteWithId": "Are you sure you want to delete element with \"{{id}}\"? This action cannot be undone"
   },
   "error": {
     "generic": "Error",
@@ -101,7 +136,16 @@
       "message": "An error occurred while rendering this component",
       "reload": "Reload page"
     },
-    "accessDenied": "Access Denied - Admin privileges required",
+    "accessDenied": {
+      "title": "Access Denied",
+      "description": "You don't have the required permissions to access this resource",
+      "backToHome": "Back to Home"
+    },
+    "noModulesToShow": {
+      "title": "No modules to show",
+      "message": "You don't have access to any management modules yet. Your account has been created successfully, but you need permissions to access specific features",
+      "adminHint": "Contact an administrator to assign you the appropriate permissions"
+    },
     "notFound": "Could not find the requested resource",
     "loadError": "Error loading data"
   },
@@ -109,7 +153,9 @@
     "submit": "Submit",
     "reset": "Reset",
     "optional": "Optional",
-    "basicInfo": "Basic Information"
+    "basicInfo": "Basic Information",
+    "selectAll": "Select all",
+    "details": "Details"
   },
   "status": {
     "active": "Active",

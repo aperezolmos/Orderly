@@ -1,15 +1,26 @@
-import { Card, Group, Text, Box, Image } from '@mantine/core';
+import { Card, Group, Text, Box, Image,
+        useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { getNutriScoreImage, getNovaImage } from '../../../utils/iconMaps';
 import AllergensList from './AllergensList';
 
 
 const ProductIngredientCard = ({ ingredient }) => {
   
+  const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+
+
   const name = ingredient?.foodName || '—';
   const qty = ingredient?.quantityInGrams ?? '-';
   const nutri = ingredient?.nutritionalMetrics?.nutriScore || null;
   const nova = ingredient?.nutritionalMetrics?.novaGroup || null;
   
+  const borderStyle = {
+    width: '100%',
+    boxShadow: colorScheme === 'dark' 
+      ? '1px 3px 3px rgba(0, 0, 0, 0.8)'
+      : theme.shadows.sm
+  };
 
   return (
     <Card 
@@ -17,7 +28,7 @@ const ProductIngredientCard = ({ ingredient }) => {
       radius="md" 
       shadow="sm" 
       p="sm" 
-      style={{ width: '100%' }}
+      style={borderStyle}
     >
       <Group align="flex-start" wrap="nowrap" justify="space-between" gap="md">
         

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Text, Alert } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ReservationForm from '../components/ReservationForm';
 import { useReservations } from '../hooks/useReservations';
-import { useTranslation } from 'react-i18next';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const ReservationEditPage = () => {
@@ -32,6 +33,9 @@ const ReservationEditPage = () => {
     navigate('/reservations', { replace: true });
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'reservations');
+
   const breadcrumbs = [
     { title: t('reservations:management.list'), href: '/reservations' },
     { title: t('reservations:management.edit'), href: `/reservations/${id}/edit` }
@@ -42,6 +46,8 @@ const ReservationEditPage = () => {
     return (
       <FormLayout
         title={t('reservations:management.edit')}
+        icon={IconEdit}
+        iconColor={moduleConfig?.color}
         breadcrumbs={breadcrumbs}
         showBackButton={true}
         error={error}
@@ -65,6 +71,8 @@ const ReservationEditPage = () => {
   return (
     <FormLayout
       title={t('reservations:management.edit')}
+      icon={IconEdit}
+      iconColor={moduleConfig?.color}
       breadcrumbs={breadcrumbs}
       showBackButton={true}
       loading={loading}

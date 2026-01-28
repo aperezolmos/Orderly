@@ -5,9 +5,11 @@ import { useDisclosure } from '@mantine/hooks';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
 import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useFoods } from '../hooks/useFoods';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
 const FoodListPage = () => {
@@ -19,6 +21,7 @@ const FoodListPage = () => {
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
   const [selectedFood, setSelectedFood] = useState(null);
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+  const pagination = usePagination(foods, DEFAULT_PAGE_SIZE);
   const { t } = useTranslation(['common', 'foods']);
 
 
@@ -43,6 +46,9 @@ const FoodListPage = () => {
     }
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'foods');
+
   const columns = [
     {
       key: 'id',
@@ -54,10 +60,11 @@ const FoodListPage = () => {
       title: t('foods:list.name'),
       render: (food) => (
         <Button
-          variant="subtle"
+          variant="transparent"
           color="blue"
           onClick={() => { setSelectedFood(food); openModal(); }}
           style={{ padding: 0, fontWeight: 500 }}
+          title={t('common:form.details')}
         >
           {food.name}
         </Button>
@@ -97,6 +104,8 @@ const FoodListPage = () => {
     <>
       <ManagementLayout
         title={t('foods:management.title')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('foods:management.list'), href: '/foods' }]}
         showCreateButton={true}
         createButtonLabel={t('foods:list.newFood')}
@@ -106,12 +115,13 @@ const FoodListPage = () => {
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
             <DataTable
               columns={columns}
-              data={foods}
+              data={pagination.paginatedData}
               onEdit={handleEdit}
               onDelete={handleDelete}
               canEdit={hasPermission(PERMISSIONS.FOOD_EDIT)}
               canDelete={hasPermission(PERMISSIONS.FOOD_DELETE)}
               loading={loading}
+              paginationProps={pagination}
             />
         </div>
         

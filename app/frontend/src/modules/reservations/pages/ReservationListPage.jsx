@@ -6,18 +6,28 @@ import { IconUser } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
+import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
 import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useReservations } from '../hooks/useReservations';
+import { getNavigationConfig } from '../../../utils/navigationConfig';
+import StatusButton from '../../../common/components/StatusButton';
 
 
 const ReservationListPage = () => {
   
   const navigate = useNavigate();
   const { hasPermission } = useAuth();
-  const { reservations, loading, deleteReservation, loadReservations } = useReservations();
+  const { 
+    reservations, 
+    loading,
+    loadReservations,
+    deleteReservation, 
+    updateReservationStatus
+  } = useReservations();
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const [deleteModalOpened, { open: openDeleteModal, close: closeDeleteModal }] = useDisclosure(false);
+  const pagination = usePagination(reservations, DEFAULT_PAGE_SIZE);
   const { t } = useTranslation(['common', 'reservations']);
 
 
@@ -42,6 +52,9 @@ const ReservationListPage = () => {
     }
   };
 
+
+  const moduleConfig = getNavigationConfig(t).find(m => m.id === 'reservations');
+
   const columns = [
     {
       key: 'id',
@@ -56,11 +69,15 @@ const ReservationListPage = () => {
     {
       key: 'status',
       title: t('reservations:list.status'),
-      render: (r) => (
-        <Badge color={r.status === 'CONFIRMED' ? 'blue' : r.status === 'SEATED' ? 'green' : r.status === 'COMPLETED' ? 'gray' : 'red'}>
-          {t(`reservations:status.${r.status}`)}
-        </Badge>
-      )
+      render: (reservation) => (
+        <StatusButton
+          module="reservations"
+          currentStatus={reservation.status}
+          size="sm"
+          onChange={(newStatus) => updateReservationStatus(reservation.id, newStatus)}
+          disabled={loading}
+        />
+      ),
     },
     {
       key: 'guest',
@@ -93,6 +110,8 @@ const ReservationListPage = () => {
     <>
       <ManagementLayout
         title={t('reservations:management.title')}
+        icon={moduleConfig?.icon}
+        iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('reservations:management.list'), href: '/reservations' }]}
         showCreateButton={true}
         createButtonLabel={t('reservations:list.newReservation')}
@@ -102,12 +121,13 @@ const ReservationListPage = () => {
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
             <DataTable
               columns={columns}
-              data={reservations}
+              data={pagination.paginatedData}
               onEdit={handleEdit}
               onDelete={handleDelete}
               canEdit={hasPermission(PERMISSIONS.RESERVATION_EDIT)}
               canDelete={hasPermission(PERMISSIONS.RESERVATION_DELETE)}
               loading={loading}
+              paginationProps={pagination}
             />
         </div>
       </ManagementLayout>
@@ -119,7 +139,7 @@ const ReservationListPage = () => {
         size="sm"
       >
         <Text mb="md">
-          {t('common:modal.messageDelete', { id: reservationToDelete?.id })}
+          {t('common:modal.messageDeleteWithId', { id: reservationToDelete?.id })}
         </Text>
         <Group position="right">
           <Button variant="outline" onClick={closeDeleteModal}>

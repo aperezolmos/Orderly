@@ -2,39 +2,24 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import ProtectedRoute from './common/components/ProtectedRoute';
-import ErrorBoundary from './common/components/ErrorBoundary';
+import ErrorBoundary from './common/components/feedback/ErrorBoundary';
 import MainLayout from './common/layouts/MainLayout';
-import LoadingFallback from './common/components/LoadingFallback';
+import LoadingFallback from './common/components/feedback/LoadingFallback';
 import { PERMISSIONS } from './utils/permissions';
 
 
 // ------- PAGES ------------------------------------------
 const MainPage = React.lazy(() => import('./common/pages/MainPage'));
 
-// Orders
-const OrdersDashboardPage = React.lazy(() => import('./modules/orders/pages/OrderDashboardPage'));
-const OrderHistoryPage = React.lazy(() => import('./modules/orders/pages/OrderHistoryPage'));
-const OrderViewPage = React.lazy(() => import('./modules/orders/pages/OrderViewPage'));
-
 // Auth
 const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
 const Register = React.lazy(() => import('./modules/auth/pages/RegisterPage'));
 const Profile = React.lazy(() => import('./modules/auth/pages/ProfilePage'));
+const ProfileEdit = React.lazy(() => import('./modules/auth/pages/ProfileEditPage'));
 
-// Roles
-const RoleList = React.lazy(() => import('./modules/roles/pages/RoleListPage'));
-const RoleCreate = React.lazy(() => import('./modules/roles/pages/RoleCreatePage'));
-const RoleEdit = React.lazy(() => import('./modules/roles/pages/RoleEditPage'));
-
-// Users
-const UserList = React.lazy(() => import('./modules/users/pages/UserListPage'));
-const UserCreate = React.lazy(() => import('./modules/users/pages/UserCreatePage'));
-const UserEdit = React.lazy(() => import('./modules/users/pages/UserEditPage'));
-
-// Foods
-const FoodList = React.lazy(() => import('./modules/foods/pages/FoodListPage'));
-const FoodCreate = React.lazy(() => import('./modules/foods/pages/FoodCreatePage'));
-const FoodEdit = React.lazy(() => import('./modules/foods/pages/FoodEditPage'));
+// Orders
+const OrdersDashboardPage = React.lazy(() => import('./modules/orders/pages/OrderDashboardPage'));
+const OrderHistoryPage = React.lazy(() => import('./modules/orders/pages/OrderHistoryPage'));
 
 // Products
 const ProductList = React.lazy(() => import('./modules/products/pages/ProductListPage'));
@@ -42,15 +27,30 @@ const ProductView = React.lazy(() => import('./modules/products/pages/ProductVie
 const ProductCreate = React.lazy(() => import('./modules/products/pages/ProductCreatePage'));
 const ProductEdit = React.lazy(() => import('./modules/products/pages/ProductEditPage'));
 
-// Dining Tables
-const DiningTableList = React.lazy(() => import('./modules/diningTables/pages/DiningTableListPage'));
-const DiningTableCreate = React.lazy(() => import('./modules/diningTables/pages/DiningTableCreatePage'));
-const DiningTableEdit = React.lazy(() => import('./modules/diningTables/pages/DiningTableEditPage'));
+// Foods
+const FoodList = React.lazy(() => import('./modules/foods/pages/FoodListPage'));
+const FoodCreate = React.lazy(() => import('./modules/foods/pages/FoodCreatePage'));
+const FoodEdit = React.lazy(() => import('./modules/foods/pages/FoodEditPage'));
 
 // Reservations
 const ReservationList = React.lazy(() => import('./modules/reservations/pages/ReservationListPage'));
 const ReservationCreate = React.lazy(() => import('./modules/reservations/pages/ReservationCreatePage'));
 const ReservationEdit = React.lazy(() => import('./modules/reservations/pages/ReservationEditPage'));
+
+// Dining Tables
+const DiningTableList = React.lazy(() => import('./modules/diningTables/pages/DiningTableListPage'));
+const DiningTableCreate = React.lazy(() => import('./modules/diningTables/pages/DiningTableCreatePage'));
+const DiningTableEdit = React.lazy(() => import('./modules/diningTables/pages/DiningTableEditPage'));
+
+// Users
+const UserList = React.lazy(() => import('./modules/users/pages/UserListPage'));
+const UserCreate = React.lazy(() => import('./modules/users/pages/UserCreatePage'));
+const UserEdit = React.lazy(() => import('./modules/users/pages/UserEditPage'));
+
+// Roles
+const RoleList = React.lazy(() => import('./modules/roles/pages/RoleListPage'));
+const RoleCreate = React.lazy(() => import('./modules/roles/pages/RoleCreatePage'));
+const RoleEdit = React.lazy(() => import('./modules/roles/pages/RoleEditPage'));
 
 
 // --------------------------------------------------------
@@ -105,7 +105,7 @@ const AppRouter = () => {
             />
 
 
-            {/* Protected USER routes */}
+            {/* Protected user routes */}
             <Route path="/profile"
               element={
                 <ProtectedRoute>
@@ -113,96 +113,30 @@ const AppRouter = () => {
                 </ProtectedRoute>
               }
             />
-
-            {/* TODO: poner permisos requeridos */}
-            <Route path="/orders"
+            <Route path="/profile/edit"
               element={
                 <ProtectedRoute>
+                  <WithLayout> <ProfileEdit /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path="/orders"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ORDER_VIEW]}>
                   <WithLayout> <OrdersDashboardPage /> </WithLayout>
                 </ProtectedRoute>
               }
             />
             <Route path="/orders/history"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ORDER_VIEW]}>
                   <WithLayout> <OrderHistoryPage /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route path="/orders/:id/view"
-              element={
-                <ProtectedRoute>
-                  <WithLayout> <OrderViewPage /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
 
-            <Route path="/roles"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_VIEW]}>
-                  <WithLayout> <RoleList /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/roles/new"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_CREATE]}>
-                  <WithLayout> <RoleCreate /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/roles/:id/edit"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_EDIT]}>
-                  <WithLayout> <RoleEdit /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-
-            <Route path="/users"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_VIEW]}>
-                  <WithLayout> <UserList /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/users/new"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_CREATE]}>
-                  <WithLayout> <UserCreate /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/users/:id/edit"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_EDIT_MYSELF, PERMISSIONS.USER_EDIT_OTHERS]}>
-                  <WithLayout> <UserEdit /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-
-            <Route path="/foods"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_VIEW]}>
-                  <WithLayout> <FoodList /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/foods/new"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_CREATE]}>
-                  <WithLayout> <FoodCreate /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/foods/:id/edit"
-              element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_EDIT]}>
-                  <WithLayout> <FoodEdit /> </WithLayout>
-                </ProtectedRoute>
-              }
-            />
-
+            
             <Route path="/products"
               element={
                 <ProtectedRoute requiredPermissions={[PERMISSIONS.PRODUCT_VIEW]}>
@@ -232,24 +166,24 @@ const AppRouter = () => {
               }
             />
 
-            <Route path="/tables"
+            <Route path="/foods"
               element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_VIEW]}>
-                  <WithLayout> <DiningTableList /> </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_VIEW]}>
+                  <WithLayout> <FoodList /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route path="/tables/new"
+            <Route path="/foods/new"
               element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_CREATE]}>
-                  <WithLayout> <DiningTableCreate /> </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_CREATE]}>
+                  <WithLayout> <FoodCreate /> </WithLayout>
                 </ProtectedRoute>
               }
             />
-            <Route path="/tables/:id/edit"
+            <Route path="/foods/:id/edit"
               element={
-                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_EDIT]}>
-                  <WithLayout> <DiningTableEdit /> </WithLayout>
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.FOOD_EDIT]}>
+                  <WithLayout> <FoodEdit /> </WithLayout>
                 </ProtectedRoute>
               }
             />
@@ -276,7 +210,73 @@ const AppRouter = () => {
               }
             />
 
+            <Route path="/tables"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_VIEW]}>
+                  <WithLayout> <DiningTableList /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/tables/new"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_CREATE]}>
+                  <WithLayout> <DiningTableCreate /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/tables/:id/edit"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.TABLE_EDIT]}>
+                  <WithLayout> <DiningTableEdit /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
 
+            <Route path="/users"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_VIEW]}>
+                  <WithLayout> <UserList /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/users/new"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_CREATE]}>
+                  <WithLayout> <UserCreate /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/users/:id/edit"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.USER_EDIT_MYSELF, PERMISSIONS.USER_EDIT_OTHERS]}>
+                  <WithLayout> <UserEdit /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route path="/roles"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_VIEW]}>
+                  <WithLayout> <RoleList /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/roles/new"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_CREATE]}>
+                  <WithLayout> <RoleCreate /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/roles/:id/edit"
+              element={
+                <ProtectedRoute requiredPermissions={[PERMISSIONS.ROLE_EDIT]}>
+                  <WithLayout> <RoleEdit /> </WithLayout>
+                </ProtectedRoute>
+              }
+            />
+
+            {/*TODO: 404 route*/}
             {/* Default route */}
             <Route path="*"
               element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}

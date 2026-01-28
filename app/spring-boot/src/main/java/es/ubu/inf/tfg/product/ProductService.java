@@ -12,6 +12,7 @@ import es.ubu.inf.tfg.food.FoodService;
 import es.ubu.inf.tfg.food.classification.AllergenInfo;
 import es.ubu.inf.tfg.food.classification.dto.AllergenInfoDTO;
 import es.ubu.inf.tfg.food.classification.dto.mapper.AllergenInfoMapper;
+import es.ubu.inf.tfg.food.classification.type.Allergen;
 import es.ubu.inf.tfg.food.nutritionInfo.NutritionInfo;
 
 import es.ubu.inf.tfg.product.dto.ProductRequestDTO;
@@ -76,6 +77,17 @@ public class ProductService {
 
     public List<ProductResponseDTO> findProductsByFood(Integer foodId) {
         return productRepository.findByIngredients_FoodId(foodId).stream()
+                .map(productMapper::toResponseDTO)
+                .toList();
+    }
+
+    public List<ProductResponseDTO> findByExcludingAllergens(List<Allergen> allergens) {
+        
+        if (allergens == null || allergens.isEmpty()) {
+            return findAll();
+        }
+        Set<Allergen> allergenSet = new HashSet<>(allergens);
+        return productRepository.findByAllergensNotContaining(allergenSet).stream()
                 .map(productMapper::toResponseDTO)
                 .toList();
     }

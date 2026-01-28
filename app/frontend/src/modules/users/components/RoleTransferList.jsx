@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Group, Badge, Paper, Title, Text, ScrollArea, Stack } from '@mantine/core';
-import { IconX, IconPlus, IconShield } from '@tabler/icons-react';
+import { Group, Badge, Paper, Title, Text, ScrollArea, Stack, SimpleGrid } from '@mantine/core';
+import { IconX, IconPlus, IconShieldCheck, IconShieldPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 
 
@@ -14,113 +14,72 @@ const RoleTransferList = memo(({
   
   const { t } = useTranslation(['common', 'roles']);
 
+  
+  const RoleItem = ({ role, isAssigned }) => (
+    <Badge
+      key={role.id}
+      size="lg"
+      variant={isAssigned ? "filled" : "outline"}
+      color={isAssigned ? "blue" : "gray"}
+      rightSection={
+        isAssigned ? (
+          <IconX size="0.8rem" style={{ cursor: 'pointer' }} />
+        ) : (
+          <IconPlus size="0.8rem" style={{ cursor: 'pointer' }} />
+        )
+      }
+      style={{ 
+        cursor: loading ? 'not-allowed' : 'pointer',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+        paddingRight: 10
+      }}
+      onClick={() => {
+        if (loading) return;
+        isAssigned ? onRemoveRole(role.id) : onAddRole(role);
+      }}
+    >
+      {role.name}
+    </Badge>
+  );
+
+  const renderSection = (title, roles, isAssigned, IconComponent) => (
+    <Paper shadow="sm" p="md" withBorder style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Title order={4} mb="md">
+        <Group spacing="xs">
+          <IconComponent size="1.2rem" />
+          {title}
+        </Group>
+      </Title>
+      
+      <ScrollArea.Autosize mah={300} type="always" offsetScrollbars>
+        <Group gap="xs" wrap="wrap">
+          {roles.length > 0 ? (
+            roles.map(role => (
+              <RoleItem key={role.id} role={role} isAssigned={isAssigned} />
+            ))
+          ) : (
+            <Text size="sm" color="dimmed" fs="italic" w="100%" ta="center" mt="xl">
+              {isAssigned 
+                ? t('roles:transferList.noRolesAssigned') 
+                : t('roles:transferList.noAvailableRoles')}
+            </Text>
+          )}
+        </Group>
+      </ScrollArea.Autosize>
+      
+      <Text size="xs" color="dimmed" mt="auto" pt="sm">
+        {t('roles:transferList.total', { count: roles.length })}
+      </Text>
+    </Paper>
+  );
+
 
   return (
-    <Group grow align="flex-start" spacing="xl">
-      
-      {/* Assigned roles */}
-      <Paper shadow="sm" p="md" withBorder style={{ flex: 1 }}>
-        <Title order={4} mb="md">
-          <Group spacing="xs">
-            <IconShield size="1.2rem" />
-            {t('roles:transferList.assigned')}
-          </Group>
-        </Title>
-        
-        <Text size="sm" color="dimmed" mb="md">
-          {t('roles:transferList.currentRoles')}
-        </Text>
-
-        <ScrollArea.Autosize mah={300}>
-          <Stack spacing="xs">
-            {assignedRoles.length > 0 ? (
-              assignedRoles.map((role) => (
-                <Badge
-                  key={`assigned-${role.id}`}
-                  size="lg"
-                  variant="filled"
-                  color="blue"
-                  rightSection={
-                    <IconX 
-                      size="0.8rem" 
-                      style={{ cursor: 'pointer' }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        !loading && onRemoveRole(role.id);
-                      }}
-                    />
-                  }
-                  style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
-                  onClick={() => !loading && onRemoveRole(role.id)}
-                >
-                  {role.name}
-                </Badge>
-              ))
-            ) : (
-              <Text size="sm" color="dimmed" fs="italic">
-                {t('roles:transferList.noRolesAssigned')}
-              </Text>
-            )}
-          </Stack>
-        </ScrollArea.Autosize>
-        
-        <Text size="xs" color="dimmed" mt="sm">
-          {t('roles:transferList.total', { count: assignedRoles.length })}
-        </Text>
-      </Paper>
-
-
-      {/* Available roles */}
-      <Paper shadow="sm" p="md" withBorder style={{ flex: 1 }}>
-        <Title order={4} mb="md">
-          <Group spacing="xs">
-            <IconShield size="1.2rem" />
-            {t('roles:transferList.available')}
-          </Group>
-        </Title>
-        
-        <Text size="sm" color="dimmed" mb="md">
-          {t('roles:transferList.clickToAssign')}
-        </Text>
-
-        <ScrollArea.Autosize mah={300}>
-          <Stack spacing="xs">
-            {availableRoles.length > 0 ? (
-              availableRoles.map((role) => (
-                <Badge
-                  key={`available-${role.id}`}
-                  size="lg"
-                  variant="outline"
-                  color="gray"
-                  rightSection={
-                    <IconPlus 
-                      size="0.8rem" 
-                      style={{ cursor: 'pointer' }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        !loading && onAddRole(role);
-                      }}
-                    />
-                  }
-                  style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
-                  onClick={() => !loading && onAddRole(role)}
-                >
-                  {role.name}
-                </Badge>
-              ))
-            ) : (
-              <Text size="sm" color="dimmed" fs="italic">
-                {t('roles:transferList.noAvailableRoles')}
-              </Text>
-            )}
-          </Stack>
-        </ScrollArea.Autosize>
-        
-        <Text size="xs" color="dimmed" mt="sm">
-          {t('roles:transferList.availableCount', { count: availableRoles.length })}
-        </Text>
-      </Paper>
-    </Group>
+    <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xl">
+      {renderSection(t('roles:transferList.assigned'), assignedRoles, true, IconShieldCheck)}
+      {renderSection(t('roles:transferList.available'), availableRoles, false, IconShieldPlus)}
+    </SimpleGrid>
   );
 });
 

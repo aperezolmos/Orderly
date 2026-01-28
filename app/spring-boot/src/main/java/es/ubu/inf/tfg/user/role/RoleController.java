@@ -70,9 +70,9 @@ public class RoleController {
         return ResponseEntity.ok(roleService.existsById(id));
     }
 
-    @GetMapping("/name/{name}/exists")
-    public ResponseEntity<Boolean> checkRoleNameExists(@PathVariable String name) {
-        return ResponseEntity.ok(roleService.existsByName(name));
+    @GetMapping("/check-name")
+    public ResponseEntity<Boolean> checkRoleNameAvailability(@RequestParam String name) {
+        return ResponseEntity.ok(!roleService.existsByName(name));
     }
 
 

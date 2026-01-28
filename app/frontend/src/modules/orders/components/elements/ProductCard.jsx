@@ -1,4 +1,5 @@
-import { Paper, Text, Group, ActionIcon, Badge } from '@mantine/core';
+import { Paper, Text, Group, ActionIcon, Badge,
+         useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { IconShoppingCartPlus, IconChefHat, IconGlass } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { formatCurrency } from '../../../../utils/formatters';
@@ -6,37 +7,17 @@ import { formatCurrency } from '../../../../utils/formatters';
 
 const ProductCard = ({ product, onSelect }) => {
   
-  const { t } = useTranslation(['orders']);
+  const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
 
 
-  const getCategoryIcon = (category) => {
-    switch (category?.toLowerCase()) {
-      case 'drink':
-        return <IconGlass size={16} />;
-      case 'food':
-        return <IconChefHat size={16} />;
-      case 'dessert':
-        return <IconShoppingCartPlus size={16} />;
-      default:
-        return <IconChefHat size={16} />;
-    }
-  };
+  const boxShadowIdle = colorScheme === 'dark' 
+    ? '0 4px 6px rgba(0, 0, 0, 0.4)' 
+    : theme.shadows.sm;
 
-  const getCategoryColor = (category) => {
-    switch (category?.toLowerCase()) {
-      case 'drink':
-        return 'blue';
-      case 'food':
-        return 'orange';
-      case 'dessert':
-        return 'pink';
-      default:
-        return 'gray';
-    }
-  };
-
-  // TODO: Assuming product.category exists and is 'food', 'drink', etc.
-  const categoryKey = product.category ? product.category.toLowerCase() : 'food';
+  const boxShadowHover = colorScheme === 'dark' 
+    ? '0 8px 20px rgba(0, 0, 0, 0.8)' 
+    : '0 8px 20px rgba(0, 0, 0, 0.15)';
   
 
   return (
@@ -49,27 +30,21 @@ const ProductCard = ({ product, onSelect }) => {
         transition: 'transform 0.2s, box-shadow 0.2s',
         height: '100%',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        boxShadow: boxShadowIdle,
       }}
       className="product-card"
       onClick={onSelect}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+        e.currentTarget.style.boxShadow = boxShadowHover;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+        e.currentTarget.style.boxShadow = boxShadowIdle;
       }}
     >
-      <Group justify="apart" align="start" mb="xs">
-        <Badge
-          leftSection={getCategoryIcon(categoryKey)}
-          color={getCategoryColor(categoryKey)}
-          variant="light"
-        >
-          {t(`orders:types.${categoryKey}`, categoryKey)}
-        </Badge>
+      <Group justify="flex-start" mb="xs">
         <ActionIcon
           variant="filled"
           color="green"
@@ -88,7 +63,7 @@ const ProductCard = ({ product, onSelect }) => {
       <Text size="sm" c="dimmed" lineClamp={2} style={{ flexGrow: 1 }}>
         {product.description}
       </Text>
-      <Group justify="apart" mt="md" style={{ marginTop: 'auto' }}>
+      <Group justify="flex-end" mt="md" style={{ marginTop: 'auto' }}>
         <Text fw={700} size="xl" c="green">
           {formatCurrency(product.price)}
         </Text>

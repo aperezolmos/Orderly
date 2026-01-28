@@ -7,21 +7,25 @@
   },
   "form": {
     "username": "Usuario",
-    "usernamePlaceholder": "Ingresar usuario",
+    "usernamePlaceholder": "Introducir usuario",
     "firstName": "Nombre",
-    "firstNamePlaceholder": "Ingresar nombre",
+    "firstNamePlaceholder": "Introducir nombre",
     "lastName": "Apellido",
-    "lastNamePlaceholder": "Ingresar apellido",
+    "lastNamePlaceholder": "Introducir apellido",
+    "changePasswordTitle": "Cambio de contraseña",
     "password": "Contraseña",
-    "passwordPlaceholder": "Ingresar contraseña",
+    "passwordPlaceholder": "Introducir contraseña",
     "confirmPassword": "Confirmar contraseña",
     "confirmPasswordPlaceholder": "Confirmar contraseña",
+    "currentPassword": "Contraseña actual",
+    "currentPasswordPlaceholder": "Introducir contraseña actual",
     "newPassword": "Nueva contraseña",
     "create": "Crear Usuario",
     "update": "Actualizar Usuario",
     "roleManagement": "Gestión de Roles",
     "passwordInfo": "Deja los campos de contraseña en blanco para mantener la contraseña actual",
-    "roleChanges": "Los cambios de roles se guardarán cuando envíes el formulario"
+    "currentPasswordInfo": "Si quieres cambiar la contraseña, deberás introducir la contraseña actual",
+    "roleChanges": "Los cambios de roles se guardarán cuando envíes el formulario. Los nuevos permisos se reflejarán en el próximo inicio de sesión"
   },
   "list": {
     "id": "ID",
@@ -37,6 +41,7 @@
     "usernameAvailable": "Nombre de usuario disponible",
     "usernameTaken": "El nombre de usuario ya está en uso",
     "confirmPasswordRequired": "Por favor confirma la contraseña",
+    "currentPasswordRequired": "Para cambiar tu contraseña debes introducir la actual",
     "passwordsMatch": "Las contraseñas no coinciden"
   },
   "notifications": {

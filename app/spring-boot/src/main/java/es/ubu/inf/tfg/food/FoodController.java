@@ -87,9 +87,9 @@ public class FoodController {
         return ResponseEntity.ok(foodService.existsById(id));
     }
 
-    @GetMapping("/name/{name}/exists")
-    public ResponseEntity<Boolean> checkFoodNameExists(@PathVariable String name) {
-        return ResponseEntity.ok(foodService.existsByName(name));
+    @GetMapping("/check-name")
+    public ResponseEntity<Boolean> checkFoodNameAvailability(@RequestParam String name) {
+        return ResponseEntity.ok(!foodService.existsByName(name));
     }
 
 
@@ -97,7 +97,7 @@ public class FoodController {
     // ALLERGEN ENDPOINTS
 
     @GetMapping("/allergens")
-    @PreAuthorize("hasAuthority('FOOD_VIEW_LIST')")
+    @PreAuthorize("hasAnyAuthority('FOOD_VIEW_LIST', 'FOOD_CREATE', 'FOOD_EDIT')")
     public ResponseEntity<List<String>> getAllAllergens() {
         return ResponseEntity.ok(foodService.getAllAllergens());
     }

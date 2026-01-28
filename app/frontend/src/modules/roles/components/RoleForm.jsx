@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { TextInput, Textarea, Button, Group, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
-import { roleService } from '../../../services/backend/roleService';
 import PermissionCheckboxList from './PermissionCheckboxList';
+import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
+import UniqueTextField from '../../../common/components/UniqueTextField';
+import { useRoles } from '../hooks/useRoles';
 
 
 const RoleForm = ({
@@ -13,16 +15,23 @@ const RoleForm = ({
   submitLabel = "Create Role"
 }) => {
   
-  const [allPermissions, setAllPermissions] = useState([]);
-  const [permissionsLoading, setPermissionsLoading] = useState(false);
+  const { loadAllPermissions, allPermissions, permissionsLoading } = useRoles();
+  const { 
+    isAvailable, 
+    isChecking, 
+    checkAvailability 
+  } = useUniqueCheck('roleName', { minLength: 1, maxLength: 50 });
   const { t } = useTranslation(['common', 'roles']);
+
+
+  const [permissions, setPermissions] = useState([]);
+  const initialPermissionsRef = useRef([]);
 
 
   const form = useForm({
     initialValues: {
       name: '',
       description: '',
-      permissions: [],
     },
     validate: {
       name: (value) => {
@@ -31,53 +40,69 @@ const RoleForm = ({
         return null;
       },
       description: (value) => {
-        if (value && value.length > 255) return t('common:validation.maxLength', { count: 255 });
+        if (value?.length > 255) return t('common:validation.maxLength', { count: 255 });
         return null;
       },
     },
+    validateInputOnChange: true,
   });
 
+  
   useEffect(() => {
-    const fetchPermissions = async () => {
-      setPermissionsLoading(true);
-      try {
-        const perms = await roleService.getAllPermissions();
-        setAllPermissions(perms);
-      } finally {
-        setPermissionsLoading(false);
-      }
-    };
-    fetchPermissions();
-  }, []);
+    loadAllPermissions();
+  }, [loadAllPermissions]);
 
   useEffect(() => {
     if (role) {
+      form.setInitialValues({
+        name: role.name || '',
+        description: role.description || '',
+      });
       form.setValues({
         name: role.name || '',
         description: role.description || '',
-        permissions: role.permissions ? role.permissions.map(p => (typeof p === 'string' ? p : p.name || p)) : [],
       });
-    } else {
-      form.setValues({
-        name: '',
-        description: '',
-        permissions: [],
-      });
+      
+      const perms = role.permissions?.map(p => (typeof p === 'string' ? p : p.name)) || [];
+      setPermissions(perms);
+      initialPermissionsRef.current = perms;
+    } 
+    else {
+      form.reset();
+      setPermissions([]);
+      initialPermissionsRef.current = [];
     }
   }, [role]);
 
-  const handleSubmit = async (values) => {
-    await onSubmit({
-      name: values.name,
-      description: values.description,
-      permissions: values.permissions,
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      checkAvailability(form.values.name, role?.name);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [form.values.name]);
+
+
+  const isPermissionsDirty = useMemo(() => {
+    const start = [...initialPermissionsRef.current].sort().join(',');
+    const current = [...permissions].sort().join(',');
+    return start !== current;
+  }, [permissions]);
+
+  const isFormDirty = form.isDirty() || isPermissionsDirty;
+
+
+  const handleSubmit = (values) => {
+    onSubmit({
+      ...values,
+      description: values.description, 
+      permissions: permissions,
     });
   };
 
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <LoadingOverlay visible={loading} />
+      <LoadingOverlay visible={loading || permissionsLoading} />
 
       <Tabs defaultValue="basic">
         <Tabs.List>
@@ -85,44 +110,40 @@ const RoleForm = ({
           <Tabs.Tab value="permissions">{t('roles:form.permissions')}</Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="basic" pt="xs">
-          <TextInput
+        <Tabs.Panel value="basic" pt="md">
+          <UniqueTextField
             label={t('roles:form.name')}
             placeholder={t('roles:form.namePlaceholder')}
             required
-            maxLength={50}
+            isChecking={isChecking}
+            isAvailable={isAvailable}
             {...form.getInputProps('name')}
             mb="md"
           />
-
           <Textarea
             label={t('roles:form.description')}
             placeholder={t('roles:form.descriptionPlaceholder')}
-            maxLength={255}
             autosize
             minRows={3}
             {...form.getInputProps('description')}
-            mb="xl"
           />
         </Tabs.Panel>
 
-        <Tabs.Panel value="permissions" pt="xs">
+        <Tabs.Panel value="permissions" pt="md">
           <PermissionCheckboxList
             permissions={allPermissions}
-            selected={form.values.permissions}
-            onChange={(selected) => form.setFieldValue('permissions', selected)}
+            selected={permissions}
+            onChange={setPermissions}
             loading={permissionsLoading}
-            title={t('roles:form.permissions')}
-            helpText={t('roles:form.permissionsHelp')}
           />
         </Tabs.Panel>
       </Tabs>
 
-      <Group position="right" mt="xl">
+      <Group justify="flex-end" mt="xl">
         <Button
           type="submit"
           loading={loading}
-          disabled={!form.isDirty()}
+          disabled={loading || isChecking || !isFormDirty || !isAvailable}
         >
           {submitLabel}
         </Button>
