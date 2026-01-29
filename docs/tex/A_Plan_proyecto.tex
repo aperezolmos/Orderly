@@ -340,6 +340,53 @@ Se acordó, para el siguiente \textit{sprint}, incluir la mención de alérgenos
 
 %---------------------------------------------------------------
 
+\subsection{\textit{Sprint} 10}
+\label{subsec:A.2_sprint10}
+
+\underline{Duración}: 1 semana (15/01/2026 - 22/01/2026)
+
+En este \textit{sprint} se añadieron campos para alérgenos y métricas nutricionales a las entidades de alimentos y productos, junto con su integración y visualización en el \textit{frontend}. También se modificaron los componentes de navegación de \textit{React}, para que la visualización de los módulos dependiera de los permisos que posee el usuario autenticado.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/11?closed=1}{\textbf{Sprint 10}}.
+
+\subsubsection{Objetivos}
+\begin{itemize}
+	\item \textbf{Inclusión de alérgenos y métricas nutricionales:} se implementó el manejo de listas de alérgenos (para alimentos y productos) y métricas nutricionales (\textit{Nutri-Score} y grupo NOVA). Estos campos se obtienen de la API \textit{Open Food Facts} y, en caso de los alérgenos, también pueden añadirse manualmente. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/151}{\#151}.
+	\item \textbf{Restricción de acceso en \textit{frontend} mediante permisos:} se refactorizaron los componentes de navegación de \textit{React} para que el acceso a rutas y las acciones a realizar estuvieran restringidos por los permisos del usuario autenticado, en vez de comprobar estáticamente su rol. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/152}{\#152}.
+	\item \textbf{Corrección de sesiones no persistentes:} se solucionaron los errores en la comunicación \textit{React-Spring Boot}, que hacían que las \textit{cookies} \texttt{JSESSIONID} no se almacenaran, lo cual causaba que el usuario perdiese su sesión al recargar la página.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint10_burndown.png}{Gráfico \textit{burndown} del Sprint 10}{A2_sprint10_burndown}
+
+\subsubsection{Revisión}
+
+Se acordó seguir corrigiendo errores y desajustes en la interfaz, con el objetivo de preparar la aplicación para su segundo \textbf{\textit{release}}. También se acordó integrar \textit{\textbf{SonarCloud}} para disponer de métricas sobre la calidad del código actual y posibles errores que no hayan sido detectados.
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 11}
+\label{subsec:A.2_sprint11}
+
+\underline{Duración}: 1 semana (22/01/2026 - 29/01/2026)
+
+Este \textit{sprint} se dedicó a la corrección y mejora de aspectos pendientes, como cambios de estado para mesas y reservas, filtrado de alérgenos en el \textit{dashboard} de pedidos y modificación de la interfaz de la aplicación, para así lograr una \textbf{segunda versión funcional} de la aplicación.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/12?closed=1}{\textbf{Sprint 11}}.
+
+\subsubsection{Objetivos}
+\begin{itemize}
+	\item \textbf{Añadir mejoras, correcciones y finalizar aspectos pendientes de la aplicación:} los componentes modificados se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/157}{\#157}.
+	\item \textbf{Integración con \textit{SonarCloud}:} se agregó la comunicación con \textit{SonarCloud} en el \textit{workflow} existente de \textit{GitHub Actions}, que ejecutaba los tests de \textit{Spring Boot}.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burndown} del Sprint 11}{A2_sprint11_burndown}
+
+\subsubsection{Revisión}
+
+...
+
+%---------------------------------------------------------------
+
 \subsection{Gráfico \textit{Burn-up}}
 
 \missingfigure{Gráfico burn up general(cuando finalice el proyecto)}

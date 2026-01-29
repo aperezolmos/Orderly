@@ -307,6 +307,15 @@
 	\label{req:#2}%
 }
 
+% REFS A PALABRAS + ETIQUETA. Los parámetros son:
+% 1 -> Texto visible
+% 2 --> Identificador interno
+\newcommand{\wordRef}[2]{%
+	#1%
+	\phantomsection%
+	\label{word:#2}%
+}
+
 % TABLA CASOS DE USO. Los parámetros son:
 % 1 -> Etiqueta (label) para referencias
 % 2 --> Id del caso de uso
@@ -431,7 +440,7 @@
 
 
 % Datos de portada
-\title{título del TFG \\Documentación Técnica}
+\title{Aplicación web para la gestión de negocios de restauración con soporte de datos nutricionales: Orderly \\[0.6cm] Documentación Técnica}
 \author{Amanda Pérez Olmos}
 \tutor{Raúl Marticorena Sánchez}
 \date{\today}

@@ -52,8 +52,8 @@ A pesar de compartir el planteamiento conceptual con el proyecto de referencia, 
 \imagenConEtiqueta[0.47\textwidth]{img/apdo_5/5_modeloEER_Completo.png}{Modelo de base de datos actual}{5_modeloEER_Completo}\todo{Queda pendiente actualizarlo con los campos de alérgenos}
 
 Para una descripción técnica más detallada sobre la implementación de estas entidades y la lógica de negocio aplicada, se recomienda consultar los \textit{pull requests} 
-\href{https://github.com/aperezolmos/tfg-aperezolmos/pull/51}{\#51} y 
-\href{https://github.com/aperezolmos/tfg-aperezolmos/pull/52}{\#52} 
+\href{https://github.com/aperezolmos/Orderly/pull/51}{\#51} y 
+\href{https://github.com/aperezolmos/Orderly/pull/52}{\#52} 
 en el repositorio del proyecto.
 
 %---------------------------------------------------------------
@@ -87,7 +87,7 @@ La conversión entre entidades y DTOs se realiza mediante \textit{mappers} imple
 \subsection{Seguridad y control de acceso}
 
 La seguridad y el control de acceso en el \textit{backend} se gestionan mediante \textit{Spring Security}, implementando un sistema de autenticación basado en sesiones HTTP y \textbf{autorización granular por roles y permisos} 
-(ver \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/81}{\#81}). 
+(ver \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/81}{\#81}). 
 Los \textit{endpoints} de la API están protegidos mediante anotaciones \texttt{\char`@{}PreAuthorize}, que verifican los permisos necesarios para cada operación, garantizando que solo los usuarios autorizados puedan acceder a los recursos sensibles.
 
 La sesión de usuario autenticado se mantiene en el \textit{backend} mediante el componente \texttt{SessionManager}, que almacena el contexto de seguridad en la sesión HTTP y gestiona el ciclo de vida de la autenticación. Para la representación de usuarios en el sistema de seguridad, se utiliza la clase \texttt{CustomUserDetails}, que adapta la entidad \texttt{User} y expone sus roles y permisos como \textit{authorities} de \textit{Spring Security}, permitiendo así un control de acceso detallado a los recursos.
@@ -151,7 +151,7 @@ La aplicación también permite la búsqueda de alimentos de distintos idiomas y
 \section{Consumo de la API de datos nutricionales}
 %Otro título: "Suministro de información nutricional mediante API"
 
-La elección de una API que proporcionase información de alimentos y datos nutricionales se llevó a cabo mediante una comparativa que se encuentra detallada en el \textit{issue} \href{https://github.com/aperezolmos/tfg-aperezolmos/issues/10}{\#10}. La API seleccionada fue \textit{\textbf{Nutritionix}}~\cite{api:nutritionix}, la cual también fue elegida en el proyecto \textit{NutriMenu}~\cite{nutrimenu2024}.
+La elección de una API que proporcionase información de alimentos y datos nutricionales se llevó a cabo mediante una comparativa que se encuentra detallada en el \textit{issue} \href{https://github.com/aperezolmos/Orderly/issues/10}{\#10}. La API seleccionada fue \textit{\textbf{Nutritionix}}~\cite{api:nutritionix}, la cual también fue elegida en el proyecto \textit{NutriMenu}~\cite{nutrimenu2024}.
 
 Sin embargo, a 19 de noviembre de 2025, recibí una notificación oficial vía correo electrónico por parte de \textit{Nutritionix}, en la cual se comunicaba que el plan de acceso gratuito dejaría de estar operativo~\cite{reddit:nutritionixFreePlan}, invalidando así su uso para el proyecto.
 

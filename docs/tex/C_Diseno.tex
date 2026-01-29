@@ -22,20 +22,20 @@
 A continuación, se procede a listar las \textbf{entidades} que conforman la aplicación y a describir brevemente su propósito. Las \textbf{relaciones} entre entidades y detalles particulares se describirán en el apartado ``\textit{\nameref{subsec:C.2_ModelosDetallados}}''.
 
 \begin{itemize}
-	\item \textbf{Usuario (\texttt{User}):} se trata de un empleado que utiliza la aplicación. Dispone de credenciales para ingresar en ella y tiene roles que determinan su comportamiento dentro del sistema.
-	\item \textbf{Rol (\texttt{Role}):}  agrupa un conjunto de permisos (\texttt{Permission}). Controla las acciones y el acceso a los recursos que un usuario puede tener en la aplicación.
+	\item \textbf{Usuario (\wordRef{\texttt{User}}{C.2_user}):} se trata de un empleado que utiliza la aplicación. Dispone de credenciales para ingresar en ella y tiene roles que determinan su comportamiento dentro del sistema.
+	\item \textbf{Rol (\wordRef{\texttt{Role}}{C.2_role}):}  agrupa un conjunto de permisos (\texttt{Permission}). Controla las acciones y el acceso a los recursos que un usuario puede tener en la aplicación.
 	\begin{itemize}
 		\item El enumerado \texttt{Permission} define todas las acciones que pueden ser autorizadas en el sistema. Los permisos se organizan por áreas funcionales (pedidos, mesas, reservas, etc.).
 	\end{itemize}
-	\item \textbf{Alimento (\texttt{Food}):} representa un alimento ``base'' o materia prima básica (p. ej. \textit{``Lechuga''}, \textit{``Pollo''}), con una información nutricional asociada.
-	\item \textbf{Producto (\texttt{Product}):} se trata de un plato de comida o producto ofertado (p. ej. \textit{``Ensalada César''}) en el local, el cual se compone de varios alimentos y tiene un precio asociado.
-	\item \textbf{Ingrediente (\texttt{Ingredient}):} representa la relación \textit{muchos a muchos} entre \texttt{Food} y \texttt{Product}. Contiene un atributo que determina la cantidad (en gramos) de un alimento que está presente en un producto determinado.
-	\item \textbf{Mesa (\texttt{DiningTable}):} representa una mesa física del restaurante, que puede reservarse y desde la que se puede realizar un pedido.
-	\item \textbf{Reserva (\texttt{Reservation}):} contiene información sobre la reserva de una mesa de comedor, los datos del huésped que la realizó y la fecha, entre otros.
-	\item \textbf{Pedido (\texttt{Order}):} se trata de una comanda que se le hace a un empleado, esto es, uno o varios productos que se piden para ser consumidos y que suman un precio total. Se trata de una entidad ``padre'' que alberga los campos comunes entre tipos de pedidos. Se verá con mayor detalle en la subsección ``\textit{\nameref{subsec:C.2_ModelosDetallados}}''.
-	\item \textbf{Pedido de bar (\texttt{BarOrder}):} es un pedido que se realiza en la barra del bar y puede estar compuesto solo por bebidas (por lo que no sería necesario prepararlo en la cocina).
-	\item \textbf{Pedido de comedor (\texttt{DiningOrder}):} es una comanda que se realiza desde el comedor, por lo que tendrá una mesa asociada a la que llevar los platos.
-	\item \textbf{Línea de pedido (\texttt{OrderItem}):} representa un ítem de cada pedido, que se conforma por un producto y una cantidad de dicho producto. Constituye un porcentaje del precio total del pedido.
+	\item \textbf{Alimento (\wordRef{\texttt{Food}}{C.2_food}):} representa un alimento ``base'' o materia prima básica (p. ej. \textit{``Lechuga''}, \textit{``Pollo''}), con una información nutricional asociada.
+	\item \textbf{Producto (\wordRef{\texttt{Product}}{C.2_product}):} se trata de un plato de comida o producto ofertado (p. ej. \textit{``Ensalada César''}) en el local, el cual se compone de varios alimentos y tiene un precio asociado.
+	\item \textbf{Ingrediente (\wordRef{\texttt{Ingredient}}{C.2_ingredient}):} representa la relación \textit{muchos a muchos} entre \texttt{Food} y \texttt{Product}. Contiene un atributo que determina la cantidad (en gramos) de un alimento que está presente en un producto determinado.
+	\item \textbf{Mesa (\wordRef{\texttt{DiningTable}}{C.2_diningTable}):} representa una mesa física del restaurante, que puede reservarse y desde la que se puede realizar un pedido.
+	\item \textbf{Reserva (\wordRef{\texttt{Reservation}}{C.2_reservation}):} contiene información sobre la reserva de una mesa de comedor, los datos del huésped que la realizó y la fecha, entre otros.
+	\item \textbf{Pedido (\wordRef{\texttt{Order}}{C.2_order}):} se trata de una comanda que se le hace a un empleado, esto es, uno o varios productos que se piden para ser consumidos y que suman un precio total. Se trata de una entidad ``padre'' que alberga los campos comunes entre tipos de pedidos. Se verá con mayor detalle en la subsección ``\textit{\nameref{subsec:C.2_ModelosDetallados}}''.
+	\item \textbf{Pedido de bar (\wordRef{\texttt{BarOrder}}{C.2_barOrder}):} es un pedido que se realiza en la barra del bar y puede estar compuesto solo por bebidas (por lo que no sería necesario prepararlo en la cocina).
+	\item \textbf{Pedido de comedor (\wordRef{\texttt{DiningOrder}}{C.2_diningOrder}):} es una comanda que se realiza desde el comedor, por lo que tendrá una mesa asociada a la que llevar los platos.
+	\item \textbf{Línea de pedido (\wordRef{\texttt{OrderItem}}{C.2_orderItem}):} representa un ítem de cada pedido, que se conforma por un producto y una cantidad de dicho producto. Constituye un porcentaje del precio total del pedido.
 \end{itemize}
 
 Cabe destacar que todas las entidades disponen de campos de auditoría (\texttt{createdAt} y \texttt{updatedAt}) para rastrear automáticamente la creación y última modificación de cada registro.\todo{mencionar aquí o en 5. Aspectos relevantes?} %...con el objetivo de...?
@@ -107,7 +107,7 @@ En este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Pedi
 
 El aspecto más característico de este módulo es la presencia de una \textbf{jerarquía de herencia}, para manejar los distintos tipos de pedidos (bar o comedor) desde un enfoque organizado y escalable. El uso de herencia permite \textbf{atributos específicos} por tipo, mientras comparte \textbf{datos comunes} eficientemente. La estrategia de herencia utilizada es 
 \href{https://www.baeldung.com/hibernate-inheritance#joined-table}{\textbf{\textit{JOINED}}} 
-y los motivos de su elección, así como una descripción más detallada de los tipos de pedido, se pueden encontrar en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/80}{\#80}.
+y los motivos de su elección, así como una descripción más detallada de los tipos de pedido, se pueden encontrar en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/80}{\#80}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

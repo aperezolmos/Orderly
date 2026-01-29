@@ -6,7 +6,7 @@ En el ecosistema de \textit{software} relacionado con la restauración se observ
 	\item \textbf{Herramientas y servicios especializados en análisis nutricional}, cálculo de información nutricional y etiquetado de menús.
 \end{enumerate}
 
-Con el objetivo de situar este trabajo en el panorama descrito, se describirá a continuación una aplicación representativa de cada rama. Posteriormente se mostrará una tabla comparativa (ver tabla \ref{tab:6_comparativa_apps}) entre las funcionalidades características de las aplicaciones presentadas y las de \revisionA{NombreApp}\todo{cambiar}.
+Con el objetivo de situar este trabajo en el panorama descrito, se describirá a continuación una aplicación representativa de cada rama. Posteriormente se mostrará una tabla comparativa (ver tabla \ref{tab:6_comparativa_apps}) entre las funcionalidades características de las aplicaciones presentadas y las de \textit{Orderly}.
 
 \section{Floreant POS}
 \textit{Floreant POS} es un sistema \textit{POS} de código abierto orientado a restaurantes, cafeterías y establecimientos de hostelería. Entre sus funcionalidades destacadas se encuentran la gestión de comandas y mesas (\textit{table management}), impresión y enrutamiento a cocina (\textit{kitchen printer / kitchen display}), soporte para pantallas táctiles, manejo de impuestos, gestión de inventario y empleados, funcionalidades de toma de pedidos para distintos modos de servicio (\textit{dine-in, take-away, delivery}), y capacidades de reporting/estadísticas. 
@@ -26,7 +26,7 @@ Adicionalmente, \textit{Floreant} está diseñado para funcionar en entornos loc
 
 La aplicación \textit{NutriMenu}~\cite{nutrimenu2024} fue desarrollada por el alumno Álvaro Manjón Vara como Trabajo de Fin de Grado, con el objetivo de generar informes nutricionales para los menús ofrecidos en los centros de restauración de la Universidad de Burgos. Su funcionalidad principal se centra en el ciclo de vida de los menús: creación de alimentos (ingredientes) a partir de la API de \textit{Nutritionix}~\cite{api:nutritionix}, composición de platos, construcción de menús a partir de esos platos y, finalmente, la generación de informes nutricionales detallados para los consumidores.
 
-Mientras que \textit{NutriMenu} es una solución especializada en la transparencia nutricional para entornos multi-centro, \revisionA{NombreApp}\todo{cambiar} evoluciona el concepto hacia una \textbf{plataforma de gestión operativa integral}. Incorpora flujos de negocio esenciales (ventas, reservas), un modelo de seguridad más sofisticado, información de alérgenos e internacionalización, posicionándose como un prototipo más cercano a un sistema de gestión moderno para el sector de la restauración.
+Mientras que \textit{NutriMenu} es una solución especializada en la transparencia nutricional para entornos multi-centro, \textit{Orderly} evoluciona el concepto hacia una \textbf{plataforma de gestión operativa integral}. Incorpora flujos de negocio esenciales (ventas, reservas), un modelo de seguridad más sofisticado, información de alérgenos e internacionalización, posicionándose como un prototipo más cercano a un sistema de gestión moderno para el sector de la restauración.
 
 \section{Comparativa sobre las funcionalidades cubiertas}
 
@@ -40,7 +40,7 @@ Mientras que \textit{NutriMenu} es una solución especializada en la transparenc
 		
 		\begin{tabularx}{\textwidth}{ L | C | C | C | C }
 			\noalign{\hrule height 1.25pt}
-			\textbf{Funcionalidad} & \textbf{NutriMenu} & \textbf{Floreant} & \textbf{MenuCalc} & \textbf{NombreApp} \\
+			\textbf{Funcionalidad} & \textbf{NutriMenu} & \textbf{Floreant} & \textbf{MenuCalc} & \textbf{Orderly} \\
 			\noalign{\hrule height 1pt}
 			Gestión de alimentos & \SI & \PARCIAL & \SI & \SI \\ \hline
 			Importación API & \SI & \NO & \SI & \SI \\ \hline
@@ -59,7 +59,7 @@ Mientras que \textit{NutriMenu} es una solución especializada en la transparenc
 
 \vspace{8pt}
 
-El \textbf{valor añadido} de \revisionA{NombreApp}\todo{cambiar} radica en \textbf{combinar} los dos dominios mencionados al inicio: la \textbf{gestión operativa} (productos, pedidos, reservas, usuarios) y la incorporación automatizada de \textbf{información nutricional} y detección de alérgenos mediante consumo de APIs públicas, en una plataforma moderna, modular y fácilmente desplegable mediante contenedores. 
+El \textbf{valor añadido} de \textit{Orderly} radica en \textbf{combinar} los dos dominios mencionados al inicio: la \textbf{gestión operativa} (productos, pedidos, reservas, usuarios) y la incorporación automatizada de \textbf{información nutricional} y detección de alérgenos mediante consumo de APIs públicas, en una plataforma moderna, modular y fácilmente desplegable mediante contenedores. 
 
 Este enfoque híbrido facilita la replicabilidad y la extensión (por ejemplo, integraciones con bases de datos comerciales o con soluciones TPV) y permite atender tanto las necesidades operativas de un local como la creciente demanda de transparencia nutricional por parte de los consumidores. Para la importación automática de datos nutricionales pueden usarse fuentes públicas como \textit{Open Food Facts}, la actual implementación, o alternativas comerciales (\textit{Spoonacular}, etc.), según precisión y garantías que se requieran en el escenario de despliegue.
 
