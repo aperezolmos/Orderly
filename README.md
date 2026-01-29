@@ -1,6 +1,6 @@
-# 🍽️ Restaurant Business Management Project
+# 🍽️ Orderly
 
-Web application for **comprehensive management of restaurant establishments**. Allows administrators to manage offered products, nutritional information, orders, and table reservations.
+Orderly is the **all-in-one** digital hub for modern restaurants. Manage **products**, track **orders**, handle **reservations**, and ensure **nutritional transparency** — all through a unified platform designed for efficiency and team collaboration.
 
 ## 🚀 Deployment
 
@@ -12,8 +12,8 @@ Web application for **comprehensive management of restaurant establishments**. A
 #### 1. Clone the repository
 
 ```bash
-git clone https://github.com/aperezolmos/tfg-aperezolmos.git
-cd tfg-aperezolmos
+git clone https://github.com/aperezolmos/Orderly.git
+cd Orderly/app
 ```
 
 #### 2. Configure environment variables

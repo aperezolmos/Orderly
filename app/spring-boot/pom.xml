@@ -12,7 +12,7 @@
 	<artifactId>tfg</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tfg</name>
-	<description>TFG Amanda Pérez Olmos</description>
+	<description>Orderly - TFG Amanda Pérez Olmos</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -127,6 +127,26 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+					<id>prepare-agent</id>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+					</execution>
+					<execution>
+					<id>report</id>
+					<phase>verify</phase>
+					<goals>
+						<goal>report</goal>
+					</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
