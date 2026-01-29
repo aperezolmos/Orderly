@@ -2,15 +2,35 @@
 
 \section{Introducción}
 
-\todo[inline]{Pendiente escribir.}
+Este apéndice detalla la estrategia de gestión que ha guiado el ciclo de vida del desarrollo. Para ello, se describe en primer lugar la organización temporal de las tareas y el seguimiento del progreso mediante metodologías ágiles. Asimismo, se incluye un análisis integral de la viabilidad del proyecto, evaluando tanto la inversión económica necesaria para su ejecución como el marco normativo y legal que regula el despliegue y uso de la aplicación.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Planificación temporal}
 
-\todo[inline]{Pendiente escribir.}
+La ejecución del proyecto se ha articulado bajo un marco de trabajo basado en la metodología \textit{Scrum}, empleando ciclos de desarrollo iterativos o \textit{sprints}, una pila de producto organizada y un tablero \textit{Kanban} para la gestión visual del flujo de trabajo. En este apartado se detalla la evolución del desarrollo a través de cada uno de los \textit{sprints} realizados, especificando sus objetivos y analizando su progreso mediante gráficos \textit{burn-down}. Los gráficos han sido generados mediante \textit{Microsoft Excel}, imitando el formato de los generados por la herramienta \textit{ZenHub}.
 
-% los gráficos se han creado con Excel...imitando el formato de ZenHub...
+Para la gestión de las tareas (\textit{issues}), se ha asignado a cada una un nivel de prioridad (Alta, Media o Baja) y una estimación de esfuerzo mediante \textit{story points}. Aunque el \textit{story point} es, por definición, una unidad de medida abstracta, para este proyecto la estimación se ha fundamentado principalmente en la carga temporal prevista. No obstante, dicho valor no es puramente cronológico, sino que se ha ponderado considerando también la complejidad técnica del requisito y su relevancia dentro de la arquitectura global del sistema.
+
+Siguiendo las prácticas habituales de las metodologías ágiles, los valores asignados corresponden a la secuencia de Fibonacci. En la tabla \ref{tab:story_points} se detalla la equivalencia establecida entre los \textit{story points} y la estimación temporal de referencia utilizada para la planificación de las tareas.
+
+\begin{table}[htbp]
+	\caption{Equivalencia de \textit{story points} y tiempo de desarrollo estimado}
+	\centering
+	\small
+	\begin{tabular}{cc}
+		\hline
+		\rule{0pt}{3ex} \textbf{\textit{Story Points} (Fibonacci)} & \textbf{Estimación temporal} \\[0.6ex] \hline
+		\rule{0pt}{3ex}1 & 30 mins \\%[0.5ex]
+		2 & 1,5 horas \\
+		3 & 3 horas \\
+		5 & 6 horas \\
+		8 & 12 horas \\
+		13 & 1 día \\
+		\rule{0pt}{0ex}21 & 3 a 5 días \\[0.4ex] \hline
+	\end{tabular}
+	\label{tab:story_points}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -21,7 +41,7 @@
 
 Este primer \textit{sprint} abarca las tareas de investigación y definición inicial, enfocadas en determinar el alcance mínimo del proyecto, junto con las tecnologías y recursos a utilizar.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/1?closed=1}{\textbf{Sprint 0}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/1?closed=1}{\textbf{Sprint 0}}.
 
 \subsubsection{Objetivos}
 
@@ -29,9 +49,8 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Creación del repositorio:} se configuró el repositorio de \textit{GitHub} para el control de versiones. Utilizando \textit{GitHub Projects}, se asoció un proyecto a dicho repositorio para la gestión y mantenimiento de las tareas de cada \textit{sprint}.
 	\item \textbf{Creación de los \href{https://www.atlassian.com/agile/project-management/epics}{\textit{epics}}:} se definieron \textit{issues} principales para estructurar el proyecto en áreas funcionales (desarrollo, \textit{testing}, documentación) y agrupar tareas relacionadas, agilizando el acceso y el seguimiento del progreso.
 	\item \textbf{Definición del \textit{stack} tecnológico:} se eligió \textit{\textbf{Spring Boot}} (con \textit{Spring Security} y \textit{Spring Data JPA}) para el \textit{backend} y la lógica de negocio, junto con \textit{\textbf{MySQL}} como base de datos. Para el \textit{frontend}, se optó por \textit{\textbf{Thymeleaf}}, que facilita la generación de vistas HTML dinámicas desde el servidor. Finalmente, se seleccionó \textit{\textbf{Docker}} para los contenedores de la aplicación y la base de datos, asegurando un despliegue portable y reproducible.
-	\item \textbf{Estudio y evaluación de APIs nutricionales:} se realizó una comparativa entre varias APIs de alimentos. La API elegida fue \textit{Nutritionix}\todo{ref?}. Los criterios de elección y el resto de candidatas pueden verse en el \textit{issue} \href{https://github.com/aperezolmos/tfg-aperezolmos/issues/10}{\#10}.
-	\item \textbf{Revisión de trabajos previos y TFGs relacionados:} ...NutriMenu...\todo{referencia bibliografía}
-	\todo[inline]{Pendiente completar.}
+	\item \textbf{Estudio y evaluación de APIs nutricionales:} se realizó una comparativa entre varias APIs de alimentos. La API elegida fue \textit{Nutritionix}~\cite{api:nutritionix}. Los criterios de elección y el resto de candidatas pueden verse en el \textit{issue} \href{https://github.com/aperezolmos/Orderly/issues/10}{\#10}.
+	\item \textbf{Revisión de trabajos previos y TFGs relacionados:} se probó la aplicación \textit{NutriMenu}~\cite{nutrimenu2024}, producto de un TFG anterior, revisando si alguno de sus módulos podría aprovecharse y documentando carencias.
 	\item \textbf{Análisis de integración con plataformas de \textit{delivery}:} se investigó acerca de los requisitos necesarios para obtener claves de acceso a las APIs de distintas plataformas de \textit{delivery}. Se terminó por concluir que esta integración se pospondría para etapas más avanzadas del desarrollo, en caso de que se dispusiera del tiempo necesario.
 \end{itemize}
 
@@ -54,14 +73,14 @@ Se acordó, para el siguiente \textit{sprint}, comenzar el desarrollo de la apli
 
 Este \textit{sprint} se centró en crear la infraestructura inicial de la aplicación, añadiendo las dependencias y los archivos de configuración necesarios para levantar la aplicación \textit{Spring Boot}. Una vez creada, se empezó a implementar la gestión de usuarios y roles, definiendo las entidades y métodos pertinentes para, como mínimo, realizar operaciones CRUD sobre ellos.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/2?closed=1}{\textbf{Sprint 1}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/2?closed=1}{\textbf{Sprint 1}}.
 
 \subsubsection{Objetivos}
 
 \begin{itemize}
-	\item \textbf{Creación del proyecto \textit{Spring Boot}:} se configuró un proyecto base con las dependencias listadas en <agregar ref>\todo{Agregar ref de apartado dependencias}.
+	\item \textbf{Creación del proyecto \textit{Spring Boot}:} se configuró un proyecto base con las dependencias listadas en el apartado <agregar ref>\todo{Agregar ref de apartado dependencias}.
 	\item \textbf{Generación del \texttt{docker-compose.yml}:} se creó dicho archivo para orquestar los contenedores de \textit{MySQL} y \textit{Spring Boot}. La imagen de la aplicación \textit{Spring Boot} se creó a partir de su propio \texttt{Dockerfile}. Se añadió un archivo de inicialización de la base de datos y se comprobó que ambos servicios podían comunicarse entre sí.
-	\item \textbf{Creación de las entidades \texttt{User} y \texttt{Role}\todo{Referencia a anexo C -> diseño de datos¿?}:} se definieron las entidades JPA y las tablas SQL del archivo de inicialización. Se estableció inicialmente que los usuarios solo puedan tener un rol. En iteraciones futuras, se agregará la funcionalidad de tener múltiples roles.
+	\item \textbf{Creación de las entidades \hyperref[word:C.2_user]{\texttt{User}} y \hyperref[word:C.2_role]{\texttt{Role}}:} se definieron las entidades JPA y las tablas SQL del archivo de inicialización. Se estableció inicialmente que los usuarios solo puedan tener un rol. En iteraciones futuras, se agregará la funcionalidad de tener múltiples roles.
 	\item \textbf{Implementación de operaciones CRUD sobre usuarios y roles:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades.
 	\item \textbf{Configuración de \textit{Spring Security}:} se adaptaron las entidades \texttt{User} para poder autenticarse en la aplicación mediante \textit{Spring Security} y controlar el acceso a cada \textit{endpoint} según los roles.
 	\item \textbf{Creación de formulario de \textit{login} básico:} un inicio de sesión mediante usuario y contraseña, en el que se muestran mensajes descriptivos en caso de error.
@@ -83,7 +102,7 @@ Se acordó, para el siguiente \textit{sprint}, seguir implementando los aspectos
 
 Este \textit{sprint} se enfocó en expandir la funcionalidad de gestión de usuarios mediante la creación de formularios, como el de registro, edición o mantenimiento de usuarios (por parte de un administrador). También se empezaron a escribir los apéndices A y B de la documentación.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/3?closed=1}{\textbf{Sprint 2}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/3?closed=1}{\textbf{Sprint 2}}.
 
 \subsubsection{Objetivos}
 
@@ -110,16 +129,16 @@ Se acordó, para el siguiente \textit{sprint}, dejar a un lado la funcionalidad 
 
 \underline{Duración}: 2 semanas (09/10/2025 - 23/10/2025)
 
-En este \textit{sprint} se comenzó a desarrollar la gestión de los productos ofertados, tomando como referencia las clases existentes en <ref NutriMenu>\todo{Agregar ref}. También se finalizaron aspectos relacionados con la gestión de usuarios, que se consideraban necesarios de implementar lo antes posible. Inicialmente se planificó la duración para 1 semana, pero acabó alargándose debido a cuestiones personales. 
+En este \textit{sprint} se comenzó a desarrollar la gestión de los productos ofertados, tomando como referencia las clases existentes en \textit{NutriMenu}~\cite{nutrimenu2024}. También se finalizaron aspectos relacionados con la gestión de usuarios, que se consideraban necesarios de implementar lo antes posible. Inicialmente se planificó la duración para 1 semana, pero acabó alargándose debido a cuestiones personales. 
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/4?closed=1}{\textbf{Sprint 3}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/4?closed=1}{\textbf{Sprint 3}}.
 
 \subsubsection{Objetivos}
 
 \begin{itemize}
-	\item \textbf{Creación de las entidades \texttt{Food}, \texttt{Product} y \texttt{Recipe}\todo{Referencia a anexo C -> diseño de datos¿?}:} se definieron las entidades JPA, basándose en los campos existentes en las clases de <ref NutriMenu>\todo{Agregar ref} y agregando nuevos. Se simplificaron considerablemente el código y la lógica relacionada con dichas entidades. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/51}{\#51}.
+	\item \textbf{Creación de las entidades \hyperref[word:C.2_food]{\texttt{Food}}, \hyperref[word:C.2_product]{\texttt{Product}} y \texttt{Recipe}:} se definieron las entidades JPA, basándose en los campos existentes en las clases de \textit{NutriMenu}~\cite{nutrimenu2024} y agregando nuevos. Se simplificaron considerablemente el código y la lógica relacionada con dichas entidades. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/51}{\#51}.
 	\item \textbf{Implementación de operaciones CRUD sobre alimentos y productos:} se agregaron los repositorios y servicios necesarios para llevar a cabo estas funcionalidades. 
-	\item \textbf{Cálculo dinámico de la información nutricional:} se simplificó enormemente la lógica original, logrando que los cálculos de información nutricional (ya sea para alimentos con cantidades particulares o para productos completos) sean dinámicos y \textbf{no se almacenen en la BBDD}. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/52}{\#52}.
+	\item \textbf{Cálculo dinámico de la información nutricional:} se simplificó enormemente la lógica original, logrando que los cálculos de información nutricional (ya sea para alimentos con cantidades particulares o para productos completos) sean dinámicos y \textbf{no se almacenen en la BBDD}. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/52}{\#52}.
 	\item \textbf{Transformación de la relación \texttt{User-Role} a \texttt{\char`@{}ManyToMany}:} se modificó la asignación de roles, para que los usuarios pudieran tener más de uno, lo cual permite la creación de roles y funcionalidades más específicas. Se garantiza que, como mínimo, un usuario registrado tendrá \texttt{ROLE\_USER}.
 	\item \textbf{Refactorización de los DTOs de \texttt{User}:} se redujo el número de DTOs para usuarios, fusionando todos en \texttt{UserRequestDTO}\todo{ref a apartado diseño datos?} y manejando las restricciones según formulario mediante \textbf{grupos de validación} (\textit{OnCreate}, \textit{OnUpdate}, etc.).
 	\item \textbf{Creación de un \texttt{UserDataInitializer}:} este componente crea roles y un usuario por defecto en la aplicación.
@@ -130,7 +149,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 \subsubsection{Revisión}
 
-Se acordó plasmar las mejoras respecto al TFG anterior en el apartado de <Aspectos Relevantes?>\todo{Referencia cuando se haya añadido}, para reflejar el proceso de transformación seguido y las decisiones que llevaron a él.
+Se acordó plasmar las mejoras respecto al TFG anterior en el apartado ``\textit{5. Aspectos relevantes del desarrollo del proyecto}'', para reflejar el proceso de transformación seguido y las decisiones que llevaron a él.
 
 Respecto a la arquitectura de la aplicación, se le planteó al tutor el \textbf{cambio de la arquitectura actual} monolítica, por una \textbf{arquitectura SPA} con \textit{React}. Inicialmente, se había optado por usar \textit{Thymeleaf} como motor de plantillas, y gestionar las vistas de la aplicación mediante controladores web. Sin embargo, la generación de las plantillas HTML y los controladores específicos para cada acción (p. ej. \texttt{UserEditController} o \texttt{UserManagementController}) resultaban un poco pesados y menos fáciles de escalar. Es por eso que se optó por la naturaleza reutilizable de los componentes de \textit{React} para, en primera instancia, definir de forma más simple las tablas de gestión CRUD para cada entidad (y muchas otras mejoras). \todo{Ref a apartado donde se detalle esto?}
 
@@ -147,17 +166,17 @@ Se acordó enfocar el siguiente \textit{sprint} en la \textbf{migración a una a
 
 Este \textit{sprint} se dedicó exclusivamente a la migración a \textit{React}. Se refactorizó el proyecto de \textit{Spring Boot} para convertirlo en API REST pura y se eliminaron las dependencias de \textit{Thymeleaf}. Se construyó el nuevo proyecto de \textit{React} y se reimplementaron las funcionalidades existentes hasta la fecha.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/5?closed=1}{\textbf{Sprint 4}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/5?closed=1}{\textbf{Sprint 4}}.
 
 \subsubsection{Objetivos}
 
 \begin{itemize}
 	\item \textbf{Investigación de mejores prácticas para la migración de arquitectura:} abarcó el aprendizaje de las bases de \textit{React} y la selección de librerías útiles para el \textit{frontend}. También se investigó sobre las prácticas estándar para refactorizar la API de \textit{Spring Boot} y sobre los componentes necesarios para la comunicación entre ambos servicios.
-	\item \textbf{Refactorización del \textit{backend}:} se completó la migración completa a un diseño RESTful, eliminando toda la infraestructura web y reescribiendo los servicios y controladores para operar mediante DTOs y peticiones HTTP. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/60}{\#60}.
-	\item \textbf{Configuración de la autenticación y CORS:} se implementaron el servicio y controlador de autenticación (\textit{login} y registro) en la API y se configuró CORS para permitir la comunicación entre la API y el \textit{frontend} de \textit{React}, estableciendo sesiones \textit{stateless}.
-	\item \textbf{Creación del proyecto y contenedor \textit{Docker} para \textit{React}:} para generar el proyecto inicial se utilizó la herramienta de construcción \textit{Vite}. \todo{Ref?} Se creó el \texttt{Dockerfile} para la construcción del contenedor y se agregó el servicio a \texttt{docker-compose.yml}.
+	\item \textbf{Refactorización del \textit{backend}:} se completó la migración completa a un diseño RESTful, eliminando toda la infraestructura web y reescribiendo los servicios y controladores para operar mediante DTOs y peticiones HTTP. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/60}{\#60}.
+	\item \textbf{Configuración de la autenticación y CORS:} se implementaron el servicio y controlador de autenticación (\textit{login} y registro) en la API y se configuró CORS (\textit{Cross-Origin Resource Sharing}) para permitir la comunicación entre la API y el \textit{frontend} de \textit{React}, estableciendo sesiones \textit{stateless}.
+	\item \textbf{Creación del proyecto y contenedor \textit{Docker} para \textit{React}:} para generar el proyecto inicial se utilizó la herramienta de construcción \textit{Vite}~\cite{vite:intro}. Se creó el \texttt{Dockerfile} para la construcción del contenedor y se agregó el servicio a \texttt{docker-compose.yml}.
 	\item \textbf{Implementación de la autenticación en \textit{React}:} se creó un contexto de autenticación global para manejar el usuario de cada sesión. Se crearon las páginas para \textit{login} y registro de usuarios. 
-	\item \textbf{Implementación de la gestión de usuarios en \textit{React}:} se reimplementaron las funcionalidades existentes acerca del manejo de usuarios y roles, junto con las interfaces asociadas. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/74}{\#74}.
+	\item \textbf{Implementación de la gestión de usuarios en \textit{React}:} se reimplementaron las funcionalidades existentes acerca del manejo de usuarios y roles, junto con las interfaces asociadas. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/74}{\#74}.
 \end{itemize}
 
 \imagenConEtiqueta{img/apen_A/A2_sprint4_burndown.png}{Gráfico \textit{burndown} del Sprint 4}{A2_sprint4_burndown}
@@ -175,18 +194,18 @@ Se acordó, para el siguiente \textit{sprint}, continuar con la creación de pá
 
 En este \textit{sprint} se implementaron en la API los módulos de gestión de reservas de mesas y gestión de pedidos, finalizando con ello la creación de entidades JPA y componentes \textit{Spring Boot}. También se introdujo la granularidad de ``permiso'' a la gestión de roles y se internacionalizó la aplicación \textit{React} para los idiomas inglés y español.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/6?closed=1}{\textbf{Sprint 5}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/6?closed=1}{\textbf{Sprint 5}}.
 
 \subsubsection{Objetivos}
 
 \begin{itemize}
-	\item \textbf{Creación de las entidades \texttt{DiningTable} y \texttt{Reservation}\todo{Referencia a anexo C -> diseño de datos¿?}:} se definieron las entidades JPA para el módulo de gestión de reservas. 
-	\item \textbf{Implementación de operaciones CRUD sobre mesas y reservas:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Los detalles de negocio se especifican en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/93}{\#93}.
-	\item \textbf{Creación de las entidades \texttt{Order}, \texttt{OrderItem}, \texttt{BarOrder} y \linebreak\texttt{DiningOrder}\todo{Referencia a anexo C -> diseño de datos¿?}:} aprovechando la existencia de varios ``tipos'' de pedidos, se implementó una jerarquía de \textbf{herencia}, la cual se detalla en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/80}{\#80}.
+	\item \textbf{Creación de las entidades \hyperref[word:C.2_diningTable]{\texttt{DiningTable}} y \hyperref[word:C.2_reservation]{\texttt{Reservation}}:} se definieron las entidades JPA para el módulo de gestión de reservas. 
+	\item \textbf{Implementación de operaciones CRUD sobre mesas y reservas:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Los detalles de negocio se especifican en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/93}{\#93}.
+	\item \textbf{Creación de las entidades \hyperref[word:C.2_order]{\texttt{Order}}, \hyperref[word:C.2_orderItem]{\texttt{OrderItem}}, \hyperref[word:C.2_barOrder]{\texttt{BarOrder}} y \linebreak\hyperref[word:C.2_diningOrder]{\texttt{DiningOrder}}:} aprovechando la existencia de varios ``tipos'' de pedidos, se implementó una jerarquía de \textbf{herencia}, la cual se detalla en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/80}{\#80}.
 	\item \textbf{Implementación de operaciones CRUD sobre pedidos:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Se creó una factoría para elegir \textit{mapper} según el tipo de pedido que llegase a la solicitud, sin que los componentes conozcan dicho tipo. El controlador general se utiliza para consultas sobre todas las entidades y gestión de ítems. Los controladores particulares se utilizan para consultas y operaciones CRUD por cada tipo, más eficientes. \todo{Escribir descripción PR y referenciar aquí}
-	\item \textbf{Implementación de lógica de permisos para cada rol:} se creó un enumerado \texttt{Permission}\todo{Referencia a anexo C -> diseño de datos¿?}, el cual alberga todos los permisos de la aplicación. A la entidad \texttt{Role} se le añadió una colección de permisos y se crearon métodos, \textit{endpoints} y componentes \textit{React} para manejarlos. Esto permite la creación de roles personalizados y un manejo más preciso de las acciones a realizar en la aplicación. Los cambios se explican con más detalle en los \textit{pull requests} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/81}{\#81} y \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/96}{\#96}.
+	\item \textbf{Implementación de lógica de permisos para cada rol:} se creó un enumerado \texttt{Permission}, el cual alberga todos los permisos de la aplicación. A la entidad \texttt{Role} se le añadió una colección de permisos y se crearon métodos, \textit{endpoints} y componentes \textit{React} para manejarlos. Esto permite la creación de roles personalizados y un manejo más preciso de las acciones a realizar en la aplicación. Los cambios se explican con más detalle en los \textit{pull requests} \href{https://github.com/aperezolmos/Orderly/pull/81}{\#81} y \href{https://github.com/aperezolmos/Orderly/pull/96}{\#96}.
 	\item \textbf{Internacionalización del \textit{frontend React}:} se sustituyeron todas las cadenas \textit{hardcodeadas} por referencias a archivos JSON con cadenas traducidas (\textit{namespaces}). También se creó un componente para cambiar el idioma dinámicamente desde la aplicación.
-	\item \textbf{Refactorización de \texttt{Recipe} a \texttt{Ingredient}:} la entidad \texttt{Recipe}, utilizada como tabla de unión entre \texttt{Food} y \texttt{Product}, pasó a denominarse \texttt{Ingredient}. También se eliminaron su repositorio y servicio particulares, trasladando la responsabilidad de su manejo a \texttt{Product}. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/79}{\#79}.
+	\item \textbf{Refactorización de \texttt{Recipe} a \hyperref[word:C.2_ingredient]{\texttt{Ingredient}}:} la entidad \texttt{Recipe}, utilizada como tabla de unión entre \texttt{Food} y \texttt{Product}, pasó a denominarse \texttt{Ingredient}. También se eliminaron su repositorio y servicio particulares, trasladando la responsabilidad de su manejo a \texttt{Product}. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/79}{\#79}.
 \end{itemize}
 
 \imagenConEtiqueta{img/apen_A/A2_sprint5_burndown.png}{Gráfico \textit{burndown} del Sprint 5}{A2_sprint5_burndown}
@@ -204,7 +223,7 @@ Se acordó, para el siguiente \textit{sprint}, generar una colección de \textbf
 
 Este \textit{sprint} se utilizó para aplicar unas últimas mejoras a la API REST y desarrollar tests que comprueben el correcto funcionamiento de los servicios que ofrece. También se implementaron las interfaces de gestión restantes de las entidades añadidas en el anterior \textit{sprint}.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/7?closed=1}{\textbf{Sprint 6}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/7?closed=1}{\textbf{Sprint 6}}.
 
 \subsubsection{Objetivos}
 
@@ -213,8 +232,8 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Creación de pruebas unitarias para \textit{mappers}:} al tener lógica personalizada, se hacía necesario probar los \textit{mappers} generados por \textit{Mapstruct}, para comprobar que la conversión DTO $\leftrightarrow$ Entidad funciona de la manera esperada. Como los comportamientos de los componentes involucrados son fáciles de simular, se utilizó \textit{Mockito} para generar las pruebas, puesto que proporciona tests muy rápidos y aislamiento completo.
 	\item \textbf{Creación de pruebas unitarias para servicios:} se probó la lógica de negocio (validaciones, excepciones lanzadas, métodos de consulta) de todas las entidades existentes en la API. Se utilizó \textit{Mockito} por su rapidez y aislamiento.
 	\item \textbf{Creación de pruebas de integración para servicios:} se crearon pruebas con dependencias reales utilizando \texttt{\char`@{}SpringBootTest} y transaccionalidad, para probar la \textbf{persistencia}, relaciones entre entidades y conflictos que solo se dan en casos ``reales''. Estas pruebas de integración son más lentas puesto que necesitan cargar todo el contexto \textit{Spring}. Al ser más costosas, solo se crearon en entidades más complejas o que ``gestionan a otras'' (normalmente, las \textbf{entidades propietarias} de la relación).
-	\item \textbf{Implementación de la gestión de productos en \textit{React}:} se crearon páginas y componentes para visualizar listados, crear, editar y eliminar alimentos y productos, junto con su información nutricional. Se reutilizaron los componentes y \textit{layouts} de gestión creados anteriormente. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/107}{\#107}.
-	\item \textbf{Implementación de la gestión de reservas en \textit{React}:} de igual forma, se crearon páginas y componentes para gestión básica con operaciones CRUD sobre mesas y reservas. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/106}{\#106}.
+	\item \textbf{Implementación de la gestión de productos en \textit{React}:} se crearon páginas y componentes para visualizar listados, crear, editar y eliminar alimentos y productos, junto con su información nutricional. Se reutilizaron los componentes y \textit{layouts} de gestión creados anteriormente. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/107}{\#107}.
+	\item \textbf{Implementación de la gestión de reservas en \textit{React}:} de igual forma, se crearon páginas y componentes para gestión básica con operaciones CRUD sobre mesas y reservas. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/106}{\#106}.
 	\item \textbf{Creación de \textit{dashboard} para gestionar pedidos:} se creó una vista general que muestra tanto un listado de pedidos pendientes como un listado de productos ofertados. Se permite añadir productos al pedido actual haciendo \textit{click} en ellos y se permite alternar entre pedidos de bar o comedor.
 \end{itemize}
 
@@ -235,17 +254,17 @@ Como añadidos futuros, para una siguiente versión de la API, se propuso la gen
 
 Así como el \textit{sprint} anterior se dedicó mayoritariamente a solventar los errores de la API, este \textit{sprint} se enfocó en resolver aspectos pendientes del \textit{frontend} e implementar los componentes restantes de navegación, para lograr una \textbf{primera versión funcional} de la aplicación.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/8?closed=1}{\textbf{Sprint 7}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/8?closed=1}{\textbf{Sprint 7}}.
 
 \subsubsection{Objetivos}
 
 \begin{itemize}
-	\item \textbf{Implementación de una barra de navegación principal:} Los componentes que la forman se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/117}{\#117}.
-	\item \textbf{Implementación de autenticación con sesiones de \textit{Spring Security}:} Se configuró la persistencia de la sesión para el \textit{frontend React} mediante \textit{cookies} \texttt{JSESSIONID}.
-	\item \textbf{Implementación de formulario para crear/editar pedidos:} Se añadieron al \textit{dashboard} botones para crear y editar pedidos de distintos tipos. También se habilitó la eliminación de pedidos desde la interfaz.
-	\item \textbf{Mejoras y resolución de errores pendientes:} Cuestiones pendientes relacionadas con la internacionalización, estados de carga, manejo de errores y más. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/124}{\#124}.
-	\item \textbf{Creación de \textit{workflow} para ejecutar pruebas de la API:} Se utilizó \textit{GitHub Actions} para configurar la ejecución de los tests definidos para la API \textit{Spring Boot} con cada \textit{commit} realizado sobre el backend.
-	\item \textbf{Redacción del apartado \textit{\ref{sec:C.2_DiseñoDatos} \nameref{sec:C.2_DiseñoDatos}}:} Se describieron las entidades y relaciones que conforman el modelo y se generaron diagramas EER.
+	\item \textbf{Implementación de una barra de navegación principal:} los componentes que la forman se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/117}{\#117}.
+	\item \textbf{Implementación de autenticación con sesiones de \textit{Spring Security}:} se configuró la persistencia de la sesión para el \textit{frontend React} mediante \textit{cookies} \texttt{JSESSIONID}.
+	\item \textbf{Implementación de formulario para crear/editar pedidos:} se añadieron al \textit{dashboard} botones para crear y editar pedidos de distintos tipos. También se habilitó la eliminación de pedidos desde la interfaz.
+	\item \textbf{Mejoras y resolución de errores pendientes:} cuestiones pendientes relacionadas con la internacionalización, estados de carga, manejo de errores y más. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/124}{\#124}.
+	\item \textbf{Creación de \textit{workflow} para ejecutar pruebas de la API:} se utilizó \textit{GitHub Actions} para configurar la ejecución de los tests definidos para la API \textit{Spring Boot} con cada \textit{commit} realizado sobre el backend.
+	\item \textbf{Redacción del apartado \textit{\ref{sec:C.2_DiseñoDatos} \nameref{sec:C.2_DiseñoDatos}}:} se describieron las entidades y relaciones que conforman el modelo y se generaron diagramas EER.
 \end{itemize}
 
 \imagenConEtiqueta{img/apen_A/A2_sprint7_burndown.png}{Gráfico \textit{burndown} del Sprint 7}{A2_sprint7_burndown}
@@ -253,7 +272,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 \subsubsection{Revisión}
 
 Tras el visto bueno del tutor, se lanzó la 
-\href{https://github.com/aperezolmos/tfg-aperezolmos/releases/tag/v0.8.0-beta}{\textbf{v0.8.0-beta}} 
+\href{https://github.com/aperezolmos/Orderly/releases/tag/v0.8.0-beta}{\textbf{v0.8.0-beta}} 
 de la aplicación.
 
 Para la siguiente versión de la aplicación, se acordó incluir la \textbf{sección nutricional} y \textbf{comunicación con la API externa} \textit{Open Food Facts}. Esto incluye, como mínimo, la búsqueda y creación de alimentos a partir de la API, la extracción de información nutricional de los productos y la visualización de gráficos para mostrar dicha información de manera más amigable para el usuario.
@@ -271,14 +290,14 @@ También se planteó la posible inclusión del \textbf{\textit{Nutri-Score}} com
 
 En este \textit{sprint} se redactaron los apartados principales de la memoria y se integró la conexión con la API nutricional \textit{Open Food Facts} (\textit{OFF}), permitiendo la creación y persistencia de un alimento (\textit{Food}) a partir de su búsqueda en la API externa.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/tfg-aperezolmos/milestone/9?closed=1}{\textbf{Sprint 8}}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/9?closed=1}{\textbf{Sprint 8}}.
 
 \subsubsection{Objetivos}
 
 \begin{itemize}
 	\item \textbf{Investigación acerca de los datos devueltos por \textit{OFF}:} para poder adaptar los campos devueltos por la API \textit{OFF}, se hizo necesario revisar su documentación para saber qué campos podrían ser aprovechados por nuestro modelo y cómo se podían transformar.
-	\item \textbf{Búsqueda de alimentos de \textit{OFF} desde \textit{React}:} se implementó un componente de búsqueda (por nombre o información relacionada) en la página de creación de un alimento, permitiendo realizar peticiones a la API externa y visualizar un listado paginado con los resultados devueltos. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/138}{\#138}.
-	\item \textbf{Creación de alimentos de \textit{OFF} desde Spring Boot:} se implementaron mecanismos para adaptar los datos de la API externa al modelo del \textit{backend} y posteriormente persistir el alimento obtenido. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/tfg-aperezolmos/pull/138}{\#138}.
+	\item \textbf{Búsqueda de alimentos de \textit{OFF} desde \textit{React}:} se implementó un componente de búsqueda (por nombre o información relacionada) en la página de creación de un alimento, permitiendo realizar peticiones a la API externa y visualizar un listado paginado con los resultados devueltos. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/138}{\#138}.
+	\item \textbf{Creación de alimentos de \textit{OFF} desde Spring Boot:} se implementaron mecanismos para adaptar los datos de la API externa al modelo del \textit{backend} y posteriormente persistir el alimento obtenido. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/138}{\#138}.
 	\item \textbf{Creación de gráficos y tablas nutricionales:} los macronutrientes de un producto ahora se visualizan en forma de gráfico de donut, también con la opción de visualizarlos en tablas junto a ingestas de referencia.
 	\item \textbf{Redacción de apartados principales de la memoria:} se redactaron casi por completo los apartados ``\textit{3. Conceptos teóricos}'', ``\textit{4. Técnicas y herramientas}'' y ``\textit{5. Aspectos relevantes del desarrollo del proyecto}''. Queda pendiente la redacción de algunos subapartados menores y la revisión por parte del tutor.
 \end{itemize}
@@ -290,6 +309,81 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 Con la sección nutricional mayormente implementada (a falta de alérgenos y medidas nutricionales puntuales), se acordó dar por \textbf{finalizada la implementación de funcionalidades} de la aplicación. Los \textit{sprints} posteriores se dedicarán a la corrección de errores, modificación de interfaces y mejoras menores, así como la redacción de la documentación y anexos.
 
 En esta fase final del desarrollo se acordó volver a \textit{sprints} de 1 semana, para agilizar las revisiones. El siguiente \textit{sprint} tendrá como objetivo principal la finalización y revisión de la \textbf{memoria} principal del trabajo.
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 9}
+\label{subsec:A.2_sprint9}
+
+\underline{Duración}: 1 semana (08/01/2026 - 15/01/2026)
+
+En este \textit{sprint} se finalizó la redacción de la memoria en su primera versión (a falta de conclusiones y aspectos puntuales) y se redactaron de forma más estructurada los requisitos y casos de uso de la aplicación. También se implementaron aspectos pendientes del módulo de pedidos, como los cambios de estado y la visualización de un historial.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/10?closed=1}{\textbf{Sprint 9}}.
+
+\subsubsection{Objetivos}
+\begin{itemize}
+	\item \textbf{Implementación de cambios de estado para pedidos:} se añadió un botón en el\textit{ dashboard} para permitir cambiar el estado de los pedidos, de forma que puedan completarse, cancelarse o avanzar en su ciclo de vida (\textit{``pendiente'}', \textit{``en proceso''}, etc.).
+	\item \textbf{Creación de historial de pedidos:} se añadió una página para visualizar el registro de todos los pedidos creados en la aplicación, permitiendo filtrar por tipo de pedido. Se diferencia del resto de páginas de listado en que no permite la edición o borrado de pedidos (para mantener la transparencia).
+	\item \textbf{Corrección de estados de carga en \textit{dashboard}:} se mejoró el manejo de estado de carga en el \textit{dashboard} de pedidos, puesto que anteriormente los componentes se sincronizaban mal al cargar y no mostraban \textit{feedback} del progreso al usuario.
+	\item \textbf{Redacción de apartados restantes de la memoria:} se redactaron el \textit{abstract} y la introducción, junto con los apartados ``\textit{2. Objetivos del proyecto}'' y ``\textit{6. Trabajos relacionados}''. Esto deja pendiente la redacción de conclusiones y algunos aspectos relevantes.
+	\item \textbf{Redacción estructurada de requisitos y casos de uso:} anteriormente se habían listado los requisitos funcionales de la aplicación y se habían descrito algunos CU del módulo de usuarios. Se reformularon y describieron mejor los requisitos y se completaron los casos de uso, para incluir a todos los módulos de la aplicación.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint9_burndown.png}{Gráfico \textit{burndown} del Sprint 9}{A2_sprint9_burndown}
+
+\subsubsection{Revisión}
+
+Se revisaron junto al tutor la memoria y anexos escritos hasta el momento, y se comentaron aspectos a añadir en la documentación y aspectos de usabilidad de la aplicación.
+
+Se acordó, para el siguiente \textit{sprint}, incluir la mención de alérgenos y métricas nutricionales en alimentos y productos, que era un aspecto pendiente mencionado en el \nameref{subsec:A.2_sprint8}. También corregir, en la medida de lo posible, aspectos relacionados con la visualización de módulos funcionales según permisos (actualmente en el \textit{frontend} solo se considera al usuario administrador).
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 10}
+\label{subsec:A.2_sprint10}
+
+\underline{Duración}: 1 semana (15/01/2026 - 22/01/2026)
+
+En este \textit{sprint} se añadieron campos para alérgenos y métricas nutricionales a las entidades de alimentos y productos, junto con su integración y visualización en el \textit{frontend}. También se modificaron los componentes de navegación de \textit{React}, para que la visualización de los módulos dependiera de los permisos que posee el usuario autenticado.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/11?closed=1}{\textbf{Sprint 10}}.
+
+\subsubsection{Objetivos}
+\begin{itemize}
+	\item \textbf{Inclusión de alérgenos y métricas nutricionales:} se implementó el manejo de listas de alérgenos (para alimentos y productos) y métricas nutricionales (\textit{Nutri-Score} y grupo NOVA). Estos campos se obtienen de la API \textit{Open Food Facts} y, en caso de los alérgenos, también pueden añadirse manualmente. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/151}{\#151}.
+	\item \textbf{Restricción de acceso en \textit{frontend} mediante permisos:} se refactorizaron los componentes de navegación de \textit{React} para que el acceso a rutas y las acciones a realizar estuvieran restringidos por los permisos del usuario autenticado, en vez de comprobar estáticamente su rol. Se explica con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/152}{\#152}.
+	\item \textbf{Corrección de sesiones no persistentes:} se solucionaron los errores en la comunicación \textit{React-Spring Boot}, que hacían que las \textit{cookies} \texttt{JSESSIONID} no se almacenaran, lo cual causaba que el usuario perdiese su sesión al recargar la página.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint10_burndown.png}{Gráfico \textit{burndown} del Sprint 10}{A2_sprint10_burndown}
+
+\subsubsection{Revisión}
+
+Se acordó seguir corrigiendo errores y desajustes en la interfaz, con el objetivo de preparar la aplicación para su segundo \textbf{\textit{release}}. También se acordó integrar \textit{\textbf{SonarCloud}} para disponer de métricas sobre la calidad del código actual y posibles errores que no hayan sido detectados.
+
+%---------------------------------------------------------------
+
+\subsection{\textit{Sprint} 11}
+\label{subsec:A.2_sprint11}
+
+\underline{Duración}: 1 semana (22/01/2026 - 29/01/2026)
+
+Este \textit{sprint} se dedicó a la corrección y mejora de aspectos pendientes, como cambios de estado para mesas y reservas, filtrado de alérgenos en el \textit{dashboard} de pedidos y modificación de la interfaz de la aplicación, para así lograr una \textbf{segunda versión funcional} de la aplicación.
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/12?closed=1}{\textbf{Sprint 11}}.
+
+\subsubsection{Objetivos}
+\begin{itemize}
+	\item \textbf{Añadir mejoras, correcciones y finalizar aspectos pendientes de la aplicación:} los componentes modificados se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/157}{\#157}.
+	\item \textbf{Integración con \textit{SonarCloud}:} se agregó la comunicación con \textit{SonarCloud} en el \textit{workflow} existente de \textit{GitHub Actions}, que ejecutaba los tests de \textit{Spring Boot}.
+\end{itemize}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burndown} del Sprint 11}{A2_sprint11_burndown}
+
+\subsubsection{Revisión}
+
+...
 
 %---------------------------------------------------------------
 
