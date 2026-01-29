@@ -12,10 +12,10 @@ services:
       - db_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      timeout: 10s
+      timeout: 5s
       retries: 10
       interval: 5s
-      start_period: 10s
+      start_period: 40s
 
   spring-boot:
     build:
