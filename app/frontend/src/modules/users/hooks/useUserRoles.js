@@ -25,7 +25,7 @@ export const useUserRoles = (initialIds = []) => {
 
   
   useEffect(() => {
-    const ids = new Set(initialIds.map(id => parseInt(id, 10)));
+    const ids = new Set(initialIds.map(id => Number.parseInt(id, 10)));
     setSelectedIds(ids);
   }, [JSON.stringify(initialIds)]); // stringify used to detect changes in the array
 
@@ -63,7 +63,7 @@ export const useUserRoles = (initialIds = []) => {
     hasChanges: (() => {
       // Simple comparison of sets
       if (selectedIds.size !== initialIds.length) return true;
-      const initialSet = new Set(initialIds.map(id => parseInt(id, 10)));
+      const initialSet = new Set(initialIds.map(id => Number.parseInt(id, 10)));
       for (let id of selectedIds) if (!initialSet.has(id)) return true;
       return false;
     })()

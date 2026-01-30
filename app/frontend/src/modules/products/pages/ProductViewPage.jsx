@@ -26,7 +26,7 @@ const ProductViewPage = () => {
 
 
   useEffect(() => {
-    if (id) loadProductById(parseInt(id), { detailed: true, includeIngredients: true });
+    if (id) loadProductById(Number.parseInt(id), { detailed: true, includeIngredients: true });
   }, [id, loadProductById]);
 
 

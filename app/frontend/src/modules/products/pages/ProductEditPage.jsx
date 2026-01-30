@@ -25,11 +25,11 @@ const ProductEditPage = () => {
 
 
   useEffect(() => {
-    if (id) loadProductById(parseInt(id), { detailed: true, includeIngredients: true });
+    if (id) loadProductById(Number.parseInt(id), { detailed: true, includeIngredients: true });
   }, [id, loadProductById]);
 
   const handleSubmit = async (productData) => {
-    await updateProduct(parseInt(id), productData);
+    await updateProduct(Number.parseInt(id), productData);
     navigate('/products', { replace: true });
   };
 

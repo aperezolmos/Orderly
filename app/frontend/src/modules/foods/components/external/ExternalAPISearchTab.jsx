@@ -3,11 +3,11 @@ import { Stack, Pagination, Loader, Center, Alert, Group,
          TextInput, Button, Overlay, Text } from '@mantine/core';
 import { IconAlertCircle, IconSearchOff, IconSearch } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { useOpenFoodFactsSearch } from '../hooks/useOpenFoodFactsSearch';
-import OpenFoodFactsResultsList from './OpenFoodFactsResultsList';
+import { useExternalAPISearch } from '../../hooks/useExternalAPISearch';
+import ExternalAPIResultsList from './ExternalAPIResultsList';
 
 
-const OpenFoodFactsSearchTab = () => {
+const ExternalAPISearchTab = () => {
   
   const [query, setQuery] = useState('');
   const {
@@ -20,8 +20,8 @@ const OpenFoodFactsSearchTab = () => {
     setPage,
     searched,
     creating,
-    createFoodFromOFFBarcode,
-  } = useOpenFoodFactsSearch();
+    createFoodFromExternalAPIBarcode,
+  } = useExternalAPISearch();
   const { t } = useTranslation(['foods']);
 
 
@@ -36,8 +36,8 @@ const OpenFoodFactsSearchTab = () => {
       {creating && (
         <Overlay
           blur={2}
-          opacity={0.6}
-          color="#fff"
+          opacity={0.2}
+          color="#6c6c6d"
           zIndex={10}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
         >
@@ -101,18 +101,26 @@ const OpenFoodFactsSearchTab = () => {
         
         {!loading && results.length > 0 && (
           <>
-            <OpenFoodFactsResultsList
+            <ExternalAPIResultsList
               results={results}
               onAdd={async (barcode) => {
                 if (!creating) {
-                  await createFoodFromOFFBarcode(barcode);
+                  await createFoodFromExternalAPIBarcode(barcode);
                 }
               }}
               disabled={creating}
             />
             {pageCount > 1 && (
               <Center mt="md">
-                <Pagination value={page} onChange={setPage} total={pageCount} disabled={creating} />
+                <Pagination 
+                  value={page} 
+                  onChange={setPage} 
+                  total={pageCount} 
+                  disabled={creating}
+                  size="sm"
+                  radius="md"
+                  withEdges
+                />
               </Center>
             )}
           </>
@@ -122,4 +130,4 @@ const OpenFoodFactsSearchTab = () => {
   );
 };
 
-export default OpenFoodFactsSearchTab;
+export default ExternalAPISearchTab;

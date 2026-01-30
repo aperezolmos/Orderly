@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import FoodForm from '../components/FoodForm';
 import { useFoods } from '../hooks/useFoods';
-import OpenFoodFactsSearchTab from '../components/OpenFoodFactsSearchTab';
+import ExternalAPISearchTab from '../components/external/ExternalAPISearchTab';
 import { getNavigationConfig } from '../../../utils/navigationConfig';
 
 
@@ -56,7 +56,7 @@ const FoodCreatePage = () => {
         </Tabs.Panel>
         <Tabs.Panel value="off" pt="xs">
           <Box mt="md">
-            <OpenFoodFactsSearchTab />
+            <ExternalAPISearchTab />
           </Box>
         </Tabs.Panel>
       </Tabs>

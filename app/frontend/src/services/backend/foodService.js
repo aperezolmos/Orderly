@@ -21,5 +21,6 @@ export const foodService = {
   // ======================
   // EXTERNAL API (OFF)
   // ======================
-  createFoodFromOFFBarcode: async (barcode) => apiClient.post(`/foods/external/${barcode}`),
+  searchFoodFromExternalAPI: async (query, page) => apiClient.get('/foods/external/search', { query, page }),
+  createFoodFromExternalAPIBarcode: async (barcode) => apiClient.post(`/foods/external/${barcode}`),
 };

@@ -11,7 +11,7 @@ const OptimizedNumberInput = memo(({ label, initialValue, onCommit }) => {
       defaultValue={initialValue ?? ''}
       // The form is only notified when the user finishes typing (onBlur)
       onBlur={(e) => {
-        const val = e.target.value === '' ? 0 : parseFloat(e.target.value);
+        const val = e.target.value === '' ? 0 : Number.parseFloat(e.target.value);
         onCommit(val);
       }}
       min={0}

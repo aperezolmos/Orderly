@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex) {
         
-        log.error("Error de estado ilegal (inconsistencia interna): {}", ex.getMessage());
+        log.error("Illegal state error (internal inconsistency): {}", ex.getMessage());
         
         return createErrorResponseEntity(
             HttpStatus.INTERNAL_SERVER_ERROR, 
@@ -121,8 +121,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
 
-        log.error("Error genérico no manejado: {}", ex.getMessage());
-        log.debug("Stack trace completo del error:", ex);
+        log.error("Unhandled generic error: {}", ex.getMessage());
+        log.debug("Full error stack trace:", ex);
 
         return createErrorResponseEntity(
             HttpStatus.INTERNAL_SERVER_ERROR, 

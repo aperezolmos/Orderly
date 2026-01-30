@@ -6,7 +6,7 @@ const NO_IMAGE_PLACEHOLDER =
   'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg';
 
 
-const OpenFoodFactsResultItem = ({ product, onAdd, disabled }) => {
+const ExternalAPIResultItem = ({ product, onAdd, disabled }) => {
   
   const { t } = useTranslation(['foods']);
 
@@ -88,4 +88,4 @@ const OpenFoodFactsResultItem = ({ product, onAdd, disabled }) => {
   );
 };
 
-export default OpenFoodFactsResultItem;
+export default ExternalAPIResultItem;

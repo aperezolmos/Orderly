@@ -43,6 +43,7 @@ const ProductAllergenFilter = ({
           searchable
           nothingFoundMessage={t('foods:allergens.filter.noAllergens')}
           maxDropdownHeight={200}
+          comboboxProps={{ withinPortal: false }}
           disabled={loading}
         />
         

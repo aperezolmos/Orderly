@@ -25,11 +25,11 @@ const DiningTableEditPage = () => {
 
 
   useEffect(() => {
-    if (id) loadTableById(parseInt(id));
+    if (id) loadTableById(Number.parseInt(id));
   }, [id, loadTableById]);
 
   const handleSubmit = async (tableData) => {
-    await updateTable(parseInt(id), tableData);
+    await updateTable(Number.parseInt(id), tableData);
     navigate('/tables', { replace: true });
   };
 
