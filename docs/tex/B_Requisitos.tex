@@ -104,7 +104,7 @@ A continuación se detallan las funcionalidades que la aplicación debe cumplir 
 		\req{RF-7.1 Crear usuario:}{rf7.1} la aplicación debe permitir crear un usuario, aportando un \textit{username} y una contraseña.
 		\req{RF-7.2 Editar usuario:}{rf7.2} la aplicación debe permitir editar la información asociada a un usuario existente.
 		\begin{itemize}
-			\req{RF-7.2.1 Editar perfil propio:}{rf7.2.1} el usuario debe poder editar su información asociada, exceptuando los roles.
+			\req{RF-7.2.1 Editar perfil propio:}{rf7.2.1} el usuario debe poder editar su información asociada.
 			\req{RF-7.2.2 Editar perfil ajeno:}{rf7.2.2} el usuario con permisos suficientes debe poder editar la información asociada a otros usuarios, incluyendo sus roles.
 		\end{itemize}
 		\req{RF-7.3 Eliminar usuario:}{rf7.3} la aplicación debe permitir eliminar un usuario existente.
@@ -154,28 +154,111 @@ A continuación se detallan las funcionalidades que la aplicación debe cumplir 
 
 \section{Especificación de requisitos}
 
-Este apartado define el comportamiento esperado del sistema, transformando las necesidades del negocio en una estructura técnica detallada para delimitar su alcance funcional. La figura \revisionA{<ref>}\todo{ref a figura} ofrece una visión global de estas interacciones, sirviendo como base para comprender los diversos flujos de la aplicación.
+Este apartado define el comportamiento esperado del sistema, transformando las necesidades del negocio en una estructura técnica detallada para delimitar su alcance funcional. La figura \ref{fig:B.4_casos_uso} ofrece una visión global de estas interacciones, sirviendo como base para comprender los diversos flujos de la aplicación.
+
+Debido a la naturaleza modular de la aplicación, todas las entidades del sistema comparten un flujo operativo prácticamente idéntico en sus operaciones básicas de mantenimiento. Por este motivo, y con el fin de evitar una redundancia excesiva en la documentación, para las operaciones CRUD sobre entidades se presentan tablas detalladas únicamente para los \textbf{casos de uso generales} (del \hyperref[word:B.4_CU-5]{CU-5} a \hyperref[word:B.4_CU-9]{CU-9}). Solo se han detallado casos particulares cuando presentan variaciones significativas, como la creación de pedidos (\hyperref[word:B.4_CU-5.1]{CU-5.1}), que requiere diferenciar entre pedidos de barra y comedor. No obstante, en el diagrama de casos de uso (figura \ref{fig:B.4_casos_uso}) se han modelado todas las \textbf{especializaciones} correspondientes para ofrecer una visión completa del sistema.
 
 %---------------------------------------------------------------
 
 \subsection{Actores}
 
-Los actores representan los roles funcionales identificados en el dominio de la restauración que podrían interactuar con el sistema. Internamente, estos actores se materializan mediante el sistema de \textbf{roles y permisos} descrito en los requisitos funcionales (\hyperref[req:rf6]{RF-6}, \hyperref[req:rf7]{RF-7}). Un usuario concreto puede tener asignados permisos de varios actores si su perfil laboral así lo requiere.
+Los actores representan los roles funcionales básicos que interactúan con el sistema. En este proyecto se han identificado dos actores principales que cubren las necesidades de análisis de casos de uso, aunque la aplicación está diseñada para soportar una granularidad mayor mediante el sistema de \textbf{roles y permisos} descrito en los requisitos funcionales (\hyperref[req:rf6]{RF-6}, \hyperref[req:rf7]{RF-7}).
 
-Los actores identificados son los siguientes:
+Los actores principales identificados son los siguientes:
 \begin{itemize}
-	\item \textbf{Administrador del sistema:} usuario con control total sobre la configuración y administración de la aplicación. Gestiona usuarios, roles y todos los aspectos del sistema.
+	\item \textbf{Administrador:} usuario con control total sobre los módulos de la aplicación. Tiene acceso completo a todas las funcionalidades y es responsable de la configuración inicial del sistema, gestión de usuarios, asignación de permisos y supervisión global.
 	
-	\item \textbf{Gerente:} responsable operativo del local. Gestiona el catálogo de productos y alimentos, las mesas, y supervisa reservas y pedidos. No configura aspectos del sistema como roles o permisos.
-	
-	\item \textbf{Camarero:} personal de sala que toma pedidos y atiende a los clientes. Su interacción principal es con los módulos de pedidos, mesas y reservas en tiempo real.
-	
-	\item \textbf{Cocinero:} personal de cocina encargado de la preparación. Requiere acceso a la información de alimentos y productos, de alérgenos y a la visualización de pedidos pendientes.
-	
-	\item \textbf{Usuario autenticado:\todo{O Usuario registrado??}} representa a cualquier miembro del personal que ha accedido al sistema. Sus funciones se limitan a la gestión de su propia cuenta (editar perfil, cambiar contraseña y cerrar sesión). Es el rol \textbf{asignado por defecto} antes de recibir permisos específicos.
+	\item \textbf{Empleado:} usuario registrado que forma parte del personal del local de restauración. Sus capacidades dentro del sistema están determinadas por los \textbf{permisos específicos} que el Administrador le haya asignado, pudiendo abarcar desde un acceso mínimo (solo gestión de su perfil) hasta capacidades amplias en áreas específicas.
 \end{itemize}
 
-\textbf{Nota sobre el alcance inicial:} en la implementación actual, el sistema se despliega con dos roles predefinidos: \texttt{ROLE\_ADMIN} (que agrupa todos los permisos) y \texttt{ROLE\_USER} (con permisos básicos). Sin embargo, mediante el módulo de gestión de roles (\hyperref[req:rf6]{RF-6}), se pueden crear los roles funcionales descritos anteriormente y asignarles los permisos específicos adecuados a cada perfil laboral.
+Es importante destacar que la aplicación implementa un \textbf{sistema de control de acceso basado en permisos (\textit{RBAC})}\footnote{\textit{Role-Based Access Control}}, el cual permite crear configuraciones personalizadas que materialicen roles funcionales más específicos, como por ejemplo \textit{``Cocinero''} o \textit{``Camarero de barra''}. Para simplificar el diagrama \ref{fig:B.4_casos_uso}, no se modelan como actores separados, pero son completamente realizables mediante el módulo de gestión de roles mencionado. Se profundiza más en esta característica del sistema en el apartado <ref>.\todo{ref a apartado (diseño, manual???) donde se hable de RBAC y de los posibles roles a crear, con ejemplos de configuraciones de permisos}
+
+\subsubsection{Capacidades por actor}
+
+La siguiente tabla resume las capacidades básicas de cada actor, donde se observa la diferencia fundamental entre ambos:
+
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\small
+\begin{longtable}{| l | p{0.40\linewidth} | c | c |}
+	\caption{Matriz de acciones según actores y módulos} \label{tab:B.4_acciones_actores} \\
+	\hline
+	\textbf{Módulo} & \textbf{Acción del módulo} & \textbf{Empleado} & \textbf{Admin.} \\ \hline
+	\endfirsthead
+	
+	\multicolumn{4}{l}{\small\slshape continúa desde la página anterior} \\ \hline
+	\textbf{Módulo} & \textbf{Acción del módulo} & \textbf{Empleado} & \textbf{Admin.} \\ \hline
+	\endhead
+	
+	\hline
+	\multicolumn{4}{r}{\small\slshape continúa en la página siguiente} \\
+	\endfoot
+	
+	\hline
+	\endlastfoot
+	
+		
+	% --- AUTENTICACIÓN ---
+	\multirow{3}{*}{Autenticación} & Iniciar sesión    & \TICK & \TICK \\ \hhline{~|---}
+	& Ver perfil  & \TICK & \TICK \\ \hhline{~|---}
+	& Editar perfil & \TICK & \TICK \\ \hline
+	
+	% --- ALIMENTOS ---
+	\multirow{4}{*}{Alimentos} & Crear alimento & \QUES & \TICK \\ \hhline{~|---}
+	& Consultar/Ver listado & \QUES & \TICK \\ \hhline{~|---}
+	& Editar     & \QUES & \TICK \\ \hhline{~|---}
+	& Eliminar & \QUES & \TICK \\ \hline
+	
+	% --- PRODUCTOS ---
+	\multirow{4}{*}{Productos} & Crear producto & \QUES & \TICK \\ \hhline{~|---}
+	& Consultar/Ver listado & \QUES & \TICK \\ \hhline{~|---}
+	& Editar     & \QUES & \TICK \\ \hhline{~|---}
+	& Eliminar & \QUES & \TICK \\ \hline
+	
+	% --- MESAS ---
+	\multirow{4}{*}{Mesas}     & Crear mesa     & \QUES & \TICK \\ \hhline{~|---}
+	& Consultar/Ver listado & \QUES & \TICK \\ \hhline{~|---}
+	& Editar     & \QUES & \TICK \\ \hhline{~|---}
+	& Eliminar & \QUES & \TICK \\ \hline
+	
+	% --- RESERVAS ---
+	\multirow{4}{*}{Reservas}  & Crear reserva  & \QUES & \TICK \\ \hhline{~|---}
+	& Consultar/Ver listado & \QUES & \TICK \\ \hhline{~|---}
+	& Editar     & \QUES & \TICK \\ \hhline{~|---}
+	& Eliminar & \QUES & \TICK \\ \hline
+	
+	% --- PEDIDOS ---
+	\multirow{4}{*}{Pedidos}   & Crear pedido   & \QUES & \TICK \\ \hhline{~|---}
+	& Consultar/Ver listado & \QUES & \TICK \\ \hhline{~|---}
+	& Editar     & \QUES & \TICK \\ \hhline{~|---}
+	& Eliminar & \QUES & \TICK \\ \hline
+	
+	% --- USUARIOS ---
+	\multirow{4}{*}{Usuarios}  & Crear usuario  & \QUES & \TICK \\ \hhline{~|---}
+	& Consultar/Ver listado & \QUES & \TICK \\ \hhline{~|---}
+	& Editar     & \QUES & \TICK \\ \hhline{~|---}
+	& Eliminar & \QUES & \TICK \\ \hline
+	
+	% --- ROLES ---
+	\multirow{4}{*}{Roles}     & Crear rol      & \QUES & \TICK \\ \hhline{~|---}
+	& Consultar/Ver listado & \QUES & \TICK \\ \hhline{~|---}
+	& Editar     & \QUES & \TICK \\ \hhline{~|---}
+	& Eliminar & \QUES & \TICK \\ \hline
+\end{longtable}
+\endgroup
+
+Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee acceso completo (\ding{51}) a todas las funcionalidades del sistema sin restricciones. En cuanto a los empleados, la única funcionalidad garantizada que tienen es la \textbf{gestión de su propio perfil} (cambiar información del perfil y contraseña o ver sus datos). El símbolo de interrogación (\textbf{?}) en el resto de filas indica que la capacidad de poder realizar dicha acción \textbf{depende de los permisos específicos} asignados a ese usuario.
+
+%---------------------------------------------------------------
+
+\begin{landscape}
+	\begin{figure}[p]
+		\centering
+		\includegraphics[width=1.0\linewidth, height=\textheight, keepaspectratio]{img/apen_B/B4_casos_uso.png}
+		\caption{Diagrama de Casos de Uso}
+		\label{fig:B.4_casos_uso}
+	\end{figure}
+\end{landscape}
 
 %---------------------------------------------------------------
 
@@ -185,25 +268,24 @@ Los actores identificados son los siguientes:
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
 	\textbf{Requisitos asociados} & \hyperref[req:rf7.1]{RF-7.1}, \hyperref[req:rf8]{RF-8} \\
-	\textbf{Actor}                & Visitante sin cuenta en el sistema. \\
+	\textbf{Actor}                & Visitante sin cuenta en el sistema \\
 	\textbf{Descripción}          & Visitante crea una nueva cuenta de usuario. \\
 	\textbf{Precondición}         & El usuario no está autenticado. \\
 	\textbf{Acciones}             &
-	\begin{enumerate}
+	\begin{enumerate}[nosep]
 		\def\labelenumi{\arabic{enumi}.}
-		\tightlist
 		\item Hacer \textit{click} en el botón \textit{Registrarse}.
 		\item Rellenar el formulario de registro (como mínimo, el nombre de usuario y la contraseña).
 		\item El sistema valida los campos.
-		\begin{enumerate}
-			\item Si la validación es exitosa, el sistema crea el usuario y le añade el rol por defecto. Se redirige al usuario a la página de inicio de sesión.
+		{\footnotesize
+		\begin{enumerate}[nosep]
+			\item Si la validación es exitosa, el sistema crea el usuario y le añade el rol por defecto. Se inicia sesión automáticamente con el nuevo usuario registrado, redirigiendo a su perfil.
 			\item Si la validación falla, se muestra un mensaje con la descripción del error.
-		\end{enumerate}
+		\end{enumerate}}
 	\end{enumerate} \\
 	\textbf{Postcondición}        & Nuevo usuario persistido en la BBDD con el rol por defecto. \\
 	\textbf{Excepciones}          &
-	\begin{itemize}
-		\tightlist
+	\begin{itemize}[nosep]
 		\item El \textit{username} ya existe.
 		\item La confirmación de contraseña no coincide con la contraseña introducida.
 		\item Alguno de los campos supera la longitud máxima.
@@ -217,29 +299,27 @@ Los actores identificados son los siguientes:
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
 	\textbf{Requisitos asociados} & \hyperref[req:rf8]{RF-8} \\
-	\textbf{Actor}                & \todo[inline]{Usuario autenticado}. \\
+	\textbf{Actor}                & Empleado \\
 	\textbf{Descripción}          & Usuario se autentica y accede a la aplicación. \\
 	\textbf{Precondición}         & 
-	\begin{itemize}
-		\tightlist
+	\begin{itemize}[nosep]
 		\item El usuario tiene una cuenta existente.
 		\item El usuario no está autenticado.
 	\end{itemize} \\
 	\textbf{Acciones}             &
-	\begin{enumerate}
+	\begin{enumerate}[nosep]
 		\def\labelenumi{\arabic{enumi}.}
-		\tightlist
 		\item Hacer \textit{click} en el botón \textit{Iniciar sesión}.
 		\item Introducir \textit{username} y contraseña.
 		\item El sistema valida las credenciales.
-		\begin{enumerate}
-			\item Si la validación es exitosa, el sistema crea el usuario y le añade el rol por defecto.
+		{\footnotesize
+		\begin{enumerate}[nosep]
+			\item Si la validación es exitosa, el sistema redirige al usuario a su perfil.
 			\item Si la validación falla, se muestra un mensaje con la descripción del error.
-		\end{enumerate}
+		\end{enumerate}}
 	\end{enumerate} \\
 	\textbf{Postcondición}        & 
-	\begin{itemize}
-		\tightlist
+	\begin{itemize}[nosep]
 		\item Usuario autenticado y sesión activa.
 		\item Acceso a vistas según roles.
 	\end{itemize} \\
@@ -252,16 +332,14 @@ Los actores identificados son los siguientes:
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
 	\textbf{Requisitos asociados} & \hyperref[req:rf8]{RF-8} \\
-	\textbf{Actor}                & Usuario autenticado. \\
+	\textbf{Actor}                & Empleado \\
 	\textbf{Descripción}          & Usuario termina su sesión y sale de la aplicación. \\
 	\textbf{Precondición}         & El usuario está autenticado. \\
 	\textbf{Acciones}             &
-	\begin{enumerate}
+	\begin{enumerate}[nosep]
 		\def\labelenumi{\arabic{enumi}.}
-		\tightlist
 		\item Hacer \textit{click} en el botón \textit{Cerrar sesión} de la barra de navegación.
 		\item El sistema invalida la sesión y redirige a la página de inicio.
-		\todo[inline]{inicio o login?}
 	\end{enumerate} \\
 	\textbf{Postcondición}        & Sesión inválida. \\
 	\textbf{Excepciones}          & - \\
@@ -273,28 +351,24 @@ Los actores identificados son los siguientes:
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
 	\textbf{Requisitos asociados} & \hyperref[req:rf7.2.1]{RF-7.2.1}, \hyperref[req:rf7.5]{RF-7.5} \\
-	\textbf{Actor}                & Usuario autenticado. \\
+	\textbf{Actor}                & Empleado \\
 	\textbf{Descripción}          & Usuario edita la información de su perfil. \\
 	\textbf{Precondición}         & El usuario está autenticado. \\
 	\textbf{Acciones}             &
-	\begin{enumerate}
+	\begin{enumerate}[nosep]
 		\def\labelenumi{\arabic{enumi}.}
-		\tightlist
-		\item Hacer \textit{click} en el botón \textit{Editar perfil} de la barra de navegación.
+		\item En la vista de perfil del usuario, hacer \textit{click} en el botón \textit{Editar perfil}.
 		\item Modificar campos permitidos.
-		\begin{enumerate}
+		{\footnotesize
+		\begin{enumerate}[nosep]
 			\item Solo podrá editar sus roles si tiene los permisos necesarios.
 			\item Si se quiere editar la contraseña, se deberá introducir la contraseña actual.
-		\end{enumerate}
+		\end{enumerate}}
 		\item El sistema valida y persiste los cambios.
-		\begin{enumerate}
-			\item Si se ha editado el \textit{username}, se cierra sesión automáticamente.
-		\end{enumerate}
 	\end{enumerate} \\
 	\textbf{Postcondición}        & Campos del usuario actualizados. \\
 	\textbf{Excepciones}          & 
-	\begin{itemize}
-		\tightlist
+	\begin{itemize}[nosep]
 		\item El \textit{username} ya existe.
 		\item La confirmación de contraseña no coincide con la contraseña introducida.
 		\item La contraseña introducida como ``\textit{contraseña actual}'' no coincide con la real.
@@ -303,48 +377,40 @@ Los actores identificados son los siguientes:
 	\textbf{Importancia}          & Media \\
 \EndCasoUso
 
-
-\todo[inline]{Aclaración sobre los CU 5 a 8. Diciendo que son casos que engloban todas las entidades de la aplicación.
-
-- También se podría poner una sección de particularidades de cada entidad, en el caso de uso padre.}
-
+\wordRef{}{B.4_CU-5}
 \BeginCasoUso{tab:CU-5}{CU-5}{Crear entidad}
 \textbf{Versión}              & 1.0    \\
 \textbf{Autor}                & Amanda Pérez Olmos \\
 \textbf{Requisitos asociados} & \hyperref[req:rf1.1]{RF-1.1}, \hyperref[req:rf2.1]{RF-2.1}, \hyperref[req:rf3.1]{RF-3.1}, \hyperref[req:rf4.1]{RF-4.1}, \hyperref[req:rf5.1]{RF-5.1}, \hyperref[req:rf6.1]{RF-6.1}, \hyperref[req:rf7.1]{RF-7.1} \\
-\textbf{Actor}                & Usuario con permiso \texttt{CREATE} sobre la entidad correspondiente. \\
+\textbf{Actor}                & Empleado con permiso \texttt{CREATE} sobre la entidad correspondiente. \\
 \textbf{Descripción}          & Usuario crea una nueva instancia de una entidad del sistema (Alimento, Producto, Mesa, Reserva, Pedido, Usuario o Rol). \\
 \textbf{Precondición}         & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item El usuario está autenticado.
 	\item El usuario tiene permiso para crear la entidad específica.
-	\item Está en la vista de listado o gestión de la entidad.
 \end{itemize} \\
 \textbf{Acciones}             &
-\begin{enumerate}
+\begin{enumerate}[nosep]
 	\def\labelenumi{\arabic{enumi}.}
-	\tightlist
-	\item Hacer \textit{click} en el botón \textit{Crear nuevo [Entidad]}.
+	\item Hacer \textit{click} en el botón de creación.
 	\item El sistema muestra un formulario modal o página con los campos requeridos.
 	\item Rellenar los campos del formulario.
 	\item Hacer \textit{click} en el botón de guardado.
 	\item El sistema valida todos los campos del formulario.
-	\begin{enumerate}
-			\item Si la validación es exitosa, persiste la entidad, cierra el formulario y actualiza la vista.
-			\item Si la validación falla, muestra mensajes de error junto a los campos afectados.
-		\end{enumerate}
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item Si la validación es exitosa, persiste la entidad, cierra el formulario y actualiza la vista.
+		\item Si la validación falla, muestra mensajes de error junto a los campos afectados.
+	\end{enumerate}}
 \end{enumerate} \\
 \textbf{Postcondición}        & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Nueva entidad persistida en la base de datos.
 	\item La vista se actualiza para reflejar el nuevo elemento.
 	\item El usuario recibe confirmación visual de la creación exitosa.
 \end{itemize} \\
 \textbf{Excepciones}          &
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Campos obligatorios vacíos.
 	\item Validación de formato fallida (ej: longitud excedida, número negativo).
 	\item Violación de unicidad (ej: nombre duplicado).
@@ -364,6 +430,62 @@ Los actores identificados son los siguientes:
 \textbf{Importancia}          & Alta \\
 \EndCasoUso
 
+\wordRef{}{B.4_CU-5.1}
+\BeginCasoUso{tab:CU-5.1}{CU-5.1}{Crear pedido}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf5.1]{RF-5.1} \\
+\textbf{Actor}                & Empleado con permisos \texttt{CREATE} sobre pedidos. \\
+\textbf{Descripción}          & Usuario crea un nuevo pedido de barra o comedor. \\
+\textbf{Precondición}         & 
+\begin{itemize}[nosep]
+	\item El usuario está autenticado.
+	\item El usuario tiene el permiso general para crear pedidos.
+	\item El usuario tiene el permiso para crear pedidos del tipo específico que quiere crear.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}[nosep]
+	\def\labelenumi{\arabic{enumi}.}
+	\item Desde el \textit{dashboard} de pedidos, situarse en la vista del tipo de pedido que se quiera crear (``barra'' o ``comedor'').
+	\item Hacer \textit{click} en el botón de creación.
+	\item El sistema muestra un formulario modal con los campos requeridos.
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item Para los pedidos de \textbf{barra}, se podrá elegir si el pedido es solo de bebidas.
+		\item Para los pedidos de \textbf{comedor}, será necesario asociar una mesa al nuevo pedido.
+	\end{enumerate}}
+	\item Rellenar los campos del formulario.
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item Si no se especifica número de pedido, se genera uno automáticamente.
+		\item Si se especifica, se comprobará que el número introducido es único en el sistema.
+	\end{enumerate}}
+	\item Hacer \textit{click} en el botón de guardado.
+	\item El sistema valida todos los campos del formulario.
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item Si la validación es exitosa, persiste la entidad, cierra el formulario y actualiza la vista.
+		\item Si la validación falla, muestra mensajes de error junto a los campos afectados.
+	\end{enumerate}}
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}[nosep]
+	\item Nuevo pedido persistido en la base de datos.
+	\item La vista se actualiza para reflejar el nuevo pedido.
+	{\footnotesize
+	\begin{itemize}[nosep]
+		\item Se visualiza el nuevo pedido en la tabla de detalles, vacío (sin ítems), con precio total a 0€ y estado \texttt{PENDING}.
+		\item Se añade el nuevo pedido al final de la lista de pedidos pendientes.
+	\end{itemize}}
+	\item El usuario recibe confirmación visual de la creación exitosa.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}[nosep]
+	\item Número de pedido ya existente en el sistema (si se especifica).
+	\item Mesa no asociada (solo en pedidos de comedor).
+\end{itemize} \\
+\textbf{Importancia}          & Alta \\
+\EndCasoUso
 
 \BeginCasoUso{tab:CU-6}{CU-6}{Editar entidad}
 \textbf{Versión}              & 1.0    \\
@@ -372,30 +494,28 @@ Los actores identificados son los siguientes:
 \textbf{Actor}                & Usuario con permiso \texttt{EDIT} sobre la entidad correspondiente. \\
 \textbf{Descripción}          & Usuario modifica los datos de una entidad existente. \\
 \textbf{Precondición}         & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item El usuario está autenticado.
 	\item El usuario tiene permiso para editar la entidad específica.
 	\item La entidad a editar existe y es editable.
 	\item Está visualizando la lista o detalle de la entidad.
 \end{itemize} \\
 \textbf{Acciones}             &
-\begin{enumerate}
+\begin{enumerate}[nosep]
 	\def\labelenumi{\arabic{enumi}.}
-	\tightlist
 	\item Hacer \textit{click} en el botón \textit{Editar} de la entidad deseada (desde lista o vista detalle).
 	\item El sistema muestra formulario pre-rellenado con los datos actuales.
 	\item Modificar los campos deseados.
 	\item Hacer \textit{click} en el botón de guardado.
 	\item El sistema valida los campos modificados.
-	\begin{enumerate}
-			\item Si la validación es exitosa, persiste los cambios y actualiza la vista.
-			\item Si falla, muestra mensajes de error sin cerrar el formulario.
-		\end{enumerate}
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item Si la validación es exitosa, persiste los cambios y actualiza la vista.
+		\item Si falla, muestra mensajes de error sin cerrar el formulario.
+	\end{enumerate}}
 \end{enumerate} \\
 \textbf{Postcondición}        & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Datos de la entidad actualizados en la base de datos.
 	\item Vista actualizada con los nuevos valores.
 	\item Confirmación visual de la edición exitosa.
@@ -420,50 +540,80 @@ Los actores identificados son los siguientes:
 \textbf{Importancia}          & Alta \\
 \EndCasoUso
 
+\BeginCasoUso{tab:CU-7}{CU-7}{Cambiar estado de entidad}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf3.3]{RF-3.3}, \hyperref[req:rf4.2]{RF-4.2}, \hyperref[req:rf5.2]{RF-5.2} \\
+\textbf{Actor}                & Empleado con permiso \texttt{EDIT} sobre la entidad correspondiente. \\
+\textbf{Descripción}          & Usuario cambia el estado de una entidad existente (Mesa, Reserva o Pedido). \\
+\textbf{Precondición}         & 
+\begin{itemize}[nosep]
+	\item El usuario está autenticado.
+	\item El usuario tiene permiso para editar la entidad específica.
+	\item La entidad a editar existe y es editable.
+	\item Está visualizando la lista o detalle de la entidad.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}[nosep]
+	\def\labelenumi{\arabic{enumi}.}
+	\item Hacer \textit{click} en el botón de estado de la entidad deseada.
+	\item Se desplegará un menú con los estados posibles para esa entidad.
+	\item Seleccionar un estado nuevo.
+	\item Hacer \textit{click} en el botón de guardado.
+	\item El sistema valida los campos modificados.
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item Si la validación es exitosa, persiste los cambios y actualiza la vista.
+		\item Si falla, muestra mensajes de error sin cerrar el formulario.
+	\end{enumerate}}
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}[nosep]
+	\item Estado de la entidad actualizado en la base de datos.
+	\item Vista actualizada con el nuevo estado.
+	\item Confirmación visual de la edición exitosa.
+	\item \textbf{Solo pedidos}: en caso de haber cancelado o completado el pedido, dicho pedido desaparecerá de la lista de pedidos pendientes del \textit{dashboard} y solo podrá visualizarse desde el historial.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}[nosep]
+	\item La transición del estado anterior al nuevo no está permitida. Por ejemplo, intentar cambiar el estado de una reserva completada o cancelada.
+\end{itemize} 
+\\
+\textbf{Importancia}          & Baja \\
+\EndCasoUso
 
-\BeginCasoUso{tab:CU-7}{CU-7}{Eliminar entidad}
+\BeginCasoUso{tab:CU-8}{CU-8}{Eliminar entidad}
 \textbf{Versión}              & 1.0    \\
 \textbf{Autor}                & Amanda Pérez Olmos \\
 \textbf{Requisitos asociados} & \hyperref[req:rf1.3]{RF-1.3}, \hyperref[req:rf2.3]{RF-2.3}, \hyperref[req:rf3.3]{RF-3.3}, \hyperref[req:rf4.3]{RF-4.3}, \hyperref[req:rf5.3]{RF-5.3}, \hyperref[req:rf6.3]{RF-6.3}, \hyperref[req:rf7.3]{RF-7.3} \\
 \textbf{Actor}                & Usuario con permiso \texttt{DELETE} sobre la entidad correspondiente. \\
 \textbf{Descripción}          & Usuario elimina una entidad del sistema, aplicando borrado lógico o físico según la política de la entidad. \\
 \textbf{Precondición}         & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item El usuario está autenticado.
 	\item El usuario tiene permiso para eliminar la entidad específica.
 	\item La entidad a eliminar existe.
 	\item Está visualizando la lista o detalle de la entidad.
 \end{itemize} \\
 \textbf{Acciones}             &
-\begin{enumerate}
+\begin{enumerate}[nosep]
 	\def\labelenumi{\arabic{enumi}.}
-	\tightlist
 	\item Hacer \textit{click} en el botón \textit{Eliminar} de la entidad deseada.
 	\item El sistema muestra diálogo de confirmación con:
-	\begin{itemize}
-			\item Nombre/identificador de la entidad.
-			\item Advertencia sobre consecuencias (dependiendo de entidad).
-		\end{itemize}
+	{\footnotesize
+	\begin{itemize}[nosep]
+		\item Nombre/identificador de la entidad.
+		\item Advertencia sobre consecuencias (dependiendo de entidad).
+	\end{itemize}}
 	\item Confirmar eliminación.
-%	\item El sistema ejecuta eliminación según política:
-%	\begin{enumerate}
-%			\item \textbf{Borrado lógico:} Marca como inactivo/eliminado (RF-3.3).
-%			\item \textbf{Borrado físico:} Elimina registro de base de datos.
-%			\item \textbf{Borrado restrictivo:} Verifica dependencias antes de eliminar.
-%		\end{enumerate}
-%	\item Actualizar vista para reflejar eliminación.
 \end{enumerate} \\
 \textbf{Postcondición}        & 
-\begin{itemize}
-	\tightlist
-	%\item Entidad eliminada según política correspondiente.
-	\item Vista actualizada (elemento desaparece). %o se marca como eliminado
+\begin{itemize}[nosep]
+	\item Vista actualizada (elemento desaparece).
 	\item Confirmación visual de la eliminación exitosa.
 \end{itemize} \\
 \textbf{Excepciones}          &
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Entidad tiene dependencias que impiden eliminación (ej: alimento usado en producto).
 %	\item Intento de eliminar entidad esencial (ej: último usuario administrador).
 %	\item Entidad ya eliminada por otro usuario.
@@ -481,40 +631,36 @@ Los actores identificados son los siguientes:
 \textbf{Importancia}          & Media \\
 \EndCasoUso
 
-
-\BeginCasoUso{tab:CU-8}{CU-8}{Listar entidades}
+\wordRef{}{B.4_CU-9}
+\BeginCasoUso{tab:CU-9}{CU-9}{Listar entidades}
 \textbf{Versión}              & 1.0    \\
 \textbf{Autor}                & Amanda Pérez Olmos \\
 \textbf{Requisitos asociados} & \hyperref[req:rf1.5]{RF-1.5}, \hyperref[req:rf2.7]{RF-2.7}, \hyperref[req:rf3.5]{RF-3.5}, \hyperref[req:rf4.4]{RF-4.4}, \hyperref[req:rf5.7]{RF-5.7}, \hyperref[req:rf6.4]{RF-6.4}, \hyperref[req:rf7.6]{RF-7.6} \\
 \textbf{Actor}                & Usuario con permiso \texttt{VIEW\_LIST} sobre la entidad correspondiente. \\
-\textbf{Descripción}          & Usuario visualiza una lista
- %paginada y filtrable 
+\textbf{Descripción}          & Usuario visualiza una lista paginada
+ %y filtrable 
  de todas las instancias de una entidad. \\
 \textbf{Precondición}         & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item El usuario está autenticado.
 	\item El usuario tiene permiso para listar la entidad específica.
 \end{itemize} \\
 \textbf{Acciones}             &
-\begin{enumerate}
+\begin{enumerate}[nosep]
 	\def\labelenumi{\arabic{enumi}.}
-	\tightlist
-	\item Navegar a la sección de la entidad deseada en el menú principal.
+	\item Navegar a la sección de la entidad deseada en el menú principal o barra de navegación.
 	\item El sistema carga y muestra la lista de elementos.
 %	\item \textbf{Opcional:} Aplicar filtros usando los controles proporcionados (búsqueda por nombre, filtro por estado, rango de fechas, etc.).
 %	\item \textbf{Opcional:} Cambiar página usando la paginación.
 %	\item \textbf{Opcional:} Ordenar por una columna haciendo click en su cabecera.
 \end{enumerate} \\
 \textbf{Postcondición}        & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Vista actualizada con la lista de elementos.
 %	\item Filtros y orden aplicados persistentes durante la sesión.
 \end{itemize} \\
 \textbf{Excepciones}          &
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item No hay elementos para mostrar (lista vacía).
 	\item Error al cargar datos del servidor.
 %	\item Los filtros aplicados no producen resultados.
@@ -530,47 +676,145 @@ Los actores identificados son los siguientes:
 \textbf{Importancia}          & Alta \\
 \EndCasoUso
 
+\BeginCasoUso{tab:CU-10}{CU-10}{Gestionar ingredientes de un producto}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf2.4.1]{RF-2.4.1}, \hyperref[req:rf2.4.2]{RF-2.4.2}, \hyperref[req:rf2.4.3]{RF-2.4.3}, \hyperref[req:rf2.5]{RF-2.5} \\
+\textbf{Actor}                & Empleado con permisos \texttt{PRODUCT\_EDIT\_INGREDIENTS} y \texttt{PRODUCT\_CREATE} o \texttt{PRODUCT\_EDIT}. \\
+\textbf{Descripción}          & Usuario agrega, quita o modifica cantidades de ingredientes que conforman un producto. \\
+\textbf{Precondición}         & 
+\begin{itemize}[nosep]
+	\item Usuario autenticado con permiso para crear o editar productos.
+	\item El usuario tiene permiso para editar los ingredientes de un producto.
+	\item Está en el formulario de creación o edición de producto.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}[nosep]
+	\def\labelenumi{\arabic{enumi}.}
+	\item Hacer \textit{click} en la sección \textit{Ingredientes} dentro del formulario. Desde esa sección pueden llevarse a cabo tres operaciones:
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item \textbf{Añadir ingrediente}: en la barra de búsqueda, introducir el nombre de un alimento que quiera añadirse como ingrediente y pulsar en \textit{Añadir}.
+		\item \textbf{Editar porciones}: pulsar en el botón para editar cantidades e introducir una cantidad en gramos.
+		\item \textbf{Quitar ingrediente}: en la tabla de ingredientes, pulsar el botón de borrar del alimento que quiera eliminarse de la lista.
+	\end{enumerate}}
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}[nosep]
+	\item Lista de ingredientes del producto actualizada.
+	\item Información nutricional del producto recalculada automáticamente, en base a los ingredientes que lo forman y su cantidad en gramos dentro del producto.
+	\item Lista de alérgenos del producto actualizada, incluyendo los alérgenos particulares de todos sus ingredientes.
+\end{itemize} \\
+\textbf{Excepciones}          &
+- \\
+\textbf{Importancia}          & Alta \\
+\EndCasoUso
 
-\BeginCasoUso{tab:CU-9}{CU-9}{Buscar alimento mediante \textit{Open Food Fact}s}
+\BeginCasoUso{tab:CU-11}{CU-11}{Gestionar líneas de pedido}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf5.4.1]{RF-5.4.1}, \hyperref[req:rf5.4.2]{RF-5.4.2}, \hyperref[req:rf5.4.3]{RF-5.4.3}, \hyperref[req:rf5.5]{RF-5.5} \\
+\textbf{Actor}                & Empleado con permisos \texttt{EDIT} sobre pedidos y PRODUCT\_VIEW\_LIST. \\
+\textbf{Descripción}          & Usuario agrega, quita o modifica cantidades de ítems (productos) que pertenecen a un pedido. \\
+\textbf{Precondición}         & 
+\begin{itemize}[nosep]
+	\item Usuario autenticado con permiso para editar pedidos.
+	\item El usuario tiene permiso para visualizar la lista de productos.
+	\item Está en el \textit{dashboard} (panel) de pedidos.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}[nosep]
+	\def\labelenumi{\arabic{enumi}.}
+	\item Seleccionar el pedido a editar desde la lista de pedidos pendientes (sección izquierda).
+	\item En la lista de productos ofertados (sección derecha), buscar el producto a añadir y hacer \textit{click} sobre él.
+	\item Se añadirá ese producto al pedido con una cantidad de 1. Una vez añadido, pueden llevarse a cabo las siguientes acciones desde la tabla de detalles del pedido:
+	{\footnotesize
+	\begin{enumerate}[nosep]
+		\item \textbf{Editar cantidad}: introducir la cantidad unitaria del producto en su línea correspondiente (ej: \textit{``3 raciones de Estofado de ternera''}) y pulsar el botón de \textit{Guardar}.
+		\item \textbf{Eliminar línea de pedido}: pulsar el botón de borrar de la línea que quiera eliminarse de la lista.
+	\end{enumerate}}
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}[nosep]
+	\item Lista de ítems del pedido actualizada.
+	\item Subtotales (por línea de pedido) y precio total del pedido recalculados automáticamente, en función a los precios de los productos que lo forman y sus cantidades unitarias.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}[nosep]
+	\item Si se editan las cantidades de los productos pero no se pulsa el botón de \textit{Guardar}, no se persisten ni se actualiza el importe total.
+	{\footnotesize
+	\begin{itemize}[nosep]
+		\item Cuando se recargue la página o se seleccione otro pedido, se perderán.
+	\end{itemize}}
+\end{itemize} \\
+\textbf{Importancia}          & Alta \\
+\EndCasoUso
+
+\BeginCasoUso{tab:CU-12}{CU-12}{Gestionar roles de un usuario}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf7.4.1]{RF-7.4.1}, \hyperref[req:rf7.4.2]{RF-7.4.2} \\
+\textbf{Actor}                & Administrador \\
+\textbf{Descripción}          & Usuario asigna o quita roles a otro usuario. \\
+\textbf{Precondición}         & 
+\begin{itemize}[nosep]
+	\item Usuario autenticado con permiso para editar los roles de un usuario.
+	\item Está en el formulario de creación de edición de un usuario.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}[nosep]
+	\def\labelenumi{\arabic{enumi}.}
+	\item Hacer \textit{click} en la sección \textit{Gestión de roles} dentro del formulario.
+	\item Se visualizarán 2 columnas: \textit{``Roles asignados''} y \textit{``Roles disponibles''}.
+	\item Hacer \textit{click} en las \textit{pills} que contienen el nombre de cada rol, para alternarlos entre columnas.
+	\item Hacer \textit{click} en el botón de guardado.
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}[nosep]
+	\item Roles del usuario actualizados.
+	\item El usuario editado sigue teniendo el rol por defecto \texttt{ROLE\_USER}, incluso si en el formulario se le ha intentado retirar.
+\end{itemize} \\
+\textbf{Excepciones}          &
+- \\
+\textbf{Importancia}          & Alta \\
+\EndCasoUso
+
+\BeginCasoUso{tab:CU-13}{CU-13}{Buscar y crear alimento mediante \textit{Open Food Facts}}
 \textbf{Versión}              & 1.0    \\
 \textbf{Autor}                & Amanda Pérez Olmos \\
 \textbf{Requisitos asociados} & \hyperref[req:rf1.1.2]{RF-1.1.2}, \hyperref[req:rf9]{RF-9} \\
-\textbf{Actor}                & Cocinero o Gerente (usuario con permiso \texttt{FOOD\_CREATE}). \\
+\textbf{Actor}                & Empleado con permiso \texttt{FOOD\_CREATE}. \\
 \textbf{Descripción}          & Usuario busca e importa información nutricional de alimentos desde la API pública \textit{Open Food Facts}. \\
 \textbf{Precondición}         & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Usuario autenticado con permiso para crear alimentos.
 	\item Está en el formulario de creación de alimento.
 	\item Conexión a Internet activa.
 \end{itemize} \\
 \textbf{Acciones}             &
-\begin{enumerate}
+\begin{enumerate}[nosep]
 	\def\labelenumi{\arabic{enumi}.}
-	\tightlist
 	\item Hacer \textit{click} en la sección \textit{Buscar en Open Food Facts} dentro del formulario.
 	\item Introducir término de búsqueda (ej: \textit{``Arroz basmati''}).
 	\item El sistema consulta la API externa y muestra resultados.
 	\item Seleccionar un resultado de la lista.
 	\item El sistema importa automáticamente:
-	\begin{itemize}
-		\tightlist
+	{\footnotesize
+	\begin{itemize}[nosep]
 		\item Nombre del alimento.
 		\item Información nutricional (calorías, proteínas, grasas, carbohidratos, etc.).
 		\item Lista de alérgenos detectados.
-		\item Métricas nutricionales (\textit{Nutri-Score}, NOVA).
-	\end{itemize}
-%	\item Continuar con el flujo normal de creación/edición.
+		\item Métricas nutricionales (\textit{Nutri-Score}, grupo NOVA).
+	\end{itemize}}
 \end{enumerate} \\
 \textbf{Postcondición}        & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Alimento persistido en el sistema, con campos pre-rellenados mediante datos externos.
 	\item Alérgenos automáticamente asociados al alimento.
 \end{itemize} \\
 \textbf{Excepciones}          &
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
+	\item Ya existe un alimento con ese nombre en el sistema (alimento ya importado).
 	\item API externa no disponible o con \textit{timeout}.
 	\item No se encuentran resultados para la búsqueda.
 	\item Datos incompletos o mal estructurados en la respuesta.
@@ -579,53 +823,53 @@ Los actores identificados son los siguientes:
 \textbf{Importancia}          & Media \\
 \EndCasoUso
 
-
-\BeginCasoUso{tab:CU-10}{CU-10}{Visualizar información nutricional y alérgenos}
+\BeginCasoUso{tab:CU-14}{CU-14}{Visualizar información nutricional y alérgenos}
 \textbf{Versión}              & 1.0    \\
 \textbf{Autor}                & Amanda Pérez Olmos \\
 \textbf{Requisitos asociados} & \hyperref[req:rf2.6]{RF-2.6}, \hyperref[req:rf10]{RF-10}, \hyperref[req:rf11]{RF-11} \\
-\textbf{Actor}                & Cocinero, Camarero, Gerente. \\
-\textbf{Descripción}          & Usuario consulta la información nutricional detallada y los alérgenos de un producto o alimento, presentada en formatos tabulares y gráficos. \\
+\textbf{Actor}                & Empleado con permiso \texttt{PRODUCT\_VIEW\_LIST}. \\
+\textbf{Descripción}          & Usuario consulta la información nutricional detallada y los alérgenos de un producto, presentada en formatos tabulares y gráficos. \\
 \textbf{Precondición}         & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Usuario autenticado.
 	\item Está en la vista de listado de productos.
 	\item Producto/alimento objetivo existe.
 	\item \textbf{Para gráficas:} El producto tiene información nutricional calculada.
 \end{itemize} \\
 \textbf{Acciones}             &
-\begin{enumerate}
+\begin{enumerate}[nosep]
 	\def\labelenumi{\arabic{enumi}.}
-	\tightlist
 	\item Hacer \textit{click} en el nombre del producto.
 	\item El sistema redirigirá a vista de detalle.
 	\item En la sección nutricional, visualizar:
-	\begin{enumerate}
-		\tightlist
+	{\footnotesize
+	\begin{enumerate}[nosep]
 		\item Gráfico (\textit{donut chart}) de macronutrientes.
 		\item Tablas para macronutrientes, vitaminas y minerales.
 		\item Lista de alérgenos detectados con iconos visuales.
-			%\item \textbf{Opcional:} Filtrar productos por ausencia de alérgeno específico.
-			%\item \textbf{Opcional:} Ver trazas/alérgenos potenciales.
-	\end{enumerate}
+		\item Lista de ingredientes del producto. Para cada ingrediente se muestra:
+		{\footnotesize
+		\begin{itemize}[nosep]
+			\item Nombre del alimento.
+			\item Porción en gramos dentro del producto.
+			\item Lista de alérgenos particulares.
+			\item Métricas nutricionales (\textit{Nutri-Score}, grupo NOVA) con etiquetas visuales.
+		\end{itemize}}
+	\end{enumerate}}
 \end{enumerate} \\
 \textbf{Postcondición}        & 
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Información nutricional y de alérgenos presentada claramente.
 	\item Gráficas renderizadas y actualizadas.
 \end{itemize} \\
 \textbf{Excepciones}          &
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item Información nutricional incompleta o no calculada.
 	\item Producto sin ingredientes definidos (valores nutricionales nulos).
 	\item Error al renderizar gráficas (datos mal formados).
 \end{itemize} \\
 \textbf{Particularidades}     &
-\begin{itemize}
-	\tightlist
+\begin{itemize}[nosep]
 	\item \textbf{Productos:} Valores calculados a partir de ingredientes.
 	\item \textbf{Alimentos:} Valores directos o importados de API.
 	\item \textbf{Alérgenos:} Herencia automática de ingredientes a productos.
@@ -633,25 +877,36 @@ Los actores identificados son los siguientes:
 \textbf{Importancia}          & Media \\
 \EndCasoUso
 
-
-\todo[inline]{CASOS PENDIENTES
-
-- Añadir/eliminar ítems a un producto + modificar cantidades -> + cálculo de subtotales y total precio
-
-- Gestionar roles de un usuario
-
-- Gestión de permisos dentro de roles?
-
-- Gestionar ingredientes de un producto
-
-- Crear reservas? comprobación de franja de tiempo libre para esa mesa (validación de disponibilidad). se indicaría que el caso "padre" es el CU-5.
-
-- crear pedido? se indicaría que el caso "padre" es el CU-5.
-
-- Cambiar estado de un pedido (en dashboard. desaparece o no de la lista de pedidos pendientes)
-
-- Cálculo de info nutricional por porción??
-
-}
-
-\missingfigure{Diagrama de casos de uso}
+\BeginCasoUso{tab:CU-15}{CU-15}{Filtrar productos excluyendo alérgenos}
+\textbf{Versión}              & 1.0    \\
+\textbf{Autor}                & Amanda Pérez Olmos \\
+\textbf{Requisitos asociados} & \hyperref[req:rf2.7]{RF-2.7}, \hyperref[req:rf11]{RF-11} \\
+\textbf{Actor}                & Empleado con permiso \texttt{PRODUCT\_VIEW\_LIST}. \\
+\textbf{Descripción}          & Usuario selecciona uno o varios alérgenos para excluir de la lista de productos ofertados en el \textit{dashboard} de pedidos. \\
+\textbf{Precondición}         & 
+\begin{itemize}[nosep]
+	\item Usuario autenticado.
+	\item Está en el \textit{dashboard} (panel) de pedidos.
+\end{itemize} \\
+\textbf{Acciones}             &
+\begin{enumerate}[nosep]
+	\def\labelenumi{\arabic{enumi}.}
+	\item En la sección derecha (productos ofertados), hacer \textit{click} en el botón \textit{Filtrar}.
+	\item Se abrirá un \textit{pop-up} con una barra de búsqueda y una lista de los alérgenos que pueden excluirse. 
+	{\footnotesize
+	\begin{itemize}[nosep]
+		\item Se puede buscar el alérgeno por nombre o hacer \textit{scroll} hasta encontrarlo.
+	\end{itemize}}
+	\item Seleccionar uno o varios alérgenos para excluir y pulsar el botón \textit{Filtrar} (el interno del \textit{pop-up}).
+\end{enumerate} \\
+\textbf{Postcondición}        & 
+\begin{itemize}[nosep]
+	\item Se muestran los productos que no contienen ninguno de los alérgenos seleccionados.
+	\item En el botón \textit{Filtrar} aparece el número de alérgenos que estamos excluyendo.
+\end{itemize} \\
+\textbf{Excepciones}          &
+\begin{itemize}[nosep]
+	\item Si se hace \textit{click} fuera del \textit{pop-up} sin pulsar el botón \textit{Filtrar}, no se llevará a cabo la operación de filtrado.
+\end{itemize} \\
+\textbf{Importancia}          & Baja \\
+\EndCasoUso
