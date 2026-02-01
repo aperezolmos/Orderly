@@ -1,108 +1,108 @@
 \apendice{Especificación de diseño}
 
-%patrones: lombok patron Builder
-
 \section{Introducción}
 
-\todo[inline]{Redactar introducción general}
+Una vez consolidado el marco de requisitos, este apéndice establece el puente entre la fase de análisis y la implementación real de la plataforma de restauración. El objetivo es proyectar una solución técnica coherente que garantice la integridad de la información, la estabilidad de la infraestructura y la correcta ejecución de los procesos del sistema. Esta etapa resulta fundamental para asegurar que la construcción del software responda de manera eficiente a los objetivos planteados, proporcionando una estructura organizada que facilite tanto su desarrollo como su escalabilidad futura.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Diseño de datos}
 \label{sec:C.2_DiseñoDatos}
 
-\todo[inline]{Intro muy breve}
+En esta sección se describe la estructura lógica de la información que sustenta la plataforma de restauración. Se procede a describir las entidades involucradas y las relaciones entre ellas.
 
-\todo[inline]{Tablas que detallen cada atributo de cada clase (nombre, tipo de dato, descripción)???? o mencionar algún atributo relevante al menos}
-\todo[inline]{Relación IS-A en el diagrama -> editar}
+Los diagramas que se mostrarán a continuación han sido generados mediante la herramienta \textit{``Reverse Engineer''} de \textit{MySQL Workbench}. Cabe señalar que esta funcionalidad \textbf{no soporta} la representación de \textbf{relaciones IS-A}, presentes en la jerarquía de herencia de pedidos (figuras \ref{fig:C2_modeloEER_General} y xxxx). Adicionalmente, las representa con cardinalidad 1:N, lo cual no se corresponde con la cardinalidad real de las herencias con estrategia \textit{JOINED}, pero de nuevo, la herramienta no sabe diferenciar entre 1:1 y 1:N~\cite{stackOverflow:mysqlWorkbench}.
 
-\subsection{Modelo conceptual}
-\label{subsec:C.2_ModeloConceptual}
+\subsection{Modelo general}
+\label{subsec:C.2_ModeloGeneral}
 
-A continuación, se procede a listar las \textbf{entidades} que conforman la aplicación y a describir brevemente su propósito. Las \textbf{relaciones} entre entidades y detalles particulares se describirán en el apartado ``\textit{\nameref{subsec:C.2_ModelosDetallados}}''.
+A continuación, se procede a listar las \textbf{entidades} que conforman la aplicación y a describir brevemente su propósito. La figura \ref{fig:C2_modeloEER_General} muestra el esquema de bases de datos completo. Las \textbf{relaciones} entre entidades y detalles particulares se describirán en el apartado \textit{\nameref{subsec:C.2_ModelosDetallados}}.
 
 \begin{itemize}
 	\item \textbf{Usuario (\wordRef{\texttt{User}}{C.2_user}):} se trata de un empleado que utiliza la aplicación. Dispone de credenciales para ingresar en ella y tiene roles que determinan su comportamiento dentro del sistema.
 	\item \textbf{Rol (\wordRef{\texttt{Role}}{C.2_role}):}  agrupa un conjunto de permisos (\texttt{Permission}). Controla las acciones y el acceso a los recursos que un usuario puede tener en la aplicación.
 	\begin{itemize}
-		\item El enumerado \texttt{Permission} define todas las acciones que pueden ser autorizadas en el sistema. Los permisos se organizan por áreas funcionales (pedidos, mesas, reservas, etc.).
+		\item El enumerado \wordRef{\texttt{Permission}}{C.2_permission} define todas las acciones que pueden ser autorizadas en el sistema. Los permisos se organizan por áreas funcionales (pedidos, mesas, reservas, etc.).
 	\end{itemize}
 	\item \textbf{Alimento (\wordRef{\texttt{Food}}{C.2_food}):} representa un alimento ``base'' o materia prima básica (p. ej. \textit{``Lechuga''}, \textit{``Pollo''}), con una información nutricional asociada.
 	\item \textbf{Producto (\wordRef{\texttt{Product}}{C.2_product}):} se trata de un plato de comida o producto ofertado (p. ej. \textit{``Ensalada César''}) en el local, el cual se compone de varios alimentos y tiene un precio asociado.
 	\item \textbf{Ingrediente (\wordRef{\texttt{Ingredient}}{C.2_ingredient}):} representa la relación \textit{muchos a muchos} entre \texttt{Food} y \texttt{Product}. Contiene un atributo que determina la cantidad (en gramos) de un alimento que está presente en un producto determinado.
 	\item \textbf{Mesa (\wordRef{\texttt{DiningTable}}{C.2_diningTable}):} representa una mesa física del restaurante, que puede reservarse y desde la que se puede realizar un pedido.
 	\item \textbf{Reserva (\wordRef{\texttt{Reservation}}{C.2_reservation}):} contiene información sobre la reserva de una mesa de comedor, los datos del huésped que la realizó y la fecha, entre otros.
-	\item \textbf{Pedido (\wordRef{\texttt{Order}}{C.2_order}):} se trata de una comanda que se le hace a un empleado, esto es, uno o varios productos que se piden para ser consumidos y que suman un precio total. Se trata de una entidad ``padre'' que alberga los campos comunes entre tipos de pedidos. Se verá con mayor detalle en la subsección ``\textit{\nameref{subsec:C.2_ModelosDetallados}}''.
+	\item \textbf{Pedido (\wordRef{\texttt{Order}}{C.2_order}):} se trata de una comanda que se le hace a un empleado, esto es, uno o varios productos que se piden para ser consumidos y que suman un precio total. Se trata de una entidad ``padre'' que alberga los campos comunes entre tipos de pedidos. Se verá con mayor detalle en la subsección \textit{\nameref{subsec:C.2_ModelosDetallados}}.
 	\item \textbf{Pedido de bar (\wordRef{\texttt{BarOrder}}{C.2_barOrder}):} es un pedido que se realiza en la barra del bar y puede estar compuesto solo por bebidas (por lo que no sería necesario prepararlo en la cocina).
 	\item \textbf{Pedido de comedor (\wordRef{\texttt{DiningOrder}}{C.2_diningOrder}):} es una comanda que se realiza desde el comedor, por lo que tendrá una mesa asociada a la que llevar los platos.
 	\item \textbf{Línea de pedido (\wordRef{\texttt{OrderItem}}{C.2_orderItem}):} representa un ítem de cada pedido, que se conforma por un producto y una cantidad de dicho producto. Constituye un porcentaje del precio total del pedido.
 \end{itemize}
 
-Cabe destacar que todas las entidades disponen de campos de auditoría (\texttt{createdAt} y \texttt{updatedAt}) para rastrear automáticamente la creación y última modificación de cada registro.\todo{mencionar aquí o en 5. Aspectos relevantes?} %...con el objetivo de...?
+\imagenConEtiqueta[0.7\textwidth]{img/apen_C/C2_modeloEER_Completo.png}{Esquema de la Base de Datos}{C2_modeloEER_General}
 
-\imagenConEtiqueta[0.8\textwidth]{img/apen_C/C2_modeloEER_Conceptual.png}{Diagrama EER conceptual}{C2_modeloEER_Conceptual}
-
-La figura \ref{fig:C2_modeloEER_Conceptual} muestra el diagrama Entidad-Relación conceptual, el cual solo muestra las relaciones y atributos principales (PKs y FKs) del modelo para una mayor claridad y simplificación.
+Cabe destacar que todas las entidades disponen de campos de auditoría (\texttt{createdAt} y \texttt{updatedAt}) para rastrear automáticamente la creación y última modificación de cada registro. Adicionalmente, la presencia de \textbf{relaciones bidireccionales} entre entidades hace necesaria la creación de métodos que aseguren la \textbf{consistencia a ambos lados} de la relación, puesto que JPA no lo hace automáticamente. Este aspecto se verá con más detalle en el apartado <ref>.\todo{diseño procedimental}
 
 %---------------------------------------------------------------
 
 \subsection{Modelos detallados}
 \label{subsec:C.2_ModelosDetallados}
 
-Para facilitar la comprensión del modelo de datos, se presentan distintos diagramas Entidad-Relación que agrupan los módulos funcionales según su interdependencia.
+Para facilitar la comprensión del modelo de datos, se presentan distintos diagramas relacionales que agrupan los módulos funcionales según su interdependencia.
 
 \subsubsection{Modelo para gestión de usuarios y roles}
 
-\imagenConEtiqueta[0.7\textwidth]{img/apen_C/C2_modeloEER_Usuarios.png}{Diagrama EER para módulo de usuarios y roles}{C2_modeloEER_Usuarios}
+Este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Usuarios}, controla el acceso al sistema y los permisos del personal del restaurante.
 
-Este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Usuarios}, controla el acceso al sistema y los permisos del personal del restaurante. Las relaciones involucradas son:
+\imagenConEtiqueta[0.65\textwidth]{img/apen_C/C2_modeloEER_Usuarios.png}{Diagrama relacional para módulo de usuarios y roles}{C2_modeloEER_Usuarios}
 
+Las relaciones involucradas son:
 \begin{itemize}
 	\item \texttt{User} $\leftrightarrow$ \texttt{Role}: relación \texttt{\char`@{}ManyToMany} (N:M) bidireccional, lo que implica que un usuario puede tener varios roles y que un rol puede pertenecer a varios usuarios. Esta relación se implementa mediante la tabla \texttt{user\_roles}, la cual \textbf{no es una entidad JPA}, puesto que solo almacena claves foráneas y no tiene lógica de negocio.
-	\item \texttt{Role} $\rightarrow$ \texttt{Permission}: no se trata de una ``relación'' como tal, al no ser \texttt{Permission} una entidad\todo{incluir?}. La lista de permisos de un rol es una colección de elementos (\texttt{\char`@{}ElementCollection}) del enumerado \texttt{Permission} (1:N), lo que se traduce en una tabla separada \texttt{role\_permissions}. Esta tabla \textbf{no es una entidad JPA} porque solo sirve para almacenar relaciones simples sin atributos extra.
-	\item \texttt{Order} $\rightarrow$ \texttt{User}: relación \texttt{\char`@{}ManyToOne} (N:1), puesto que cada pedido está asociado a un empleado que lo crea o gestiona. La \textbf{unidireccionalidad} desde \texttt{Order} hacia \texttt{User} implica que los usuarios \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos asociados a ellos.
+	\item \texttt{Role} $\rightarrow$ \texttt{Permission}: la lista de permisos de un rol es una colección de elementos (\texttt{\char`@{}ElementCollection}) del enumerado \texttt{Permission} (1:N), lo que se traduce en una tabla separada \texttt{role\_permissions}. Esta tabla \textbf{no es una entidad JPA} porque solo sirve para almacenar relaciones simples sin atributos extra.
 \end{itemize}
 %-------------------------------
 \subsubsection{Modelo para gestión de alimentos y productos}
 
-\imagenConEtiqueta[0.6\textwidth]{img/apen_C/C2_modeloEER_Productos.png}{Diagrama EER para módulo de alimentos y productos}{C2_modeloEER_Productos}
+Este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Productos}, gestiona el catálogo de productos del restaurante y su composición en ingredientes, permitiendo calcular información nutricional automáticamente. 
 
-Este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Productos}, gestiona el catálogo de productos del restaurante y su composición en ingredientes, permitiendo calcular información nutricional automáticamente. Las relaciones involucradas son:
+\imagenConEtiqueta[0.7\textwidth]{img/apen_C/C2_modeloEER_Productos.png}{Diagrama relacional para módulo de alimentos y productos}{C2_modeloEER_Productos}
 
+Las relaciones involucradas son:
 \begin{itemize}
 	\item \texttt{Product} $\leftrightarrow$ \texttt{Ingredient} $\leftrightarrow$ \texttt{Food}: relación \texttt{\char`@{}ManyToMany} (N:M) implementada como dos relaciones (1:N) bidireccionales a través de la entidad intermedia \texttt{Ingredient}, la cual registra la cantidad en gramos. 
 	\begin{itemize}
 		\item La entidad \texttt{Ingredient} posee una \textbf{clave compuesta y derivada} (\texttt{\char`@{}EmbeddedId}), la cual se forma mediante las claves de \texttt{Food} y \texttt{Product}.
 	\end{itemize}
-	\item \texttt{OrderItem} $\rightarrow$ \texttt{Product}: relación \texttt{\char`@{}ManyToOne} (N:1) que vincula pedidos con productos, registrando cantidad, precio unitario y total. La \textbf{unidireccionalidad} desde \texttt{OrderItem} hacia \texttt{Product} implica que los productos \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos a los que han sido añadidos.
+	\item \texttt{Food} $\rightarrow$ \texttt{Allergen}: la lista de alérgenos de un alimento es una colección de elementos (\texttt{\char`@{}ElementCollection}) del enumerado \texttt{Allergen} (1:N), lo que se traduce en una tabla separada \texttt{food\_allergens}. Esta tabla \textbf{no es una entidad JPA} porque solo sirve para almacenar relaciones simples sin atributos extra.
 \end{itemize}
 
-Respecto a la \textbf{información nutricional} que almacena un alimento, cabe destacar el uso de \textbf{objetos embebidos} (\texttt{\char`@{}Embeddable}) para almacenar los datos en una sola tabla \texttt{foods}, pero manteniendo una separación entre clases: \texttt{NutritionInfo}, \texttt{Minerals} y \texttt{Vitamins}. Esto permite la reutilización, encapsulación y cálculo de operaciones matemáticas particulares. Se explica con más detalle en \revisionC{<ref>}.\todo{ref a apartado de mejoras respecto de nutrimenu -> NO, ref al pull request 51 y 52}
+Respecto a la \textbf{información nutricional} que almacena un alimento, cabe destacar el uso de \textbf{objetos embebidos} (\texttt{\char`@{}Embeddable}) para almacenar los datos en una sola tabla \texttt{foods}, pero manteniendo una separación entre clases: \texttt{NutritionInfo}, \texttt{Minerals} y \texttt{Vitamins}. Esto permite la reutilización, encapsulación y cálculo de operaciones matemáticas particulares. Se explica con más detalle en los \textit{pull requests} 
+\href{https://github.com/aperezolmos/Orderly/pull/51}{\#51} y 
+\href{https://github.com/aperezolmos/Orderly/pull/52}{\#52} 
+del repositorio del proyecto.
 %-------------------------------
 \subsubsection{Modelo para gestión de reservas de mesas}
 
-\imagenConEtiqueta[0.7\textwidth]{img/apen_C/C2_modeloEER_Reservas.png}{Diagrama EER para módulo de reservas de mesas}{C2_modeloEER_Reservas}
+Este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Reservas}, permite gestionar las mesas del comedor y asignar reservas para fechas futuras. 
 
-Este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Reservas}, permite gestionar las mesas del comedor y asignar reservas para fechas futuras. Las relaciones involucradas son:
+\imagenConEtiqueta[0.6\textwidth]{img/apen_C/C2_modeloEER_Reservas.png}{Diagrama relacional para módulo de reservas de mesas}{C2_modeloEER_Reservas}
 
+Las relaciones involucradas son:
 \begin{itemize}
-	\item \texttt{Reservation} $\rightarrow$ \texttt{DiningTable}: relación \texttt{\char`@{}ManyToOne} (N:1), la cual define que una reserva debe llevar una mesa asociada y que una mesa puede tener múltiples reservas en distintas fechas. La \textbf{unidireccionalidad} implica que una mesa \textbf{no conoce} su historial de reservas, puesto que sobrecargaría demasiado la entidad.
-	\item \texttt{DiningOrder} $\rightarrow$ \texttt{DiningTable}: relación \texttt{\char`@{}ManyToOne} (N:1), puesto que un pedido de comedor debe estar vinculado a una mesa en particular y una mesa tendrá un historial de pedidos pasados (que no conoce directamente, al ser una relación \textbf{unidireccional}).
+	\item \texttt{Reservation} $\rightarrow$ \texttt{DiningTable}: relación \texttt{\char`@{}ManyToOne} (N:1), la cual define que una reserva debe llevar una mesa asociada y que una mesa puede tener múltiples reservas en distintas fechas. La \textbf{unidireccionalidad} desde \texttt{Reservation} hacia \texttt{DiningTable} implica que una mesa \textbf{no conoce} su historial de reservas, puesto que sobrecargaría demasiado la entidad.
 \end{itemize}
 
 En este módulo también hay presencia de \textbf{clases embebidas} para almacenar detalles de una reserva \texttt{ReservationDetails}, (como el número de comensales, fecha y hora) e información del cliente \texttt{GuestInfo} (como el nombre y teléfono de contacto) en distintas clases, manteniendo la tabla unificada \texttt{reservations}.
 %-------------------------------
 \subsubsection{Modelo para gestión de pedidos}
 
-\imagenConEtiqueta[0.7\textwidth]{img/apen_C/C2_modeloEER_Pedidos.png}{Diagrama EER para módulo de pedidos}{C2_modeloEER_Pedidos}
+En este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Pedidos}, se anotan las comandas realizadas al restaurante, que pueden hacerse desde la barra del bar o desde el comedor. Una comanda se compone de una serie de productos, cada uno con su cantidad y precio de venta asociados, que se manejan en conjunto y tienen un precio total. 
 
-En este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Pedidos}, se anotan las comandas realizadas al restaurante, que pueden hacerse desde la barra del bar o desde el comedor. Una comanda se compone de una serie de productos, cada uno con su cantidad y precio de venta asociados, que se manejan en conjunto y tienen un precio total. Las relaciones involucradas son:
+\imagenConEtiqueta[0.75\textwidth]{img/apen_C/C2_modeloEER_Pedidos.png}{Diagrama relacional para módulo de pedidos}{C2_modeloEER_Pedidos}
 
+Las relaciones involucradas son:
 \begin{itemize}
-	\item \texttt{Order} $\rightarrow$ \texttt{User}: relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, puesto que un pedido será creado o manejado por un empleado.
+	\item \texttt{Order} $\rightarrow$ \texttt{User}: relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, puesto que un pedido será creado o manejado por un empleado. La \textbf{unidireccionalidad} desde \texttt{Order} hacia \texttt{User} implica que los usuarios \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos asociados a ellos.
 	\item \texttt{Order} $\rightarrow$ \texttt{OrderItem}: relación \texttt{\char`@{}OneToMany} (1:N), puesto que un pedido contendrá múltiples ítems. En \textit{Spring Boot} se definió como bidireccional, para que los ítems pudieran notificar al pedido padre que recalculase su precio total. Sin embargo, en la práctica funcionará como \textbf{unidireccional}, puesto que los ítems no consultarán ni gestionarán en ningún momento el pedido al que pertenecen.
-	\item \texttt{OrderItem} $\rightarrow$ \texttt{Product}: relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, debido a que cada ítem referencia a una cantidad determinada de un producto ofertado en el catálogo.
-	\item \texttt{DiningOrder} $\rightarrow$ \texttt{DiningTable}: relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, puesto que un pedido de comedor debe estar asociado a la mesa donde se servirá.
+	\item \texttt{OrderItem} $\rightarrow$ \texttt{Product}: relación \texttt{\char`@{}ManyToOne} (N:1) unidireccional, debido a que cada ítem referencia a una cantidad determinada de un producto ofertado en el catálogo. La \textbf{unidireccionalidad} desde \texttt{OrderItem} hacia \texttt{Product} implica que los productos \textbf{no conocerán} (al menos, en primera instancia o sin necesidad de consultas adicionales) los pedidos a los que han sido añadidos.
+	\item \texttt{DiningOrder} $\rightarrow$ \texttt{DiningTable}: relación \texttt{\char`@{}ManyToOne} (N:1), puesto que un pedido de comedor debe estar asociado a la mesa donde se servirá. Una mesa tendrá un historial de pedidos pasados, pero debido a que se trata de una relación \textbf{unidireccional}, no conocerá dicho historial (esto sobrecargaría demasiado la entidad).
 \end{itemize}
 
 El aspecto más característico de este módulo es la presencia de una \textbf{jerarquía de herencia}, para manejar los distintos tipos de pedidos (bar o comedor) desde un enfoque organizado y escalable. El uso de herencia permite \textbf{atributos específicos} por tipo, mientras comparte \textbf{datos comunes} eficientemente. La estrategia de herencia utilizada es 
@@ -112,6 +112,87 @@ y los motivos de su elección, así como una descripción más detallada de los 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Diseño arquitectónico}
+
+En esta sección se define la estructura global del sistema, la organización de sus componentes y las reglas que rigen la comunicación entre ellos. Para este proyecto, se ha optado por una arquitectura moderna que prioriza la modularidad, alta cohesión y bajo acoplamiento. La estructura busca garantizar la escalabilidad del sistema y facilitar el mantenimiento independiente de sus componentes fundamentales.
+
+\subsection{Arquitectura de la aplicación}
+
+El sistema implementa un modelo de arquitectura \textbf{cliente-servidor desacoplada}. En este esquema, el \textit{frontend} (\textit{React}) y el \textit{backend} (\textit{Spring Boot}) se constituyen como sistemas independientes que interactúan exclusivamente a través de una interfaz de programación de aplicaciones (\textbf{API}) de tipo \textbf{REST} (\textit{Representational State Transfer}).
+
+La infraestructura se apoya en la \textbf{\textit{contenerización}} mediante \textit{Docker}, donde cada servicio se despliega en un entorno aislado. El intercambio de información se realiza sobre el protocolo HTTP, empleando \textbf{JSON} como formato de serialización de datos. Esta separación física y lógica permite que ambos extremos evolucionen tecnológicamente de forma autónoma, facilitando tareas de despliegue continuo y escalabilidad horizontal.
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_arquitectura.png}{Arquitectura general de Orderly}{C3_arquitectura}
+
+La figura \ref{fig:C3_arquitectura} muestra un diagrama que ilustra la arquitectura general de la aplicación. A continuación se explicarán con más detalle los componentes principales que constituyen cada servicio.
+
+\subsubsection{Arquitectura del \textit{backend}}
+
+El \textit{backend}, desarrollado bajo el ecosistema de \textit{Spring Boot}, sigue un patrón de \textbf{arquitectura por capas} (\textit{Layered Architecture}). Esta organización jerárquica permite una clara separación de responsabilidades, facilitando la testabilidad y la reutilización de componentes. Las capas se definen de la siguiente manera:
+\begin{enumerate}
+	\item \textbf{Capa de Presentación (Controladores):} implementada mediante controladores REST, se encarga de la exposición de recursos (\textit{endpoints} a los que el cliente puede llamar) y la gestión de los contratos de la API. Su responsabilidad se limita a la interceptación de peticiones, la delegación del trabajo a los servicios y la generación de respuestas HTTP adecuadas.
+	\item \textbf{Capa de Aplicación (Servicios):} constituye el núcleo de la lógica de negocio del sistema. Los servicios actúan como orquestadores de las operaciones, gestionando la transaccionalidad, las reglas de dominio y la integración con otros servicios.
+	\item \textbf{Capa de Dominio (Entidades):} define el modelo de persistencia del sistema mediante entidades JPA (\textit{Java Persistence API}). Estas clases representan el esquema de datos y las relaciones de negocio en la base de datos \textit{MySQL}, como ya se ha detallado en el apartado \textit{\ref{sec:C.2_DiseñoDatos} \nameref{sec:C.2_DiseñoDatos}}.
+	\item \textbf{Capa de Persistencia (Repositorios):} utiliza \textit{Spring Data JPA}\todo{ref?} para abstraer el acceso a los datos. Los repositorios facilitan la realización de operaciones CRUD y consultas complejas, de forma desacoplada del motor de base de datos específico.
+\end{enumerate}
+
+\todo[inline]{DTOs y mappers? ya se menciona en la memoria. pero aquí podrían ponerse capturas de ejemplo o así}
+
+\subsubsection{Arquitectura del \textit{frontend}}\todo{poner imágenes/capturas de un ejemplo de cada uno? o diagrama?}
+
+El \textit{frontend} se ha diseñado bajo el paradigma de \textbf{arquitectura basada en componentes} de \textit{React}, priorizando el principio de separación de intereses (\textit{\textbf{Separation of Concerns}} - \textit{SoC}). La lógica se distribuye para evitar componentes monolíticos y facilitar la mantenibilidad:
+
+\begin{itemize}
+	\item \textbf{Componentes de interfaz (UI):} son las piezas visuales (botones, formularios, tablas). Su responsabilidad se limita a mostrar la información y capturar las interacciones del usuario, delegando cualquier lógica compleja a otros elementos.
+	\item \textbf{\textit{Hooks} personalizados:} se utilizan para encapsular la lógica de estado (estados de carga, errores) y los efectos secundarios ocasionados por las llamadas asíncronas. Esta abstracción permite reutilizar comportamientos complejos a lo largo de toda la aplicación y ofrece un punto \textbf{centralizado} de comunicación con los servicios específicos de cada módulo.
+	\item \textbf{Servicios de API:} actúan como una capa de abstracción sobre el cliente de transporte (\texttt{fetch}). \textbf{Centralizan} las llamadas a la API de \textit{Spring Boot}, de modo que cualquier cambio en los \textit{endpoints} o en la estructura de las peticiones solo requiera modificaciones en un único punto del código.
+	\item \textbf{Gestión de estado global:} para el manejo de datos transversales a la aplicación, como la sesión del usuario o sus permisos asociados, se utilizan contextos que gestionan el estado global (\textit{\textbf{Context API}} de \textit{React}\todo{referencia a web que hable de ello y/o imagen de authprovider}). Esto evita el fenómeno de \textit{prop drilling}\todo{ref} (paso excesivo de propiedades entre niveles), permitiendo que cualquier componente acceda al contexto de autenticación (\texttt{AuthContext}) de forma eficiente.
+\end{itemize}
+
+%---------------------------------------------------------------
+
+\subsection{Seguridad: Modelo RBAC y gestión de acceso}
+La seguridad del sistema se ha diseñado bajo un modelo de \textbf{control de acceso basado en roles} (\textit{RBAC})\todo{ref} de \textbf{granularidad fina}. A diferencia de modelos más simples donde el rol determina directamente el acceso, en esta arquitectura los roles actúan como contenedores lógicos de permisos individuales. Estos permisos, definidos en el enumerado \hyperref[word:C.2_permission]{\texttt{Permission}}, representan acciones atómicas sobre las entidades del dominio (ej. \texttt{FOOD\_CREATE}, \texttt{ORDER\_EDIT}, \texttt{USER\_VIEW\_LIST}).
+
+Esta aproximación permite una gestión altamente flexible y adaptable a la estructura organizativa de un local de restauración. Dado que un usuario puede tener asignados \textbf{múltiples roles} simultáneamente, el sistema evalúa de forma aditiva el conjunto total de permisos, permitiendo el acceso si al menos uno de los roles del usuario posee el permiso requerido. Esto facilita la creación de \textbf{perfiles profesionales} específicos, como por ejemplo:
+\begin{itemize}
+	\item \textbf{Camarero:} con permisos para gestionar pedidos y consultar reservas.
+	\item \textbf{Cocinero:} con permisos para gestionar alimentos y visualizar pedidos pendientes de cocina.
+\end{itemize}
+
+Algunos ejemplos de configuraciones de permisos que materializan puestos de trabajo comunes se encuentran en el apartado <ref>.\todo{ref a manual de programador o usuario}
+
+\subsubsection{Implementación en el \textit{backend} y propagación al \textit{frontend}}
+En la capa de aplicación, la seguridad se articula mediante \textit{Spring Security}. Se ha implementado un servicio personalizado (\texttt{CustomUserDetailsService}) que carga el perfil del usuario y transforma tanto los roles como sus permisos asociados en una colección de \texttt{GrantedAuthority}\footnote{Las autoridades (\textit{``authorities''}) son la unidad de medida que \textit{Spring Security} utiliza para entender y validar los permisos de un usuario.}. La protección de los recursos se realiza de forma declarativa mediante la anotación @\texttt{PreAuthorize }en los métodos de los \textbf{controladores}, verificando que el usuario autenticado posea la autoridad específica necesaria antes de ejecutar la lógica de negocio.
+
+\imagenConEtiqueta[0.7\textwidth]{img/apen_C/C3_springSecurity_auth.png}{Flujo de autenticación en \textit{Spring Security}~\cite{springSecurity:auth}}{C3_springSecurity_auth}
+
+Para garantizar una experiencia de usuario coherente, el estado de autenticación y el catálogo de permisos se propagan al \textit{frontend}. El \texttt{AuthContext} de \textit{React} actúa como el núcleo de decisión en el cliente, permitiendo el \textbf{renderizado condicional de componentes} de la interfaz de usuario. De este modo, elementos críticos como botones de edición o opciones de administración \textbf{se ocultan preventivamente} si el usuario no cuenta con la autorización pertinente, mejorando la usabilidad y reforzando la seguridad de la aplicación.
+
+\subsubsection{Gestión de Sesiones y autenticación}
+El sistema emplea una estrategia de autenticación basada en sesión HTTP, gestionada de forma transparente por \textit{Spring Security}. Tras una validación exitosa de credenciales, el \textbf{servidor establece una sesión} y emite una \textit{cookie} \texttt{JSESSIONID}. Esta \textit{cookie}, configurada con los atributos de seguridad adecuados, es gestionada automáticamente por el navegador en las peticiones subsiguientes. El \textit{frontend} detecta este estado de sesión para mantener la \textbf{persistencia del usuario entre recargas} de página, permitiendo un flujo de trabajo ininterrumpido.
+
+%---------------------------------------------------------------
+
+\subsection{Desacoplamiento de integraciones con APIs nutricionales externas}
+
+Una cuestión a la que se le ha dado gran importancia es el \textbf{aislamiento} de dependencias externas. La aplicación se integra con la API de \textit{Open Food Facts} para el enriquecimiento de datos nutricionales, pero esta \textbf{integración se gestiona exclusivamente en el \textit{backend}}, permaneciendo totalmente opaca para el \textit{frontend}, como se puede visualizar en la figura \ref{fig:C3_arquitectura}.
+
+El diseño se apoya en un módulo independiente que encapsula la lógica de comunicación, mapeo y transformación de datos externos (directorio \texttt{\textbackslash foods\textbackslash external}). Mediante el uso de la clase \texttt{OpenFoodFactsRegistry} (figura \ref{fig:C3_OFFregistry}), se establece una fuente única de verdad (\textit{\textbf{Single Source of Truth}}) para las \textbf{equivalencias} entre los códigos de la API externa y los tipos internos de la aplicación (como alérgenos o grupos de alimentos). Este desacoplamiento ofrece dos \textbf{ventajas} críticas:
+\begin{itemize}
+	\item \textbf{Mantenibilidad:} cualquier cambio en la estructura o en los puntos de acceso de la API externa solo requiere modificaciones en el módulo dedicado del \textit{backend}.
+	\item \textbf{Extensibilidad:} facilita la \textbf{sustitución} o adición de \textbf{nuevos proveedores} de datos nutricionales con un impacto mínimo en el resto del sistema, ya que el contrato de datos que recibe el \textit{frontend} permanece inalterado. Esta cuestión se explora más a fondo en el apartado <ref>\todo{ref a manual programador}.
+\end{itemize}
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_OFFregistry.png}{Clase \texttt{OpenFoodFactsRegistry} con equivalencias entre campos de la API \textit{Open Food Facts} y modelo de nuestra aplicación}{C3_OFFregistry}
+
+%---------------------------------------------------------------
+
+\subsection{Infraestructura y despliegue}
+La infraestructura de la aplicación se gestiona mediante \textit{Docker}, empleando \textit{\textbf{Docker Compose}} para la orquestación de los servicios. El sistema se descompone en \textbf{tres contenedores independientes}: el entorno de ejecución para el \textit{frontend} (\textit{React/Vite}), el servidor de aplicaciones (\textit{Spring Boot}) y el motor de base de datos (\textit{MySQL}).
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_despliegue.png}{Diagrama de despliegue de la aplicación}{C3_despliegue}
+
+El diagrama \ref{fig:C3_despliegue} muestra la arquitectura de despliegue mencionada, cuyos aspectos técnicos (red, dependencias, variables de entorno) asociados se verán con más detalle en el apartado <ref>\todo{ref a manual programador o similar}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
