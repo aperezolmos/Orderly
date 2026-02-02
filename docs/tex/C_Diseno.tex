@@ -37,7 +37,7 @@ A continuación, se procede a listar las \textbf{entidades} que conforman la apl
 
 \imagenConEtiqueta[0.7\textwidth]{img/apen_C/C2_modeloEER_Completo.png}{Esquema de la Base de Datos}{C2_modeloEER_General}
 
-Cabe destacar que todas las entidades disponen de campos de auditoría (\texttt{createdAt} y \texttt{updatedAt}) para rastrear automáticamente la creación y última modificación de cada registro. Adicionalmente, la presencia de \textbf{relaciones bidireccionales} entre entidades hace necesaria la creación de métodos que aseguren la \textbf{consistencia a ambos lados} de la relación, puesto que JPA no lo hace automáticamente. Este aspecto se verá con más detalle en el apartado <ref>.\todo{diseño procedimental}
+Cabe destacar que todas las entidades disponen de campos de auditoría (\texttt{createdAt} y \texttt{updatedAt}) para rastrear automáticamente la creación y última modificación de cada registro. Adicionalmente, la presencia de \textbf{relaciones bidireccionales} entre entidades hace necesaria la creación de métodos que aseguren la \textbf{consistencia a ambos lados} de la relación, puesto que JPA no lo hace automáticamente. Este aspecto se verá con más detalle en el apartado \textit{\ref{sec:C.4_DiseñoProcedimental} \nameref{sec:C.4_DiseñoProcedimental}}.
 
 %---------------------------------------------------------------
 
@@ -197,12 +197,232 @@ El diagrama \ref{fig:C3_despliegue} muestra la arquitectura de despliegue mencio
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Diseño procedimental}
+\label{sec:C.4_DiseñoProcedimental}
+
+Esta sección trata de la transformación de los modelos arquitectónicos en especificaciones técnicas detalladas, definiendo la lógica interna y el comportamiento de los componentes del sistema. El diseño procedimental permite establecer la secuencia exacta de pasos y el flujo de control necesarios para resolver cada tarea, asegurando que la transición hacia la implementación sea coherente.
+
+\subsection{Patrones de diseño utilizados}\todo{diagramas de clases? al menos el de mappers}
+
+Para resolver problemas recurrentes del \textit{software} y facilitar el mantenimiento, se han implementado los siguientes patrones:
+
+\begin{itemize}
+	\item \textbf{Patrón \textit{Builder}:} se ha integrado de forma extensiva mediante la anotación \texttt{@Builder} de \textit{Lombok} tanto en entidades como en DTOs. Este patrón facilita la instanciación de objetos complejos (como \hyperref[word:C.2_food]{\texttt{Food}} o \hyperref[word:C.2_product]{\texttt{Product}}), mejorando significativamente la legibilidad del código y evitando constructores con largas listas de parámetros que pueden inducir a error.
+	\item \textbf{Patrón \textit{Factory} (\texttt{OrderMapperFactory}):} dado que el sistema gestiona distintos tipos de pedidos (\hyperref[word:C.2_barOrder]{\texttt{BarOrder}} y \hyperref[word:C.2_diningOrder]{\texttt{DiningOrder}}) con requerimientos de datos específicos, se ha implementado una factoría de mapeo. La clase \texttt{OrderMapperFactory} actúa como un \textit{``dispatcher''} que decide en tiempo de ejecución qué estrategia de mapeo (\textit{mapper}) aplicar basándose en el tipo de DTO o entidad.
+	\begin{itemize}
+		\item Podría considerarse una combinación del patrón \textit{factory} y el patrón \textit{\textbf{strategy}}.
+		\item \textbf{Ventaja:} desacopla el servicio \texttt{OrderService} de las implementaciones concretas de cada pedido.
+	\end{itemize}
+	\item \textbf{Patrón \textit{Adapter}:} se utiliza en la clase \texttt{CustomUserDetails}. Esta clase actúa como un adaptador que permite que nuestra entidad de dominio \hyperref[word:C.2_user]{\texttt{User}} cumpla con el contrato de la interfaz \texttt{UserDetails} requerida por \textit{Spring Security}. Gracias a esto, el sistema de seguridad puede interactuar con el modelo de usuarios propio sin necesidad de modificar la estructura de la base de datos.
+\end{itemize}
+
+\subsection{Gestión de consistencia y lógica de dominio}
+
+A diferencia de las arquitecturas con modelos anémicos, donde las entidades son meros contenedores de datos, en este proyecto se ha optado por un \textit{Rich Domain Model} (\textbf{Modelo de Dominio Enriquecido}).
+
+\paragraph{Lógica de dominio encapsulada}
+Las entidades asumen la responsabilidad de sus propios cálculos y estados (figura \ref{fig:C4_metodosDominio}). Por ejemplo, la entidad \hyperref[word:C.2_product]{\texttt{Product}} es capaz de calcular automáticamente su perfil nutricional y alérgenos agregando la información de sus ingredientes. Del mismo modo, la entidad \hyperref[word:C.2_order]{\texttt{Order}} gestiona sus líneas de pedido y actualiza su importe total de forma autónoma.
+
+\imagenConEtiqueta[0.8\textwidth]{img/apen_C/C4_metodosDominio.png}{Ejemplo de métodos de dominio en entidades \texttt{Product}, \texttt{Food} y \texttt{Order}}{C4_metodosDominio}
+
+\paragraph{Consistencia bidireccional} Para mantener la integridad referencial en memoria, se han implementado \textbf{métodos auxiliares} de sincronización en las relaciones bidireccionales. Por ejemplo, en la relación entre \hyperref[word:C.2_order]{\texttt{Order}} e \hyperref[word:C.2_orderItem]{\texttt{OrderItem}}, los métodos \texttt{addItem} y \texttt{removeItem} aseguran que, al vincular un ítem a un pedido, el ítem también ``conozca'' a qué pedido pertenece, evitando estados inconsistentes antes de la persistencia (figura \ref{fig:C4_metodosConsistencia}).
+
+\imagenConEtiqueta[0.8\textwidth]{img/apen_C/C4_metodosConsistencia.png}{Ejemplos de métodos para consistencia bidireccional en entidades \texttt{Ingredient}, \texttt{Order} y \texttt{OrderItem}}{C4_metodosConsistencia}
+
+\subsection{Flujos principales de la aplicación}
+
+A continuación se detalla el funcionamiento de las principales operaciones realizadas en la aplicación, junto a los componentes responsables de llevarlas a cabo.
+
+En la mayoría de los casos, los diagramas de secuencia (creados mediante la herramienta \href{https://www.plantuml.com/plantuml/uml/}{\textit{PlantUML}}) presentados serán de \textbf{alto nivel}, esto es, señalarán al servicio (\textit{React}, \textit{Spring Boot} o \textit{MySQL}) responsable de realizar la acción. Sin embargo, para casos en los que resulte útil conocer la implementación interna dentro de un servicio, se detallarán también las interacciones de \textbf{bajo nivel} entre componentes de dicho servicio, como es el caso de las figuras \ref{fig:C4_inicioSesion_bajoNivel} y \ref{fig:C4_creacionPedido}.
+
+\subsubsection{A) Iniciar sesión}
+{\small
+\begin{enumerate}
+	\item Empleado introduce su nombre de usuario y contraseña en el formulario de inicio de sesión de la aplicación web.
+	\item \textit{Frontend React} recibe los datos del formulario y realiza una petición \texttt{HTTP POST} al \textit{endpoint} \texttt{/api/auth/login} del \textit{backend Spring Boot}.
+	\item \textit{API Spring Boot} recibe la petición y procesa las credenciales:
+	\begin{enumerate}
+		\item Si las credenciales son correctas:
+		\begin{enumerate}
+			\item El \textit{backend} autentica al usuario y crea una sesión.
+			\item Devuelve una respuesta con los datos del usuario y la \textit{cookie} \allowbreak\texttt{JSESSIONID} (identificador de sesión) en la cabecera.
+		\end{enumerate}
+		\item Si las credenciales son incorrectas:
+		\begin{enumerate}
+			\item El \textit{backend} devuelve un error indicando que las credenciales no son válidas.
+		\end{enumerate}
+	\end{enumerate}
+	\item \textit{Frontend React} recibe la respuesta:
+	\begin{enumerate}
+		\item Si el inicio de sesión es exitoso, almacena los datos del usuario en el contexto y la \textit{cookie} de sesión se guarda automáticamente en el navegador.
+		\item Si hay error, muestra un mensaje de error al usuario.
+	\end{enumerate}
+\end{enumerate}}
+
+\imagenConEtiqueta{img/apen_C/C4_inicioSesion_altoNivel.png}{Diagrama de secuencia del inicio de sesión general}{C4_inicioSesion_altoNivel}
+
+\subsubsection{A.1) Iniciar sesión (detalles de \textit{Spring Boot})}
+{\small
+\begin{enumerate}
+	\item El controlador \texttt{AuthController} recibe la petición \texttt{POST} \texttt{/api/auth/login} con las credenciales.
+	\item El controlador llama al método \texttt{login} de \texttt{AuthService}, pasando el DTO con las credenciales y los objetos \texttt{HttpServletRequest} y \texttt{HttpServletResponse}.
+	\item \texttt{AuthService} utiliza el \texttt{AuthenticationManager} de \textit{Spring Security} para autenticar al usuario:
+	\begin{enumerate}
+		\item Crea un objeto \texttt{UsernamePasswordAuthenticationToken} con el usuario y contraseña.
+		\item Llama a \texttt{authenticationManager.authenticate(...)}.
+	\end{enumerate}
+	\item El \texttt{AuthenticationManager} delega la autenticación a la implementación de \texttt{UserDetailsService} (en este caso, \texttt{CustomUserDetailsService}):
+	\begin{enumerate}
+		\item Busca el usuario en la base de datos mediante \texttt{UserRepository}.
+		\item Si el usuario existe, construye un objeto \texttt{CustomUserDetails} con los datos del usuario.
+		\item Verifica que la contraseña proporcionada coincida con la almacenada (usando el \texttt{PasswordEncoder}).
+	\end{enumerate}
+	\item Si la autenticación es exitosa:
+	\begin{enumerate}
+		\item Se establece el contexto de seguridad en \texttt{SecurityContextHolder}.
+		\item Se guarda el contexto de seguridad en la sesión HTTP mediante \texttt{securityContextRepository.saveContext(...)}, lo que genera la \textit{cookie} \texttt{JSESSIONID}.
+		\item Se devuelve el DTO del usuario al controlador.
+	\end{enumerate}
+	\item Si la autenticación falla:
+	\begin{enumerate}
+		\item Se lanza una excepción (\texttt{InvalidCredentialsException}) y se devuelve un error al \textit{frontend}.
+	\end{enumerate}
+	\item El controlador responde al \textit{frontend} con los datos del usuario (o el error).
+\end{enumerate}}
+
+\begin{landscape}
+	\begin{figure}[p]
+		\centering
+		\includegraphics[width=1.0\linewidth, height=\textheight, keepaspectratio]{img/apen_C/C4_inicioSesion_bajoNivel.png}
+		\caption{Diagrama de secuencia del inicio de sesión en \textit{Spring Boot}}
+		\label{fig:C4_inicioSesion_bajoNivel}
+	\end{figure}
+\end{landscape}
+
+\subsubsection{B) Crear una entidad}
+{\small
+\begin{enumerate}
+	\item Empleado accede al formulario de creación en la aplicación \textit{React}.
+	\item \textit{Frontend React} valida los campos localmente (formulario):
+	\begin{enumerate}
+		\item Si los datos no son válidos, muestra errores y no permite enviar el formulario.
+	\end{enumerate}
+	\item (Opcional) \textit{Frontend React} realiza una comprobación de unicidad llamando al \textit{endpoint} de verificación en \textit{Spring Boot}:
+	\begin{enumerate}
+		\item Si el valor no es único, muestra error en el formulario.
+	\end{enumerate}
+	\item Empleado envía el formulario con los datos.
+	\item \textit{Frontend React} realiza una petición \texttt{HTTP POST} al \textit{endpoint} de creación correspondiente en \textit{Spring Boot} (por ejemplo, \texttt{/api/users} o \texttt{/api/tables}).
+	\item \textit{API Spring Boot} recibe la petición y valida los datos del DTO:
+	\begin{enumerate}
+		\item Si los datos no son válidos, responde con error de validación (400).
+		\item Si el usuario no tiene permisos, responde con error de autorización (403).
+		\item Si hay conflicto de unicidad, responde con error de conflicto (409).
+	\end{enumerate}
+	\item Si todo es correcto, \textit{Spring Boot} crea la entidad y la persiste en la base de datos \textit{MySQL}.
+	\item \textit{Spring Boot} responde al \textit{frontend React} con los datos de la entidad creada.
+	\item \textit{Frontend React} muestra mensaje de éxito o error según la respuesta.
+\end{enumerate}}
+
+\imagenConEtiqueta{img/apen_C/C4_creacionEntidad.png}{Diagrama de secuencia de la creación de una entidad}{C4_creacionEntidad}
+
+\subsubsection{B.1) Crear un pedido (detalles de \textit{Spring Boot})}
+{\small
+\begin{enumerate}
+	\item El controlador (\texttt{BarOrderController}, o \texttt{DiningOrderController}) recibe la petición \texttt{POST} con el DTO de pedido.
+	\item El controlador verifica los permisos del usuario (anotaciones \texttt{@PreAuthorize}):
+	\begin{enumerate}
+		\item Si el usuario no tiene permisos, lanza excepción de acceso denegado (403).
+	\end{enumerate}
+	\item El controlador llama al método \texttt{create} de \texttt{OrderService}, pasando el DTO.
+	\item \texttt{OrderService} delega la transformación del DTO en entidad a \texttt{OrderMapper-\allowbreak Factory}:
+	\begin{enumerate}
+		\item \texttt{OrderMapperFactory} selecciona el \textit{mapper} adecuado según el tipo de pedido (\texttt{BarOrderMapper} o \texttt{DiningOrderMapper}).
+		\item El \textit{mapper} transforma el DTO en la entidad correspondiente (\texttt{BarOrder} o \texttt{DiningOrder}).
+	\end{enumerate}
+	\item \texttt{OrderService} asocia los ítems al pedido y calcula el importe total.
+	\item \texttt{OrderService} persiste la entidad en la base de datos mediante el repositorio (\texttt{OrderRepository}).
+	\item \texttt{OrderService} transforma la entidad persistida en el DTO de respuesta usando \texttt{OrderMapperFactory}.
+	\item El controlador responde al \textit{frontend} con el DTO de respuesta.
+	\item Si ocurre algún error (validación, permisos, unicidad, etc.), se lanza la excepción correspondiente y el controlador la gestiona mediante el \texttt{Global-\allowbreak ExceptionHandler}.
+\end{enumerate}}
+
+\begin{landscape}
+	\begin{figure}[p]
+		\centering
+		\includegraphics[width=1.0\linewidth, height=\textheight, keepaspectratio]{img/apen_C/C4_creacionPedido.png}
+		\caption{Diagrama de secuencia de la creación de un pedido en \textit{Spring Boot}}
+		\label{fig:C4_creacionPedido}
+	\end{figure}
+\end{landscape}
 
 
-% Anotación Transactional
+\subsubsection{C) Añadir ingredientes a un producto}
+{\small
+\begin{enumerate}
+	\item Empleado accede a la pantalla de edición/creación de producto en \textit{React}.
+	\item \textit{Frontend React} muestra el formulario y permite buscar alimentos por nombre (petición a \textit{Spring Boot}).
+	\item Empleado busca un alimento y selecciona uno de los resultados.
+	\item \textit{Frontend React} añade el alimento como ingrediente al producto (opcionalmente permite modificar la cantidad en gramos).
+	\item Empleado puede modificar la cantidad de cada ingrediente o eliminar ingredientes.
+	\item Al guardar el producto:
+	\begin{enumerate}
+		\item \textit{Frontend React} valida los campos y envía la lista de ingredientes (con cantidades) junto al resto de datos al \textit{endpoint} de \textit{Spring Boot}.
+		\item \textit{Spring Boot} valida los datos y verifica permisos:
+		\begin{enumerate}
+			\item Si el usuario no tiene permisos, responde 403.
+			\item Si hay errores de validación, responde 400.
+		\end{enumerate}
+		\item \textit{Spring Boot} crea o actualiza el producto y sus ingredientes en la base de datos.
+		\item \textit{Spring Boot} recalcula automáticamente los nutrientes (suma de los nutrientes de cada ingrediente en proporción a la cantidad en gramos de ese ingrediente en el producto) y alérgenos totales (unión de conjuntos entre listas de alérgenos de los ingredientes) del producto .
+		\item \textit{Spring Boot} responde a \textit{React} con el DTO del producto, incluyendo los nutrientes y alérgenos calculados.
+	\end{enumerate}
+	\item \textit{Frontend React} muestra el producto actualizado y los mensajes de éxito o error.
+\end{enumerate}}
 
-% OrderMapperFactory -> mencionar que es factoría pero también podría considerarse strategy¿?
+\imagenConEtiqueta{img/apen_C/C4_modifIngredientes.png}{Diagrama de secuencia para la operación de añadir ingredientes a productos}{C4_modifIngredientes}
 
-% Métodos de dominio para consistencia bidireccional -> aquí?
+\subsubsection{D) Añadir ítems a un pedido}
+{\small
+\begin{enumerate}
+	\item Empleado accede al \textit{dashboard} de pedidos en \textit{React}.
+	\item \textit{Frontend React} realiza una petición a \textit{Spring Boot} para obtener la lista de productos disponibles.
+	\item Empleado selecciona productos para añadirlos como ítems al pedido.
+	\item \textit{Frontend React} añade los ítems al pedido (opcionalmente permite modificar la cantidad de cada ítem).
+	\begin{enumerate}
+		\item Cada vez que se añade un ítem, se persiste y se actualiza la vista.
+	\end{enumerate}
+	\item Empleado puede modificar la cantidad de cada ítem o eliminar ítems.
+	\item Al guardar el pedido (opción disponible cuando se han modificado las cantidades de los ítems):
+	\begin{enumerate}
+		\item \textit{Frontend React} valida los campos y envía la lista de ítems (producto + cantidad) junto al resto de datos al \textit{endpoint} de \textit{Spring Boot}.
+		\item \textit{Spring Boot} valida los datos y verifica permisos:
+		\begin{enumerate}
+			\item Si el usuario no tiene permisos, responde 403.
+			\item Si hay errores de validación, responde 400.
+		\end{enumerate}
+		\item \textit{Spring Boot} actualiza el pedido y sus ítems en la base de datos.
+		\item \textit{Spring Boot} recalcula automáticamente el precio total del pedido (sumando los subtotales de cada ítem: cantidad × precio unitario del producto).
+		\item \textit{Spring Boot} responde a \textit{React} con el DTO del pedido, incluyendo el total calculado.
+	\end{enumerate}
+	\item \textit{Frontend React} muestra el pedido actualizado y los mensajes de éxito o error.
+\end{enumerate}}
 
+\imagenConEtiqueta{img/apen_C/C4_modifItemsPedido.png}{Diagrama de secuencia para la operación de añadir ítems a pedidos}{C4_modifItemsPedido}
 
+\subsubsection{E) Búsqueda y creación de alimentos mediante API Externa (\textit{Open Food Facts})}
+{\small
+\begin{enumerate}
+	\item Empleado accede a la sección de creación de alimentos en la aplicación \textit{React} y selecciona la pestaña de búsqueda externa (\textit{OFF}).
+	\item Empleado introduce un texto en la barra de búsqueda (puede ser nombre, marca, etiqueta, etc.).
+	\item \textit{Frontend React} envía el texto de búsqueda a \textit{Spring Boot} mediante una petición al \textit{endpoint} \texttt{/api/foods/external/search}.
+	\item \textit{Spring Boot} recibe la petición y realiza una llamada \texttt{HTTP} al \textit{endpoint} de búsqueda de \textit{OFF} (\texttt{/cgi/search.pl}), solicitando solo los campos mínimos necesarios (nombre, imagen, \textit{barcode}...).
+	\item \textit{Spring Boot} recibe la respuesta de \textit{OFF} (lista de productos) y la reenvía directamente a \textit{React}, para evitar retardos.
+	\item \textit{Frontend React} muestra el listado de resultados al usuario, permitiendo seleccionar uno.
+	\item Cuando el empleado selecciona un alimento, \textit{React} envía el código de barras del producto seleccionado a \textit{Spring Boot} mediante el endpoint \texttt{/api/foods/external/\{barcode\}}.
+	\item \textit{Spring Boot} realiza una nueva petición a \textit{OFF}, esta vez al \textit{endpoint} de detalles del producto (\texttt{/api/v2/product}), solicitando toda la información relevante (nutrientes, alérgenos, métricas, etc.).
+	\item \textit{Spring Boot} adapta los datos recibidos de \textit{OFF} a su modelo interno de alimento (\hyperref[word:C.2_food]{\texttt{Food}}) y persiste el nuevo alimento en la base de datos.
+	\item \textit{Spring Boot} responde a \textit{React} con el DTO del alimento creado.
+	\item \textit{Frontend React} muestra un mensaje de éxito al usuario, informando de la creación.
+\end{enumerate}}
+
+\imagenConEtiqueta{img/apen_C/C4_busquedaCreacionOFF.png}{Diagrama de secuencia para la búsqueda y creación de un alimento mediante \textit{Open Food Facts}}{C4_busquedaCreacionOFF}
