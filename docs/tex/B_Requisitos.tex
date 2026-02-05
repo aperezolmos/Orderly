@@ -141,7 +141,7 @@ A continuación se detallan las funcionalidades que la aplicación debe cumplir 
 	
 	\req{RNF-5 Mantenibilidad y extensibilidad:}{rnf5} el código debe estar estructurado para facilitar su mantenimiento, corrección de errores y adición de nuevas funcionalidades.
 	
-	\req{RNF-6 Interoperabilidad y consumo de API externa:}{rnf6} la integración con la API de \textit{Open Food Facts} (\hyperref[req:rf1.1.2]{RF-1.1.2}, \hyperref[req:rf9]{RF-9}) debe ser robusta y manejar adecuadamente los fallos de la fuente externa.
+	\req{RNF-6 Interoperabilidad y consumo de API externa:}{rnf6} la integración con una API externa de terceros (\hyperref[req:rf1.1.2]{RF-1.1.2}, \hyperref[req:rf9]{RF-9}) debe ser robusta y manejar adecuadamente los fallos de la fuente externa.
 	
 	\req{RNF-7 Internacionalización (i18n):}{rnf7} la aplicación debe soportar al menos dos idiomas (español e inglés).
 	
@@ -171,7 +171,7 @@ Los actores principales identificados son los siguientes:
 	\item \textbf{Empleado:} usuario registrado que forma parte del personal del local de restauración. Sus capacidades dentro del sistema están determinadas por los \textbf{permisos específicos} que el Administrador le haya asignado, pudiendo abarcar desde un acceso mínimo (solo gestión de su perfil) hasta capacidades amplias en áreas específicas.
 \end{itemize}
 
-Es importante destacar que la aplicación implementa un \textbf{sistema de control de acceso basado en permisos (\textit{RBAC})}\footnote{\textit{Role-Based Access Control}}, el cual permite crear configuraciones personalizadas que materialicen roles funcionales más específicos, como por ejemplo \textit{``Cocinero''} o \textit{``Camarero de barra''}. Para simplificar el diagrama \ref{fig:B.4_casos_uso}, no se modelan como actores separados, pero son completamente realizables mediante el módulo de gestión de roles mencionado. Se profundiza más en esta característica del sistema en el apartado <ref>.\todo{ref a apartado (diseño, manual???) donde se hable de RBAC y de los posibles roles a crear, con ejemplos de configuraciones de permisos}
+Es importante destacar que la aplicación implementa un \textbf{sistema de control de acceso basado en roles (\textit{RBAC})}\footnote{\textit{Role-Based Access Control}}~\cite{ibm:rbac}, el cual permite crear configuraciones personalizadas que materialicen roles funcionales más específicos, como por ejemplo \textit{``Cocinero''} o \textit{``Camarero de barra''}. Para simplificar el diagrama \ref{fig:B.4_casos_uso}, no se modelan como actores separados, pero son completamente realizables mediante el módulo de gestión de roles mencionado. Se profundiza más en esta característica del sistema en el apartado \textit{\nameref{subsec:C.3_modeloRBAC}}.
 
 \subsubsection{Capacidades por actor}
 
@@ -279,7 +279,7 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 		\item El sistema valida los campos.
 		{\footnotesize
 		\begin{enumerate}[nosep]
-			\item Si la validación es exitosa, el sistema crea el usuario y le añade el rol por defecto. Se inicia sesión automáticamente con el nuevo usuario registrado, redirigiendo a su perfil.
+			\item Si la validación es exitosa, el sistema crea el usuario y le añade el rol por defecto. Se inicia sesión automáticamente con el nuevo usuario registrado, redirigiendo a la página de inicio.
 			\item Si la validación falla, se muestra un mensaje con la descripción del error.
 		\end{enumerate}}
 	\end{enumerate} \\

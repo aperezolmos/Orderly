@@ -121,7 +121,7 @@ El sistema implementa un modelo de arquitectura \textbf{cliente-servidor desacop
 
 La infraestructura se apoya en la \textbf{\textit{contenerización}} mediante \textit{Docker}, donde cada servicio se despliega en un entorno aislado. El intercambio de información se realiza sobre el protocolo HTTP, empleando \textbf{JSON} como formato de serialización de datos. Esta separación física y lógica permite que ambos extremos evolucionen tecnológicamente de forma autónoma, facilitando tareas de despliegue continuo y escalabilidad horizontal.
 
-\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_arquitectura.png}{Arquitectura general de Orderly}{C3_arquitectura}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_arquitectura.png}{Arquitectura general de \textit{Orderly}}{C3_arquitectura}
 
 La figura \ref{fig:C3_arquitectura} muestra un diagrama que ilustra la arquitectura general de la aplicación. A continuación se explicarán con más detalle los componentes principales que constituyen cada servicio.
 
@@ -132,12 +132,10 @@ El \textit{backend}, desarrollado bajo el ecosistema de \textit{Spring Boot}, si
 	\item \textbf{Capa de Presentación (Controladores):} implementada mediante controladores REST, se encarga de la exposición de recursos (\textit{endpoints} a los que el cliente puede llamar) y la gestión de los contratos de la API. Su responsabilidad se limita a la interceptación de peticiones, la delegación del trabajo a los servicios y la generación de respuestas HTTP adecuadas.
 	\item \textbf{Capa de Aplicación (Servicios):} constituye el núcleo de la lógica de negocio del sistema. Los servicios actúan como orquestadores de las operaciones, gestionando la transaccionalidad, las reglas de dominio y la integración con otros servicios.
 	\item \textbf{Capa de Dominio (Entidades):} define el modelo de persistencia del sistema mediante entidades JPA (\textit{Java Persistence API}). Estas clases representan el esquema de datos y las relaciones de negocio en la base de datos \textit{MySQL}, como ya se ha detallado en el apartado \textit{\ref{sec:C.2_DiseñoDatos} \nameref{sec:C.2_DiseñoDatos}}.
-	\item \textbf{Capa de Persistencia (Repositorios):} utiliza \textit{Spring Data JPA}\todo{ref?} para abstraer el acceso a los datos. Los repositorios facilitan la realización de operaciones CRUD y consultas complejas, de forma desacoplada del motor de base de datos específico.
+	\item \textbf{Capa de Persistencia (Repositorios):} utiliza \textit{Spring Data JPA}~\cite{spring:springJPA} para abstraer el acceso a los datos. Los repositorios facilitan la realización de operaciones CRUD y consultas complejas, de forma desacoplada del motor de base de datos específico.
 \end{enumerate}
 
-\todo[inline]{DTOs y mappers? ya se menciona en la memoria. pero aquí podrían ponerse capturas de ejemplo o así}
-
-\subsubsection{Arquitectura del \textit{frontend}}\todo{poner imágenes/capturas de un ejemplo de cada uno? o diagrama?}
+\subsubsection{Arquitectura del \textit{frontend}}
 
 El \textit{frontend} se ha diseñado bajo el paradigma de \textbf{arquitectura basada en componentes} de \textit{React}, priorizando el principio de separación de intereses (\textit{\textbf{Separation of Concerns}} - \textit{SoC}). La lógica se distribuye para evitar componentes monolíticos y facilitar la mantenibilidad:
 
@@ -145,13 +143,15 @@ El \textit{frontend} se ha diseñado bajo el paradigma de \textbf{arquitectura b
 	\item \textbf{Componentes de interfaz (UI):} son las piezas visuales (botones, formularios, tablas). Su responsabilidad se limita a mostrar la información y capturar las interacciones del usuario, delegando cualquier lógica compleja a otros elementos.
 	\item \textbf{\textit{Hooks} personalizados:} se utilizan para encapsular la lógica de estado (estados de carga, errores) y los efectos secundarios ocasionados por las llamadas asíncronas. Esta abstracción permite reutilizar comportamientos complejos a lo largo de toda la aplicación y ofrece un punto \textbf{centralizado} de comunicación con los servicios específicos de cada módulo.
 	\item \textbf{Servicios de API:} actúan como una capa de abstracción sobre el cliente de transporte (\texttt{fetch}). \textbf{Centralizan} las llamadas a la API de \textit{Spring Boot}, de modo que cualquier cambio en los \textit{endpoints} o en la estructura de las peticiones solo requiera modificaciones en un único punto del código.
-	\item \textbf{Gestión de estado global:} para el manejo de datos transversales a la aplicación, como la sesión del usuario o sus permisos asociados, se utilizan contextos que gestionan el estado global (\textit{\textbf{Context API}} de \textit{React}\todo{referencia a web que hable de ello y/o imagen de authprovider}). Esto evita el fenómeno de \textit{prop drilling}\todo{ref} (paso excesivo de propiedades entre niveles), permitiendo que cualquier componente acceda al contexto de autenticación (\texttt{AuthContext}) de forma eficiente.
+	\item \textbf{Gestión de estado global:} para el manejo de datos transversales a la aplicación, como la sesión del usuario o sus permisos asociados, se utilizan contextos que gestionan el estado global (\textit{\textbf{Context API}} de \textit{React}~\cite{4geeks:authContext, luisllamas:reactContext}). Esto evita el fenómeno de \textit{prop drilling} (paso excesivo de propiedades entre niveles), permitiendo que cualquier componente acceda al contexto de autenticación (\texttt{AuthContext}) de forma eficiente.
 \end{itemize}
 
 %---------------------------------------------------------------
 
 \subsection{Seguridad: Modelo RBAC y gestión de acceso}
-La seguridad del sistema se ha diseñado bajo un modelo de \textbf{control de acceso basado en roles} (\textit{RBAC})\todo{ref} de \textbf{granularidad fina}. A diferencia de modelos más simples donde el rol determina directamente el acceso, en esta arquitectura los roles actúan como contenedores lógicos de permisos individuales. Estos permisos, definidos en el enumerado \hyperref[word:C.2_permission]{\texttt{Permission}}, representan acciones atómicas sobre las entidades del dominio (ej. \texttt{FOOD\_CREATE}, \texttt{ORDER\_EDIT}, \texttt{USER\_VIEW\_LIST}).
+\label{subsec:C.3_modeloRBAC}
+
+La seguridad del sistema se ha diseñado bajo un modelo de \textbf{control de acceso basado en roles} (\textit{RBAC})~\cite{ibm:rbac} de \textbf{granularidad fina}. A diferencia de modelos más simples donde el rol determina directamente el acceso, en esta arquitectura los roles actúan como contenedores lógicos de permisos individuales. Estos permisos, definidos en el enumerado \hyperref[word:C.2_permission]{\texttt{Permission}}, representan acciones atómicas sobre las entidades del dominio (ej. \texttt{FOOD\_CREATE}, \texttt{ORDER\_EDIT}, \texttt{USER\_VIEW\_LIST}).
 
 Esta aproximación permite una gestión altamente flexible y adaptable a la estructura organizativa de un local de restauración. Dado que un usuario puede tener asignados \textbf{múltiples roles} simultáneamente, el sistema evalúa de forma aditiva el conjunto total de permisos, permitiendo el acceso si al menos uno de los roles del usuario posee el permiso requerido. Esto facilita la creación de \textbf{perfiles profesionales} específicos, como por ejemplo:
 \begin{itemize}
@@ -159,7 +159,7 @@ Esta aproximación permite una gestión altamente flexible y adaptable a la estr
 	\item \textbf{Cocinero:} con permisos para gestionar alimentos y visualizar pedidos pendientes de cocina.
 \end{itemize}
 
-Algunos ejemplos de configuraciones de permisos que materializan puestos de trabajo comunes se encuentran en el apartado <ref>.\todo{ref a manual de programador o usuario}
+Algunos ejemplos de configuraciones de permisos que materializan puestos de trabajo comunes se encuentran en el apartado \textit{\nameref{subsec:E_Ejemplos_Permisos}}.
 
 \subsubsection{Implementación en el \textit{backend} y propagación al \textit{frontend}}
 En la capa de aplicación, la seguridad se articula mediante \textit{Spring Security}. Se ha implementado un servicio personalizado (\texttt{CustomUserDetailsService}) que carga el perfil del usuario y transforma tanto los roles como sus permisos asociados en una colección de \texttt{GrantedAuthority}\footnote{Las autoridades (\textit{``authorities''}) son la unidad de medida que \textit{Spring Security} utiliza para entender y validar los permisos de un usuario.}. La protección de los recursos se realiza de forma declarativa mediante la anotación @\texttt{PreAuthorize }en los métodos de los \textbf{controladores}, verificando que el usuario autenticado posea la autoridad específica necesaria antes de ejecutar la lógica de negocio.
@@ -174,25 +174,24 @@ El sistema emplea una estrategia de autenticación basada en sesión HTTP, gesti
 %---------------------------------------------------------------
 
 \subsection{Desacoplamiento de integraciones con APIs nutricionales externas}
+\label{subsec:C.3_desacoplamientoAPI}
 
 Una cuestión a la que se le ha dado gran importancia es el \textbf{aislamiento} de dependencias externas. La aplicación se integra con la API de \textit{Open Food Facts} para el enriquecimiento de datos nutricionales, pero esta \textbf{integración se gestiona exclusivamente en el \textit{backend}}, permaneciendo totalmente opaca para el \textit{frontend}, como se puede visualizar en la figura \ref{fig:C3_arquitectura}.
 
 El diseño se apoya en un módulo independiente que encapsula la lógica de comunicación, mapeo y transformación de datos externos (directorio \texttt{\textbackslash foods\textbackslash external}). Mediante el uso de la clase \texttt{OpenFoodFactsRegistry} (figura \ref{fig:C3_OFFregistry}), se establece una fuente única de verdad (\textit{\textbf{Single Source of Truth}}) para las \textbf{equivalencias} entre los códigos de la API externa y los tipos internos de la aplicación (como alérgenos o grupos de alimentos). Este desacoplamiento ofrece dos \textbf{ventajas} críticas:
 \begin{itemize}
 	\item \textbf{Mantenibilidad:} cualquier cambio en la estructura o en los puntos de acceso de la API externa solo requiere modificaciones en el módulo dedicado del \textit{backend}.
-	\item \textbf{Extensibilidad:} facilita la \textbf{sustitución} o adición de \textbf{nuevos proveedores} de datos nutricionales con un impacto mínimo en el resto del sistema, ya que el contrato de datos que recibe el \textit{frontend} permanece inalterado. Esta cuestión se explora más a fondo en el apartado <ref>\todo{ref a manual programador}.
+	\item \textbf{Extensibilidad:} facilita la \textbf{sustitución} o adición de \textbf{nuevos proveedores} de datos nutricionales con un impacto mínimo en el resto del sistema, ya que el contrato de datos que recibe el \textit{frontend} permanece inalterado. Esta cuestión se explora más a fondo en el apartado \textit{\nameref{subsec:D.3_nuevaAPI}}.
 \end{itemize}
 
-\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_OFFregistry.png}{Clase \texttt{OpenFoodFactsRegistry} con equivalencias entre campos de la API \textit{Open Food Facts} y modelo de nuestra aplicación}{C3_OFFregistry}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_OFFregistry.png}{Clase \texttt{OpenFoodFactsRegistry} con equivalencias entre campos de la API \textit{Open Food Facts} y el modelo de nuestra aplicación}{C3_OFFregistry}
 
 %---------------------------------------------------------------
 
 \subsection{Infraestructura y despliegue}
-La infraestructura de la aplicación se gestiona mediante \textit{Docker}, empleando \textit{\textbf{Docker Compose}} para la orquestación de los servicios. El sistema se descompone en \textbf{tres contenedores independientes}: el entorno de ejecución para el \textit{frontend} (\textit{React/Vite}), el servidor de aplicaciones (\textit{Spring Boot}) y el motor de base de datos (\textit{MySQL}).
+La infraestructura de la aplicación se gestiona mediante \textit{Docker}, empleando \textit{\textbf{Docker Compose}} para la orquestación de los servicios. El sistema se descompone en \textbf{tres contenedores independientes}: el entorno de ejecución para el \textit{frontend} (\textit{React/Vite}), el servidor de aplicaciones (\textit{Spring Boot}) y el motor de base de datos (\textit{MySQL}). El diagrama \ref{fig:C3_despliegue} muestra la arquitectura de despliegue mencionada.\todo{ref a manual prog explicando lo de los volúmenes del front?}
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_despliegue.png}{Diagrama de despliegue de la aplicación}{C3_despliegue}
-
-El diagrama \ref{fig:C3_despliegue} muestra la arquitectura de despliegue mencionada, cuyos aspectos técnicos (red, dependencias, variables de entorno) asociados se verán con más detalle en el apartado <ref>\todo{ref a manual programador o similar}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

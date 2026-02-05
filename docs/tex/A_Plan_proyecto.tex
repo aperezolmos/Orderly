@@ -78,7 +78,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 \subsubsection{Objetivos}
 
 \begin{itemize}
-	\item \textbf{Creación del proyecto \textit{Spring Boot}:} se configuró un proyecto base con las dependencias listadas en el apartado <agregar ref>\todo{Agregar ref de apartado dependencias}.
+	\item \textbf{Creación del proyecto \textit{Spring Boot}:} se configuró un proyecto base con dependencias como \textit{Spring Security}, \textit{Spring Data JPA }y \textit{MySQL Driver}, entre otras.
 	\item \textbf{Generación del \texttt{docker-compose.yml}:} se creó dicho archivo para orquestar los contenedores de \textit{MySQL} y \textit{Spring Boot}. La imagen de la aplicación \textit{Spring Boot} se creó a partir de su propio \texttt{Dockerfile}. Se añadió un archivo de inicialización de la base de datos y se comprobó que ambos servicios podían comunicarse entre sí.
 	\item \textbf{Creación de las entidades \hyperref[word:C.2_user]{\texttt{User}} y \hyperref[word:C.2_role]{\texttt{Role}}:} se definieron las entidades JPA y las tablas SQL del archivo de inicialización. Se estableció inicialmente que los usuarios solo puedan tener un rol. En iteraciones futuras, se agregará la funcionalidad de tener múltiples roles.
 	\item \textbf{Implementación de operaciones CRUD sobre usuarios y roles:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades.
@@ -140,7 +140,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Implementación de operaciones CRUD sobre alimentos y productos:} se agregaron los repositorios y servicios necesarios para llevar a cabo estas funcionalidades. 
 	\item \textbf{Cálculo dinámico de la información nutricional:} se simplificó enormemente la lógica original, logrando que los cálculos de información nutricional (ya sea para alimentos con cantidades particulares o para productos completos) sean dinámicos y \textbf{no se almacenen en la BBDD}. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/52}{\#52}.
 	\item \textbf{Transformación de la relación \texttt{User-Role} a \texttt{\char`@{}ManyToMany}:} se modificó la asignación de roles, para que los usuarios pudieran tener más de uno, lo cual permite la creación de roles y funcionalidades más específicas. Se garantiza que, como mínimo, un usuario registrado tendrá \texttt{ROLE\_USER}.
-	\item \textbf{Refactorización de los DTOs de \texttt{User}:} se redujo el número de DTOs para usuarios, fusionando todos en \texttt{UserRequestDTO}\todo{ref a apartado diseño datos?} y manejando las restricciones según formulario mediante \textbf{grupos de validación} (\textit{OnCreate}, \textit{OnUpdate}, etc.).
+	\item \textbf{Refactorización de los DTOs de \texttt{User}:} se redujo el número de DTOs para usuarios, fusionando todos en \texttt{UserRequestDTO} y manejando las restricciones según formulario mediante \textbf{grupos de validación} (\textit{OnCreate}, \textit{OnUpdate}, etc.).
 	\item \textbf{Creación de un \texttt{UserDataInitializer}:} este componente crea roles y un usuario por defecto en la aplicación.
 	\item \textbf{Definición de casos de uso para gestión de usuarios:} se redactó una primera versión de casos de uso para esta funcionalidad, teniendo en cuenta las acciones que pueden realizar los usuarios según sus roles.
 \end{itemize}
@@ -151,7 +151,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 Se acordó plasmar las mejoras respecto al TFG anterior en el apartado ``\textit{5. Aspectos relevantes del desarrollo del proyecto}'', para reflejar el proceso de transformación seguido y las decisiones que llevaron a él.
 
-Respecto a la arquitectura de la aplicación, se le planteó al tutor el \textbf{cambio de la arquitectura actual} monolítica, por una \textbf{arquitectura SPA} con \textit{React}. Inicialmente, se había optado por usar \textit{Thymeleaf} como motor de plantillas, y gestionar las vistas de la aplicación mediante controladores web. Sin embargo, la generación de las plantillas HTML y los controladores específicos para cada acción (p. ej. \texttt{UserEditController} o \texttt{UserManagementController}) resultaban un poco pesados y menos fáciles de escalar. Es por eso que se optó por la naturaleza reutilizable de los componentes de \textit{React} para, en primera instancia, definir de forma más simple las tablas de gestión CRUD para cada entidad (y muchas otras mejoras). \todo{Ref a apartado donde se detalle esto?}
+Respecto a la arquitectura de la aplicación, se le planteó al tutor el \textbf{cambio de la arquitectura actual} monolítica, por una \textbf{arquitectura SPA} con \textit{React}. Inicialmente, se había optado por usar \textit{Thymeleaf} como motor de plantillas, y gestionar las vistas de la aplicación mediante controladores web. Sin embargo, la generación de las plantillas HTML y los controladores específicos para cada acción (p. ej. \texttt{UserEditController} o \texttt{UserManagementController}) resultaban un poco pesados y menos fáciles de escalar. Es por eso que se optó por la naturaleza reutilizable de los componentes de \textit{React} para, en primera instancia, definir de forma más simple las tablas de gestión CRUD para cada entidad (y muchas otras mejoras).
 
 Debido a que la idea del cambio de arquitectura surgió durante el desarrollo del \textit{sprint}, hubo un \textit{issue} que se pospuso para futuras iteraciones, relacionado con la \textbf{internacionalización} de la aplicación. Esto es debido a que la implementación de dicha funcionalidad cambia por completo dependiendo de la arquitectura. Por lo tanto, se pospuso para cuando se disponga de un \textit{frontend} funcional.
 
@@ -202,7 +202,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Creación de las entidades \hyperref[word:C.2_diningTable]{\texttt{DiningTable}} y \hyperref[word:C.2_reservation]{\texttt{Reservation}}:} se definieron las entidades JPA para el módulo de gestión de reservas. 
 	\item \textbf{Implementación de operaciones CRUD sobre mesas y reservas:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Los detalles de negocio se especifican en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/93}{\#93}.
 	\item \textbf{Creación de las entidades \hyperref[word:C.2_order]{\texttt{Order}}, \hyperref[word:C.2_orderItem]{\texttt{OrderItem}}, \hyperref[word:C.2_barOrder]{\texttt{BarOrder}} y \linebreak\hyperref[word:C.2_diningOrder]{\texttt{DiningOrder}}:} aprovechando la existencia de varios ``tipos'' de pedidos, se implementó una jerarquía de \textbf{herencia}, la cual se detalla en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/80}{\#80}.
-	\item \textbf{Implementación de operaciones CRUD sobre pedidos:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Se creó una factoría para elegir \textit{mapper} según el tipo de pedido que llegase a la solicitud, sin que los componentes conozcan dicho tipo. El controlador general se utiliza para consultas sobre todas las entidades y gestión de ítems. Los controladores particulares se utilizan para consultas y operaciones CRUD por cada tipo, más eficientes. \todo{Escribir descripción PR y referenciar aquí}
+	\item \textbf{Implementación de operaciones CRUD sobre pedidos:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Se creó una factoría para elegir \textit{mapper} según el tipo de pedido que llegase a la solicitud, sin que los componentes conozcan dicho tipo. El controlador general se utiliza para consultas sobre todas las entidades y gestión de ítems. Los controladores particulares se utilizan para consultas y operaciones CRUD por cada tipo, más eficientes.
 	\item \textbf{Implementación de lógica de permisos para cada rol:} se creó un enumerado \texttt{Permission}, el cual alberga todos los permisos de la aplicación. A la entidad \texttt{Role} se le añadió una colección de permisos y se crearon métodos, \textit{endpoints} y componentes \textit{React} para manejarlos. Esto permite la creación de roles personalizados y un manejo más preciso de las acciones a realizar en la aplicación. Los cambios se explican con más detalle en los \textit{pull requests} \href{https://github.com/aperezolmos/Orderly/pull/81}{\#81} y \href{https://github.com/aperezolmos/Orderly/pull/96}{\#96}.
 	\item \textbf{Internacionalización del \textit{frontend React}:} se sustituyeron todas las cadenas \textit{hardcodeadas} por referencias a archivos JSON con cadenas traducidas (\textit{namespaces}). También se creó un componente para cambiar el idioma dinámicamente desde la aplicación.
 	\item \textbf{Refactorización de \texttt{Recipe} a \hyperref[word:C.2_ingredient]{\texttt{Ingredient}}:} la entidad \texttt{Recipe}, utilizada como tabla de unión entre \texttt{Food} y \texttt{Product}, pasó a denominarse \texttt{Ingredient}. También se eliminaron su repositorio y servicio particulares, trasladando la responsabilidad de su manejo a \texttt{Product}. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/79}{\#79}.
@@ -360,6 +360,8 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 \subsubsection{Revisión}
 
+Se detectó que las búsquedas a \textit{Open Food Facts} generaban errores si el navegador utilizado era \textit{Mozilla Firefox}. Se optó por \textbf{trasladar las peticiones de búsqueda} a \textit{Spring Boot}, desacoplando por completo el \textit{frontend} de la implementación de la API externa y evitando problemas de CORS.
+
 Se acordó seguir corrigiendo errores y desajustes en la interfaz, con el objetivo de preparar la aplicación para su segundo \textbf{\textit{release}}. También se acordó integrar \textit{\textbf{SonarCloud}} para disponer de métricas sobre la calidad del código actual y posibles errores que no hayan sido detectados.
 
 %---------------------------------------------------------------
@@ -381,26 +383,193 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 \imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burndown} del Sprint 11}{A2_sprint11_burndown}
 
-\subsubsection{Revisión}
+\subsection{\textit{Sprint} 12}
+\label{subsec:A.2_sprint12}
 
-...
+\underline{Duración}: 2 semanas (29/01/2026 - 12/02/2026)
+
+Este \textit{sprint} final se basó en la finalización de la redacción de los anexos y en la corrección de aspectos de la aplicación, así como en mejoras de diseño en la interfaz. También se generaron \textbf{datos por defecto} en las tablas de la base de datos, para así contar con registros existentes en el arranque de la aplicación y facilitar su uso.\todo{hacer}
+
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/13?closed=1}{\textbf{Sprint 12}}.\todo{cambiar imagen gráfico}
+
+\imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burndown} del Sprint 12}{A2_sprint12_burndown}
 
 %---------------------------------------------------------------
 
 \subsection{Gráfico \textit{Burn-up}}
 
-\missingfigure{Gráfico burn up general(cuando finalice el proyecto)}
+El gráfico presentado en la figura \ref{fig:A2_burnup}\todo{cambiar imagen gráfico} permite visualizar de manera dinámica el progreso del trabajo completado frente al alcance total planificado. El eje vertical se corresponde con el número de tareas (\textit{issues}) agregadas al tablero Kanban de \textit{GitHub Projects}.
+
+\imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burnup} del proyecto}{A2_burnup}
+
+En la medida de lo posible, se ha procurado que la creación y asignación de nuevas tareas a \textit{sprints} se sitúe al \textbf{comienzo} (o también a mitad, en caso de \textit{sprints} de 2 semanas) de cada \textit{sprint}. Tras los picos causados por el incremento en el número de \textit{issues}, se puede observar que, en la mayoría de casos, la línea de alcance teórico permanece prácticamente \textbf{constante}, lo que refleja que el trabajo se ejecutó conforme a lo planificado \textbf{sin añadir carga adicional} de forma imprevista.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Estudio de viabilidad}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \subsection{Viabilidad económica}
+
+El análisis de la viabilidad económica tiene como objetivo estimar los costes que supondría el desarrollo, despliegue y puesta en marcha del proyecto \textit{Orderly} en un entorno empresarial real. Para realizar este cálculo, se han considerado los precios de mercado actuales en España y se ha supuesto un escenario de desarrollo de \textbf{5 meses} de duración con una jornada laboral completa (\textbf{8 horas} diarias).
+
+\subsubsection{Costes de personal}
+
+El desarrollo ha sido realizado íntegramente por una ingeniera informática con un perfil \textit{Junior}. Para el cálculo, se ha tomado como referencia un salario bruto anual promedio para este perfil en España de 21.000 €~\cite{glasdoor:sueldo}.
+
+Para obtener el coste real para la empresa, es necesario sumar al salario bruto los costes de la Seguridad Social a cargo de la empresa (contingencias comunes, desempleo, formación, FOGASA, etc.), que se estiman aproximadamente en un 32 \% del salario bruto.
+
+Los cálculos mensuales y totales para los 5 meses de desarrollo son los siguientes:
+\begin{enumerate}
+	\item Salario mensual bruto:
+	\[ \frac{21{.}000\,\text{€}}{12\,\text{meses}} = 1{.}750,00\,\text{€/mes} \]
+	
+	\item Coste Seguridad Social (32 \%):
+	\[ 1{.}750,00\,\text{€} \times 0,32 = 560,00\,\text{€/mes} \]
+	
+	\item Coste mensual total para la empresa:
+	\[ 1{.}750,00\,\text{€} + 560,00\,\text{€} = 2{.}310,00\,\text{€/mes} \]
+	
+	\item Coste total del proyecto (5 meses):
+	\[ 2{.}310,00\,\text{€} \times 5 = 11{.}550,00\,\text{€} \]
+\end{enumerate}
+
+\subsubsection{Costes de \textit{hardware}}
+
+Para el desarrollo de la aplicación se ha utilizado un equipo informático personal con las siguientes características:
+{\small
+\begin{itemize} [nosep]
+	\item \textbf{Modelo:} \textit{HP Laptop 15s-fq2xxx}
+	\item \textbf{Procesador:} \textit{11th Gen Intel Core i5-1135G7}
+	\item \textbf{RAM:} 8GB
+	\item \textbf{Precio de mercado estimado:} 600,00 €
+\end{itemize}}
+
+El coste imputable al proyecto se calcula mediante la amortización del equipo durante el tiempo de uso (5 meses), estimando una vida útil estándar para equipos informáticos de 4 años (48 meses).
+\begin{enumerate}
+	\item Amortización mensual:
+	\[ \frac{600,00\,\text{€}}{48\,\text{meses}} = 12,5\,\text{€/mes} \]
+	
+	\item Coste total \textit{hardware} (5 meses):
+	\[ 12,5\,\text{€} \times 5 = 11.550,00\,\text{€} \]
+\end{enumerate}
+
+
+\subsubsection{Costes de \textit{software}}
+
+El proyecto \textit{Orderly} se ha desarrollado priorizando el uso de tecnologías de código abierto y herramientas gratuitas, lo que reduce considerablemente los costes de licencias. El stack tecnológico incluye:
+{\small
+\begin{itemize}[nosep]
+	\item \textbf{Entorno de desarrollo:} \textit{Visual Studio Code} (Gratuito).
+	\item \textbf{\textit{Backend}}: Java (OpenJDK) y \textit{Spring Boot} (\textit{Open Source - Apache 2.0}).
+	\item \textit{Frontend}: \textit{React} y \textit{Vite} (\textit{Open Source} - MIT).
+	\item \textbf{Base de datos:} \textit{MySQL Community Edition} (\textit{Open Source} - GPL).
+	\item \textbf{Contenerización:} \textit{Docker Desktop} (versión personal/educativa gratuita).
+	\item \textbf{APIs externas:} \textit{Open Food Facts} (acceso gratuito para uso no comercial).
+	\item \textbf{Otras herramientas:} \textit{Git}, \textit{Postman}, \textit{SonarCloud} (plan gratuito para proyectos públicos).
+\end{itemize}}
+
+El único coste de software imputable corresponde a la licencia del \textbf{sistema operativo} \textit{Microsoft Windows 11 Home}, con precio aproximado de 145,00€. \todo{se amortiza?}
+
+\subsubsection{Costes de infraestructura y despliegue}
+
+Aunque el proyecto se ha desarrollado en un entorno local utilizando \textit{Docker}, para una puesta en \textbf{producción} real sería necesario alojar los contenedores (\textit{React} + \textit{Spring Boot} + \textit{MySQL}) en un servicio de computación en la nube (VPS\footnote{\textit{Virtual Private Server}}).
+
+Una opción económica sería \textit{\textbf{Hetzner CX22}} (2 vCPU, 4 GB RAM), cuya tarifa representativa es 3,79 €/mes (plan económico de \textit{Hetzner}~\cite{hetzner:plans}).
+
+\begin{itemize}
+	\item Cálculo \textit{hosting} para 5 meses:
+	\[ 3,79 \times 5 = 18,95 \text{ €} \]
+	
+	\item Adicionales:
+	\begin{itemize}
+		\item \textbf{Dominio} \texttt{.es} $(\text{estimación anual} \approx 12\,\text{€} \rightarrow \text{prorrateado a 5 meses} \approx 12 \times \frac{5}{12} = 5\,\text{€})$.
+		\item \textbf{Certificado SSL}: \textit{Let's Encrypt} (gratuito), asumido como 0 €.
+	\end{itemize}
+\end{itemize}
+
+El presupuesto total sería aproximadamente $18,95 + 5 = 23,95\,\text{€}$.
+
+\subsubsection{Resumen de costes}
+
+En la tabla \ref{tab:costes} se presenta el desglose final de los costes estimados para el desarrollo de \textit{Orderly}, incluyendo el Impuesto sobre el Valor Añadido (IVA) del 21 \% vigente en España.
+
+\begin{table}[h]
+	\centering
+	\small
+	\caption{Resumen de costes económicos del proyecto}
+	\label{tab:costes}
+	\vspace{2mm}
+	\begin{tabularx}{0.8\textwidth}{X r}
+		\toprule
+		\textbf{Concepto} & \textbf{Coste estimado (€)} \\
+		\midrule
+		Recursos Humanos (5 meses) & 11.550,00 \\
+		\textit{Hardware} (Amortización) & 62,50 \\
+		\textit{Software} (Sistema Operativo) & 145,00 \\
+		Infraestructura (\textit{Cloud}) & 23,95 \\
+		\midrule
+		\textbf{Total Neto} & \textbf{11.781,45} \\
+		IVA (21 \%) & 2.474,39 \\
+		\midrule
+		\textbf{TOTAL PROYECTO} & \textbf{14.255,55} \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Viabilidad legal}
+
+El desarrollo de \textit{Orderly} se ha apoyado en el uso de diversas bibliotecas, \textit{frameworks} y herramientas de terceros. Para garantizar la viabilidad legal del proyecto, es fundamental analizar las licencias de estos componentes y asegurar que la licencia final escogida para el \textit{software} sea compatible con las obligaciones heredadas de las tecnologías utilizadas.
+
+En la tabla \ref{tab:licencias} se presenta un resumen de las licencias de las principales tecnologías y librerías integradas en el proyecto, tanto del \textit{backend} (\textit{Spring Boot}) como del \textit{frontend} (\textit{React}).
+
+\begin{table}[h]
+	\centering
+	\small
+	\caption{Resumen de licencias de las herramientas y tecnologías utilizadas}
+	\label{tab:licencias}
+	\vspace{2mm}
+	\begin{tabularx}{\textwidth}{l X l}
+		\toprule
+		\textbf{Herramienta / Librería} & \textbf{Uso en el proyecto} & \textbf{Licencia} \\
+		\midrule
+		\textit{Spring Boot} & \textit{Framework del backend} & Apache License 2.0 \\
+		\textit{React} & Biblioteca del \textit{frontend} & MIT License \\
+		\textit{MySQL} & Sistema de Base de Datos & GPL v2 \\
+		\textit{Docker} & Despliegue y contenerización & Apache License 2.0 \\
+		\textit{Vite} & Empaquetado y entorno \textit{frontend} & MIT License \\
+		\textit{Mantine} & Componentes de UI & MIT License \\
+		\textit{Lombok} & Utilidad para reducir código Java & MIT License \\
+		\textit{MapStruct} & Mapeo de objetos (DTOs) & Apache License 2.0 \\
+		\textit{Zustand} & Gestión de estado global & MIT License \\
+		\textit{i18next} & Internacionalización & MIT License \\
+		\textit{Recharts} & Visualización de gráficos & MIT License \\
+		\textit{Open Food Facts} & Fuente de datos nutricionales & ODbL \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+La gran mayoría de las librerías utilizadas (\textit{React}, \textit{Mantine}, \textit{Lombok}, etc.) se distribuyen bajo la licencia \textbf{\textit{MIT}}, la cual es altamente permisiva. Otras, como \textit{Spring Boot} o \textit{Docker}, utilizan \textbf{\textit{Apache 2.0}}, que también permite el uso comercial y la modificación del \textit{software}, siendo compatible con licencias permisivas. Respecto a \textit{Open Food Facts}, la licencia \textbf{\textit{ODbL}} aplica sobre los datos, permitiendo su uso siempre que se atribuya la fuente, lo cual no impide licenciar el código de la aplicación bajo otros términos.
+
+
+\subsubsection{Selección de licencia para el \textit{software}}
+
+Considerando la naturaleza de las dependencias utilizadas y el objetivo académico del proyecto, se ha optado por liberar el código fuente de \textit{Orderly} bajo la licencia \textbf{\textit{MIT License}}.
+
+Esta decisión se justifica por los siguientes motivos:
+\begin{itemize}
+	\item \textbf{Compatibilidad:} es compatible con la mayoría de las librerías utilizadas en el \textit{stack} tecnológico (\textit{React}, \textit{Spring Boot}, etc.).
+	\item \textbf{Permisividad:} otorga una gran libertad a futuros desarrolladores o usuarios, permitiendo usar, copiar, modificar, fusionar, publicar y distribuir el \textit{software} sin restricciones complejas, siempre que se mantenga el aviso de derechos de autor original.
+	\item \textbf{Fomento de la colaboración:} al ser una licencia estándar en el ecosistema \textit{open source}, facilita que otros estudiantes o desarrolladores puedan reutilizar el código para futuros Trabajos de Fin de Grado o proyectos derivados.
+\end{itemize}
+
+\subsubsection{Selección de licencia para la documentación}
+
+Para la memoria y la documentación técnica del proyecto (incluidos los presentes anexos), se ha seleccionado la licencia \textit{\textbf{Creative Commons Attribution 4.0 International}} (\textbf{CC BY 4.0}).
+
+Esta licencia permite compartir y adaptar el material para cualquier propósito, incluso comercial, con la única condición de otorgar el crédito apropiado al autor original. Se considera la opción más adecuada para un trabajo académico, ya que fomenta la divulgación del conocimiento y permite que la documentación sirva de referencia para futuros alumnos, protegiendo al mismo tiempo la autoría intelectual del trabajo.
+
 
 
