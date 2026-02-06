@@ -20,14 +20,16 @@ Se dio la circunstancia de que el \textit{stack} tecnológico sugerido al tutor 
 
 La API REST desarrollada cubre los principales procesos de gestión de un local de restauración, agrupados en los siguientes módulos funcionales:
 
+{\small
 \begin{itemize}
+	\item \textbf{Gestión de pedidos (comandas):} soporta la creación y seguimiento de pedidos realizados en el local, diferenciando entre pedidos de barra y de comedor mediante una jerarquía de herencia.
 	\item \textbf{Gestión de productos:} permite la creación, edición, consulta y eliminación de productos ofertados, así como la gestión de sus ingredientes y el cálculo dinámico de su información nutricional.
 	\item \textbf{Gestión de alimentos e ingredientes:} facilita la administración de alimentos y su información nutricional, permitiendo su uso como ingredientes en productos.
 	\item \textbf{Gestión de reservas de mesas:} permite la reserva y administración de mesas, incluyendo la gestión de disponibilidad y la prevención de solapamientos.
 	\item \textbf{Gestión de mesas:} administra las mesas disponibles en el local, su capacidad y estado.
-	\item \textbf{Gestión de pedidos (comandas):} soporta la creación y seguimiento de pedidos realizados en el local, diferenciando entre pedidos de barra y de comedor mediante una jerarquía de herencia.
-	\item \textbf{Gestión de usuarios y roles:} incluye la administración de usuarios, roles y permisos, con control de acceso basado en roles y granularidad de permisos.
-\end{itemize}
+	\item \textbf{Gestión de usuarios:} administra las cuentas de acceso al sistema, permitiendo la asignación de roles específicos y el control de los datos personales del personal.
+	\item \textbf{Gestión de roles:} define los perfiles de acceso mediante agrupaciones de permisos granulares, garantizando que cada usuario solo acceda a las funcionalidades autorizadas según su responsabilidad.
+\end{itemize}}
 
 Cada módulo está implementado siguiendo el patrón de capas descrito en la sección \textit{\ref{sec:4.2_arquitectura} \nameref{sec:4.2_arquitectura}}, lo que facilita la mantenibilidad y la extensibilidad del sistema.
 
@@ -49,7 +51,7 @@ A pesar de compartir el planteamiento conceptual con el proyecto de referencia, 
 \end{itemize}
 
 \vspace{-15pt}
-\imagenConEtiqueta[0.47\textwidth]{img/apdo_5/5_modeloEER_Completo.png}{Modelo de base de datos actual}{5_modeloEER_Completo}\todo{Queda pendiente actualizarlo con los campos de alérgenos}
+\imagenConEtiqueta[0.47\textwidth]{img/apen_C/C2_modeloEER_Completo.png}{Modelo de base de datos actual}{C2_modeloEER_Completo}
 
 Para una descripción técnica más detallada sobre la implementación de estas entidades y la lógica de negocio aplicada, se recomienda consultar los \textit{pull requests} 
 \href{https://github.com/aperezolmos/Orderly/pull/51}{\#51} y 
@@ -65,12 +67,12 @@ La lógica de negocio se encapsula en servicios específicos para cada módulo, 
 \begin{itemize}
 	\item El servicio de \textbf{productos} calcula la información nutricional total de cada producto en función de sus ingredientes, utilizando métodos de dominio y operaciones sobre objetos de tipo \texttt{NutritionInfo}.
 	\item El servicio de \textbf{reservas} valida la disponibilidad de mesas y previene solapamientos mediante la comprobación de conflictos de horario antes de confirmar una reserva.
-	\item El servicio de \textbf{pedidos} gestiona de forma transparente la creación y actualización de comandas, independientemente del tipo de pedido. Esto se logra mediante una jerarquía de entidades (\texttt{Order}, \texttt{BarOrder}, \texttt{DiningOrder}) y DTOs con herencia, combinada con una factoría\todo{ref?} de \textit{mappers} que selecciona dinámicamente la estrategia de conversión apropiada. Además, cada tipo de pedido dispone de un servicio y controlador específicos para consultas especializadas sobre las tablas hijas, optimizando el rendimiento al usar la estrategia \textit{joined inheritance}.
+	\item El servicio de \textbf{pedidos} gestiona de forma transparente la creación y actualización de comandas, independientemente del tipo de pedido. Esto se logra mediante una jerarquía de entidades (\texttt{Order}, \texttt{BarOrder}, \texttt{DiningOrder}) y DTOs con herencia, combinada con una factoría de \textit{mappers} que selecciona dinámicamente la estrategia de conversión apropiada. Además, cada tipo de pedido dispone de un servicio y controlador específicos para consultas especializadas sobre las tablas hijas, optimizando el rendimiento al usar la estrategia \textit{joined inheritance}.
 \end{itemize}
 
 La separación de responsabilidades
 %entre servicios y controladores 
-permite mantener la lógica de negocio aislada de los puntos de entrada de la API, facilitando la reutilización y el testeo de los componentes. Este diseño ha favorecido la implementación de \textbf{controladores finos} (\textit{thin controllers})\todo{ref?}, esto es, controladores que se mantienen ligeros al delegar toda la complejidad y las reglas de dominio en los servicios correspondientes.
+permite mantener la lógica de negocio aislada de los puntos de entrada de la API, facilitando la reutilización y el testeo de los componentes. Este diseño ha favorecido la implementación de \textbf{controladores finos} (\textit{thin controllers}), esto es, controladores que se mantienen ligeros al delegar toda la complejidad y las reglas de dominio en los servicios correspondientes.
 
 %---------------------------------------------------------------
 
@@ -90,7 +92,7 @@ La seguridad y el control de acceso en el \textit{backend} se gestionan mediante
 (ver \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/81}{\#81}). 
 Los \textit{endpoints} de la API están protegidos mediante anotaciones \texttt{\char`@{}PreAuthorize}, que verifican los permisos necesarios para cada operación, garantizando que solo los usuarios autorizados puedan acceder a los recursos sensibles.
 
-La sesión de usuario autenticado se mantiene en el \textit{backend} mediante el componente \texttt{SessionManager}, que almacena el contexto de seguridad en la sesión HTTP y gestiona el ciclo de vida de la autenticación. Para la representación de usuarios en el sistema de seguridad, se utiliza la clase \texttt{CustomUserDetails}, que adapta la entidad \texttt{User} y expone sus roles y permisos como \textit{authorities} de \textit{Spring Security}, permitiendo así un control de acceso detallado a los recursos.
+La gestión de la \textbf{autenticación} se centraliza en una capa de servicios que valida las credenciales y, tras un inicio de sesión o registro exitoso, vincula el contexto de seguridad a la sesión del usuario. Dicha sesión se mantiene de forma \textbf{persistente} en el \textit{backend} mediante el componente \texttt{HttpSessionSecurityContextRepository}, permitiendo que el sistema identifique al usuario en peticiones sucesivas a través de una \textit{cookie} de sesión (\texttt{JSESSIONID}). Para la representación de usuarios en el sistema de seguridad, se utiliza la clase \texttt{CustomUserDetails}, que adapta la entidad \texttt{User} y expone sus roles y permisos como \textit{authorities} de \textit{Spring Security}, permitiendo así un control de acceso detallado a los recursos.
 
 
 %más breve
@@ -122,7 +124,7 @@ La navegación entre las distintas secciones de la aplicación se gestiona media
 
 %El objetivo de ofrecer una interfaz coherente y confiable se consiguió gracias a una estrategia basada en componentes reutilizables y un sistema de comunicación claro con el usuario. 
 
-Para sentar las bases visuales y acelerar el desarrollo, se utilizó la biblioteca \textit{\textbf{Mantine}}, que proporciona componentes preconstruidos, modernos y accesibles, como formularios, notificaciones o modales. Esto permitió evitar la implementación manual de elementos comunes y se obtuvo una interfaz limpia y responsiva, con soporte nativo para temas claros y oscuros, así como para la adaptación a dispositivos móviles. Sobre esta base, se diseñaron estructuras como \texttt{MainLayout}, que agrupa elementos comunes a toda la aplicación (como la barra de navegación), y \texttt{FormLayout}, un esquema unificado para los formularios de creación y edición de todas las entidades.
+Para sentar las bases visuales y acelerar el desarrollo, se utilizó la biblioteca \textit{\textbf{Mantine}}. A diferencia de otros marcos de diseño rígidos, Mantine proporciona componentes de bajo nivel altamente \textbf{personalizables} y accesibles (como formularios o modales), lo que ha permitido diseñar una identidad visual propia sin renunciar a la robustez de elementos probados. Esta flexibilidad facilitó la creación de una interfaz limpia y responsiva, con soporte nativo para temas claros y oscuros. Sobre esta base de componentes customizados, se desarrollaron estructuras como \texttt{MainLayout}, que agrupa elementos comunes como la barra de navegación, y \texttt{FormLayout}, un esquema unificado para los formularios de creación y edición de todas las entidades.
 
 Asimismo, para garantizar una experiencia consistente ante la naturaleza \textbf{asíncrona} de las peticiones a la API, la interfaz debe responder adecuadamente ante posibles demoras o errores. Por ello, se integró de forma sistemática un sistema de \textit{feedback} que informa al usuario en todo momento: \textbf{indicadores de carga} (\texttt{LoadingOverlay}) durante las operaciones, mensajes informativos cuando no hay datos para mostrar, alertas en formularios y notificaciones de éxito o error (mediante \textbf{\textit{\char`@{}mantine/notifications}}) con mensajes contextualizados. 
 
@@ -136,10 +138,11 @@ La \textbf{comunicación con el \textit{backend}} se canaliza a través de un \t
 
 Respecto a la gestión de \textbf{formularios}, se utilizó el sistema \texttt{useForm} de \textit{Mantine}, el cual permite definir validaciones personalizadas, gestionar el estado de los campos y mostrar mensajes de error de forma clara.
 
-Para la \textbf{gestión del estado} general se siguió un principio de simplicidad: la mayoría de las entidades manejan su información de forma local mediante sus \textit{\textbf{hooks}}. Sin embargo, se hizo una excepción para el \textit{dashboard} de pedidos (ver figura <ref>\todo{Ref a imagen dashboard}), una de las funcionalidades centrales y más distintivas de la aplicación. Dado que este módulo requiere visualizar y actualizar en tiempo real el estado de los pedidos pendientes (permitiendo añadir productos, modificar cantidades y cambiar estados), se optó por un \textit{\textbf{store}} global basado en \textit{\textbf{Zustand}}. Esta decisión permite que varios componentes reaccionen simultáneamente a los cambios, ofreciendo una experiencia fluida y en tiempo real sin recargas de página.
+Para la \textbf{gestión del estado} general se siguió un principio de simplicidad: la mayoría de las entidades manejan su información de forma local mediante sus \textit{\textbf{hooks}}. Sin embargo, se hizo una excepción para el \textit{dashboard} de pedidos (figura \ref{fig:5.3_dashboard}), una de las funcionalidades centrales y más distintivas de la aplicación. Dado que este módulo requiere visualizar y actualizar en tiempo real el estado de los pedidos pendientes (permitiendo añadir productos, modificar cantidades y cambiar estados), se optó por un \textit{\textbf{store}} global basado en \textit{\textbf{Zustand}}. Esta decisión permite que varios componentes reaccionen simultáneamente a los cambios, ofreciendo una experiencia fluida y en tiempo real sin recargas de página.
 
-\missingfigure{Interfaz del dashboard de pedidos}
+\imagenConEtiqueta[0.8\textwidth]{img/apen_E/E_10_dashboard.png}{\textit{Dashboard} de pedidos}{5.3_dashboard}
 
+\vspace{-1em}
 \subsection{Internacionalización}
 
 La aplicación es completamente multilingüe, permitiendo alternar entre español e inglés de forma instantánea. Para ello se ha utilizado \textbf{\textit{react-i18next}}, organizando los textos en archivos de recursos por módulo (\textit{namespaces}) y facilitando la traducción y ampliación futura a otros idiomas.
@@ -157,14 +160,34 @@ Sin embargo, a 19 de noviembre de 2025, recibí una notificación oficial vía c
 
 Se optó entonces por la segunda opción más completa de la comparativa: \textbf{\textit{Open Food Facts} (\textit{OFF})}~\cite{api:openFoodFacts}. Esta decisión permitió la inclusión de métricas nutricionales (\textit{Nutri-Score} y clasificación NOVA) por alimento e información sobre \textbf{alérgenos}, las cuales no estaban disponibles en la mayoría de planes gratuitos del resto de APIs.
 
-La comunicación con \textit{OFF} se basa en una \textbf{primera fase} de búsqueda y selección de un alimento mediante \textit{React}, complementada por una \textbf{segunda fase} de petición de información detallada de dicho alimento y posterior adaptación al modelo de datos por parte de \textit{Spring Boot}. Las equivalencias entre campos del modelo y datos de \textit{OFF} se han centralizado en un \textit{mapper} específico (\texttt{OpenFoodFactsMapper}).
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_5_alimentos_busquedaExterna.png}{Búsqueda de un alimento mediante la API \textit{Open Food Facts}}{5.3_alimentos_busquedaExterna}
 
-\missingfigure{Búsqueda de un alimento mediante la API OFF}
+La comunicación con \textit{OFF} se basa en una \textbf{primera fase} de búsqueda y selección de un alimento (figura \ref{fig:5.3_alimentos_busquedaExterna}), complementada por una \textbf{segunda fase} de petición de información detallada de dicho alimento y posterior adaptación al modelo de datos. Las peticiones a la API externa para ambas operaciones se realizan desde \textit{Spring Boot}. De esta manera, el \textit{frontend} queda \textbf{desacoplado} de la implementación de la API nutricional, favoreciendo el mantenimiento y el \textbf{intercambio} (o adición) de \textbf{fuentes de datos} nutricionales. También \textbf{se evitan restricciones de CORS} (\textit{Cross-Origin Resource Sharing}~\cite{mdn:cors}) al realizar las peticiones desde el servidor en lugar del cliente, garantizando la \textbf{compatibilidad entre navegadores} y centralizando la gestión de las cabeceras de red.
 
-Dado que \textit{Open Food Facts} ofrece una cantidad muy elevada de información por alimento, fue necesario realizar un proceso de selección y adaptación de los campos más relevantes para el modelo de datos de la aplicación. Para cada nutriente, la API ofrece distintas representaciones (por ración o \textit{serving}, por 100 gramos...), lo que introduce cierta heterogeneidad en términos de disponibilidad y formato. Finalmente, se optó por utilizar de forma sistemática los valores normalizados por \textbf{100 gramos}, ya que estos presentan una mayor disponibilidad y fiabilidad al tratarse de información obligatoria en el etiquetado nutricional, según el Reglamento (UE) nº 1169/2011~\cite{reglamento1169_2011}. Esta elección permite simplificar el procesamiento de los datos, reducir la necesidad de conversiones y validaciones adicionales (por ejemplo, consultar las unidades), y resulta adecuada teniendo en cuenta que los valores nutricionales se recalculan posteriormente en función de la cantidad de alimento empleada en cada producto.
+De igual manera, para facilitar el proceso de adaptación de los datos importados, las equivalencias entre campos del modelo y datos de \textit{OFF} se han centralizado en el archivo \texttt{OpenFoodFactsRegistry}, mientras que toda la lógica de conversión se sitúa en un \textit{mapper} específico (\texttt{OpenFoodFactsMapper}).
+
+Dado que \textit{Open Food Facts} ofrece una cantidad muy elevada de información por alimento, fue necesario realizar un proceso de selección y adaptación de los campos más relevantes para el modelo de datos de la aplicación. Para cada nutriente, la API ofrece distintas representaciones (por ración o \textit{serving}, por 100 gramos...), lo que introduce cierta heterogeneidad en términos de disponibilidad y formato. Finalmente, se optó por utilizar de forma sistemática los valores normalizados por \textbf{100 gramos}, ya que estos presentan una mayor disponibilidad y fiabilidad al tratarse de información obligatoria en el etiquetado nutricional, según el Reglamento (UE) nº 1169/2011~\cite{reglamento1169_2011}. Esta elección permite simplificar el procesamiento de los datos, reducir la necesidad de conversiones y validaciones adicionales (por ejemplo, consultar las unidades), y resulta adecuada teniendo en cuenta que los valores nutricionales se \textbf{recalculan} posteriormente en función de la cantidad de alimento empleada en cada producto.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{TO DO: otras secciones}
+\section{Evaluación automatizada de la calidad del código}
 
-Despliegue, Testing, Automatizaciones...
+Para garantizar la robustez, mantenibilidad y calidad técnica de la solución desarrollada, se ha implementado un \textbf{flujo} de integración continua (CI) que automatiza el análisis del código fuente de forma integral. Esta infraestructura permite \textbf{monitorizar} de manera constante el estado del proyecto, asegurando que el desarrollo de nuevas funcionalidades no comprometa la integridad ni la calidad del software existente.
+
+La implementación de este sistema se ha articulado mediante el uso de \textit{GitHub Actions} como \textbf{orquestador} de flujos de trabajo y \textit{SonarCloud} como plataforma de \textbf{análisis estático}. La configuración permite un análisis modular que abarca tanto el \textit{frontend} como el \textit{backend}, centralizando los resultados en un \textbf{único panel} de control.
+
+Cada vez que se sincronizan \textbf{cambios} en el repositorio, se dispara automáticamente un proceso (\textit{workflow}) que prepara el entorno y realiza las siguientes acciones:
+\begin{itemize}
+	\item \textbf{En el \textit{backend}:} se compila la aplicación y se ejecuta la batería de \textbf{pruebas} unitarias y de integración mediante \textit{Maven}. Durante este proceso, se utiliza el componente \textit{JaCoCo} para generar informes de \textbf{cobertura} de código, que son enviados a \textit{SonarCloud} para su evaluación.
+	\item \textbf{En el \textit{frontend}}: aunque esta parte no dispone actualmente de pruebas automatizadas, se integra en el flujo de análisis para evaluar la calidad del código escrito, detectando malas prácticas o posibles errores de lógica en JavaScript/\textit{React}.
+\end{itemize}
+
+La principal ganancia de este enfoque es la obtención de un \textit{``Quality Gate''} o \textbf{umbral de calidad}. Con cada subida de código, el sistema evalúa automáticamente la presencia de errores, vulnerabilidades, duplicidades y ``deuda técnica'' (\textit{code smells}). Esto permite una detección temprana de problemas que, de otra forma, podrían pasar desapercibidos hasta etapas más avanzadas del despliegue.
+
+\todo[inline]{redactar acerca de cómo se ha quitado la cobertura para pasar el quality gate}
+
+\missingfigure{metricas proyecto sonarcloud}
+
+%En la figura \todo{\ref{fig:sonarcloud_metrics}} se muestra el panel de métricas obtenido tras el análisis de la aplicación. En él se puede observar cómo el sistema califica distintos aspectos del software, ofreciendo una visión objetiva y cuantitativa de la salud técnica del proyecto, destacando la ausencia de vulnerabilidades críticas y el cumplimiento de los estándares de desarrollo propuestos.\todo{modificar}
+%
+%\todo[inline]{redactar acerca de cómo se puede navegar por cada módulo y ver las métricas exactas. por ejemplo la cobertura puede poner un 26\% general pero si entras en spring boot se ve que realmente es del 56}

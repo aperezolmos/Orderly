@@ -189,7 +189,7 @@ El diseño se apoya en un módulo independiente que encapsula la lógica de comu
 %---------------------------------------------------------------
 
 \subsection{Infraestructura y despliegue}
-La infraestructura de la aplicación se gestiona mediante \textit{Docker}, empleando \textit{\textbf{Docker Compose}} para la orquestación de los servicios. El sistema se descompone en \textbf{tres contenedores independientes}: el entorno de ejecución para el \textit{frontend} (\textit{React/Vite}), el servidor de aplicaciones (\textit{Spring Boot}) y el motor de base de datos (\textit{MySQL}). El diagrama \ref{fig:C3_despliegue} muestra la arquitectura de despliegue mencionada.\todo{ref a manual prog explicando lo de los volúmenes del front?}
+La infraestructura de la aplicación se gestiona mediante \textit{Docker}, empleando \textit{\textbf{Docker Compose}} para la orquestación de los servicios. El sistema se descompone en \textbf{tres contenedores independientes}: el entorno de ejecución para el \textit{frontend} (\textit{React/Vite}), el servidor de aplicaciones (\textit{Spring Boot}) y el motor de base de datos (\textit{MySQL}). El diagrama \ref{fig:C3_despliegue} muestra la arquitectura de despliegue mencionada.\todo{explicar volúmenes react y mencionar que son para el desarrollo}
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_despliegue.png}{Diagrama de despliegue de la aplicación}{C3_despliegue}
 

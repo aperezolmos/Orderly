@@ -1,12 +1,67 @@
 \capitulo{7}{Conclusiones y Líneas de trabajo futuras}
 
-%Todo proyecto debe incluir las conclusiones que se derivan de su desarrollo. Éstas pueden ser de diferente índole, dependiendo de la tipología del proyecto, pero normalmente van a estar presentes un conjunto de conclusiones relacionadas con los resultados del proyecto y un conjunto de conclusiones técnicas. 
-%Además, resulta muy útil realizar un informe crítico indicando cómo se puede mejorar el proyecto, o cómo se puede continuar trabajando en la línea del proyecto realizado. 
-
 \section{Conclusiones}
 
-...
+El desarrollo de este Trabajo de Fin de Grado me ha permitido abordar de forma práctica el ciclo completo de desarrollo de una aplicación web, desde el análisis y diseño hasta la implementación, despliegue y documentación. Considero que los \textbf{objetivos} planteados al inicio del proyecto se han cumplido satisfactoriamente, ya que se ha obtenido una aplicación funcional y coherente para la gestión de locales de restauración, capaz de centralizar procesos clave como la gestión de productos, pedidos, reservas, mesas y usuarios. Además, la arquitectura diseñada sienta una \textbf{base sólida} para futuras ampliaciones y mejoras.
+
+A nivel técnico, el proyecto ha supuesto una importante oportunidad de \textbf{aprendizaje}, permitiéndome afianzar conceptos generales de ingeniería del \textit{software} y del ciclo de vida del desarrollo adquiridos a lo largo del grado. Destaca especialmente el desarrollo del \textit{frontend} con \textit{React}, tecnología que no había utilizado previamente y que me ha permitido adquirir competencias en el desarrollo de interfaces web modernas. En el \textit{backend}, se ha dado una gran importancia al diseño del modelo de datos y de la lógica de negocio, priorizando la mantenibilidad y la escalabilidad de los componentes. Además, el desarrollo del proyecto ha requerido una planificación cuidadosa del trabajo, fomentando una correcta distribución y priorización de tareas a lo largo del tiempo. 
+
+En este contexto, la implementación de un sistema flexible de roles y \textbf{permisos} aporta un valor significativo a la aplicación, ya que permite adaptarse a \textbf{escenarios reales} donde los puestos de trabajo y sus responsabilidades son cambiantes y específicos, ofreciendo al usuario la capacidad de definir y gestionar sus propios perfiles de acceso según sus necesidades.
+
+Otro aspecto diferencial de la aplicación es la \textbf{integración de la API} de \textit{Open Food Facts}, la cual ha permitido enriquecer los productos con información nutricional, alérgenos y métricas como \textit{Nutri-Score} y NOVA. Este aspecto, unido a mi interés personal y experiencia previa en el sector de la restauración, ha hecho que el desarrollo del proyecto resultara especialmente motivador y satisfactorio, consolidando tanto conocimientos técnicos como habilidades de planificación y organización del trabajo.
 
 \section{Líneas de trabajo futuras}
-...
 
+Como se ha mencionado anteriormente, \textit{Orderly} nace con una arquitectura diseñada para la \textbf{escalabilidad}. Aunque la versión actual cumple con los objetivos de gestión básicos, el sistema se ha concebido como una \textbf{base} sobre la cual se pueden implementar múltiples módulos adicionales. A continuación, se detallarán las principales vías de expansión propuestas.
+
+\subsubsection{Evolución del modelo y gestión de productos}
+\begin{itemize}
+	\item \textbf{Diferenciación de tipos de producto:} clasificación detallada de ítems (entrantes, platos principales, bebidas, postres) para mejorar la organización de la carta.
+	\item \textbf{Venta por peso y unidades de medida:} soporte para precios por kilogramo o litro, permitiendo una gestión más precisa de productos a granel.
+	\item \textbf{Escandallo de costes:} implementación de una herramienta para calcular el coste de producción de cada plato a partir de sus ingredientes y determinar márgenes de beneficio óptimos.
+\end{itemize}
+
+\subsubsection{Módulo visual de sala y reservas}
+\begin{itemize}
+	\item \textbf{Mapa dinámico del comedor:} sustitución de los listados de mesas por una interfaz gráfica interactiva que represente la disposición física del local.
+	\vspace{2em}
+	\item \textbf{Gestión avanzada de reservas:}
+	\begin{itemize}
+		\item Asignación de reservas directamente sobre el mapa visual.
+		\item Historial de ocupación por mesa y tramos horarios.
+		\item Sistema de avisos y recordatorios automáticos para clientes.
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Experiencia del cliente y salud}
+\begin{itemize}
+	\item \textbf{Carta digital interactiva:} expansión de la interfaz para uso de clientes, permitiendo la consulta de platos y su información nutricional en tiempo real.
+	\item \textbf{Generador de menús dinámicos:} creación de menús configurables (ej. menú del día, fin de semana) con reportes nutricionales agregados.
+	\item \textbf{Recomendaciones saludables:} implementación de un motor de sugerencias basado en los perfiles nutricionales obtenidos de la API externa.
+\end{itemize}
+
+\subsubsection{Optimización operativa y analítica}
+\begin{itemize}
+	\item \textbf{Panel de visualización para cocina:} interfaz específica para el personal de cocina que permita gestionar el estado de los pedidos (en preparación, listo para servir) mediante actualizaciones en tiempo real.
+	\item \textbf{Estadísticas:} creación de un \textit{dashboard} analítico para monitorizar los productos más vendidos, horas de mayor afluencia y rendimiento económico.
+	\item \textbf{Gestión de inventario automática:} descuento automático de existencias tras cada pedido e integración de alertas de \textit{stock} bajo.
+\end{itemize}
+
+\subsubsection{Mejoras técnicas y de accesibilidad}
+\begin{itemize}
+	\item \textbf{Seguridad y recuperación:} implementación de un flujo de recuperación de contraseñas mediante envío de credenciales temporales al correo electrónico.
+	\item \textbf{Integración con servicios de terceros:} exploración de conexiones con plataformas de \textit{delivery} e integración de pasarelas de pago \textit{online}.
+	\item \textbf{Calidad de software:} ampliación de la cobertura de pruebas unitarias e integración de pruebas de extremo a extremo (E2E) para el \textit{frontend}.
+\end{itemize}
+
+\subsubsection{Eficiencia técnica y rendimiento del sistema}
+\begin{itemize}
+	\item \textbf{Estrategias de almacenamiento en caché (\textit{Caching}):}
+	\begin{itemize}
+		\item \textbf{Caché de servicios externos:} implementar una capa de caché para almacenar los resultados de la API nutricional, reduciendo el tiempo de respuesta y el consumo de cuota de la API externa (en caso de integrar una nueva API que tenga límite de peticiones).
+		\item \textbf{Caché en el cliente}: optimizar la comunicación entre \textit{React} y \textit{Spring Boot}, evitando peticiones redundantes al \textit{backend} cuando los datos no han variado.
+	\end{itemize}
+	\item \textbf{Sistema de refresco automático de información nutricional:} establecer un mecanismo basado en un tiempo de vida (\textit{Time-To-Live} o \textit{TTL}) para los datos de los alimentos. Una vez superado dicho umbral, el sistema realizaría una petición automática de actualización a la API para garantizar que la información mostrada sea siempre vigente y precisa.
+\end{itemize}
+
+En definitiva, \textit{Orderly} se posiciona como una solución versátil que puede evolucionar desde una herramienta interna de gestión hasta convertirse en una plataforma integral que conecte a trabajadores y clientes bajo un ecosistema digital común.
