@@ -41,9 +41,12 @@ En el desarrollo de este proyecto se han adoptado algunos principios y conceptos
 
 La aplicación sigue una arquitectura \textbf{Cliente-Servidor} con un \textit{frontend} y un \textit{backend} claramente desacoplados. El \textit{frontend}, desarrollado en \textit{React}, se estructura en componentes reutilizables, páginas y servicios modulares que consumen la API mediante un cliente centralizado.
 
-\imagenConEtiqueta[0.55\textwidth]{img/apdo_4/4_arquitectura_capas.png}{Arquitectura en Capas~\cite{oreilly:architecture}}{4_arquitectura_capas}\todo{No sé si incluir esta imagen o crear una nueva yo}
-\vspace{-1em}
-El \textit{backend} implementa una \textbf{Arquitectura en Capas} (\textit{Layered Architecture}) de cuatro niveles, la cual se puede visualizar en la figura \ref{fig:4_arquitectura_capas}:
+%\imagenConEtiqueta[0.55\textwidth]{img/apdo_4/4_arquitectura_capas.png}{Arquitectura en Capas~\cite{oreilly:architecture}}{4_arquitectura_capas}
+%\vspace{-1em}
+
+\imagenConEtiqueta[0.85\textwidth]{img/apen_C/C3_arquitectura.png}{Arquitectura de \textit{Orderly}}{4_arquitectura}
+
+El \textit{backend} implementa una \textbf{Arquitectura en Capas} (\textit{Layered Architecture}) de cuatro niveles, la cual se puede visualizar en la figura \ref{fig:4_arquitectura}:
 \vspace{-2em}
 \begin{enumerate}
 	\setlength{\itemsep}{0pt}
@@ -51,8 +54,8 @@ El \textit{backend} implementa una \textbf{Arquitectura en Capas} (\textit{Layer
 %	\setlength{\parsep}{0pt}
 		\item \textbf{Presentación:} controladores REST finos, responsables de manejar las peticiones HTTP y las respuestas.
 		\item \textbf{Aplicación:} servicios encargados de la orquestación de operaciones y control transaccional.
-		\item \textbf{Persistencia:} repositorios JPA que abstraen \textit{MySQL}.
 		\item \textbf{Dominio:} entidades JPA con comportamiento (modelo rico) que se relacionan entre sí.
+		\item \textbf{Persistencia:} repositorios JPA que abstraen \textit{MySQL}.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,9 +75,7 @@ El \textit{backend} implementa una \textbf{Arquitectura en Capas} (\textit{Layer
 JPA define un estándar para el mapeo objeto-relacional (ORM), permitiendo representar tablas de bases de datos como entidades Java. \textit{Spring Data JPA} abstrae gran parte del código repetitivo asociado al acceso a datos, proporcionando repositorios y mecanismos automáticos de generación de consultas.
 
 \subsubsection{Spring Security}
-\textit{Spring Security}~\cite{spring:springSecurity} es un \textit{framework} orientado a la gestión de la seguridad en aplicaciones Java. Proporciona mecanismos para la autenticación, autorización y protección frente a ataques comunes, como 
-\href{https://www.cloudflare.com/es-es/learning/security/threats/cross-site-request-forgery/}{CSRF} 
-o accesos no autorizados. Se integra de forma nativa con \textit{Spring Boot} y permite definir políticas de seguridad de manera flexible y extensible.
+\textit{Spring Security}~\cite{spring:springSecurity} es un \textit{framework} orientado a la gestión de la seguridad en aplicaciones Java. Proporciona mecanismos para la autenticación, autorización y protección frente a ataques comunes o accesos no autorizados. Se integra de forma nativa con \textit{Spring Boot} y permite definir políticas de seguridad de manera flexible y extensible.
 
 \subsubsection{Spring Validation}
 \textit{Spring Validation}~\cite{spring:validation} es un módulo que permite validar datos de entrada mediante anotaciones declarativas. Se basa en la especificación 
@@ -97,9 +98,9 @@ En nuestra aplicación, los datos que se validan con estas anotaciones son DTOs 
 \textit{React}~\cite{react:intro} es una biblioteca de JavaScript para la construcción de interfaces de usuario basadas en componentes reutilizables. Se centra en la creación de vistas declarativas y en la gestión eficiente del estado y la actualización del \href{https://www.geeksforgeeks.org/javascript/dom-document-object-model/}{DOM} (\textit{Document Object Model}) 
 mediante un modelo de renderizado reactivo.
 
-Su elección se justifica frente a alternativas como \textit{Thymeleaf}~\cite{thymeleaf:tutorial} por las necesidades específicas del proyecto: la gestión de un elevado número de entidades (productos, pedidos, reservas, usuarios, etc.) y la exigencia de una interfaz dinámica y reactiva. El paradigma basado en \textbf{componentes} y la \textbf{arquitectura SPA} (\textit{Single Page Application}) de \textit{React} permiten un desarrollo más modular, mantenible y con mejor experiencia de usuario.
+Su elección se justifica frente a alternativas como \textit{Thymeleaf}~\cite{thymeleaf:tutorial} por las necesidades específicas del proyecto: la gestión de un elevado número de entidades (productos, pedidos, reservas, usuarios, etc.) y la exigencia de una interfaz dinámica y reactiva. El paradigma basado en \textbf{componentes} y la \textbf{arquitectura SPA} (\textit{Single Page Application}) de \textit{React} permiten un desarrollo más modular, mantenible y con mejor experiencia de usuario~\cite{wiki:spa}.
 
-Pese a no haber utilizado \textit{React} previamente, el análisis del proyecto de referencia NutriMenu~\cite{nutrimenu2024} permitió evaluar su viabilidad y agilizar el aprendizaje inicial. Su adopción supuso, por lo tanto, un reto formativo para dominar una herramienta estándar en el sector
+Pese a no haber utilizado \textit{React} previamente, el análisis del proyecto de referencia \textit{NutriMenu}~\cite{nutrimenu2024} permitió evaluar su viabilidad y agilizar el aprendizaje inicial. Su adopción supuso, por lo tanto, un reto formativo para dominar una herramienta estándar en el sector
 
 \subsubsection{Vite}
 \textit{Vite}~\cite{vite:intro} es una herramienta de construcción y desarrollo \textit{frontend} que proporciona un entorno de desarrollo rápido y optimizado. Utiliza un servidor de desarrollo basado en 
@@ -120,7 +121,8 @@ y genera \textit{builds} de producción altamente eficientes, reduciendo signifi
 
 Se ha utilizado esta librería para representar la información nutricional de los productos mediante gráficos interactivos, concretamente gráficos de tipo donut anidado. Estos gráficos permiten visualizar de forma intuitiva la distribución de los distintos valores nutricionales y mostrar información detallada al interactuar con ellos, como se observa en el ejemplo presente en la figura \ref{fig:4_recharts_grafico}.
 
-\imagenConEtiqueta[0.8\textwidth]{img/apdo_4/4_recharts_grafico.png}{Gráfico nutricional de un producto usando \textit{Recharts}}{4_recharts_grafico}\todo{Se usa como placeholder pero se cambiará por el gráfico corregido}
+\vspace{-1ex}
+\imagenConEtiqueta[0.45\textwidth]{img/apdo_4/4_recharts_grafico.png}{Gráfico nutricional de un producto usando \textit{Recharts}}{4_recharts_grafico}
 
 \subsubsection{Zustand}
 \textit{Zustand}~\cite{react:zustand} es una biblioteca ligera para la gestión del estado global en aplicaciones \textit{React}. Se caracteriza por su simplicidad, bajo acoplamiento y uso de \textit{hooks}, permitiendo compartir estado entre componentes sin la complejidad de soluciones más pesadas.
@@ -167,10 +169,12 @@ No obstante, el uso de \textit{Open Food Facts} también presenta algunas \textb
 \textit{Docker Compose}~\cite{docker:compose} es una herramienta que permite definir y gestionar aplicaciones compuestas por múltiples contenedores mediante archivos de configuración declarativos. Facilita la orquestación de servicios, la definición de redes y volúmenes, y el despliegue conjunto de todos los componentes de una aplicación.
 
 \subsection{Automatizaciones}
-\todo[inline]{SonarCloud (si se incluye)}
 
 \subsubsection{GitHub Actions}
 \textit{GitHub Actions}~\cite{github:actions} es una herramienta de automatización e integración continua integrada en \textit{GitHub} que permite definir flujos de trabajo (\textit{workflows}) basados en eventos del repositorio, como \textit{pushes}, \textit{pull requests} o cierres de \textit{issues}. Mediante archivos de configuración declarativos, permite automatizar tareas como la ejecución de pruebas, el análisis de código, la construcción de aplicaciones o la ejecución de herramientas externas.
+
+\subsubsection{SonarCloud}
+\textit{SonarCloud} (\textit{SonarQube Cloud})~\cite{sonarcloud:about} es una plataforma de análisis estático de código basada en la nube que permite evaluar automáticamente la calidad y seguridad del \textit{software}. Se integra en el flujo de integración continua para detectar errores, vulnerabilidades y deuda técnica, proporcionando métricas detalladas sobre la mantenibilidad y la cobertura de pruebas del proyecto.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

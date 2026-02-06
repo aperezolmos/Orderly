@@ -7,6 +7,14 @@
 
 \usepackage{longtable,booktabs}
 \usepackage{enumitem}
+
+\usepackage{pdflscape}
+\usepackage{pifont}
+\usepackage{hhline}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{breakable}
+\usepackage{dirtree}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Castellano
@@ -297,6 +305,14 @@
 \newcommand{\revisionA}[1]{\colorbox{red!40}{#1}}
 \newcommand{\revisionB}[1]{\colorbox{yellow!75}{#1}}
 \newcommand{\revisionC}[1]{\colorbox{green!60}{#1}}
+
+% TABLA COMPARATIVA PERMISOS ACTORES (apéndice B)
+\definecolor{verdeSuave}{RGB}{208, 250, 180}
+\definecolor{amarilloSuave}{RGB}{252, 252, 162}
+
+\newcommand{\TICK}{\cellcolor{verdeSuave}\ding{51}} 
+\newcommand{\QUES}{\cellcolor{amarilloSuave}\textbf{?}}
+
 
 % REQUISITOS (listado ítems) + ETIQUETA. Los parámetros son:
 % 1 -> Texto visible (ej: RF-2.7 Listar productos:)
