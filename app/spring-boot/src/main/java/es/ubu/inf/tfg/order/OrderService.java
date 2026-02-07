@@ -92,9 +92,10 @@ public class OrderService {
         
         Order order = orderMapperFactory.toEntity(orderRequest);
         associateItemsWithOrder(order);
-        order.calculateTotalAmount();
         
         Order savedOrder = orderRepository.save(order);
+        savedOrder.calculateTotalAmount();
+
         return orderMapperFactory.toDetailedResponseDTO(savedOrder);
     }
 

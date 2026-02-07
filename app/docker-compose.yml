@@ -1,7 +1,8 @@
+name: orderly
 services:
   db:
     image: mysql:9.3
-    container_name: tfg-mysql
+    container_name: mysql
     restart: unless-stopped
     env_file: .env
     environment:
@@ -21,7 +22,7 @@ services:
     build:
       context: ./spring-boot
       dockerfile: Dockerfile
-    container_name: tfg-spring-boot
+    container_name: spring-boot
     restart: always
     env_file: .env
     environment:
@@ -37,7 +38,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: tfg-react
+    container_name: react
     restart: always
     env_file: .env
     ports:

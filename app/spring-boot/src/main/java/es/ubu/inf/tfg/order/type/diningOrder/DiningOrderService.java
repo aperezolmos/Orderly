@@ -73,7 +73,7 @@ public class DiningOrderService {
 
     public List<DiningOrderResponseDTO> findPendingDiningOrders() {
         return diningOrderRepository.findPendingDiningOrders(
-                List.of(OrderStatus.PENDING, OrderStatus.IN_PROGRESS, OrderStatus.READY)).stream()
+                List.of(OrderStatus.PENDING, OrderStatus.IN_PROGRESS, OrderStatus.READY, OrderStatus.SERVED)).stream()
                 .map(diningOrderMapper::toResponseDTO).collect(Collectors.toList());
     }
 
