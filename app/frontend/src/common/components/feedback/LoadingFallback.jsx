@@ -14,6 +14,7 @@ const LoadingFallback = () => {
       left={0} 
       w="100vw" 
       h="100vh" 
+      bg="var(--mantine-color-body)"
       style={{ 
         zIndex: 9999
       }}

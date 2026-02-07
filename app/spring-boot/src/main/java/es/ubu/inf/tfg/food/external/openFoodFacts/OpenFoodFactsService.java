@@ -18,8 +18,14 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class OpenFoodFactsService {
 
-    private static final String USER_AGENT = "TFG-Restauracion/0.8.0-beta (apo1004@alu.ubu.es) (https://github.com/aperezolmos)";
-    private static final String OFF_API_URL = 
+    private static final String USER_AGENT = "Orderly/0.9.0-beta (apo1004@alu.ubu.es) (https://github.com/aperezolmos/Orderly)";
+
+    private static final String OFF_SEARCH_URL = 
+        "https://world.openfoodfacts.org/cgi/search.pl?search_terms={query}&search_simple=1&action=process&json=1&fields=" +
+        "code,product_name,brands,image_url" + 
+        "&page_size=20&page={page}";
+
+    private static final String OFF_DETAILS_URL = 
         "https://world.openfoodfacts.org/api/v2/product/{barcode}?fields=" +
         "product_name," +
         "product_name_es," +
@@ -30,49 +36,69 @@ public class OpenFoodFactsService {
         "nutriments";
 
     private final RestTemplate restTemplate = new RestTemplate();
-
     private final OpenFoodFactsMapper openFoodFactsMapper;
 
 
+    public String searchProducts(String query, int page) {
+        
+        log.info("Searching on Open Food Facts: {} - Page: {}", query, page);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.USER_AGENT, USER_AGENT);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                OFF_SEARCH_URL,
+                HttpMethod.GET,
+                entity,
+                String.class,
+                query,
+                page
+            );
+            return response.getBody();
+        } 
+        catch (Exception ex) {
+            log.error("Error in Open Food Facts search: {}", ex.getMessage());
+            throw new OpenFoodFactsException("Error in external search");
+        }
+    }
+
     public OpenFoodFactsProductDTO fetchProductByBarcode(String barcode) {
         
-        log.info("Intentando obtener producto de Open Food Facts para código de barras: {}", barcode);
-        log.debug("URL de la API: {}, Código de barras: {}", OFF_API_URL, barcode);
+        log.info("Trying to get product from Open Food Facts for barcode: {}", barcode);
         
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.USER_AGENT, USER_AGENT);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
-        
-        log.debug("Headers configurados - User-Agent: {}", USER_AGENT);
 
         ResponseEntity<OpenFoodFactsResponseDTO> response;
         try {
-            log.debug("Realizando petición GET a Open Food Facts API...");
             response = restTemplate.exchange(
-                OFF_API_URL,
+                OFF_DETAILS_URL,
                 HttpMethod.GET,
                 entity,
                 OpenFoodFactsResponseDTO.class,
                 barcode
             );
-            log.debug("Respuesta recibida - Status: {}, Headers: {}", 
+            log.debug("Response received - Status: {}, Headers: {}", 
                      response.getStatusCode(), response.getHeaders());
             
         } 
         catch (Exception ex) {
-            log.error("Error al obtener producto de Open Food Facts para código de barras: {}. Error: {}", 
+            log.error("Error retrieving product from Open Food Facts for barcode: {}. Error: {}", 
                      barcode, ex.getMessage(), ex);
             throw new OpenFoodFactsException("Error fetching product from Open Food Facts: " + ex.getMessage());
         }
 
         if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null || response.getBody().getProduct() == null) {
-            log.warn("Producto no encontrado en Open Food Facts para código de barras: {}. Status: {}", 
+            log.warn("Product not found in Open Food Facts for barcode: {}. Status: {}", 
                     barcode, response.getStatusCode());
             throw new OpenFoodFactsException("Product not found in Open Food Facts for barcode: " + barcode);
         }
 
-        log.info("Producto obtenido exitosamente de Open Food Facts para código de barras: {}", barcode);
-        log.debug("Contenido de la respuesta: {}", response.getBody().getProduct());
+        log.info("Product successfully obtained from Open Food Facts for barcode: {}", barcode);
+        log.debug("Content of the response: {}", response.getBody().getProduct());
         
         return response.getBody().getProduct();
     }

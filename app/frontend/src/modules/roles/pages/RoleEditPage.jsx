@@ -25,11 +25,11 @@ const RoleEditPage = () => {
 
   
   useEffect(() => {
-    if (id) loadRoleById(parseInt(id));
+    if (id) loadRoleById(Number.parseInt(id));
   }, [id, loadRoleById]);
 
   const handleSubmit = async (roleData) => {
-    await updateRole(parseInt(id), roleData);
+    await updateRole(Number.parseInt(id), roleData);
     navigate('/roles', { replace: true });
   };
 

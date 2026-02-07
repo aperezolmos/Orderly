@@ -8,7 +8,9 @@ import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -58,14 +60,6 @@ public class FoodController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFood);
     }
 
-    @PostMapping("/external/{barcode}")
-    @PreAuthorize("hasAuthority('FOOD_CREATE')")
-    public ResponseEntity<FoodResponseDTO> createFoodFromExternalAPI(@PathVariable String barcode) {
-        FoodRequestDTO foodRequest = openFoodFactsService.createFoodFromOpenFoodFacts(barcode);
-        FoodResponseDTO createdFood = foodService.create(foodRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdFood);
-    }
-
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('FOOD_EDIT')")
     public ResponseEntity<FoodResponseDTO> updateFood(
@@ -100,5 +94,29 @@ public class FoodController {
     @PreAuthorize("hasAnyAuthority('FOOD_VIEW_LIST', 'FOOD_CREATE', 'FOOD_EDIT')")
     public ResponseEntity<List<String>> getAllAllergens() {
         return ResponseEntity.ok(foodService.getAllAllergens());
+    }
+
+
+    // --------------------------------------------------------
+    // EXTERNAL FOOD API ENDPOINTS
+    @GetMapping("/external/search")
+    @PreAuthorize("hasAuthority('FOOD_CREATE')")
+    public ResponseEntity<String> searchFoodFromExternalAPI(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "1") int page) {
+        
+        String jsonResponse = openFoodFactsService.searchProducts(query, page);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(jsonResponse);
+    }
+
+    @PostMapping("/external/{barcode}")
+    @PreAuthorize("hasAuthority('FOOD_CREATE')")
+    public ResponseEntity<FoodResponseDTO> createFoodFromExternalAPI(@PathVariable String barcode) {
+        
+        FoodRequestDTO foodRequest = openFoodFactsService.createFoodFromOpenFoodFacts(barcode);
+        FoodResponseDTO createdFood = foodService.create(foodRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdFood);
     }
 }

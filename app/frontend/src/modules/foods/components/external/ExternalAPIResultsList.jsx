@@ -1,12 +1,12 @@
 import { Stack } from '@mantine/core';
-import OpenFoodFactsResultItem from './OpenFoodFactsResultItem';
+import ExternalAPIResultItem from './ExternalAPIResultItem';
 
 
-const OpenFoodFactsResultsList = ({ results, onAdd, disabled }) => (
+const ExternalAPIResultsList = ({ results, onAdd, disabled }) => (
   
   <Stack gap="md">
     {results.map(product => (
-      <OpenFoodFactsResultItem
+      <ExternalAPIResultItem
         key={product.code}
         product={product}
         onAdd={onAdd}
@@ -16,4 +16,4 @@ const OpenFoodFactsResultsList = ({ results, onAdd, disabled }) => (
   </Stack>
 );
 
-export default OpenFoodFactsResultsList;
+export default ExternalAPIResultsList;

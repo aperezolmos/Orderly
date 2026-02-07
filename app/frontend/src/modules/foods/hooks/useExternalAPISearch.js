@@ -1,14 +1,10 @@
 import { useState, useCallback } from 'react';
 import { notifications } from '@mantine/notifications';
-import { openFoodFactsService } from '../../../services/external/openFoodFactsService';
 import { foodService } from '../../../services/backend/foodService';
 import { useTranslation } from 'react-i18next';
 
 
-const PAGE_SIZE = 15;
-
-
-export function useOpenFoodFactsSearch() {
+export function useExternalAPISearch() {
   
   const { t } = useTranslation(['foods', 'common']);
   const [results, setResults] = useState([]);
@@ -21,17 +17,17 @@ export function useOpenFoodFactsSearch() {
   const [creating, setCreating] = useState(false);
 
 
-  const search = useCallback(async (query, pageNum = 1) => {
+  const search = useCallback(async (query, page = 1) => {
     
     setLoading(true);
     setError(null);
     setSearched(true);
     
     try {
-      const res = await openFoodFactsService.searchProducts(query, pageNum, PAGE_SIZE);
+      const res = await foodService.searchFoodFromExternalAPI(query, page);
       setResults(res.products || []);
-      setPage(pageNum);
-      setPageCount(Math.ceil((res.count || 0) / PAGE_SIZE));
+      setPage(page);
+      setPageCount(res.page_count);
       setLastQuery(query);
     } 
     catch (err) {
@@ -48,19 +44,19 @@ export function useOpenFoodFactsSearch() {
     }
   }, [t]);
 
-  // Cambiar de página repite la última búsqueda
+  // Changing pages repeats the last search
   const handleSetPage = (p) => {
     setPage(p);
     if (lastQuery) search(lastQuery, p);
   };
 
   
-  const createFoodFromOFFBarcode = async (barcode) => {
+  const createFoodFromExternalAPIBarcode = async (barcode) => {
     
     setCreating(true);
     
     try {
-      await foodService.createFoodFromOFFBarcode(barcode);
+      await foodService.createFoodFromExternalAPIBarcode(barcode);
       notifications.show({
         title: t('common:app.success'),
         message: t('foods:notifications.createSuccess'),
@@ -91,6 +87,6 @@ export function useOpenFoodFactsSearch() {
     setPage: handleSetPage,
     searched,
     creating,
-    createFoodFromOFFBarcode,
+    createFoodFromExternalAPIBarcode,
   };
 }

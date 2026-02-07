@@ -25,11 +25,11 @@ const FoodEditPage = () => {
   
 
   useEffect(() => {
-    if (id) loadFoodById(parseInt(id));
+    if (id) loadFoodById(Number.parseInt(id));
   }, [id, loadFoodById]);
 
   const handleSubmit = async (foodData) => {
-    await updateFood(parseInt(id), foodData);
+    await updateFood(Number.parseInt(id), foodData);
     navigate('/foods', { replace: true });
   };
 

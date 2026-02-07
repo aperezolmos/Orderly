@@ -28,11 +28,11 @@ const UserEditPage = () => {
   
 
   useEffect(() => {
-    if (id) loadUserById(parseInt(id));
+    if (id) loadUserById(Number.parseInt(id));
   }, [id, loadUserById]);
 
   const handleSubmit = async (userData) => {
-    await updateUser(parseInt(id), userData);
+    await updateUser(Number.parseInt(id), userData);
     navigate('/users', { replace: true });
   };
 

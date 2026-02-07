@@ -25,11 +25,11 @@ const ReservationEditPage = () => {
 
 
   useEffect(() => {
-    if (id) loadReservationById(parseInt(id));
+    if (id) loadReservationById(Number.parseInt(id));
   }, [id, loadReservationById]);
 
   const handleSubmit = async (reservationData) => {
-    await updateReservation(parseInt(id), reservationData);
+    await updateReservation(Number.parseInt(id), reservationData);
     navigate('/reservations', { replace: true });
   };
 

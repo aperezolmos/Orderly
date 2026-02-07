@@ -32,7 +32,7 @@ const STATUS_COLORS = {
   'CONFIRMED': 'blue',
   'SEATED': 'green',
   'COMPLETED': 'gray',
-  'CANCELLED': 'red',
+  // CANCELLED already defined
   
   // Dining Tables
   'ACTIVE': 'green',
