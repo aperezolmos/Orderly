@@ -1,4 +1,4 @@
-package es.ubu.inf.tfg.user.init;
+package es.ubu.inf.tfg.init;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Order(1)
 public class UserDataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
@@ -82,9 +84,9 @@ public class UserDataInitializer implements CommandLineRunner {
         if (!userRepository.existsByUsername(adminUsername)) {
             
             Role adminRole = roleRepository.findByName(adminRoleName)
-                    .orElseThrow(() -> new IllegalStateException("Admin role not found. Please check database initialization."));
+                    .orElseThrow(() -> new IllegalStateException("Admin role not found. Please check database initialization"));
             Role userRole = roleRepository.findByName(userRoleName)
-                    .orElseThrow(() -> new IllegalStateException("User role not found. Please check database initialization."));
+                    .orElseThrow(() -> new IllegalStateException("User role not found. Please check database initialization"));
 
             Set<Role> roles = new HashSet<>();
             roles.add(adminRole);

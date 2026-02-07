@@ -58,7 +58,13 @@ public class OrderItem {
 
     @PrePersist
     protected void onCreate() {
-        calculateTotalPrice();
+
+        if (this.product != null) {
+            if (this.unitPrice == null || this.unitPrice.compareTo(BigDecimal.ZERO) == 0) {
+                this.unitPrice = this.product.getPrice();
+            }
+            calculateTotalPrice();
+        }
     }
 
     @PreUpdate
