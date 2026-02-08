@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.food;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -85,7 +86,7 @@ public class Food {
             (this.servingWeightGrams == null || this.servingWeightGrams.compareTo(BigDecimal.ZERO) <= 0)) {
             return NutritionInfo.builder().build();
         }
-        BigDecimal factor = quantityInGrams.divide(this.servingWeightGrams);
+        BigDecimal factor = quantityInGrams.divide(this.servingWeightGrams, 6, RoundingMode.HALF_UP);
         return this.nutritionInfo.multiplyByFactor(factor);
     }
 }

@@ -55,7 +55,7 @@ const AllergenItem = ({ code }) => {
 };
 
 
-const AllergensList = ({ allergenInfo, idSuffix = 'default' }) => {
+const AllergensList = ({ allergenInfo, idSuffix = 'default', defaultOpen = false }) => {
   
   const { t } = useTranslation(['foods']);
   
@@ -67,7 +67,8 @@ const AllergensList = ({ allergenInfo, idSuffix = 'default' }) => {
     <Accordion 
       variant="filled"
       chevronPosition="left" 
-      radius="sm" 
+      radius="sm"
+      defaultValue={defaultOpen ? accordionId : null}
       styles={{ 
         item: { border: 'none', backgroundColor: 'transparent' },
         control: { padding: '0px', height: '30px', '&:hover': { backgroundColor: 'transparent' } },

@@ -43,11 +43,14 @@
   "ingredients": {
     "title": "Ingredients",
     "searchFood": "Search food by name...",
-    "add": "Add",
+    "add": "Add ingredient",
+    "alreadyAdded": "Ingredient already added",
+    "inList": "Ingredient present in list",
     "food": "Food",
     "quantity": "Quantity (g)",
     "actions": "Actions",
     "noIngredients": "No ingredients added",
+    "noResults": "No ingredients found containing specified text",
     "edit": "Edit"
   },
   "nutrition": {

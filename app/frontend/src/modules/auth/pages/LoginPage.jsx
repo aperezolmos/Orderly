@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/profile', { replace: true });
+      navigate('/', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -29,7 +29,7 @@ const LoginPage = () => {
         message: t('auth:login.success'),
         color: 'green',
       });
-      navigate('/profile', { replace: true });
+      navigate('/', { replace: true });
     } 
     catch (err) {
       console.error('Login failed:', err);

@@ -117,9 +117,6 @@ const ProductNutritionInfoView = ({ nutritionInfo }) => {
         
         <Tabs.Panel value="micros" pt="xs">
           <Stack>
-            <Title order={5} mb="xs">
-              {t('foods:form.minerals.title')}
-            </Title>
             <MicroTable
               data={nutritionInfo.minerals}
               t={t}
@@ -127,9 +124,6 @@ const ProductNutritionInfoView = ({ nutritionInfo }) => {
               referenceMap={REFERENCE_MINERALS}
             />
             
-            <Title order={5} mt="md" mb="xs">
-              {t('foods:form.vitamins.title')}
-            </Title>
             <MicroTable
               data={nutritionInfo.vitamins}
               t={t}

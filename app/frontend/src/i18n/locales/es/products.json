@@ -43,11 +43,14 @@
   "ingredients": {
     "title": "Ingredientes",
     "searchFood": "Buscar alimento por nombre...",
-    "add": "Añadir",
+    "add": "Añadir ingrediente",
+    "alreadyAdded": "Ingrediente ya añadido",
+    "inList": "Ingrediente presente en la lista",
     "food": "Alimento",
     "quantity": "Cantidad (g)",
     "actions": "Acciones",
     "noIngredients": "No hay ingredientes añadidos",
+    "noResults": "No se encontraron ingredientes que contengan el texto especificado",
     "edit": "Editar"
   },
   "nutrition": {

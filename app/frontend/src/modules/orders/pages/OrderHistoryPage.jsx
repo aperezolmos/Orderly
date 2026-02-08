@@ -1,5 +1,5 @@
 import { useCallback, useState, useMemo } from 'react';
-import { Button, Group, Paper, Title, Container, Modal, Loader, Center, Box, Text, Badge } from '@mantine/core';
+import { Button, Group, Title, Container, Modal, Loader, Center, Box, Badge } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { IconShoppingCartSearch } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
@@ -8,6 +8,7 @@ import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagin
 import OrderDetailsTable from '../components/OrderDetailsTable';
 import { useOrderHistory, ORDER_HISTORY_VIEW } from '../hooks/useOrderHistory';
 import { getNavigationConfig } from '../../../utils/navigationConfig';
+import { getStatusColor } from '../../../utils/statuses';
 
 
 const viewButtons = [
@@ -15,15 +16,6 @@ const viewButtons = [
   { key: ORDER_HISTORY_VIEW.BAR, color: 'teal' },
   { key: ORDER_HISTORY_VIEW.DINING, color: 'orange' },
 ];
-
-const statusColors = {
-  PENDING: 'yellow',
-  IN_PROGRESS: 'blue',
-  READY: 'teal',
-  SERVED: 'green',
-  PAID: 'gray',
-  CANCELLED: 'red',
-};
 
 
 export default function OrderHistoryPage() {
@@ -81,7 +73,7 @@ export default function OrderHistoryPage() {
       key: 'status',
       title: t('orders:list.status'),
       render: (order) => (
-        <Badge color={statusColors[order.status] || 'gray'}>
+        <Badge color={getStatusColor(order.status)}>
           {t(`orders:status.${order.status}`, order.status)}
         </Badge>
       )
