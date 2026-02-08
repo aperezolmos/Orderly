@@ -33,7 +33,7 @@ const DataTable = ({
       ))}
       {actions && (
         <Table.Td>
-          <Group gap="xs" justify="flex-start">
+          <Group gap="xs" justify="flex-end">
             <ActionIcon 
               variant="subtle" 
               color="blue" 

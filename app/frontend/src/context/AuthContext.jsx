@@ -1,4 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
+import { notifications } from '@mantine/notifications';
+import { useTranslation } from 'react-i18next';
 import { authService } from '../services/backend/authService';
 
 
@@ -11,6 +13,8 @@ export const AuthProvider = ({ children }) => {
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { t } = useTranslation(['auth']);
+
 
   // Check if a user is logged in when loading the app
   useEffect(() => {
@@ -27,10 +31,8 @@ export const AuthProvider = ({ children }) => {
       try {
         const perms = await authService.getCurrentUserPermissions();
         setPermissions(perms || []);
-        console.log('Permisos obtenidos (checkAuthStatus):', perms);
       } 
-      catch (pErr) {
-        console.warn('No se pudieron obtener permisos tras recarga:', pErr); //TODO: borrar
+      catch {
         setPermissions([]);
       }
 
@@ -46,13 +48,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateUserContext = (userData) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      ...userData
-    }));
-  };
-
   const login = async (username, password) => {
     try {
       setLoading(true);
@@ -63,17 +58,26 @@ export const AuthProvider = ({ children }) => {
       try {
         const perms = await authService.getCurrentUserPermissions();
         setPermissions(perms || []);
-        console.log('Permisos obtenidos (login):', perms);
+
+        notifications.show({
+          title: t('common:app.success'),
+          message: t('auth:login.success'),
+          color: 'green',
+        });
       } 
-      catch (pErr) {
-        console.warn('No se pudieron obtener permisos tras login:', pErr); //TODO: borrar
+      catch {
         setPermissions([]);
       }
       
       return userData;
     } 
     catch (err) {
-      setError(err.message);
+      if (err.status === 400) {
+        setError(t('auth:login.errors.invalidCredentials'));
+      }
+      else {
+        setError(err.message);
+      }
       throw err;
     } 
     finally {
@@ -91,10 +95,14 @@ export const AuthProvider = ({ children }) => {
       try {
         const perms = await authService.getCurrentUserPermissions();
         setPermissions(perms || []);
-        console.log('Permisos obtenidos (register):', perms);
+
+        notifications.show({
+          title: t('common:app.welcome'),
+          message: t('auth:register.success'),
+          color: 'green',
+        });
       } 
-      catch (pErr) {
-        console.warn('No se pudieron obtener permisos tras register:', pErr);
+      catch {
         setPermissions([]);
       }
       
@@ -110,16 +118,13 @@ export const AuthProvider = ({ children }) => {
   };
   
   const logout = async () => {
-    try {
-      setLoading(true);
-      await authService.logout();
-    } 
-    finally {
-      setUser(null);
-      setPermissions([]);
-      setError(null);
-      setLoading(false);
-    }
+    setLoading(true);
+    await authService.logout();
+      
+    setUser(null);
+    setPermissions([]);
+    setError(null);
+    setLoading(false);
   };
 
   const clearError = () => setError(null);
@@ -131,7 +136,7 @@ export const AuthProvider = ({ children }) => {
     permissions,
     loading,
     error,
-    updateUserContext,
+    checkAuthStatus,
     login,
     register,
     logout,

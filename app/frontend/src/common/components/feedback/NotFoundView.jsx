@@ -1,10 +1,10 @@
 import { Container, Title, Text, Button, Stack, Center } from '@mantine/core';
-import { IconShieldLock, IconHome } from '@tabler/icons-react';
+import { IconMoodPuzzled, IconHome } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 
-const AccessDeniedView = () => {
+const NotFoundView = () => {
   
   const { t } = useTranslation('common');
   const navigate = useNavigate();
@@ -13,24 +13,24 @@ const AccessDeniedView = () => {
   return (
     <Center style={{ height: '70vh' }}>
       <Container size="sm" p="xl">
-        <Stack align="center" spacing="xl">
-          <IconShieldLock 
+        <Stack align="center" gap="xl">
+          <IconMoodPuzzled 
             size={80} 
             style={{ 
-              color: 'var(--mantine-color-red-7)',
-              opacity: 0.7
+              color: 'var(--mantine-color-blue-6)',
+              opacity: 0.6
             }} 
           />
           
           <div style={{ textAlign: 'center' }}>
-            <Title order={1} size="h2" fw={900} c="red.6">
-              403
+            <Title order={1} size="h2" fw={900} c="blue.6">
+              404
             </Title>
             <Title order={2} size="h3" fw={700} mt="md">
-              {t('common:error.accessDenied.title')}
+              {t('common:error.pageNotFound.title')}
             </Title>
             <Text size="lg" c="dimmed" mt="sm">
-              {t('common:error.accessDenied.description')}
+              {t('common:error.pageNotFound.description')}
             </Text>
           </div>
 
@@ -50,4 +50,4 @@ const AccessDeniedView = () => {
   );
 };
 
-export default AccessDeniedView;
+export default NotFoundView;

@@ -10,17 +10,28 @@ import { useUsers } from '../../users/hooks/useUsers';
 const ProfileEditPage = () => {
   
   const navigate = useNavigate();
-  const { user: authUser, hasPermission, updateUserContext } = useAuth();
+  const { user: authUser, hasPermission, checkAuthStatus, logout } = useAuth();
   const { updateUser, loading, error, clearError } = useUsers();
   const { t } = useTranslation(['common', 'auth']);
   
 
   const handleSubmit = async (userData) => {
+
+    const usernameChanged = userData.username !== authUser.username;
     const updatedUser = await updateUser(authUser.id, userData);
     
     if (updatedUser) {
-      updateUserContext(updatedUser);
-      navigate('/profile', { replace: true });
+      if (usernameChanged) {
+        await logout();
+        navigate('/login', { 
+          replace: true, 
+          state: { forcedLogout: true, reason: 'username_changed' } 
+        });
+      } 
+      else {
+        checkAuthStatus();
+        navigate('/profile', { replace: true });
+      }
     }
   };
 

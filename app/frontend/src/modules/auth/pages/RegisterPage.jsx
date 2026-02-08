@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoadingOverlay, Box, Text } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../context/AuthContext';
-import { notifications } from '@mantine/notifications';
 import AuthLayout from '../layouts/AuthLayout';
 import RegisterForm from '../components/RegisterForm';
-import { useTranslation } from 'react-i18next';
 
 
 const RegisterPage = () => {
@@ -24,11 +23,6 @@ const RegisterPage = () => {
   const handleRegister = async (values) => {
     try {
       await register(values);
-      notifications.show({
-        title: t('common:app.welcome'),
-        message: t('auth:register.success'),
-        color: 'green',
-      });
       navigate('/', { replace: true });
     } 
     catch (err) {

@@ -85,7 +85,7 @@
   },
   "errors": {
     "loadError": "Error loading order",
-    "notFound": "Could not load order with ID: {{id}}",
+    "notFound": "Order not found",
     "notFoundDetails": "The order may have been deleted or you may not have permission to access it"
   }
 }
