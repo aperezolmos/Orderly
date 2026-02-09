@@ -29,6 +29,12 @@ public class DiningOrderService {
                 .map(diningOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
+    
+    public List<DiningOrderResponseDTO> findAllHistory() {
+        return diningOrderRepository.findAllByOrderByUpdatedAtDescCreatedAtDesc().stream()
+                .map(diningOrderMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 
     public DiningOrderResponseDTO findById(Integer id) {
         DiningOrder diningOrder = diningOrderRepository.findById(id)

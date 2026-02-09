@@ -17,6 +17,7 @@ public interface BarOrderRepository extends JpaRepository<BarOrder, Integer> {
     List<BarOrder> findByDrinksOnlyAndStatus(Boolean drinksOnly, OrderStatus status);
     List<BarOrder> findByEmployeeId(Integer employeeId);
     List<BarOrder> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    List<BarOrder> findAllByOrderByUpdatedAtDescCreatedAtDesc();
 
     @Query("SELECT b FROM BarOrder b WHERE b.status IN :statuses ORDER BY b.createdAt ASC")
     List<BarOrder> findPendingBarOrders(@Param("statuses") List<OrderStatus> statuses);

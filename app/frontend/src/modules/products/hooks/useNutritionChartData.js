@@ -174,42 +174,42 @@ export const useNutritionChartData = (nutritionInfo) => {
     return [
       {
         key: 'calories',
-        value: correctedData.calories != null ? Number(correctedData.calories.toFixed(2)) : null,
+        value: correctedData.calories === null ? null : Number(correctedData.calories.toFixed(2)),
         unit: 'kcal'
       },
       {
         key: 'carbohydrates',
-        value: correctedData.carbohydrates != null ? Number(correctedData.carbohydrates.toFixed(2)) : null,
+        value: correctedData.carbohydrates === null ? null : Number(correctedData.carbohydrates.toFixed(2)),
         unit: 'g'
       },
       {
         key: 'sugars',
-        value: correctedData.sugars != null ? Number(correctedData.sugars.toFixed(2)) : null,
+        value: correctedData.sugars === null ? null : Number(correctedData.sugars.toFixed(2)),
         unit: 'g'
       },
       {
         key: 'protein',
-        value: correctedData.protein != null ? Number(correctedData.protein.toFixed(2)) : null,
+        value: correctedData.protein === null ? null : Number(correctedData.protein.toFixed(2)),
         unit: 'g'
       },
       {
         key: 'fats',
-        value: correctedData.fats != null ? Number(correctedData.fats.toFixed(2)) : null,
+        value: correctedData.fats === null ? null : Number(correctedData.fats.toFixed(2)),
         unit: 'g'
       },
       {
         key: 'saturatedFats',
-        value: correctedData.saturatedFats != null ? Number(correctedData.saturatedFats.toFixed(2)) : null,
+        value: correctedData.saturatedFats === null ? null : Number(correctedData.saturatedFats.toFixed(2)),
         unit: 'g'
       },
       {
         key: 'fiber',
-        value: correctedData.fiber != null ? Number(correctedData.fiber.toFixed(2)) : null,
+        value: correctedData.fiber === null ? null : Number(correctedData.fiber.toFixed(2)),
         unit: 'g'
       },
       {
         key: 'salt',
-        value: correctedData.salt != null ? Number(correctedData.salt.toFixed(2)) : null,
+        value: correctedData.salt === null ? null : Number(correctedData.salt.toFixed(2)),
         unit: 'g'
       }
     ];

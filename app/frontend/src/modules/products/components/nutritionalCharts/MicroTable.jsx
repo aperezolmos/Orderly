@@ -10,13 +10,13 @@ const MicroTable = ({ data, t, prefix, referenceMap }) => {
   };
 
   return (
-    <Table.ScrollContainer minWidth={500}>
-      <Table striped highlightOnHover withTableBorder horizontalSpacing="sm">
+    <Table.ScrollContainer minWidth={350}>
+      <Table striped highlightOnHover withTableBorder horizontalSpacing="sm" layout="fixed">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>{t(`${prefix}.title`)}</Table.Th>
-            <Table.Th>{t('foods:form.nutritionInfo.value')}</Table.Th>
-            <Table.Th>{t('foods:form.nutritionInfo.reference')}</Table.Th>
+            <Table.Th style={{ width: '50%' }}>{t(`${prefix}.title`)}</Table.Th>
+            <Table.Th style={{ width: '25%' }}>{t('foods:form.nutritionInfo.value')}</Table.Th>
+            <Table.Th style={{ width: '25%' }}>{t('foods:form.nutritionInfo.reference')}</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
@@ -28,9 +28,9 @@ const MicroTable = ({ data, t, prefix, referenceMap }) => {
                 bg={getRowBg(value, reference)}
               >
                 <Table.Td fw={500}>{t(`${prefix}.${key}`)}</Table.Td>
-                <Table.Td>{value != null ? `${value} mg` : '-'}</Table.Td>
+                <Table.Td>{value === null ? '-' : `${value} mg`}</Table.Td>
                 <Table.Td c="dimmed">
-                  {reference != null ? `${reference} mg` : '-'}
+                  {reference === null ? '-' : `${reference} mg`}
                 </Table.Td>
               </Table.Tr>
             );

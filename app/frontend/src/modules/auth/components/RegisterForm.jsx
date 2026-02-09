@@ -48,7 +48,7 @@ const RegisterForm = ({
         return null;
       },
       confirmPassword: (value, values) => 
-        value !== values.password ? t('users:validation.passwordsMatch') : null,
+        value === values.password ? null : t('users:validation.passwordsMatch'),
     },
   });
 

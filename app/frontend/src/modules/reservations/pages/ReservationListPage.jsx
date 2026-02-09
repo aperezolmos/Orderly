@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, Badge, LoadingOverlay } from '@mantine/core';
+import { Group, Text, Modal, Button, LoadingOverlay } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconUser } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';

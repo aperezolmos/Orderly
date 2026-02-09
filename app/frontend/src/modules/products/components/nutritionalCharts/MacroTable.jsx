@@ -28,9 +28,9 @@ const MacroTable = ({ data, t }) => {
               bg={getRowBg(row.value, row.reference)}
             >
               <Table.Td fw={500}>{t(`foods:form.nutritionInfo.${row.key}`)}</Table.Td>
-              <Table.Td>{row.value != null ? `${row.value} ${row.unit}` : '-'}</Table.Td>
+              <Table.Td>{row.value === null ? '-' : `${row.value} ${row.unit}`}</Table.Td>
               <Table.Td c="dimmed">
-                {row.reference != null ? `${row.reference} ${row.unit}` : '-'}
+                {row.reference === null ? '-' : `${row.reference} ${row.unit}`}
               </Table.Td>
             </Table.Tr>
           ))}

@@ -1,34 +1,34 @@
 export const REFERENCE_VALUES = {
-  calories: 2000, // kcal/día (adulto medio)
-  carbohydrates: 260, // g/día
-  sugars: 90, // g/día
-  protein: 50, // g/día
-  fats: 70, // g/día
-  saturatedFats: 20, // g/día
-  fiber: 25, // g/día
-  salt: 6, // g/día
+  calories: 2000, // kcal/day (average adult)
+  carbohydrates: 260, // g/day
+  sugars: 25, // g/day
+  protein: 60, // g/day
+  fats: 70, // g/day
+  saturatedFats: 20, // g/day
+  fiber: 25, // g/day
+  salt: 5, // g/day
 };
 
 export const REFERENCE_MINERALS = {
-  calcium: 1000, // mg/día
-  iron: 14, // mg/día
-  magnesium: 375, // mg/día
-  phosphorus: 700, // mg/día
-  potassium: 3500, // mg/día
-  selenium: 55, // mg/día
-  sodium: 2000, // mg/día
-  zinc: 10, // mg/día
+  calcium: 1000, // mg/day
+  iron: 14, // mg/day
+  magnesium: 375, // mg/day
+  phosphorus: 700, // mg/day
+  potassium: 3500, // mg/day
+  selenium: 0.055, // mg/day
+  sodium: 2000, // mg/day
+  zinc: 10, // mg/day
 };
 
 export const REFERENCE_VITAMINS = {
-  vitaminA: 800, // µg/día (retinol eq.)
-  vitaminC: 80, // mg/día
-  vitaminD: 5, // µg/día
-  vitaminE: 12, // mg/día
-  vitaminB1: 1.1, // mg/día
-  vitaminB2: 1.4, // mg/día
-  vitaminB3: 16, // mg/día
-  vitaminB6: 1.4, // mg/día
-  vitaminB9: 200, // µg/día
-  vitaminB12: 2.5, // µg/día
+  vitaminA: 0.75, // mg/day
+  vitaminC: 95, // mg/day
+  vitaminD: 0.015, // mg/day
+  vitaminE: 12, // mg/day
+  vitaminB1: 1.1, // mg/day
+  vitaminB2: 1.4, // mg/day
+  vitaminB3: 16, // mg/day
+  vitaminB6: 1.7, // mg/day
+  vitaminB9: 0.33, // mg/day
+  vitaminB12: 0.004, // mg/day
 };

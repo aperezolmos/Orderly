@@ -1,5 +1,4 @@
 import { Navigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import LoadingFallback from './feedback/LoadingFallback';
 import AccessDeniedView from './feedback/AccessDeniedView';
@@ -9,7 +8,7 @@ import MainLayout from '../layouts/MainLayout';
 const ProtectedRoute = ({ children, requiredPermissions = [], allRequired = false }) => {
   
   const { isAuthenticated, loading, permissions } = useAuth();
-  const { t } = useTranslation('common');
+
 
   if (loading) return <LoadingFallback />;
   if (!isAuthenticated) return <Navigate to="/login" replace />;

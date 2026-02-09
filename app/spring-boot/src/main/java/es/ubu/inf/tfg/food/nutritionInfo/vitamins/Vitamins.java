@@ -18,43 +18,43 @@ import lombok.*;
 public class Vitamins {
     
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminA = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminC = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminD = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminE = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminB1 = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminB2 = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminB3 = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminB6 = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminB9 = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal vitaminB12 = BigDecimal.ZERO;
        
     

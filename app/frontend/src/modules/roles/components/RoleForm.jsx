@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { TextInput, Textarea, Button, Group, LoadingOverlay, Tabs } from '@mantine/core';
+import { Textarea, Button, Group, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import PermissionCheckboxList from './PermissionCheckboxList';

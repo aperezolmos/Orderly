@@ -74,7 +74,7 @@ const UserListPage = () => {
       render: (user) => {
         const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ');
         return (
-          <Text color={!fullName ? "dimmed" : undefined} fs={!fullName ? "italic" : undefined}>
+          <Text color={fullName ? undefined : "dimmed"} fs={fullName ? undefined : "italic"}>
             {fullName || t('users:list.notSpecified')}
           </Text>
         );

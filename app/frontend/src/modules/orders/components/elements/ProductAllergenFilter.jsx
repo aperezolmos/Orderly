@@ -1,4 +1,4 @@
-import { MultiSelect, Button, Group, Popover } from '@mantine/core';
+import { MultiSelect, Button, Popover } from '@mantine/core';
 import { IconFilterSearch } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { ALLERGENS } from '../../../../utils/foodEnums';

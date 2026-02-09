@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class OpenFoodFactsService {
 
-    private static final String USER_AGENT = "Orderly/0.9.0-beta (apo1004@alu.ubu.es) (https://github.com/aperezolmos/Orderly)";
+    private static final String USER_AGENT = "Orderly/1.0.0 (apo1004@alu.ubu.es) (https://github.com/aperezolmos/Orderly)";
 
     private static final String OFF_SEARCH_URL = 
         "https://world.openfoodfacts.org/cgi/search.pl?search_terms={query}&search_simple=1&action=process&json=1&fields=" +

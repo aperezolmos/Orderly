@@ -92,16 +92,16 @@ const AppRouter = () => {
             />
             <Route path="/login"
               element={
-                !isAuthenticated ? 
-                <WithoutLayout> <Login /> </WithoutLayout> : 
-                <Navigate to="/" replace />
+                isAuthenticated ? 
+                <Navigate to="/" replace /> : 
+                <WithoutLayout> <Login /> </WithoutLayout>
               }
             />
             <Route path="/register"
               element={
-                !isAuthenticated ? 
-                <WithoutLayout> <Register /> </WithoutLayout> : 
-                <Navigate to="/" replace />
+                isAuthenticated ? 
+                <Navigate to="/" replace /> : 
+                <WithoutLayout> <Register /> </WithoutLayout>
               }
             />
 

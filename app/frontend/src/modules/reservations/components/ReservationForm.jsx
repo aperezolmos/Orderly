@@ -32,14 +32,14 @@ const ReservationForm = ({
       guestSpecialRequests: '',
     },
     validate: {
-      diningTableId: (value) => !value ? t('common:validation.required') : null,
+      diningTableId: (value) => (value ? null : t('common:validation.required')),
       numberOfGuests: (value) => !value || value < 1 ? t('common:validation.positive') : null,
-      reservationDateTime: (value) => !value ? t('common:validation.required') : null,
+      reservationDateTime: (value) => (value ? null : t('common:validation.required')),
       estimatedDurationMinutes: (value) => value < 30 || value > 240 
         ? t('reservations:validation.durationRange', { minDuration: 30, maxDuration: 240 }) : null,
-      guestFirstName: (value) => !value ? t('common:validation.required') : null,
-      guestLastName: (value) => !value ? t('common:validation.required') : null,
-      guestPhone: (value) => !value ? t('common:validation.required') : null,
+      guestFirstName: (value) => (value ? null : t('common:validation.required')),
+      guestLastName: (value) => (value ? null : t('common:validation.required')),
+      guestPhone: (value) => (value ? null : t('common:validation.required')),
       guestSpecialRequests: (value) => value && value.length > 500 ? t('common:validation.maxLength', { count: 500 }) : null,
     },
   });

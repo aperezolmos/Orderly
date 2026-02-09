@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Title, Group, Box, Text, Button, Tabs, Stack, Badge } from '@mantine/core';
+import { Card, Group, Box, Text, Button, Tabs, SimpleGrid, Badge } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import MacroPieChart from './nutritionalCharts/MacroPieChart';
 import MacroTable from './nutritionalCharts/MacroTable';
@@ -76,15 +76,15 @@ const ProductNutritionInfoView = ({ nutritionInfo }) => {
               <Group mb="xs" spacing="md">
                 <Badge color="yellow" variant="light">
                   {t('foods:form.nutritionInfo.calories')}:{' '}
-                  {correctedData?.calories != null 
-                    ? `${Number(correctedData.calories).toFixed(2)} kcal` 
-                    : '-'}
+                  {correctedData?.calories === null 
+                    ? '-'
+                    : `${Number(correctedData.calories).toFixed(2)} kcal`}
                 </Badge>
                 <Badge color="blue" variant="light">
                   {t('foods:form.nutritionInfo.salt')}:{' '}
-                  {correctedData?.salt != null 
-                    ? `${Number(correctedData.salt).toFixed(2)} g` 
-                    : '-'}
+                  {correctedData?.salt === null 
+                    ? '-' 
+                    : `${Number(correctedData.salt).toFixed(2)} g`}
                 </Badge>
               </Group>
               
@@ -116,7 +116,11 @@ const ProductNutritionInfoView = ({ nutritionInfo }) => {
         </Tabs.Panel>
         
         <Tabs.Panel value="micros" pt="xs">
-          <Stack>
+          <SimpleGrid 
+            cols={{ base: 1, lg: 2 }}
+            spacing="md"
+            verticalSpacing="md"
+          >
             <MicroTable
               data={nutritionInfo.minerals}
               t={t}
@@ -130,7 +134,7 @@ const ProductNutritionInfoView = ({ nutritionInfo }) => {
               prefix="foods:form.vitamins"
               referenceMap={REFERENCE_VITAMINS}
             />
-          </Stack>
+          </SimpleGrid>
         </Tabs.Panel>
       </Tabs>
     </Card>

@@ -19,6 +19,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByCustomerNameContainingIgnoreCase(String customerName);
     List<Order> findByEmployeeId(Integer employeeId);
     List<Order> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    List<Order> findAllByOrderByUpdatedAtDescCreatedAtDesc();
     
     @Query("SELECT o FROM Order o WHERE o.createdAt >= :startDate ORDER BY o.createdAt DESC")
     List<Order> findRecentOrders(@Param("startDate") LocalDateTime startDate);

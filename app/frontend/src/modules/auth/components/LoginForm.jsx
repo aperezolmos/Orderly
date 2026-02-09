@@ -20,8 +20,8 @@ const LoginForm = ({
       password: '',
     },
     validate: {
-      username: (value) => !value.trim() ? t('common:validation.required') : null,
-      password: (value) => !value ? t('common:validation.required') : null,
+      username: (value) => (value?.trim().length > 0 ? null : t('common:validation.required')),
+      password: (value) => (value ? null : t('common:validation.required')),
     },
   });
 
