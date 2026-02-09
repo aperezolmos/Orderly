@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Group, Badge, Paper, Title, Text, ScrollArea, Stack, SimpleGrid } from '@mantine/core';
+import { Group, Badge, Paper, Title, Text, ScrollArea, SimpleGrid } from '@mantine/core';
 import { IconX, IconPlus, IconShieldCheck, IconShieldPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 

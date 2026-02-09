@@ -8,7 +8,7 @@ function toOrderRequestDTO(order, orderType, editedQuantities = {}) {
   const items = Array.isArray(order.items)
     ? order.items.map(item => ({
         productId: item.productId ?? item.product?.id,
-        quantity: editedQuantities[item.id] !== undefined ? editedQuantities[item.id] : item.quantity,
+        quantity: editedQuantities[item.id] ?? item.quantity,
       }))
     : [];
 

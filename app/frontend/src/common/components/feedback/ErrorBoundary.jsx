@@ -47,7 +47,7 @@ const ErrorFallback = () => {
             <Button 
               variant="white" 
               color="red"
-              onClick={() => window.location.reload()}
+              onClick={() => globalThis.location.reload()}
               fullWidth
             >
               {t('common:error.boundary.reload')}

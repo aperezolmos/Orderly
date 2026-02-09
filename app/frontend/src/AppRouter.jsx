@@ -10,6 +10,7 @@ import { PERMISSIONS } from './utils/permissions';
 
 // ------- PAGES ------------------------------------------
 const MainPage = React.lazy(() => import('./common/pages/MainPage'));
+const NotFoundView = React.lazy(() => import('./common/components/feedback/NotFoundView'));
 
 // Auth
 const Login = React.lazy(() => import('./modules/auth/pages/LoginPage'));
@@ -91,16 +92,16 @@ const AppRouter = () => {
             />
             <Route path="/login"
               element={
-                !isAuthenticated ? 
-                <WithoutLayout> <Login /> </WithoutLayout> : 
-                <Navigate to="/" replace />
+                isAuthenticated ? 
+                <Navigate to="/" replace /> : 
+                <WithoutLayout> <Login /> </WithoutLayout>
               }
             />
             <Route path="/register"
               element={
-                !isAuthenticated ? 
-                <WithoutLayout> <Register /> </WithoutLayout> : 
-                <Navigate to="/" replace />
+                isAuthenticated ? 
+                <Navigate to="/" replace /> : 
+                <WithoutLayout> <Register /> </WithoutLayout>
               }
             />
 
@@ -276,10 +277,9 @@ const AppRouter = () => {
               }
             />
 
-            {/*TODO: 404 route*/}
-            {/* Default route */}
+            {/* 404 route*/}
             <Route path="*"
-              element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />}
+              element={<WithLayout> <NotFoundView /> </WithLayout>}
             />
           </Routes>
         </React.Suspense>

@@ -31,6 +31,12 @@ public class OrderController {
     public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
         return ResponseEntity.ok(orderService.findAll());
     }
+    
+    @GetMapping("/history")
+    @PreAuthorize("hasAuthority('ORDER_VIEW_LIST')")
+    public ResponseEntity<List<OrderResponseDTO>> getAllOrdersHistory() {
+        return ResponseEntity.ok(orderService.findAllHistory());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Integer id) {

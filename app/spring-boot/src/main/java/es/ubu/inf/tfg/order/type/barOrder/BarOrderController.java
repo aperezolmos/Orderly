@@ -49,6 +49,12 @@ public class BarOrderController {
         return ResponseEntity.ok(orders);
     }
 
+    @GetMapping("/history")
+    @PreAuthorize("hasAuthority('ORDER_BAR_VIEW_LIST')")
+    public ResponseEntity<List<BarOrderResponseDTO>> getBarOrdersHistory() {
+        return ResponseEntity.ok(barOrderService.findAllHistory());
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ORDER_BAR_VIEW_LIST')")
     public ResponseEntity<BarOrderResponseDTO> getBarOrderById(@PathVariable Integer id) {

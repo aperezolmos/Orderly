@@ -75,7 +75,7 @@ public class UserDataInitializer implements CommandLineRunner {
             log.info("Created role: {}", roleName);
         } 
         else {
-            log.debug("Role already exists: {}", roleName);
+            log.info("Role already exists: {}", roleName);
         }
     }
 
@@ -103,7 +103,7 @@ public class UserDataInitializer implements CommandLineRunner {
             log.info("Created admin user: {}", adminUsername);
         } 
         else {
-            log.debug("Admin user already exists: {}", adminUsername);
+            log.info("Admin user already exists: {}", adminUsername);
         }
     }
 }

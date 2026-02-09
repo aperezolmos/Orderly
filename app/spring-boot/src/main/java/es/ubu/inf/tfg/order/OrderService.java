@@ -41,6 +41,12 @@ public class OrderService {
                 .map(orderMapperFactory::toResponseDTO)
                 .collect(Collectors.toList());
     }
+    
+    public List<OrderResponseDTO> findAllHistory() {
+        return orderRepository.findAllByOrderByUpdatedAtDescCreatedAtDesc().stream()
+                .map(orderMapperFactory::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 
     public OrderResponseDTO findById(Integer id) {
         Order order = findEntityById(id);

@@ -1,5 +1,5 @@
-import { Group, Text, Badge, Paper } from '@mantine/core';
-import { useMantineTheme, useMantineColorScheme } from '@mantine/core';
+import { Group, Text, Badge, Paper,
+        useMantineTheme, useMantineColorScheme } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { getStatusColor } from '../../../../utils/statuses';
 import { formatTime } from '../../../../utils/formatters';

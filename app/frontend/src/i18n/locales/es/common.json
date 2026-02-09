@@ -141,6 +141,10 @@
       "description": "No tienes los permisos necesarios para acceder a este recurso",
       "backToHome": "Volver a Inicio"
     },
+    "pageNotFound": {
+      "title": "Página no encontrada",
+      "description": "Lo sentimos, la página que buscas no existe o ha sido trasladada"
+    },
     "noModulesToShow": {
       "title": "No hay módulos para mostrar",
       "message": "Aún no tienes acceso a ningún módulo de gestión. Tu cuenta se ha creado correctamente, pero necesitas permisos para acceder a funciones específicas",

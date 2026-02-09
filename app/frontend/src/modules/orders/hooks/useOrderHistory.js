@@ -30,11 +30,11 @@ export function useOrderHistory() {
     try {
       let data = [];
       if (selectedView === ORDER_HISTORY_VIEW.ALL) {
-        data = await orderService.getAllOrders();
+        data = await orderService.getAllOrdersHistory();
       } else if (selectedView === ORDER_HISTORY_VIEW.BAR) {
-        data = await orderService.getBarOrders();
+        data = await orderService.getBarOrdersHistory();
       } else if (selectedView === ORDER_HISTORY_VIEW.DINING) {
-        data = await orderService.getDiningOrders();
+        data = await orderService.getDiningOrdersHistory();
       }
       setOrders(Array.isArray(data) ? data : []);
     } 

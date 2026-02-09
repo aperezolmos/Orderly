@@ -15,9 +15,8 @@ const OptimizedNumberInput = memo(({ label, initialValue, onCommit }) => {
         onCommit(val);
       }}
       min={0}
-      max={9999.99}
-      decimalScale={2}
-      // thousandSeparator=" "
+      max={10000}
+      decimalScale={5}
     />
   );
 });
@@ -30,7 +29,7 @@ const MineralsFields = memo(({ values, onFieldChange, foodId }) => {
   
   return (
     <Box key={`minerals-${foodId}`}>
-      <Title order={5} mb="xs">{t('foods:form.minerals.title')}</Title>
+      <Title order={5} mb="xs">{t('foods:form.minerals.title')+ " (mg)"}</Title>
       <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
         {keys.map(key => (
           <OptimizedNumberInput
@@ -53,7 +52,7 @@ const VitaminsFields = memo(({ values, onFieldChange, foodId }) => {
 
   return (
     <Box key={`vitamins-${foodId}`}>
-      <Title order={5} mb="xs">{t('foods:form.vitamins.title')}</Title>
+      <Title order={5} mb="xs">{t('foods:form.vitamins.title')+ " (mg)"}</Title>
       <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
         {keys.map(key => (
           <OptimizedNumberInput
@@ -94,6 +93,7 @@ const NutritionInfoForm = ({ form }) => {
     <Box>
       <Title order={4} mb="sm">{t('foods:form.nutritionInfo.title')}</Title>
       
+      <Title order={5} mb="xs">{t('foods:form.general')+ " (kcal, g)"}</Title>
       <Box key={`macros-${foodId}`} mb="md">
         <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="md">
           {mainMetrics.map(key => (

@@ -48,6 +48,12 @@ public class DiningOrderController {
         
         return ResponseEntity.ok(orders);
     }
+    
+    @GetMapping("/history")
+    @PreAuthorize("hasAuthority('ORDER_DINING_VIEW_LIST')")
+    public ResponseEntity<List<DiningOrderResponseDTO>> getDiningOrdersHistory() {
+        return ResponseEntity.ok(diningOrderService.findAllHistory());
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ORDER_DINING_VIEW_LIST')")

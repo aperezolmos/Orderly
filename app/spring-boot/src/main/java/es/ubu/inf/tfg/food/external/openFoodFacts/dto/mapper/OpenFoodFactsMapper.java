@@ -149,7 +149,7 @@ public class OpenFoodFactsMapper {
         try {
             Object value = map.get(key);
             if (value instanceof Number num) return new BigDecimal(num.toString());
-            if (value instanceof String str && !str.isBlank()) return new BigDecimal(str);
+            if (value instanceof String str && !str.isBlank()) return new BigDecimal(str.trim());
         } 
         catch (Exception ignored) {}
         return null;

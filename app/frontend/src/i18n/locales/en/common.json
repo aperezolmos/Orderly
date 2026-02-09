@@ -141,6 +141,10 @@
       "description": "You don't have the required permissions to access this resource",
       "backToHome": "Back to Home"
     },
+    "pageNotFound": {
+      "title": "Page not found",
+      "description": "Sorry, the page you are looking for does not exist or has been moved"
+    },
     "noModulesToShow": {
       "title": "No modules to show",
       "message": "You don't have access to any management modules yet. Your account has been created successfully, but you need permissions to access specific features",

@@ -84,7 +84,7 @@ const DiningTableListPage = () => {
       key: 'locationDescription',
       title: t('diningTables:list.locationDescription'),
       render: (table) => (
-        <Text size="sm" color={!table.locationDescription ? "dimmed" : undefined} fs={!table.locationDescription ? "italic" : undefined}>
+        <Text size="sm" color={table.locationDescription ? undefined : "dimmed"} fs={table.locationDescription ? undefined : "italic"}>
           {table.locationDescription || t('diningTables:list.noLocation')}
         </Text>
       )

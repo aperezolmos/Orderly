@@ -1,35 +1,36 @@
 import { useEffect } from 'react';
-import { Text, LoadingOverlay, Box } from '@mantine/core';
-import { Link, useNavigate } from 'react-router-dom';
+import { Text, LoadingOverlay, Box, Alert} from '@mantine/core';
+import { IconInfoCircle } from '@tabler/icons-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../context/AuthContext';
-import { notifications } from '@mantine/notifications';
 import AuthLayout from '../layouts/AuthLayout';
 import LoginForm from '../components/LoginForm';
-import { useTranslation } from 'react-i18next';
 
 
 const LoginPage = () => {
   
   const { login, error, clearError, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation(['common', 'auth']);
+
+
+  const infoMessage = location.state?.reason === 'username_changed' 
+    ? t('auth:login.alerts.usernameChanged') 
+    : null;
 
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/profile', { replace: true });
+      navigate('/', { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
   const handleLogin = async (values) => {
     try {
       await login(values.username, values.password);
-      notifications.show({
-        title: t('common:app.success'),
-        message: t('auth:login.success'),
-        color: 'green',
-      });
-      navigate('/profile', { replace: true });
+      navigate('/', { replace: true });
     } 
     catch (err) {
       console.error('Login failed:', err);
@@ -52,6 +53,11 @@ const LoginPage = () => {
       linkComponent={registerLink}
     >
       <Box pos="relative">
+        {infoMessage && (
+          <Alert color="blue" icon={<IconInfoCircle />} mb="md" title={t('auth:login.alerts.notice')}>
+            {infoMessage}
+          </Alert>
+        )}
         <LoadingOverlay visible={loading} overlayblur={2} />
         
         <LoginForm

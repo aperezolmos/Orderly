@@ -1,7 +1,6 @@
-import { Paper, Text, Group, ActionIcon, Badge,
+import { Paper, Text, Group, ActionIcon,
          useMantineTheme, useMantineColorScheme } from '@mantine/core';
-import { IconShoppingCartPlus, IconChefHat, IconGlass } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
+import { IconShoppingCartPlus } from '@tabler/icons-react';
 import { formatCurrency } from '../../../../utils/formatters';
 
 

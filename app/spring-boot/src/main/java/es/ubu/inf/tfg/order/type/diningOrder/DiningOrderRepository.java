@@ -17,6 +17,7 @@ public interface DiningOrderRepository extends JpaRepository<DiningOrder, Intege
     List<DiningOrder> findByTableIdAndStatus(Integer tableId, OrderStatus status);
     List<DiningOrder> findByEmployeeId(Integer employeeId);
     List<DiningOrder> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    List<DiningOrder> findAllByOrderByUpdatedAtDescCreatedAtDesc();
 
     @Query("SELECT DISTINCT d.table.id FROM DiningOrder d WHERE d.status IN :activeStatuses")
     List<Integer> findTablesWithActiveOrders(@Param("activeStatuses") List<OrderStatus> activeStatuses);

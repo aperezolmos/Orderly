@@ -79,7 +79,7 @@ const ProductViewPage = () => {
       showBackButton={true}
     >
       <Card shadow="sm" p="lg" radius="md" withBorder mb="md">
-        <Group position="apart" mb="md">
+        <Group justify="space-between" mb="md">
           <Title order={3}>{product.name}</Title>
           <Button
             leftSection={<IconEdit size="1rem" />}

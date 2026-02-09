@@ -7,6 +7,7 @@ export const orderService = {
   // ORDER (GENERAL)
   // ======================
   getAllOrders: async () => apiClient.get('/orders'),
+  getAllOrdersHistory: async () => apiClient.get('/orders/history'),
   getOrderById: async (id) => apiClient.get(`/orders/${id}`),
   getOrderByNumber: async (orderNumber) => apiClient.get(`/orders/orderNumber/${orderNumber}`),
   searchOrders: async ({ status, employeeId, since } = {}) =>
@@ -33,6 +34,7 @@ export const orderService = {
   // BAR ORDER
   // ======================
   getBarOrders: async ({ drinksOnly, status } = {}) => apiClient.get('/orders/bar', { drinksOnly, status }),
+  getBarOrdersHistory: async () => apiClient.get('/orders/bar/history'),
   getBarOrderById: async (id) => apiClient.get(`/orders/bar/${id}`),
   getBarOrdersByEmployee: async (employeeId) => apiClient.get(`/orders/bar/employee/${employeeId}`),
   getBarOrdersByDateRange: async (start, end) => apiClient.get('/orders/bar/date-range', { start, end }),
@@ -47,6 +49,7 @@ export const orderService = {
   // DINING ORDER
   // ======================
   getDiningOrders: async ({ tableId, status } = {}) => apiClient.get('/orders/dining', { tableId, status }),
+  getDiningOrdersHistory: async () => apiClient.get('/orders/dining/history'),
   getDiningOrderById: async (id) => apiClient.get(`/orders/dining/${id}`),
   getDiningOrdersByEmployee: async (employeeId) => apiClient.get(`/orders/dining/employee/${employeeId}`),
   getDiningOrdersByDateRange: async (start, end) => apiClient.get('/orders/dining/date-range', { start, end }),

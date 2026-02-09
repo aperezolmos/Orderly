@@ -85,7 +85,7 @@
   },
   "errors": {
     "loadError": "Error cargando pedido",
-    "notFound": "No se pudo cargar el pedido con ID: {{id}}",
+    "notFound": "Pedido no encontrado",
     "notFoundDetails": "El pedido puede haber sido eliminado o no tienes permiso para acceder a él"
   }
 }

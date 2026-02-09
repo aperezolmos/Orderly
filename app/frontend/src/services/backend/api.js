@@ -1,3 +1,6 @@
+import i18n from "../../i18n";
+
+
 // Base configuration for all API (Spring Boot) requests
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
@@ -28,7 +31,7 @@ export function buildQueryString(params) {
 }
 
 // Centralized response management
-async function handleResponse(response) {
+async function handleResponse(response, requestMethod) {
   
   if (response.status === 204) return null;
   
@@ -41,10 +44,20 @@ async function handleResponse(response) {
     catch {
       errorData = { message: text || response.statusText };
     }
+
+    let finalMessage = errorData.message || errorData.error || response.statusText;
+
+    if (response.status === 403) {
+      finalMessage = i18n.t('common:error.accessDenied.description');
+    } 
+    else if (response.status === 409 && requestMethod === 'DELETE') {
+      finalMessage = i18n.t('common:error.resourceInUse');
+    }
+
     throw new ApiError({
       status: response.status,
       error: errorData.error || response.statusText,
-      message: errorData.message || errorData.error || response.statusText,
+      message: finalMessage,
       details: errorData.details,
       timestamp: errorData.timestamp,
     });
@@ -70,7 +83,7 @@ export const apiClient = {
       method: 'GET',
       credentials: 'include',
     });
-    return handleResponse(response);
+    return handleResponse(response, 'GET');
   },
 
   post: async (endpoint, data) => {
@@ -82,7 +95,7 @@ export const apiClient = {
       body: JSON.stringify(data),
       credentials: 'include',
     });
-    return handleResponse(response);
+    return handleResponse(response, 'POST');
   },
 
   put: async (endpoint, data) => {
@@ -94,7 +107,7 @@ export const apiClient = {
       body: JSON.stringify(data),
       credentials: 'include',
     });
-    return handleResponse(response);
+    return handleResponse(response, 'PUT');
   },
 
   patch: async (endpoint, data) => {
@@ -106,7 +119,7 @@ export const apiClient = {
       body: JSON.stringify(data),
       credentials: 'include',
     });
-    return handleResponse(response);
+    return handleResponse(response, 'PATCH');
   },
 
   delete: async (endpoint) => {
@@ -114,6 +127,6 @@ export const apiClient = {
       method: 'DELETE',
       credentials: 'include',
     });
-    return handleResponse(response);
+    return handleResponse(response, 'DELETE');
   },
 };

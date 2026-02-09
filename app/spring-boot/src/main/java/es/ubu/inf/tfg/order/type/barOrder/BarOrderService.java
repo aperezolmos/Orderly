@@ -29,6 +29,12 @@ public class BarOrderService {
                 .map(barOrderMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
+    
+    public List<BarOrderResponseDTO> findAllHistory() {
+        return barOrderRepository.findAllByOrderByUpdatedAtDescCreatedAtDesc().stream()
+                .map(barOrderMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 
     public BarOrderResponseDTO findById(Integer id) {
         BarOrder barOrder = barOrderRepository.findById(id)

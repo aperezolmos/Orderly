@@ -22,35 +22,35 @@ import lombok.*;
 public class NutritionInfo {
 
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal calories = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal carbohydrates = BigDecimal.ZERO;
     
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal fats = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal fiber = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal protein = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal salt = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal saturatedFats = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=6, scale=2)
+    @Column(precision = 8, scale = 4)
     private BigDecimal sugars = BigDecimal.ZERO;
  
     @Builder.Default

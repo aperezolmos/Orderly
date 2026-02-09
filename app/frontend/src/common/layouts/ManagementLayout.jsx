@@ -1,4 +1,4 @@
-import { Container, Title, Group, Button, Breadcrumbs, Anchor, Stack } from '@mantine/core';
+import { Container, Title, Group, Button, Breadcrumbs, Anchor } from '@mantine/core';
 import { IconPlus, IconArrowLeft } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';

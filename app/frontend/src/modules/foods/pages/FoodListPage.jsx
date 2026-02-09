@@ -10,6 +10,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { PERMISSIONS } from '../../../utils/permissions';
 import { useFoods } from '../hooks/useFoods';
 import { getNavigationConfig } from '../../../utils/navigationConfig';
+import AllergensList from '../../products/components/AllergensList';
 
 
 const FoodListPage = () => {
@@ -127,23 +128,26 @@ const FoodListPage = () => {
         
       </ManagementLayout>
 
-      {/* Modal de detalle de alimento*/}
+      {/* Food detail modal */}
       <Modal
         opened={modalOpened}
         onClose={() => { closeModal(); setSelectedFood(null); }}
         title={selectedFood?.name}
         centered
         size="md"
+        overlayProps={{ blur: 2 }}
       >
         {selectedFood ? (
           <div>
             <Text><b>{t('foods:list.id')}:</b> {selectedFood.id}</Text>
             <Text><b>{t('foods:list.foodGroup')}:</b> {t(`foods:foodGroups.${selectedFood.foodGroup}`)}</Text>
-            <Text><b>{t('foods:allergens.form.title')}:</b> {selectedFood.allergenInfo?.allergens?.length > 0
-              ? selectedFood.allergenInfo.allergens.join(', ')
-              : t('foods:allergens.form.noAllergens')}</Text>
             <Text><b>{t('foods:form.nutriScore')}:</b> {selectedFood.nutritionalMetrics?.nutriScore || '-'}</Text>
             <Text><b>{t('foods:form.novaGroup')}:</b> {selectedFood.nutritionalMetrics?.novaGroup || '-'}</Text>
+            <AllergensList 
+              allergenInfo={selectedFood.allergenInfo} 
+              idSuffix={`food-${selectedFood.id}`}
+              defaultOpen={true} 
+            />
           </div>
         ) : null}
       </Modal>

@@ -18,35 +18,35 @@ import lombok.*;
 public class Minerals {
     
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal calcium = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal iron = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal magnesium = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal phosphorus = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal potassium = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal selenium = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal sodium = BigDecimal.ZERO;
 
     @Builder.Default
-    @Column(precision=10, scale=4)
+    @Column(precision = 16, scale = 10)
     private BigDecimal zinc = BigDecimal.ZERO;
 
     
