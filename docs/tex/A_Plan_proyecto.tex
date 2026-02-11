@@ -54,7 +54,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Análisis de integración con plataformas de \textit{delivery}:} se investigó acerca de los requisitos necesarios para obtener claves de acceso a las APIs de distintas plataformas de \textit{delivery}. Se terminó por concluir que esta integración se pospondría para etapas más avanzadas del desarrollo, en caso de que se dispusiera del tiempo necesario.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint0_burndown.png}{Gráfico \textit{burndown} del Sprint 0}{A2_sprint0_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint0_burndown.png}{Gráfico \textit{burndown} del Sprint 0}{A2_sprint0_burndown}
 
 \subsubsection{Revisión}
 
@@ -87,7 +87,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Generación de pruebas de integración:} se generaron pruebas básicas de integración para el repositorio y servicio de usuarios. Sirvieron para familiarizarse con los tipos de pruebas y anotaciones de \textit{Spring Boot}.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint1_burndown.png}{Gráfico \textit{burndown} del Sprint 1}{A2_sprint1_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint1_burndown.png}{Gráfico \textit{burndown} del Sprint 1}{A2_sprint1_burndown}
 
 \subsubsection{Revisión}
 
@@ -114,7 +114,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Primera definición de requisitos funcionales:} aunque estos requisitos ya se tenían presentes desde el comienzo del proyecto, se redactó una primera versión de estos en la documentación.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint2_burndown.png}{Gráfico \textit{burndown} del Sprint 2}{A2_sprint2_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint2_burndown.png}{Gráfico \textit{burndown} del Sprint 2}{A2_sprint2_burndown}
 
 \subsubsection{Revisión}
 
@@ -145,7 +145,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Definición de casos de uso para gestión de usuarios:} se redactó una primera versión de casos de uso para esta funcionalidad, teniendo en cuenta las acciones que pueden realizar los usuarios según sus roles.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint3_burndown.png}{Gráfico \textit{burndown} del Sprint 3}{A2_sprint3_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint3_burndown.png}{Gráfico \textit{burndown} del Sprint 3}{A2_sprint3_burndown}
 
 \subsubsection{Revisión}
 
@@ -172,14 +172,14 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 \begin{itemize}
 	\item \textbf{Investigación de mejores prácticas para la migración de arquitectura:} abarcó el aprendizaje de las bases de \textit{React} y la selección de librerías útiles para el \textit{frontend}. También se investigó sobre las prácticas estándar para refactorizar la API de \textit{Spring Boot} y sobre los componentes necesarios para la comunicación entre ambos servicios.
-	\item \textbf{Refactorización del \textit{backend}:} se completó la migración completa a un diseño RESTful, eliminando toda la infraestructura web y reescribiendo los servicios y controladores para operar mediante DTOs y peticiones HTTP. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/60}{\#60}.
+	\item \textbf{Refactorización del \textit{backend}:} se completó la migración completa a un diseño \textit{RESTful}, eliminando toda la infraestructura web y reescribiendo los servicios y controladores para operar mediante DTOs y peticiones HTTP. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/60}{\#60}.
 	\item \textbf{Configuración de la autenticación y CORS:} se implementaron el servicio y controlador de autenticación (\textit{login} y registro) en la API y se configuró CORS (\textit{Cross-Origin Resource Sharing}) para permitir la comunicación entre la API y el \textit{frontend} de \textit{React}, estableciendo sesiones \textit{stateless}.
 	\item \textbf{Creación del proyecto y contenedor \textit{Docker} para \textit{React}:} para generar el proyecto inicial se utilizó la herramienta de construcción \textit{Vite}~\cite{vite:intro}. Se creó el \texttt{Dockerfile} para la construcción del contenedor y se agregó el servicio a \texttt{docker-compose.yml}.
 	\item \textbf{Implementación de la autenticación en \textit{React}:} se creó un contexto de autenticación global para manejar el usuario de cada sesión. Se crearon las páginas para \textit{login} y registro de usuarios. 
 	\item \textbf{Implementación de la gestión de usuarios en \textit{React}:} se reimplementaron las funcionalidades existentes acerca del manejo de usuarios y roles, junto con las interfaces asociadas. Las novedades se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/74}{\#74}.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint4_burndown.png}{Gráfico \textit{burndown} del Sprint 4}{A2_sprint4_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint4_burndown.png}{Gráfico \textit{burndown} del Sprint 4}{A2_sprint4_burndown}
 
 \subsubsection{Revisión}
 
@@ -203,12 +203,12 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Implementación de operaciones CRUD sobre mesas y reservas:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Los detalles de negocio se especifican en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/93}{\#93}.
 	\item \textbf{Creación de las entidades \hyperref[word:C.2_order]{\texttt{Order}}, \hyperref[word:C.2_orderItem]{\texttt{OrderItem}}, \hyperref[word:C.2_barOrder]{\texttt{BarOrder}} y \linebreak\hyperref[word:C.2_diningOrder]{\texttt{DiningOrder}}:} aprovechando la existencia de varios ``tipos'' de pedidos, se implementó una jerarquía de \textbf{herencia}, la cual se detalla en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/80}{\#80}.
 	\item \textbf{Implementación de operaciones CRUD sobre pedidos:} se agregaron los repositorios, servicios y controladores necesarios para llevar a cabo estas funcionalidades. Se creó una factoría para elegir \textit{mapper} según el tipo de pedido que llegase a la solicitud, sin que los componentes conozcan dicho tipo. El controlador general se utiliza para consultas sobre todas las entidades y gestión de ítems. Los controladores particulares se utilizan para consultas y operaciones CRUD por cada tipo, más eficientes.
-	\item \textbf{Implementación de lógica de permisos para cada rol:} se creó un enumerado \texttt{Permission}, el cual alberga todos los permisos de la aplicación. A la entidad \texttt{Role} se le añadió una colección de permisos y se crearon métodos, \textit{endpoints} y componentes \textit{React} para manejarlos. Esto permite la creación de roles personalizados y un manejo más preciso de las acciones a realizar en la aplicación. Los cambios se explican con más detalle en los \textit{pull requests} \href{https://github.com/aperezolmos/Orderly/pull/81}{\#81} y \href{https://github.com/aperezolmos/Orderly/pull/96}{\#96}.
+	\item \textbf{Implementación de lógica de permisos para cada rol:} se creó un enumerado \hyperref[word:C.2_permission]{\texttt{Permission}}, el cual alberga todos los permisos de la aplicación. A la entidad \hyperref[word:C.2_role]{\texttt{Role}} se le añadió una colección de permisos y se crearon métodos, \textit{endpoints} y componentes \textit{React} para manejarlos. Esto permite la creación de roles personalizados y un manejo más preciso de las acciones a realizar en la aplicación. Los cambios se explican con más detalle en los \textit{pull requests} \href{https://github.com/aperezolmos/Orderly/pull/81}{\#81} y \href{https://github.com/aperezolmos/Orderly/pull/96}{\#96}.
 	\item \textbf{Internacionalización del \textit{frontend React}:} se sustituyeron todas las cadenas \textit{hardcodeadas} por referencias a archivos JSON con cadenas traducidas (\textit{namespaces}). También se creó un componente para cambiar el idioma dinámicamente desde la aplicación.
 	\item \textbf{Refactorización de \texttt{Recipe} a \hyperref[word:C.2_ingredient]{\texttt{Ingredient}}:} la entidad \texttt{Recipe}, utilizada como tabla de unión entre \texttt{Food} y \texttt{Product}, pasó a denominarse \texttt{Ingredient}. También se eliminaron su repositorio y servicio particulares, trasladando la responsabilidad de su manejo a \texttt{Product}. Los cambios se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/79}{\#79}.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint5_burndown.png}{Gráfico \textit{burndown} del Sprint 5}{A2_sprint5_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint5_burndown.png}{Gráfico \textit{burndown} del Sprint 5}{A2_sprint5_burndown}
 
 \subsubsection{Revisión}
 
@@ -237,7 +237,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Creación de \textit{dashboard} para gestionar pedidos:} se creó una vista general que muestra tanto un listado de pedidos pendientes como un listado de productos ofertados. Se permite añadir productos al pedido actual haciendo \textit{click} en ellos y se permite alternar entre pedidos de bar o comedor.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint6_burndown.png}{Gráfico \textit{burndown} del Sprint 6}{A2_sprint6_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint6_burndown.png}{Gráfico \textit{burndown} del Sprint 6}{A2_sprint6_burndown}
 
 \subsubsection{Revisión}
 
@@ -263,11 +263,11 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Implementación de autenticación con sesiones de \textit{Spring Security}:} se configuró la persistencia de la sesión para el \textit{frontend React} mediante \textit{cookies} \texttt{JSESSIONID}.
 	\item \textbf{Implementación de formulario para crear/editar pedidos:} se añadieron al \textit{dashboard} botones para crear y editar pedidos de distintos tipos. También se habilitó la eliminación de pedidos desde la interfaz.
 	\item \textbf{Mejoras y resolución de errores pendientes:} cuestiones pendientes relacionadas con la internacionalización, estados de carga, manejo de errores y más. Las mejoras se explican con más detalle en el \textit{pull request} \href{https://github.com/aperezolmos/Orderly/pull/124}{\#124}.
-	\item \textbf{Creación de \textit{workflow} para ejecutar pruebas de la API:} se utilizó \textit{GitHub Actions} para configurar la ejecución de los tests definidos para la API \textit{Spring Boot} con cada \textit{commit} realizado sobre el backend.
+	\item \textbf{Creación de \textit{workflow} para ejecutar pruebas de la API:} se utilizó \textit{GitHub Actions} para configurar la ejecución de los tests definidos para la API \textit{Spring Boot} con cada \textit{commit} realizado sobre el \textit{backend}.
 	\item \textbf{Redacción del apartado \textit{\ref{sec:C.2_DiseñoDatos} \nameref{sec:C.2_DiseñoDatos}}:} se describieron las entidades y relaciones que conforman el modelo y se generaron diagramas EER.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint7_burndown.png}{Gráfico \textit{burndown} del Sprint 7}{A2_sprint7_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint7_burndown.png}{Gráfico \textit{burndown} del Sprint 7}{A2_sprint7_burndown}
 
 \subsubsection{Revisión}
 
@@ -302,13 +302,13 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Redacción de apartados principales de la memoria:} se redactaron casi por completo los apartados ``\textit{3. Conceptos teóricos}'', ``\textit{4. Técnicas y herramientas}'' y ``\textit{5. Aspectos relevantes del desarrollo del proyecto}''. Queda pendiente la redacción de algunos subapartados menores y la revisión por parte del tutor.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint8_burndown.png}{Gráfico \textit{burndown} del Sprint 8}{A2_sprint8_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint8_burndown.png}{Gráfico \textit{burndown} del Sprint 8}{A2_sprint8_burndown}
 
 \subsubsection{Revisión}
 
 Con la sección nutricional mayormente implementada (a falta de alérgenos y medidas nutricionales puntuales), se acordó dar por \textbf{finalizada la implementación de funcionalidades} de la aplicación. Los \textit{sprints} posteriores se dedicarán a la corrección de errores, modificación de interfaces y mejoras menores, así como la redacción de la documentación y anexos.
 
-En esta fase final del desarrollo se acordó volver a \textit{sprints} de 1 semana, para agilizar las revisiones. El siguiente \textit{sprint} tendrá como objetivo principal la finalización y revisión de la \textbf{memoria} principal del trabajo.
+En esta fase final del desarrollo se acordó volver a \textit{sprints} de 1 semana, para agilizar las revisiones. El siguiente \textit{sprint} tendría como objetivo principal la finalización y revisión de la \textbf{memoria} principal del trabajo.
 
 %---------------------------------------------------------------
 
@@ -326,17 +326,17 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Implementación de cambios de estado para pedidos:} se añadió un botón en el\textit{ dashboard} para permitir cambiar el estado de los pedidos, de forma que puedan completarse, cancelarse o avanzar en su ciclo de vida (\textit{``pendiente'}', \textit{``en proceso''}, etc.).
 	\item \textbf{Creación de historial de pedidos:} se añadió una página para visualizar el registro de todos los pedidos creados en la aplicación, permitiendo filtrar por tipo de pedido. Se diferencia del resto de páginas de listado en que no permite la edición o borrado de pedidos (para mantener la transparencia).
 	\item \textbf{Corrección de estados de carga en \textit{dashboard}:} se mejoró el manejo de estado de carga en el \textit{dashboard} de pedidos, puesto que anteriormente los componentes se sincronizaban mal al cargar y no mostraban \textit{feedback} del progreso al usuario.
-	\item \textbf{Redacción de apartados restantes de la memoria:} se redactaron el \textit{abstract} y la introducción, junto con los apartados ``\textit{2. Objetivos del proyecto}'' y ``\textit{6. Trabajos relacionados}''. Esto deja pendiente la redacción de conclusiones y algunos aspectos relevantes.
+	\item \textbf{Redacción de apartados restantes de la memoria:} se redactaron el \textit{abstract} y la introducción, junto con los apartados ``\textit{2. Objetivos del proyecto}'' y ``\textit{6. Trabajos relacionados}''. Esto dejó pendiente la redacción de conclusiones y algunos aspectos relevantes.
 	\item \textbf{Redacción estructurada de requisitos y casos de uso:} anteriormente se habían listado los requisitos funcionales de la aplicación y se habían descrito algunos CU del módulo de usuarios. Se reformularon y describieron mejor los requisitos y se completaron los casos de uso, para incluir a todos los módulos de la aplicación.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint9_burndown.png}{Gráfico \textit{burndown} del Sprint 9}{A2_sprint9_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint9_burndown.png}{Gráfico \textit{burndown} del Sprint 9}{A2_sprint9_burndown}
 
 \subsubsection{Revisión}
 
 Se revisaron junto al tutor la memoria y anexos escritos hasta el momento, y se comentaron aspectos a añadir en la documentación y aspectos de usabilidad de la aplicación.
 
-Se acordó, para el siguiente \textit{sprint}, incluir la mención de alérgenos y métricas nutricionales en alimentos y productos, que era un aspecto pendiente mencionado en el \nameref{subsec:A.2_sprint8}. También corregir, en la medida de lo posible, aspectos relacionados con la visualización de módulos funcionales según permisos (actualmente en el \textit{frontend} solo se considera al usuario administrador).
+Se acordó, para el siguiente \textit{sprint}, incluir la mención de \textbf{alérgenos} y \textbf{métricas nutricionales} en alimentos y productos, que era un aspecto pendiente mencionado en el \nameref{subsec:A.2_sprint8}. También corregir, en la medida de lo posible, aspectos relacionados con la visualización de módulos funcionales según permisos (actualmente en el \textit{frontend} solo se considera al usuario administrador).
 
 %---------------------------------------------------------------
 
@@ -356,7 +356,7 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Corrección de sesiones no persistentes:} se solucionaron los errores en la comunicación \textit{React-Spring Boot}, que hacían que las \textit{cookies} \texttt{JSESSIONID} no se almacenaran, lo cual causaba que el usuario perdiese su sesión al recargar la página.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint10_burndown.png}{Gráfico \textit{burndown} del Sprint 10}{A2_sprint10_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint10_burndown.png}{Gráfico \textit{burndown} del Sprint 10}{A2_sprint10_burndown}
 
 \subsubsection{Revisión}
 
@@ -381,7 +381,13 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 	\item \textbf{Integración con \textit{SonarCloud}:} se agregó la comunicación con \textit{SonarCloud} en el \textit{workflow} existente de \textit{GitHub Actions}, que ejecutaba los tests de \textit{Spring Boot}.
 \end{itemize}
 
-\imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burndown} del Sprint 11}{A2_sprint11_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burndown} del Sprint 11}{A2_sprint11_burndown}
+
+\subsubsection{Revisión}
+
+Tras el visto bueno del tutor, se lanzó la 
+\href{https://github.com/aperezolmos/Orderly/releases/tag/v0.9.0-beta}{\textbf{v0.9.0-beta}} 
+de la aplicación.
 
 \subsection{\textit{Sprint} 12}
 \label{subsec:A.2_sprint12}
@@ -390,17 +396,17 @@ Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver e
 
 Este \textit{sprint} final se basó en la finalización de la redacción de los anexos y en la corrección de aspectos de la aplicación, así como en mejoras de diseño en la interfaz. También se generaron \textbf{datos por defecto} en las tablas de la base de datos, para así contar con registros existentes en el arranque de la aplicación y facilitar su uso.
 
-Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/13?closed=1}{\textbf{Sprint 12}}.\todo{cambiar imagen gráfico}
+Los \textit{issues} creados para cumplir los objetivos definidos se pueden ver en: \href{https://github.com/aperezolmos/Orderly/milestone/13?closed=1}{\textbf{Sprint 12}}.
 
-\imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burndown} del Sprint 12}{A2_sprint12_burndown}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_sprint12_burndown.png}{Gráfico \textit{burndown} del Sprint 12}{A2_sprint12_burndown}
 
 %---------------------------------------------------------------
 
 \subsection{Gráfico \textit{Burn-up}}
 
-El gráfico presentado en la figura \ref{fig:A2_burnup}\todo{cambiar imagen gráfico} permite visualizar de manera dinámica el progreso del trabajo completado frente al alcance total planificado. El eje vertical se corresponde con el número de tareas (\textit{issues}) agregadas al tablero Kanban de \textit{GitHub Projects}.
+El gráfico presentado en la figura \ref{fig:A2_burnup} permite visualizar de manera dinámica el progreso del trabajo completado (línea morada) frente al alcance total planificado (línea verde). El eje vertical se corresponde con el número de tareas (\textit{issues}) agregadas al tablero Kanban de \textit{GitHub Projects}.
 
-\imagenConEtiqueta{img/apen_A/A2_sprint11_burndown.png}{Gráfico \textit{burnup} del proyecto}{A2_burnup}
+\imagenConEtiqueta[0.85\textwidth]{img/apen_A/A2_burnup.png}{Gráfico \textit{burnup} del proyecto}{A2_burnup}
 
 En la medida de lo posible, se ha procurado que la creación y asignación de nuevas tareas a \textit{sprints} se sitúe al \textbf{comienzo} (o también a mitad, en caso de \textit{sprints} de 2 semanas) de cada \textit{sprint}. Tras los picos causados por el incremento en el número de \textit{issues}, se puede observar que, en la mayoría de casos, la línea de alcance teórico permanece prácticamente \textbf{constante}, lo que refleja que el trabajo se ejecutó conforme a lo planificado \textbf{sin añadir carga adicional} de forma imprevista.
 
@@ -489,7 +495,7 @@ Una opción económica sería \textit{\textbf{Hetzner CX22}} (2 vCPU, 4 GB RAM),
 	
 	\item Adicionales:
 	\begin{itemize}
-		\item \textbf{Dominio} \texttt{.es} $(\text{estimación anual} \approx 12\,\text{€} \rightarrow \text{prorrateado a 5 meses} \approx 12 \times \frac{5}{12} = 5\,\text{€})$.
+		\item \textbf{Dominio} \texttt{.es} $(\text{estimación anual} \approx 12\,\text{€} \rightarrow \text{coste por 5 meses} \approx 12 \times \frac{5}{12} = 5\,\text{€})$.
 		\item \textbf{Certificado SSL}: \textit{Let's Encrypt} (gratuito), asumido como 0 €.
 	\end{itemize}
 \end{itemize}
@@ -532,6 +538,28 @@ El desarrollo de \textit{Orderly} se ha apoyado en el uso de diversas biblioteca
 
 En la tabla \ref{tab:licencias} se presenta un resumen de las licencias de las principales tecnologías y librerías integradas en el proyecto, tanto del \textit{backend} (\textit{Spring Boot}) como del \textit{frontend} (\textit{React}).
 
+La gran mayoría de las librerías utilizadas (\textit{React}, \textit{Mantine}, \textit{Lombok}, etc.) se distribuyen bajo la licencia \textbf{\textit{MIT}}, la cual es altamente permisiva. Otras, como \textit{Spring Boot} o \textit{Docker}, utilizan \textbf{\textit{Apache 2.0}}, que también permite el uso comercial y la modificación del \textit{software}, siendo compatible con licencias permisivas. Respecto a \textit{Open Food Facts}, la licencia \textbf{\textit{ODbL}} aplica sobre los datos, permitiendo su uso siempre que se atribuya la fuente, lo cual no impide licenciar el código de la aplicación bajo otros términos.
+
+
+\subsubsection{Selección de licencia para el \textit{software}}
+
+Considerando la naturaleza de las dependencias utilizadas y el objetivo académico del proyecto, se ha optado por liberar el código fuente de \textit{Orderly} bajo la licencia \textbf{\textit{MIT License}}.
+
+Esta decisión se justifica por los siguientes motivos:
+\begin{itemize}
+	\item \textbf{Compatibilidad:} es compatible con la mayoría de las librerías utilizadas en el \textit{stack} tecnológico (\textit{React}, \textit{Spring Boot}, etc.).
+	\item \textbf{Permisividad:} otorga una gran libertad a futuros desarrolladores o usuarios, permitiendo usar, copiar, modificar, fusionar, publicar y distribuir el \textit{software} sin restricciones complejas, siempre que se mantenga el aviso de derechos de autor original.
+	\item \textbf{Fomento de la colaboración:} al ser una licencia estándar en el ecosistema \textit{open source}, facilita que otros estudiantes o desarrolladores puedan reutilizar el código para futuros Trabajos de Fin de Grado o proyectos derivados.
+\end{itemize}
+
+\subsubsection{Selección de licencia para la documentación}
+
+Para la memoria y la documentación técnica del proyecto (incluidos los presentes anexos), se ha seleccionado la licencia \textit{\textbf{Creative Commons Attribution 4.0 International}} (\textbf{CC BY 4.0}).
+
+Esta licencia permite compartir y adaptar el material para cualquier propósito, incluso comercial, con la única condición de otorgar el crédito apropiado al autor original. Se considera la opción más adecuada para un trabajo académico, ya que fomenta la divulgación del conocimiento y permite que la documentación sirva de referencia para futuros alumnos, protegiendo al mismo tiempo la autoría intelectual del trabajo.
+
+
+
 \begin{table}[h]
 	\centering
 	\small
@@ -557,26 +585,6 @@ En la tabla \ref{tab:licencias} se presenta un resumen de las licencias de las p
 		\bottomrule
 	\end{tabularx}
 \end{table}
-
-La gran mayoría de las librerías utilizadas (\textit{React}, \textit{Mantine}, \textit{Lombok}, etc.) se distribuyen bajo la licencia \textbf{\textit{MIT}}, la cual es altamente permisiva. Otras, como \textit{Spring Boot} o \textit{Docker}, utilizan \textbf{\textit{Apache 2.0}}, que también permite el uso comercial y la modificación del \textit{software}, siendo compatible con licencias permisivas. Respecto a \textit{Open Food Facts}, la licencia \textbf{\textit{ODbL}} aplica sobre los datos, permitiendo su uso siempre que se atribuya la fuente, lo cual no impide licenciar el código de la aplicación bajo otros términos.
-
-
-\subsubsection{Selección de licencia para el \textit{software}}
-
-Considerando la naturaleza de las dependencias utilizadas y el objetivo académico del proyecto, se ha optado por liberar el código fuente de \textit{Orderly} bajo la licencia \textbf{\textit{MIT License}}.
-
-Esta decisión se justifica por los siguientes motivos:
-\begin{itemize}
-	\item \textbf{Compatibilidad:} es compatible con la mayoría de las librerías utilizadas en el \textit{stack} tecnológico (\textit{React}, \textit{Spring Boot}, etc.).
-	\item \textbf{Permisividad:} otorga una gran libertad a futuros desarrolladores o usuarios, permitiendo usar, copiar, modificar, fusionar, publicar y distribuir el \textit{software} sin restricciones complejas, siempre que se mantenga el aviso de derechos de autor original.
-	\item \textbf{Fomento de la colaboración:} al ser una licencia estándar en el ecosistema \textit{open source}, facilita que otros estudiantes o desarrolladores puedan reutilizar el código para futuros Trabajos de Fin de Grado o proyectos derivados.
-\end{itemize}
-
-\subsubsection{Selección de licencia para la documentación}
-
-Para la memoria y la documentación técnica del proyecto (incluidos los presentes anexos), se ha seleccionado la licencia \textit{\textbf{Creative Commons Attribution 4.0 International}} (\textbf{CC BY 4.0}).
-
-Esta licencia permite compartir y adaptar el material para cualquier propósito, incluso comercial, con la única condición de otorgar el crédito apropiado al autor original. Se considera la opción más adecuada para un trabajo académico, ya que fomenta la divulgación del conocimiento y permite que la documentación sirva de referencia para futuros alumnos, protegiendo al mismo tiempo la autoría intelectual del trabajo.
 
 
 

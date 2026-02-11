@@ -30,7 +30,7 @@ A diferencia de los
 en los que las entidades actúan únicamente como contenedores de información, un modelo de dominio enriquecido incluye lógica de negocio relevante dentro de las propias clases del dominio. Este enfoque favorece una mayor cohesión, una mejor representación del dominio del problema y una distribución más natural de las responsabilidades dentro del sistema.
 
 \subsubsection{\textit{Domain-Driven Design} (\textit{DDD})}
-El \textit{Domain-Driven Design}~\cite{geeksforgeeks:DDD} es un enfoque de diseño de software orientado a la construcción de sistemas complejos a partir de un modelo de dominio rico y expresivo, alineado con el conocimiento del problema que se desea resolver. \textit{DDD} propone centrar el diseño en el dominio del negocio, fomentando una comunicación constante entre expertos del dominio y desarrolladores, utilizando conceptos como modelos de dominio, agregados, entidades, objetos de valor y contextos delimitados (\textit{bounded contexts}). El objetivo principal es lograr un diseño coherente, mantenible y adaptable a la evolución de los requisitos.
+El \textit{Domain-Driven Design}~\cite{geeksforgeeks:DDD} es un enfoque de diseño de \textit{software} orientado a la construcción de sistemas complejos a partir de un modelo de dominio rico y expresivo, alineado con el conocimiento del problema que se desea resolver. \textit{DDD} propone centrar el diseño en el dominio del negocio, fomentando una comunicación constante entre expertos del dominio y desarrolladores, utilizando conceptos como modelos de dominio, agregados, entidades, objetos de valor y contextos delimitados (\textit{bounded contexts}). El objetivo principal es lograr un diseño coherente, mantenible y adaptable a la evolución de los requisitos.
 
 En el desarrollo de este proyecto se han adoptado algunos principios y conceptos inspirados en el \textit{Domain-Driven Design}, sin aplicar la metodología de forma estricta o completa. En particular, se ha priorizado una organización del código orientada a funcionalidades o dominios concretos del sistema (directorios \texttt{user}, \texttt{food}, \texttt{product}...), en lugar de una estructura clásica por capas (directorios \texttt{controller}, \texttt{service}, \texttt{repository}...). También se ha favorecido que las entidades del dominio encapsulen comportamientos y responsabilidades propias, especialmente en la gestión de sus relaciones. No obstante, dado el alcance y complejidad moderada del proyecto, no se ha llevado a cabo una implementación exhaustiva de todos los patrones y prácticas formales de \textit{DDD}, optando por una aplicación selectiva y funcional, adaptada al contexto del trabajo.
 
@@ -159,7 +159,7 @@ No obstante, el uso de \textit{Open Food Facts} también presenta algunas \textb
 \textit{Spring Boot Test} es un módulo que proporciona soporte específico para la realización de pruebas en aplicaciones \textit{Spring Boot}. Permite cargar contextos de aplicación, simular peticiones HTTP y realizar pruebas de integración de forma controlada~\cite{spring:integrationTest}.
 
 \subsubsection{H2}
-\textit{H2}~\cite{medium:h2} es un sistema de base de datos relacional en memoria utilizado habitualmente en entornos de pruebas. Permite ejecutar pruebas de acceso a datos sin depender de una base de datos externa, garantizando rapidez y aislamiento en los tests.
+H2~\cite{medium:h2} es un sistema de base de datos relacional en memoria utilizado habitualmente en entornos de pruebas. Permite ejecutar pruebas de acceso a datos sin depender de una base de datos externa, garantizando rapidez y aislamiento en los tests.
 
 \subsection{Contenedores y despliegue}
 \subsubsection{Docker}
@@ -207,7 +207,7 @@ La estructura de un \textit{commit} según esta convención es la siguiente:
 
 \subsection{Entorno de desarrollo}
 \subsubsection{Visual Studio Code}
-\textit{Visual Studio Code}~\cite{vscode:docs} es un editor de código fuente ligero y multiplataforma ampliamente utilizado en el desarrollo de software. Destaca su amplio ecosistema de extensiones que permiten adaptarlo a distintos lenguajes y tecnologías. También resulta muy útil su integración nativa con \textit{Git}, que permite gestionar el control de versiones directamente desde la interfaz del editor.
+\textit{Visual Studio Code}~\cite{vscode:docs} es un editor de código fuente ligero y multiplataforma ampliamente utilizado en el desarrollo de \textit{software}. Destaca su amplio ecosistema de extensiones que permiten adaptarlo a distintos lenguajes y tecnologías. También resulta muy útil su integración nativa con \textit{Git}, que permite gestionar el control de versiones directamente desde la interfaz del editor.
 
 Para este proyecto se ha hecho uso del 
 \href{https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack}{\textit{Extension Pack for Java}}, 
@@ -216,7 +216,7 @@ un conjunto de herramientas que proporciona soporte avanzado para el lenguaje. I
 A pesar de que existen entornos específicos para el desarrollo con Java, como \textit{IntelliJ IDEA}~\cite{intelliJ:docs}, se optó por \textit{VS Code} debido a la familiaridad con su flujo de trabajo tras su uso continuado durante el grado. Gracias al mencionado sistema de extensiones, este editor ofrece una experiencia equiparable en potencia y funcionalidad.
 
 \subsubsection{Postman}
-\textit{Postman}~\cite{postman:product} es una herramienta de desarrollo que permite diseñar, ejecutar y analizar peticiones HTTP a servicios web, especialmente APIs REST. Facilita el envío de solicitudes con distintos métodos (\textit{GET, POST, PUT, DELETE}, etc.), la configuración de cabeceras y cuerpos de petición, y la visualización detallada de las respuestas devueltas por el servidor. 
+\textit{Postman}~\cite{postman:product} es una herramienta de desarrollo que permite diseñar, ejecutar y analizar peticiones HTTP a servicios web, especialmente APIs REST. Facilita el envío de solicitudes con distintos métodos (\texttt{GET, POST, PUT, DELETE}, etc.), la configuración de cabeceras y cuerpos de petición, y la visualización detallada de las respuestas devueltas por el servidor. 
 
 \textit{Postman} se utiliza habitualmente para verificar el comportamiento de los \textit{endpoints}, validar respuestas y apoyar el proceso de desarrollo y depuración de APIs. En este proyecto, se ha usado principalmente para validar la lógica de la API desarrollada con \textit{Spring Boot}, así como para testear las respuestas provenientes de las APIs nutricionales externas, facilitando así su posterior integración en el sistema.
 

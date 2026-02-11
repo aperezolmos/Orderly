@@ -2,7 +2,7 @@
 
 \section{Introducción}
 
-Una vez consolidado el marco de requisitos, este apéndice establece el puente entre la fase de análisis y la implementación real de la plataforma de restauración. El objetivo es proyectar una solución técnica coherente que garantice la integridad de la información, la estabilidad de la infraestructura y la correcta ejecución de los procesos del sistema. Esta etapa resulta fundamental para asegurar que la construcción del software responda de manera eficiente a los objetivos planteados, proporcionando una estructura organizada que facilite tanto su desarrollo como su escalabilidad futura.
+Una vez consolidado el marco de requisitos, este apéndice establece el puente entre la fase de análisis y la implementación real de la plataforma de restauración. El objetivo es proyectar una solución técnica coherente que garantice la integridad de la información, la estabilidad de la infraestructura y la correcta ejecución de los procesos del sistema. Esta etapa resulta fundamental para asegurar que la construcción del \textit{software} responda de manera eficiente a los objetivos planteados, proporcionando una estructura organizada que facilite tanto su desarrollo como su escalabilidad futura.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -11,12 +11,12 @@ Una vez consolidado el marco de requisitos, este apéndice establece el puente e
 
 En esta sección se describe la estructura lógica de la información que sustenta la plataforma de restauración. Se procede a describir las entidades involucradas y las relaciones entre ellas.
 
-Los diagramas que se mostrarán a continuación han sido generados mediante la herramienta \textit{``Reverse Engineer''} de \textit{MySQL Workbench}. Cabe señalar que esta funcionalidad \textbf{no soporta} la representación de \textbf{relaciones IS-A}, presentes en la jerarquía de herencia de pedidos (figuras \ref{fig:C2_modeloEER_General} y xxxx). Adicionalmente, las representa con cardinalidad 1:N, lo cual no se corresponde con la cardinalidad real de las herencias con estrategia \textit{JOINED}, pero de nuevo, la herramienta no sabe diferenciar entre 1:1 y 1:N~\cite{stackOverflow:mysqlWorkbench}.
+Los diagramas que se mostrarán a continuación han sido generados mediante la herramienta \textit{``Reverse Engineer''} de \textit{MySQL Workbench}. Cabe señalar que esta funcionalidad \textbf{no soporta} la representación de \textbf{relaciones IS-A}, presentes en la jerarquía de herencia de pedidos (figuras \ref{fig:C2_modeloEER_General} y \ref{fig:C2_modeloEER_Pedidos}). Adicionalmente, las representa con cardinalidad 1:N, lo cual no se corresponde con la cardinalidad real de las herencias con estrategia \textit{JOINED}, pero de nuevo, la herramienta no sabe diferenciar entre 1:1 y 1:N~\cite{stackOverflow:mysqlWorkbench}.
 
 \subsection{Modelo general}
 \label{subsec:C.2_ModeloGeneral}
 
-A continuación, se procede a listar las \textbf{entidades} que conforman la aplicación y a describir brevemente su propósito. La figura \ref{fig:C2_modeloEER_General} muestra el esquema de bases de datos completo. Las \textbf{relaciones} entre entidades y detalles particulares se describirán en el apartado \textit{\nameref{subsec:C.2_ModelosDetallados}}.
+A continuación, se procede a listar las \textbf{entidades} que conforman la aplicación y a describir brevemente su propósito. La figura \ref{fig:C2_modeloEER_General} muestra el esquema completo de la base de datos. Las \textbf{relaciones} entre entidades y detalles particulares se describirán en el apartado \textit{\nameref{subsec:C.2_ModelosDetallados}}.
 
 \begin{itemize}
 	\item \textbf{Usuario (\wordRef{\texttt{User}}{C.2_user}):} se trata de un empleado que utiliza la aplicación. Dispone de credenciales para ingresar en ella y tiene roles que determinan su comportamiento dentro del sistema.
@@ -24,15 +24,15 @@ A continuación, se procede a listar las \textbf{entidades} que conforman la apl
 	\begin{itemize}
 		\item El enumerado \wordRef{\texttt{Permission}}{C.2_permission} define todas las acciones que pueden ser autorizadas en el sistema. Los permisos se organizan por áreas funcionales (pedidos, mesas, reservas, etc.).
 	\end{itemize}
-	\item \textbf{Alimento (\wordRef{\texttt{Food}}{C.2_food}):} representa un alimento ``base'' o materia prima básica (p. ej. \textit{``Lechuga''}, \textit{``Pollo''}), con una información nutricional asociada.
+	\item \textbf{Alimento (\wordRef{\texttt{Food}}{C.2_food}):} representa un componente o ingrediente base (p. ej. \textit{``Lechuga''}, \textit{``Pollo''}), con una información nutricional asociada.
 	\item \textbf{Producto (\wordRef{\texttt{Product}}{C.2_product}):} se trata de un plato de comida o producto ofertado (p. ej. \textit{``Ensalada César''}) en el local, el cual se compone de varios alimentos y tiene un precio asociado.
 	\item \textbf{Ingrediente (\wordRef{\texttt{Ingredient}}{C.2_ingredient}):} representa la relación \textit{muchos a muchos} entre \texttt{Food} y \texttt{Product}. Contiene un atributo que determina la cantidad (en gramos) de un alimento que está presente en un producto determinado.
 	\item \textbf{Mesa (\wordRef{\texttt{DiningTable}}{C.2_diningTable}):} representa una mesa física del restaurante, que puede reservarse y desde la que se puede realizar un pedido.
 	\item \textbf{Reserva (\wordRef{\texttt{Reservation}}{C.2_reservation}):} contiene información sobre la reserva de una mesa de comedor, los datos del huésped que la realizó y la fecha, entre otros.
-	\item \textbf{Pedido (\wordRef{\texttt{Order}}{C.2_order}):} se trata de una comanda que se le hace a un empleado, esto es, uno o varios productos que se piden para ser consumidos y que suman un precio total. Se trata de una entidad ``padre'' que alberga los campos comunes entre tipos de pedidos. Se verá con mayor detalle en la subsección \textit{\nameref{subsec:C.2_ModelosDetallados}}.
+	\item \textbf{Pedido (\wordRef{\texttt{Order}}{C.2_order}):} se trata de una comanda que se le hace a un empleado, esto es, uno o varios productos que se piden para ser consumidos y que suman un precio total. Se trata de una entidad ``padre'' que alberga los campos comunes entre tipos de pedidos. Se verá con mayor detalle en la sección \textit{\nameref{subsubsec:C.2_ModeloPedidos}}.
 	\item \textbf{Pedido de bar (\wordRef{\texttt{BarOrder}}{C.2_barOrder}):} es un pedido que se realiza en la barra del bar y puede estar compuesto solo por bebidas (por lo que no sería necesario prepararlo en la cocina).
 	\item \textbf{Pedido de comedor (\wordRef{\texttt{DiningOrder}}{C.2_diningOrder}):} es una comanda que se realiza desde el comedor, por lo que tendrá una mesa asociada a la que llevar los platos.
-	\item \textbf{Línea de pedido (\wordRef{\texttt{OrderItem}}{C.2_orderItem}):} representa un ítem de cada pedido, que se conforma por un producto y una cantidad de dicho producto. Constituye un porcentaje del precio total del pedido.
+	\item \textbf{Línea de pedido (\wordRef{\texttt{OrderItem}}{C.2_orderItem}):} representa un ítem de cada pedido, compuesto por un producto y una cantidad de dicho producto. Constituye un porcentaje del precio total del pedido.
 \end{itemize}
 
 \imagenConEtiqueta[0.7\textwidth]{img/apen_C/C2_modeloEER_Completo.png}{Esquema de la Base de Datos}{C2_modeloEER_General}
@@ -92,6 +92,7 @@ Las relaciones involucradas son:
 En este módulo también hay presencia de \textbf{clases embebidas} para almacenar detalles de una reserva \texttt{ReservationDetails}, (como el número de comensales, fecha y hora) e información del cliente \texttt{GuestInfo} (como el nombre y teléfono de contacto) en distintas clases, manteniendo la tabla unificada \texttt{reservations}.
 %-------------------------------
 \subsubsection{Modelo para gestión de pedidos}
+\label{subsubsec:C.2_ModeloPedidos}
 
 En este módulo, cuyo esquema se detalla en la figura \ref{fig:C2_modeloEER_Pedidos}, se anotan las comandas realizadas al restaurante, que pueden hacerse desde la barra del bar o desde el comedor. Una comanda se compone de una serie de productos, cada uno con su cantidad y precio de venta asociados, que se manejan en conjunto y tienen un precio total. 
 
@@ -151,7 +152,7 @@ El \textit{frontend} se ha diseñado bajo el paradigma de \textbf{arquitectura b
 \subsection{Seguridad: Modelo RBAC y gestión de acceso}
 \label{subsec:C.3_modeloRBAC}
 
-La seguridad del sistema se ha diseñado bajo un modelo de \textbf{control de acceso basado en roles} (\textit{RBAC})~\cite{ibm:rbac} de \textbf{granularidad fina}. A diferencia de modelos más simples donde el rol determina directamente el acceso, en esta arquitectura los roles actúan como contenedores lógicos de permisos individuales. Estos permisos, definidos en el enumerado \hyperref[word:C.2_permission]{\texttt{Permission}}, representan acciones atómicas sobre las entidades del dominio (ej. \texttt{FOOD\_CREATE}, \texttt{ORDER\_EDIT}, \texttt{USER\_VIEW\_LIST}).
+La seguridad del sistema se ha diseñado bajo un modelo de \textbf{control de acceso basado en roles} (\textit{RBAC})~\cite{ibm:rbac} de \textbf{granularidad fina}. A diferencia de modelos más simples donde el rol determina directamente el acceso, en esta arquitectura los roles actúan como \textbf{contenedores} lógicos de permisos individuales. Estos permisos, definidos en el enumerado \hyperref[word:C.2_permission]{\texttt{Permission}}, representan acciones atómicas sobre las entidades del dominio (ej. \texttt{FOOD\_CREATE}, \texttt{ORDER\_EDIT}, \texttt{USER\_VIEW\_LIST}).
 
 Esta aproximación permite una gestión altamente flexible y adaptable a la estructura organizativa de un local de restauración. Dado que un usuario puede tener asignados \textbf{múltiples roles} simultáneamente, el sistema evalúa de forma aditiva el conjunto total de permisos, permitiendo el acceso si al menos uno de los roles del usuario posee el permiso requerido. Esto facilita la creación de \textbf{perfiles profesionales} específicos, como por ejemplo:
 \begin{itemize}
@@ -178,10 +179,10 @@ El sistema emplea una estrategia de autenticación basada en sesión HTTP, gesti
 
 Una cuestión a la que se le ha dado gran importancia es el \textbf{aislamiento} de dependencias externas. La aplicación se integra con la API de \textit{Open Food Facts} para el enriquecimiento de datos nutricionales, pero esta \textbf{integración se gestiona exclusivamente en el \textit{backend}}, permaneciendo totalmente opaca para el \textit{frontend}, como se puede visualizar en la figura \ref{fig:C3_arquitectura}.
 
-El diseño se apoya en un módulo independiente que encapsula la lógica de comunicación, mapeo y transformación de datos externos (directorio \texttt{\textbackslash foods\textbackslash external}). Mediante el uso de la clase \texttt{OpenFoodFactsRegistry} (figura \ref{fig:C3_OFFregistry}), se establece una fuente única de verdad (\textit{\textbf{Single Source of Truth}}) para las \textbf{equivalencias} entre los códigos de la API externa y los tipos internos de la aplicación (como alérgenos o grupos de alimentos). Este desacoplamiento ofrece dos \textbf{ventajas} críticas:
+El diseño se apoya en un módulo independiente que encapsula la lógica de comunicación, mapeo y transformación de datos externos (directorio \texttt{/foods/external}). Mediante el uso de la clase \texttt{OpenFoodFactsRegistry} (figura \ref{fig:C3_OFFregistry}), se establece una fuente única de verdad (\textit{\textbf{Single Source of Truth}}) para las \textbf{equivalencias} entre los códigos de la API externa y los tipos internos de la aplicación (como alérgenos o grupos de alimentos). Este desacoplamiento ofrece dos \textbf{ventajas} críticas:
 \begin{itemize}
 	\item \textbf{Mantenibilidad:} cualquier cambio en la estructura o en los puntos de acceso de la API externa solo requiere modificaciones en el módulo dedicado del \textit{backend}.
-	\item \textbf{Extensibilidad:} facilita la \textbf{sustitución} o adición de \textbf{nuevos proveedores} de datos nutricionales con un impacto mínimo en el resto del sistema, ya que el contrato de datos que recibe el \textit{frontend} permanece inalterado. Esta cuestión se explora más a fondo en el apartado \textit{\nameref{subsec:D.3_nuevaAPI}}.
+	\item \textbf{Extensibilidad:} facilita la \textbf{sustitución} o adición de \textbf{nuevos proveedores} de datos nutricionales con un impacto mínimo en el resto del sistema, ya que el \textbf{contrato} de datos que recibe el \textit{frontend} permanece \textbf{inalterado}. Esta cuestión se explora más a fondo en el apartado \textit{\nameref{subsec:D.3_nuevaAPI}}.
 \end{itemize}
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_OFFregistry.png}{Clase \texttt{OpenFoodFactsRegistry} con equivalencias entre campos de la API \textit{Open Food Facts} y el modelo de nuestra aplicación}{C3_OFFregistry}
@@ -189,9 +190,21 @@ El diseño se apoya en un módulo independiente que encapsula la lógica de comu
 %---------------------------------------------------------------
 
 \subsection{Infraestructura y despliegue}
-La infraestructura de la aplicación se gestiona mediante \textit{Docker}, empleando \textit{\textbf{Docker Compose}} para la orquestación de los servicios. El sistema se descompone en \textbf{tres contenedores independientes}: el entorno de ejecución para el \textit{frontend} (\textit{React/Vite}), el servidor de aplicaciones (\textit{Spring Boot}) y el motor de base de datos (\textit{MySQL}). El diagrama \ref{fig:C3_despliegue} muestra la arquitectura de despliegue mencionada.\todo{explicar volúmenes react y mencionar que son para el desarrollo}
+La infraestructura de la aplicación se gestiona mediante \textit{Docker}, empleando \textit{\textbf{Docker Compose}} para la orquestación de los servicios. El sistema se descompone en \textbf{tres contenedores independientes}: el entorno de ejecución para el \textit{frontend} (\textit{React/Vite}), el servidor de aplicaciones (\textit{Spring Boot}) y el motor de base de datos (\textit{MySQL}). 
 
-\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C3_despliegue.png}{Diagrama de despliegue de la aplicación}{C3_despliegue}
+Durante la fase de \textbf{desarrollo}, la infraestructura se configura para maximizar la productividad del programador. Como se observa en el diagrama \ref{fig:C3_despliegue_dev}, se emplean \textbf{volúmenes de datos} específicos en el servicio \textit{frontend} para habilitar el \textit{Hot Module Replacement} (HMR). 
+
+Esta configuración permite que los cambios en el código fuente se reflejen instantáneamente en el navegador sin necesidad de reconstruir las imágenes. Los detalles técnicos sobre el funcionamiento de estos volúmenes y su relación con el flujo de trabajo se detallan en el apartado \textit{\nameref{subsubsec:D.3_reactHMR}}.
+
+\imagenConEtiqueta[0.8\textwidth]{img/apen_C/C3_despliegue_dev.png}{Diagrama de despliegue en entorno de desarrollo}{C3_despliegue_dev}
+
+Para el entorno de \textbf{producción}, la arquitectura se simplificaría para garantizar la portabilidad y el rendimiento. En este escenario (diagrama \ref{fig:C3_despliegue_prod}):
+\begin{itemize}
+	\item \textbf{Eliminación de dependencias locales:} se prescindiría de los volúmenes del \textit{frontend}. El código fuente y las dependencias quedarían embebidos estáticamente dentro de la imagen del contenedor, eliminando la dependencia con el sistema de archivos del anfitrión.
+	\item \textbf{Persistencia de datos:} se mantendría el volumen persistente \break \texttt{orderly\_db\_data} para el servicio \textit{MySQL}. Esto asegura que la información de la base de datos sea independiente del ciclo de vida del contenedor.
+\end{itemize}
+
+\imagenConEtiqueta[0.8\textwidth]{img/apen_C/C3_despliegue_prod.png}{Diagrama de despliegue en entorno de producción}{C3_despliegue_prod}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -200,19 +213,21 @@ La infraestructura de la aplicación se gestiona mediante \textit{Docker}, emple
 
 Esta sección trata de la transformación de los modelos arquitectónicos en especificaciones técnicas detalladas, definiendo la lógica interna y el comportamiento de los componentes del sistema. El diseño procedimental permite establecer la secuencia exacta de pasos y el flujo de control necesarios para resolver cada tarea, asegurando que la transición hacia la implementación sea coherente.
 
-\subsection{Patrones de diseño utilizados}\todo{diagramas de clases? al menos el de mappers}
+\subsection{Patrones de diseño utilizados}
 
 Para resolver problemas recurrentes del \textit{software} y facilitar el mantenimiento, se han implementado los siguientes patrones:
 
 \begin{itemize}
-	\item \textbf{Patrón \textit{Builder}:} se ha integrado de forma extensiva mediante la anotación \texttt{@Builder} de \textit{Lombok} tanto en entidades como en DTOs. Este patrón facilita la instanciación de objetos complejos (como \hyperref[word:C.2_food]{\texttt{Food}} o \hyperref[word:C.2_product]{\texttt{Product}}), mejorando significativamente la legibilidad del código y evitando constructores con largas listas de parámetros que pueden inducir a error.
-	\item \textbf{Patrón \textit{Factory} (\texttt{OrderMapperFactory}):} dado que el sistema gestiona distintos tipos de pedidos (\hyperref[word:C.2_barOrder]{\texttt{BarOrder}} y \hyperref[word:C.2_diningOrder]{\texttt{DiningOrder}}) con requerimientos de datos específicos, se ha implementado una factoría de mapeo. La clase \texttt{OrderMapperFactory} actúa como un \textit{``dispatcher''} que decide en tiempo de ejecución qué estrategia de mapeo (\textit{mapper}) aplicar basándose en el tipo de DTO o entidad.
+	\item \textbf{Patrón \textit{Builder}:} se ha integrado de forma extensiva mediante la anotación \texttt{@Builder} de \textit{Lombok}, tanto en entidades como en DTOs. Este patrón facilita la instanciación de objetos complejos (como \hyperref[word:C.2_food]{\texttt{Food}} o \hyperref[word:C.2_product]{\texttt{Product}}), mejorando significativamente la legibilidad del código y evitando constructores con largas listas de parámetros que pueden inducir a error.
+	\item \textbf{Patrón \textit{Factory} (\texttt{OrderMapperFactory}):} dado que el sistema gestiona distintos tipos de pedidos (\hyperref[word:C.2_barOrder]{\texttt{BarOrder}} y \hyperref[word:C.2_diningOrder]{\texttt{DiningOrder}}) con requerimientos de datos específicos, se ha implementado una factoría de mapeo (figura \ref{fig:C4_orderMapperFactory}). La clase \texttt{OrderMapperFactory} actúa como un \textit{``dispatcher''} que decide en tiempo de ejecución qué estrategia de mapeo (\textit{mapper}) aplicar basándose en el tipo de DTO o entidad.
 	\begin{itemize}
 		\item Podría considerarse una combinación del patrón \textit{factory} y el patrón \textit{\textbf{strategy}}.
 		\item \textbf{Ventaja:} desacopla el servicio \texttt{OrderService} de las implementaciones concretas de cada pedido.
 	\end{itemize}
 	\item \textbf{Patrón \textit{Adapter}:} se utiliza en la clase \texttt{CustomUserDetails}. Esta clase actúa como un adaptador que permite que nuestra entidad de dominio \hyperref[word:C.2_user]{\texttt{User}} cumpla con el contrato de la interfaz \texttt{UserDetails} requerida por \textit{Spring Security}. Gracias a esto, el sistema de seguridad puede interactuar con el modelo de usuarios propio sin necesidad de modificar la estructura de la base de datos.
 \end{itemize}
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C4_orderMapperFactory.png}{Implementación del patrón \textit{Factory} para la gestión polimórfica de pedidos y sus DTOs}{C4_orderMapperFactory}
 
 \subsection{Gestión de consistencia y lógica de dominio}
 
@@ -221,11 +236,11 @@ A diferencia de las arquitecturas con modelos anémicos, donde las entidades son
 \paragraph{Lógica de dominio encapsulada}
 Las entidades asumen la responsabilidad de sus propios cálculos y estados (figura \ref{fig:C4_metodosDominio}). Por ejemplo, la entidad \hyperref[word:C.2_product]{\texttt{Product}} es capaz de calcular automáticamente su perfil nutricional y alérgenos agregando la información de sus ingredientes. Del mismo modo, la entidad \hyperref[word:C.2_order]{\texttt{Order}} gestiona sus líneas de pedido y actualiza su importe total de forma autónoma.
 
-\imagenConEtiqueta[0.8\textwidth]{img/apen_C/C4_metodosDominio.png}{Ejemplo de métodos de dominio en entidades \texttt{Product}, \texttt{Food} y \texttt{Order}}{C4_metodosDominio}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C4_metodosDominio.png}{Ejemplo de métodos de dominio en entidades \texttt{Product}, \texttt{Food} y \texttt{Order}}{C4_metodosDominio}
 
 \paragraph{Consistencia bidireccional} Para mantener la integridad referencial en memoria, se han implementado \textbf{métodos auxiliares} de sincronización en las relaciones bidireccionales. Por ejemplo, en la relación entre \hyperref[word:C.2_order]{\texttt{Order}} e \hyperref[word:C.2_orderItem]{\texttt{OrderItem}}, los métodos \texttt{addItem} y \texttt{removeItem} aseguran que, al vincular un ítem a un pedido, el ítem también ``conozca'' a qué pedido pertenece, evitando estados inconsistentes antes de la persistencia (figura \ref{fig:C4_metodosConsistencia}).
 
-\imagenConEtiqueta[0.8\textwidth]{img/apen_C/C4_metodosConsistencia.png}{Ejemplos de métodos para consistencia bidireccional en entidades \texttt{Ingredient}, \texttt{Order} y \texttt{OrderItem}}{C4_metodosConsistencia}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_C/C4_metodosConsistencia.png}{Ejemplos de métodos para consistencia bidireccional en entidades \texttt{Ingredient}, \texttt{Order} y \texttt{OrderItem}}{C4_metodosConsistencia}
 
 \subsection{Flujos principales de la aplicación}
 
@@ -259,6 +274,7 @@ En la mayoría de los casos, los diagramas de secuencia (creados mediante la her
 
 \imagenConEtiqueta{img/apen_C/C4_inicioSesion_altoNivel.png}{Diagrama de secuencia del inicio de sesión general}{C4_inicioSesion_altoNivel}
 
+\newpage
 \subsubsection{A.1) Iniciar sesión (detalles de \textit{Spring Boot})}
 {\small
 \begin{enumerate}
@@ -300,7 +316,7 @@ En la mayoría de los casos, los diagramas de secuencia (creados mediante la her
 \subsubsection{B) Crear una entidad}
 {\small
 \begin{enumerate}
-	\item Empleado accede al formulario de creación en la aplicación \textit{React}.
+	\item Empleado accede al formulario de creación en la aplicación \textit{React} y lo rellena.
 	\item \textit{Frontend React} valida los campos localmente (formulario):
 	\begin{enumerate}
 		\item Si los datos no son válidos, muestra errores y no permite enviar el formulario.

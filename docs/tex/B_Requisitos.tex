@@ -2,7 +2,7 @@
 
 \section{Introducción}
 
-Este apéndice detalla la base técnica y funcional del proyecto, estableciendo el marco de trabajo necesario para el desarrollo del software. En las siguientes secciones se describen tanto las metas estratégicas como el comportamiento esperado del sistema, proporcionando una hoja de ruta clara sobre cómo la aplicación debe interactuar con sus usuarios.
+Este apéndice detalla la base técnica y funcional del proyecto, estableciendo el marco de trabajo necesario para el desarrollo del \textit{software}. En las siguientes secciones se describen tanto las metas estratégicas como el comportamiento esperado del sistema, proporcionando una hoja de ruta clara sobre cómo la aplicación debe interactuar con sus usuarios.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -268,7 +268,7 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 	\textbf{Versión}              & 1.0    \\
 	\textbf{Autor}                & Amanda Pérez Olmos \\
 	\textbf{Requisitos asociados} & \hyperref[req:rf7.1]{RF-7.1}, \hyperref[req:rf8]{RF-8} \\
-	\textbf{Actor}                & Visitante sin cuenta en el sistema \\
+	\textbf{Actor}                & Visitante sin cuenta en el sistema. \\
 	\textbf{Descripción}          & Visitante crea una nueva cuenta de usuario. \\
 	\textbf{Precondición}         & El usuario no está autenticado. \\
 	\textbf{Acciones}             &
@@ -314,7 +314,7 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 		\item El sistema valida las credenciales.
 		{\footnotesize
 		\begin{enumerate}[nosep]
-			\item Si la validación es exitosa, el sistema redirige al usuario a su perfil.
+			\item Si la validación es exitosa, el sistema redirige al usuario a la página de inicio.
 			\item Si la validación falla, se muestra un mensaje con la descripción del error.
 		\end{enumerate}}
 	\end{enumerate} \\
@@ -365,6 +365,10 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 			\item Si se quiere editar la contraseña, se deberá introducir la contraseña actual.
 		\end{enumerate}}
 		\item El sistema valida y persiste los cambios.
+		{\footnotesize
+		\begin{itemize}[nosep]
+			\item Si se ha modificado el \textit{username}, se cerrará sesión para que el usuario vuelva a ingresar con las nuevas credenciales.
+		\end{itemize}}
 	\end{enumerate} \\
 	\textbf{Postcondición}        & Campos del usuario actualizados. \\
 	\textbf{Excepciones}          & 
@@ -559,12 +563,11 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 	\item Hacer \textit{click} en el botón de estado de la entidad deseada.
 	\item Se desplegará un menú con los estados posibles para esa entidad.
 	\item Seleccionar un estado nuevo.
-	\item Hacer \textit{click} en el botón de guardado.
-	\item El sistema valida los campos modificados.
+	\item El sistema valida la transición de estado.
 	{\footnotesize
 	\begin{enumerate}[nosep]
-		\item Si la validación es exitosa, persiste los cambios y actualiza la vista.
-		\item Si falla, muestra mensajes de error sin cerrar el formulario.
+		\item Si la la transición es válida, persiste los cambios y actualiza la vista.
+		\item Si falla, muestra un mensaje de error.
 	\end{enumerate}}
 \end{enumerate} \\
 \textbf{Postcondición}        & 
@@ -714,7 +717,7 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 \textbf{Versión}              & 1.0    \\
 \textbf{Autor}                & Amanda Pérez Olmos \\
 \textbf{Requisitos asociados} & \hyperref[req:rf5.4.1]{RF-5.4.1}, \hyperref[req:rf5.4.2]{RF-5.4.2}, \hyperref[req:rf5.4.3]{RF-5.4.3}, \hyperref[req:rf5.5]{RF-5.5} \\
-\textbf{Actor}                & Empleado con permisos \texttt{EDIT} sobre pedidos y PRODUCT\_VIEW\_LIST. \\
+\textbf{Actor}                & Empleado con permisos \texttt{EDIT} sobre pedidos y \texttt{PRODUCT\_VIEW\_LIST}. \\
 \textbf{Descripción}          & Usuario agrega, quita o modifica cantidades de ítems (productos) que pertenecen a un pedido. \\
 \textbf{Precondición}         & 
 \begin{itemize}[nosep]
@@ -759,7 +762,7 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 \textbf{Precondición}         & 
 \begin{itemize}[nosep]
 	\item Usuario autenticado con permiso para editar los roles de un usuario.
-	\item Está en el formulario de creación de edición de un usuario.
+	\item Está en el formulario de creación o edición de un usuario.
 \end{itemize} \\
 \textbf{Acciones}             &
 \begin{enumerate}[nosep]
@@ -902,7 +905,7 @@ Como se ve en la tabla \ref{tab:B.4_acciones_actores}, el administrador posee ac
 \textbf{Postcondición}        & 
 \begin{itemize}[nosep]
 	\item Se muestran los productos que no contienen ninguno de los alérgenos seleccionados.
-	\item En el botón \textit{Filtrar} aparece el número de alérgenos que estamos excluyendo.
+	\item En el botón \textit{Filtrar} aparece el número de alérgenos que se están excluyendo.
 \end{itemize} \\
 \textbf{Excepciones}          &
 \begin{itemize}[nosep]

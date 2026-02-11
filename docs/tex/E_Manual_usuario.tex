@@ -56,7 +56,7 @@ Al introducir el nombre de usuario, el sistema valida que dicho nombre \textbf{n
 	y se podrá enviar el formulario, siempre que se hayan rellenado todos los campos requeridos.
 \end{itemize} 
 
-Una vez pulsado el botón de creación, se redirigirá al usuario a la página de inicio que inicialmente aparecerá vacía, debido a que el usuario no tendrá asignados los permisos necesarios, como se detalla en \textit{\nameref{subsec:E_PaginaInicio}}. Las únicas acciones que puede realizar un usuario recién registrado, al que aún no se le han asignado permisos, son visualizar y editar su perfil.
+Una vez pulsado el botón de creación, se redirigirá al usuario a la página de inicio, que inicialmente aparecerá vacía debido a que el usuario no tendrá asignados los permisos necesarios, como se detalla en \textit{\nameref{subsec:E_PaginaInicio}}. Las únicas acciones que puede realizar un usuario recién registrado, al que aún no se le han asignado permisos, son visualizar y editar su perfil.
 
 %---------------------------------------------------------------
 
@@ -66,7 +66,7 @@ En caso de que el usuario ya tenga una cuenta existente, lo único que debe hace
 
 \imagenConEtiqueta[0.7\textwidth]{img/apen_E/E_3_login.png}{Página de inicio de sesión}{E_3_login}
 
-Al iniciar sesión con credenciales válidas, se redirigirá al usuario a su página de inicio.
+Al iniciar sesión con credenciales válidas, se redirigirá al usuario a la \textit{\nameref{subsec:E_PaginaInicio}}.
 
 %---------------------------------------------------------------
 
@@ -136,22 +136,21 @@ La cantidad de \textbf{módulos} y \textbf{páginas} a mostrar en este menú vie
 si nos encontramos en el modo oscuro) para cambiar la paleta de colores.
 
 La aplicación también soporta el \textbf{cambio de idioma}. \textit{Orderly} está disponible tanto en \textbf{inglés} como en \textbf{español}. Por defecto, al acceder a la aplicación, el idioma se establece en función del idioma del \textbf{navegador} del usuario, pero puede cambiarse en cualquier momento desde el icono 
-\raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_idioma.png}}
-, el cual desplegará un \textbf{menú} para seleccionar el nuevo idioma.
+\raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_idioma.png}}, el cual desplegará un \textbf{menú} para seleccionar el nuevo idioma.
 
 \imagenConEtiqueta[0.37\textwidth]{img/apen_E/E_6_2_nav_auth.png}{Sección derecha de la barra de navegación}{E_6_2_nav_auth}
 
 Finalmente, se muestra el \textit{username} del usuario autenticado y, haciendo \textit{click} sobre él, se despliega un menú que permite navegar al perfil del usuario o cerrar sesión.
 
 \subsubsection{Menú lateral (móvil)}
-Orderly está diseñada para adaptarse a distintos tamaños de pantalla. Es por eso por lo que, en \textbf{tamaños reducidos} (como pantallas móviles), la barra de navegación principal se transforma en un menú lateral (figura \ref{fig:E_7_nav_movil}), accesible desde el icono
+\textit{Orderly} está diseñada para adaptarse a distintos tamaños de pantalla. Es por eso por lo que, en \textbf{tamaños reducidos} (como pantallas móviles), la barra de navegación principal se transforma en un menú lateral (figura \ref{fig:E_7_nav_movil}), accesible desde el icono
 \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_openSidebar.png}}
 . Los menús y acciones a realizar coinciden con los presentados en el apartado anterior.
 
 \imagenConEtiqueta[0.5\textwidth]{img/apen_E/E_7_nav_movil.png}{Menú lateral de navegación para móviles}{E_7_nav_movil}
 
 \subsubsection{\textit{Breadcrumbs}}
-En las páginas de gestión que veremos a continuación, hay otro elemento de navegación presente: los \textit{breadcrumbs}. Se trata de \textbf{enlaces de navegación} que muestran al usuario la \textbf{ruta jerárquica} desde la página principal (inicio) hasta la sección actual (figura \ref{fig:E_8_nav_breadcrumbs}). Son una forma más rápida de acceder a secciones del mismo módulo y ayudan al usuario a comprender mejor la estructura de la aplicación.
+En las páginas de gestión que se verán a continuación, hay otro elemento de navegación presente: los \textit{breadcrumbs}. Se trata de \textbf{enlaces de navegación} que muestran al usuario la \textbf{ruta jerárquica} desde la página principal (inicio) hasta la sección actual (figura \ref{fig:E_8_nav_breadcrumbs}). Son una forma más rápida de acceder a secciones del mismo módulo y ayudan al usuario a comprender mejor la estructura de la aplicación.
 
 \imagenConEtiqueta[0.55\textwidth]{img/apen_E/E_8_nav_breadcrumbs.png}{\textit{Breadcrumbs} de navegación}{E_8_nav_breadcrumbs}
 
@@ -184,7 +183,9 @@ En esta página (figura \ref{fig:E_10_dashboard}) se centralizan todas las opera
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_10_dashboard.png}{\textit{Dashboard} de pedidos}{E_10_dashboard}
 
-La \textbf{sección de pedidos pendientes} (izquierda) cuenta con \textbf{dos vistas} disponibles: pedidos de \textbf{barra} y pedidos de \textbf{comedor}. Pulsando los botones asociados, se puede alternar entre visualizar los pedidos de un tipo u otro. El botón de \textit{Crear pedido} también se ve afectado por la vista en la que se sitúe el usuario. Es decir, si se quiere \textbf{crear}, por ejemplo, un pedido de comedor, el usuario deberá situarse en la vista \textit{Comedor} antes de pulsar el botón de creación.
+La \textbf{sección de pedidos pendientes} (izquierda) cuenta con \textbf{dos vistas} disponibles: pedidos de \textbf{barra} y pedidos de \textbf{comedor}. Pulsando los botones asociados, se puede alternar entre visualizar los pedidos de un tipo u otro. El botón de \textit{Crear pedido} también se ve afectado por la vista en la que se sitúe el usuario (figura \ref{fig:E_10_4_crearPedidos}). Es decir, si se quiere \textbf{crear}, por ejemplo, un pedido de comedor, el usuario deberá situarse en la vista \textit{Comedor} antes de pulsar el botón de creación.
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_10_4_crearPedidos.png}{Modal de creación de un pedido de comedor}{E_10_4_crearPedidos}
 
 En dicha sección, se visualiza una tabla (figura \ref{fig:E_10_1_orderDetails}) que muestra la información asociada al \textbf{pedido actual} (el seleccionado en ese momento) y permite \textbf{editar} su información asociada (número de pedido, nombre del cliente, notas) o \textbf{eliminarlo}.
 
@@ -194,28 +195,28 @@ Para \textbf{añadir ítems a un producto}, basta con hacer \textit{click} en el
 	\item El botón \textit{Guardar} se \textbf{habilita} cuando las cantidades de los ítems se modifican, y \textbf{debe pulsarse} para actualizar el precio total y conservar la información del pedido. De lo contrario, dichas modificaciones se perderán al cambiar el pedido seleccionado o salir de la página.
 \end{itemize}
 
-\imagenConEtiqueta[0.7\textwidth]{img/apen_E/E_10_1_orderDetails.png}{Tabla con detalles del pedido seleccionado}{E_10_1_orderDetails}
+\imagenConEtiqueta[0.68\textwidth]{img/apen_E/E_10_1_orderDetails.png}{Tabla con detalles del pedido seleccionado}{E_10_1_orderDetails}
 
-Desde esta tabla también puede \textbf{modificarse el estado} del pedido seleccionado, desde el botón que lo contiene. Si se pulsa dicho botón, se despliega un menú con los estados posibles. Es \textbf{importante} recalcar que desde el \textit{dashboard} \textbf{solo} se gestionan pedidos con estados \textit{``pendiente''}, \textit{``en progreso''} o \textit{``listo''}. Una vez se marque un pedido como \textit{``pagado''} o \textit{``cancelado'}', el pedido \textbf{desaparecerá} de la lista de pedidos del \textit{dashboard} y solo se tendrá acceso a su información desde el \textit{\nameref{subsubsec:E_Pedidos_Historial}}.
+Desde esta tabla también puede \textbf{modificarse el estado} del pedido seleccionado, desde el botón que lo contiene. Si se pulsa dicho botón, se despliega un menú con los estados posibles. Es \textbf{importante} recalcar que desde el \textit{dashboard} \textbf{solo} se gestionan pedidos con estados \textit{``pendiente''}, \textit{``en progreso''}, \textit{``listo''} o \textit{``servido''}. Una vez se marque un pedido como \textit{``pagado''} o \textit{``cancelado'}', el pedido \textbf{desaparecerá} de la lista de pedidos del \textit{dashboard} y solo se tendrá acceso a su información desde el \textit{\nameref{subsubsec:E_Pedidos_Historial}}.
 
-\imagenConEtiqueta[0.7\textwidth]{img/apen_E/E_10_2_pedidosPendientes.png}{Lista de pedidos pendientes}{E_10_2_pedidosPendientes}
+\imagenConEtiqueta[0.68\textwidth]{img/apen_E/E_10_2_pedidosPendientes.png}{Lista de pedidos pendientes}{E_10_2_pedidosPendientes}
 
 Respecto a dicha lista de pedidos (figura \ref{fig:E_10_2_pedidosPendientes}), desde aquí pueden visualizarse todos los pedidos activos de la aplicación, y su visualización también depende de la vista (bar o comedor) en la que se encuentre el usuario. Pulsando sobre uno de los elementos de la lista, se establece dicho elemento como el ``pedido actual'' y pasa a visualizarse en la tabla descrita anteriormente.
 
 Finalmente, ya se ha mencionado la \textbf{sección de productos ofertados} al explicar cómo añadir ítems a un producto. Se trata de un listado paginado con \textbf{todos} los productos registrados en la aplicación. Dicho listado puede filtrarse para \textbf{excluir ciertos alérgenos}. Tan solo hace falta hacer \textit{click} en el botón \textit{Filtrar} (figura \ref{fig:E_10_3_filtrarProductos}), seleccionar uno o varios alérgenos para excluir y pulsar en el botón \textit{Filtrar} del cuadro emergente.
 
-\imagenConEtiqueta[0.6\textwidth]{img/apen_E/E_10_3_filtrarProductos.png}{Filtro para excluir alérgenos en listado de productos}{E_10_3_filtrarProductos}
+\imagenConEtiqueta[0.57\textwidth]{img/apen_E/E_10_3_filtrarProductos.png}{Filtro para excluir alérgenos en listado de productos}{E_10_3_filtrarProductos}
 
 Desde la barra de búsqueda se pueden \textbf{buscar} alérgenos por nombre y \textbf{deseleccionar todos} a la vez, si se quisiera dejar de filtrar.
 
 \subsubsection{Historial de pedidos}
 \label{subsubsec:E_Pedidos_Historial}
 
-En esta página se puede acceder al \textbf{registro completo} (figura \ref{fig:E_11_pedidos_historial}) de todos los pedidos realizados en la aplicación (excluyendo los eliminados desde el \textit{dashboard}).
-
-Contiene botones para visualizar todos los pedidos o aquellos de un tipo concreto. Si se pulsa sobre el \textbf{número de pedido} de alguno de los registros, se abrirá una ventana emergente con los \textbf{detalles} de dicho pedido, incluyendo una tabla con su precio, ítems y cantidades finales (figura \ref{fig:E_11_1_pedidos_detalle}). No se podrán realizar modificaciones a ninguno de los pedidos desde esta vista.
+En esta página se puede acceder al \textbf{registro completo} (figura \ref{fig:E_11_pedidos_historial}) de todos los pedidos realizados en la aplicación (excluyendo los eliminados desde el \textit{dashboard}), ordenados por fecha de modificación más reciente.
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_11_pedidos_historial.png}{Historial de pedidos}{E_11_pedidos_historial}
+
+Contiene botones para visualizar todos los pedidos o aquellos de un tipo concreto. Si se pulsa sobre el \textbf{número de pedido} de alguno de los registros, se abrirá una ventana emergente con los \textbf{detalles} de dicho pedido, incluyendo una tabla con su precio, ítems y cantidades finales (figura \ref{fig:E_11_1_pedidos_detalle}). No se podrán realizar modificaciones a ninguno de los pedidos desde esta vista.
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_11_1_pedidos_detalle.png}{Vista de detalles de un pedido desde historial}{E_11_1_pedidos_detalle}
 
@@ -227,7 +228,7 @@ La gestión de productos abarca la creación, edición y borrado de los platos (
 
 \subsubsection{Listar productos}
 
-La página de listado muestra una tabla con todos los productos almacenados en la base de datos de la aplicación, ordenados por ID. Se muestran varios campos relevantes como el precio del producto. Desde esta página se pueden realizar varias acciones como:
+La página de listado (figura \ref{fig:E_12_1_productos_lista}) muestra una tabla con todos los productos almacenados en la base de datos de la aplicación, ordenados por ID. Se muestran varios campos relevantes como el precio del producto. Desde esta página se pueden realizar varias acciones como:
 \begin{itemize}
 	\item Pulsar el botón de \textit{Nuevo Producto}, que redirigirá a la página de \textit{\nameref{subsubsec:E_Productos_Crear}}.
 	\item Pulsar el botón de 
@@ -239,60 +240,68 @@ La página de listado muestra una tabla con todos los productos almacenados en l
 	\item Pulsar el nombre de un producto, que redirigirá a la página de \textit{\nameref{subsubsec:E_Productos_Detalles}}.
 \end{itemize}
 
-\missingfigure{Imagen página listado}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_1_productos_lista.png}{Página de listado de productos}{E_12_1_productos_lista}
 
 
 \subsubsection{Crear productos}
 \label{subsubsec:E_Productos_Crear}
 
-La página de creación de un producto contiene un formulario para rellenar la información básica asociada a dicho producto. Como mínimo, se le debe asignar un \textbf{nombre} y un \textbf{precio} al producto (puede contener decimales).
+La página de creación de un producto (figura \ref{fig:E_12_2_productos_crear}) contiene un formulario para rellenar la información básica asociada a dicho producto. Como mínimo, se le debe asignar un \textbf{nombre} y un \textbf{precio} al producto (puede contener decimales).
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_2_productos_crear.png}{Página de creación de productos}{E_12_2_productos_crear}
 
 El nombre del producto introducido debe ser \textbf{único} (no debe coincidir con ninguno de los productos almacenados en la base de datos). Si se introduce un nombre que ya está en uso, se informa al usuario y no se permite enviar el formulario hasta que se corrija.
 
-\missingfigure{Imagen página crear}
+Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar los ingredientes} de ese producto (figura \ref{fig:E_12_3_productos_ingredientes}). Dicha sección contiene una barra de búsqueda para \textbf{buscar por nombre} los ingredientes (alimentos) que se quieran añadir al producto.
 
-Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar los ingredientes} de ese producto. Dicha sección contiene una barra de búsqueda para \textbf{buscar por nombre} los ingredientes (alimentos) que se quieran añadir al producto.
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_3_productos_ingredientes.png}{Sección para la gestión de ingredientes de un producto}{E_12_3_productos_ingredientes}
 
 Una vez se añade un ingrediente, se puede \textbf{editar la cantidad} en gramos de dicho ingrediente en el producto. Esta porción del alimento determinará qué nutrientes individuales aporta el ingrediente al conjunto completo de nutrientes del producto. También se pueden \textbf{quitar ingredientes} de la tabla.
 
 \subsubsection{Editar productos}
 \label{subsubsec:E_Productos_Editar}
 
-La página de edición de un producto permite realizar todas las acciones descritas en el apartado anterior.
+La página de edición de un producto (figura \ref{fig:E_12_4_productos_editar}) permite realizar todas las acciones descritas en el apartado anterior.
 
-\missingfigure{Imagen página editar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_4_productos_editar.png}{Página de edición de productos}{E_12_4_productos_editar}
 
 \subsubsection{Eliminar productos}
 \label{subsubsec:E_Productos_Eliminar}
 
 Para eliminar un producto, basta con situarse en la pantalla de listado y pulsar el botón 
 \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_borrar.png}}
-del producto que quiera eliminarse. Se abrirá entonces un cuadro de diálogo pidiendo \textbf{confirmación} de la operación.
+del producto que quiera eliminarse. Se abrirá entonces un cuadro de diálogo (figura \ref{fig:E_12_5_productos_borrar}) pidiendo \textbf{confirmación} de la operación.
 
-\missingfigure{Imagen modal eliminar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_5_productos_borrar.png}{Modal de eliminación de productos}{E_12_5_productos_borrar}
 
 Si la operación de borrado es exitosa, se notificará al usuario del éxito en el borrado y se actualizará el listado. Si no es exitosa, se informará al usuario del error mediante una notificación.
 
 \subsubsection{Ver detalles de un producto}
 \label{subsubsec:E_Productos_Detalles}
 
-La página de información detallada de un producto contiene su listado de ingredientes y una sección para ver la información nutricional total del producto. En la parte superior de la página, se visualiza la información básica del producto (nombre, descripción, precio) y una lista desplegable de \textbf{alérgenos}. Los alérgenos de un producto son la unión del conjunto de alérgenos que aportan los ingredientes de dicho producto.
+La página de información detallada de un producto (figura \ref{fig:E_12_6_productos_ver}) contiene su listado de ingredientes y una sección para ver la información nutricional total del producto. En la parte superior de la página, se visualiza la información básica del producto (nombre, descripción, precio) y una lista desplegable de \textbf{alérgenos}. Los alérgenos de un producto son la unión del conjunto de alérgenos que aportan los ingredientes de dicho producto.
 
-\missingfigure{Imagen sección info básica con lista de alérgenos desplegada}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_6_productos_ver.png}{Página de detalles de un producto}{E_12_6_productos_ver}
 
-La siguiente sección a visualizar presenta en su vista inicial un \textbf{gráfico} de tipo donut, con los \textbf{macronutrientes} totales del producto. Se trata de un gráfico anidado, puesto que algunos nutrientes representan una \textbf{porción} de otros más generales (por ejemplo, las \textit{grasas saturadas} son una parte de las \textit{grasas} totales del producto). Estos datos también pueden visualizarse en formato \textbf{tabla}, pulsando el botón pertinente para alternar la vista.
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_6_productos_ver_nutriGrafico.png}{Gráfico nutricional de un producto}{E_12_6_productos_ver_nutriGrafico}
 
-\missingfigure{Imagen sección nutricional gráfico}
+La siguiente sección a visualizar presenta en su vista inicial un \textbf{gráfico} de tipo donut, con los \textbf{macronutrientes} totales del producto (figura \ref{fig:E_12_6_productos_ver_nutriGrafico}). Se trata de un gráfico anidado, puesto que algunos nutrientes representan una \textbf{porción} de otros más generales (por ejemplo, las \textit{grasas saturadas} son una parte de las \textit{grasas} totales del producto). Estos datos también pueden visualizarse en formato \textbf{tabla}, pulsando el botón pertinente para alternar la vista (figura \ref{fig:E_12_6_productos_ver_nutriTabla}).
 
 Adicionalmente, en una sección secundaria, se muestran tablas con valores de \textbf{minerales} y \textbf{vitaminas} del producto. Tanto estas tablas como la relativa a los macronutrientes contienen una columna de valores con \textbf{ingestas diarias} de referencia.
-
-Al final de la página se visualiza una lista con todos los ingredientes del producto y sus cantidades en gramos para dicho producto. Por cada ingrediente se visualizan:
 \begin{itemize}
-	\item Un listado desplegable de los \textbf{alérgenos} pertenecientes a dicho alimento.
-	\item \textbf{Etiquetas} nutricionales para mostrar el \textit{\textbf{Nutri-Score}} y \textbf{grupo NOVA} de dicho alimento. Si el alimento no dispone de dichas métricas, aparecerán en gris.
+	\item Si en una fila el valor real representa más del \textbf{80\%} de la ingesta de referencia, esta se sombreará de color \textbf{amarillo} suave.
+	\item Si en una fila se \textbf{supera} el valor de referencia, esta se sombreará de color \textbf{rojo} suave.
 \end{itemize}
 
-\missingfigure{Ingredientes con nova y nutriscore. Algunos que lo tengan calculado y otros no}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_6_productos_ver_nutriTabla.png}{Tabla nutricional de un producto con ingestas diarias de referencia}{E_12_6_productos_ver_nutriTabla}
+
+Al final de la página se visualiza una lista con todos los ingredientes del producto y sus cantidades en gramos para dicho producto (figura \ref{fig:E_12_6_productos_ver_ingredientes}). Por cada ingrediente se visualizan:
+\begin{itemize}
+	\item Un listado desplegable de los \textbf{alérgenos} pertenecientes a dicho alimento.
+	\item \textbf{Etiquetas} nutricionales para mostrar el \textit{\textbf{Nutri-Score}} y \textbf{grupo NOVA} de dicho alimento. Si el alimento no dispone de dichas métricas, aparecerán en \textbf{gris}.
+\end{itemize}
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_12_6_productos_ver_ingredientes.png}{Lista detallada de ingredientes de un producto}{E_12_6_productos_ver_ingredientes}
 
 %---------------------------------------------------------------
 
@@ -304,7 +313,7 @@ La gestión de alimentos abarca la creación, edición y borrado de los ingredie
 
 \subsubsection{Listar alimentos}
 
-La página de listado muestra una tabla con todos los alimentos almacenados en la base de datos de la aplicación, ordenados por ID. Se muestran varios campos relevantes como el grupo alimenticio (\textit{``Verduras’’}, \textit{``Cereales’’}). Desde esta página se pueden realizar varias acciones como:
+La página de listado (figura \ref{fig:E_13_1_alimentos_lista}) muestra una tabla con todos los alimentos almacenados en la base de datos de la aplicación, ordenados por ID. Se muestran varios campos relevantes como el grupo alimenticio (\textit{``Verduras’’}, \textit{``Cereales’’}). Desde esta página se pueden realizar varias acciones como:
 \begin{itemize}
 	\item Pulsar el botón de \textit{Nuevo Alimento}, que redirigirá a la página de \textit{\nameref{subsubsec:E_Alimentos_CrearManual}}.
 	\item Pulsar el botón de \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_editar.png}}
@@ -312,42 +321,42 @@ La página de listado muestra una tabla con todos los alimentos almacenados en l
 	\item Pulsar el botón de 
 	\raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_borrar.png}}
 	en la fila de un alimento particular, que abrirá un cuadro de diálogo para \textit{\nameref{subsubsec:E_Alimentos_Eliminar}}.
-	\item Pulsar el nombre de un alimento, que abrirá una ventana emergente con \textbf{información detallad}a de dicho alimento (\todo{figura XX}), incluyendo su lista de alérgenos y métricas nutricionales estandarizadas como el \textit{\textbf{Nutri-Score}} y \textit{\textbf{grupo NOVA}}\footnote{Estas métricas \textbf{solo} estarán disponibles para aquellos alimentos comerciales que se hayan importado desde una \textbf{API externa}.}.
+	\item Pulsar el nombre de un alimento, que abrirá una ventana emergente con \textbf{información detallad}a de dicho alimento (figura \ref{fig:E_13_8_alimentos_ver}), incluyendo su lista de alérgenos y métricas nutricionales estandarizadas como el \textit{\textbf{Nutri-Score}} y \textit{\textbf{grupo NOVA}}\footnote{Estas métricas \textbf{solo} estarán disponibles para aquellos alimentos comerciales que se hayan importado desde una \textbf{API externa}.}.
 \end{itemize}
 
-\missingfigure{Imagen página listado}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_1_alimentos_lista.png}{Página de listado de alimentos}{E_13_1_alimentos_lista}
 
-\missingfigure{Imagen modal detalles alimento}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_8_alimentos_ver.png}{Modal de detalles de un alimento}{E_13_8_alimentos_ver}
 
 \subsubsection{Crear alimentos manualmente}
 \label{subsubsec:E_Alimentos_CrearManual}
 
 Se pueden crear alimentos de forma manual o mediante una API externa. En este apartado, se detallará la creación manual de un alimento. El siguiente apartado hablará de cómo \textit{\nameref{subsubsec:E_Alimentos_CrearExterno}}.
 
-La página de creación manual de un alimento contiene un formulario para rellenar la información básica asociada a dicho alimento. Como mínimo, se le debe asignar un \textbf{nombre}, un grupo alimenticio y una cantidad (en gramos) de lo que supone una ración de dicho alimento.
+La página de creación manual de un alimento (figura \ref{fig:E_13_2_alimentos_crear}) contiene un formulario para rellenar la información básica asociada a dicho alimento. Como mínimo, se le debe asignar un \textbf{nombre}, un \textbf{grupo} alimenticio y una \textbf{cantidad} (en gramos) de lo que supone una ración de dicho alimento.
 
 El nombre introducido debe ser \textbf{único} (no debe coincidir con ninguno de los nombres almacenados en la base de datos). Si se introduce un nombre que ya está en uso, se informa al usuario y no se permite enviar el formulario hasta que se corrija.
 
-\missingfigure{Imagen página crear}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_2_alimentos_crear.png}{Página de creación de alimentos}{E_13_2_alimentos_crear}
 
-Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar la información nutricional} de dicho alimento. En ella se pueden introducir valores para los \textbf{macronutrientes} (\textit{``carbohidratos''}, \textit{``proteínas''}, etc.) o las \textbf{vitaminas} y \textbf{minerales} del alimento, para la cantidad (porción) de alimento escogida. Añadir valores de información nutricional a los alimentos sirve para que se puedan obtener \textbf{informes más detallados} de los productos que los contienen y obtener gráficos nutricionales más precisos.
+Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar la información nutricional} de dicho alimento (figura \ref{fig:E_13_3_alimentos_nutrientes}). En ella se pueden introducir valores para los \textbf{macronutrientes} (\textit{``carbohidratos''}, \textit{``proteínas''}, etc.) o las \textbf{vitaminas} y \textbf{minerales} del alimento, para la cantidad (porción) de alimento escogida. Añadir valores de información nutricional a los alimentos sirve para que se puedan obtener \textbf{informes más detallados} de los productos que los contienen y obtener gráficos nutricionales más precisos.
 
-\missingfigure{Imagen campos nutricionales formulario}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_3_alimentos_nutrientes.png}{Introducción de valores nutricionales para un alimento}{E_13_3_alimentos_nutrientes}
 
-Finalmente, el formulario de creación manual dispone de otra sección dedicada para \textbf{gestionar los alérgenos} asociados a ese alimento. Dicha sección contiene una lista con todos los alérgenos reconocidos en la aplicación, los cuales se corresponden con los \textbf{14 alérgenos de declaración obligatoria de la UE}~\cite{reglamento1169_2011}.
+Finalmente, el formulario de creación manual dispone de otra sección dedicada para \textbf{gestionar los alérgenos} asociados a ese alimento (figura \ref{fig:E_13_4_alimentos_alergenos}). Dicha sección contiene una lista con todos los alérgenos reconocidos en la aplicación, los cuales se corresponden con los \textbf{14 alérgenos de declaración obligatoria de la UE}~\cite{reglamento1169_2011}.
 
-\missingfigure{Imagen checkboxes alérgenos}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_4_alimentos_alergenos.png}{Selección de alérgenos de un alimento}{E_13_4_alimentos_alergenos}
 
 La selección de los alérgenos se hace mediante \textit{checkboxes}, marcando o desmarcando las opciones. En la parte superior hay una opción para seleccionar o deseleccionar \textbf{todos} los alérgenos.
 
-Cuando se le agregan alérgenos a un alimento, todos los productos que contengan dicho alimento heredarán su lista de alérgenos (y la lista de alérgenos del resto de ingredientes que forman el producto).
+Cuando se le agregan alérgenos a un alimento, todos los productos que contengan dicho alimento \textbf{heredarán} su lista de alérgenos (y la lista de alérgenos del resto de ingredientes que forman el producto).
 
 \subsubsection{Importar productos mediante API externa}
 \label{subsubsec:E_Alimentos_CrearExterno}
 
-Crear un alimento a partir de su \textbf{búsqueda} en una API Externa es muy sencillo. Tan solo hay que situarse en la página de \textbf{creación} del alimento y acceder a la sección \textit{Buscar en Open Food Facts}.
+Crear un alimento a partir de su \textbf{búsqueda} en una API externa es muy sencillo. Tan solo hay que situarse en la página de \textbf{creación} del alimento y acceder a la sección \textit{Buscar en Open Food Facts}.
 
-Se visualizará entonces una barra de búsqueda, en la que se podrá introducir el nombre o información asociada al producto. La búsqueda en \textit{Open Food Facts} permite encontrar productos a partir de su \textbf{nombre}, pero también se pueden introducir otros aspectos como su \textbf{marca} o \textbf{etiquetas} (ej. introducir \textit{``zumo de naranja''} no devuelve solo alimentos llamados estrictamente así, sino cualquier alimento que entre en esa categoría).
+Se visualizará entonces una barra de búsqueda, en la que se podrá introducir el nombre o información asociada al producto. La búsqueda en \textit{Open Food Facts} permite encontrar productos a partir de su \textbf{nombre}, pero también se pueden introducir otros aspectos como su \textbf{marca} o \textbf{etiquetas} (ej. introducir \textit{``zumo de naranja''} no devuelve solo alimentos llamados estrictamente así, sino cualquier alimento que entre en esa \textbf{categoría}).
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_5_alimentos_busquedaExterna.png}{Búsqueda de alimentos mediante API externa}{E_13_5_alimentos_busquedaExterna}
 
@@ -358,20 +367,20 @@ Al crear un alimento mediante la API externa, se importan sus valores nutriciona
 \subsubsection{Editar alimentos}
 \label{subsubsec:E_Alimentos_Editar}
 
-La página de edición de un alimento permite realizar todas las acciones descritas en el apartado de creación manual de un alimento.
+La página de edición de un alimento (figura \ref{fig:E_13_6_alimentos_editar}) permite realizar todas las acciones descritas en el apartado de creación manual de un alimento.
 
-\missingfigure{Imagen página editar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_6_alimentos_editar.png}{Página de edición de alimentos}{E_13_6_alimentos_editar}
 
 \subsubsection{Eliminar alimentos}
 \label{subsubsec:E_Alimentos_Eliminar}
 
 Para eliminar un alimento, basta con situarse en la pantalla de listado y pulsar el botón  
 \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_borrar.png}}
-del alimento que quiera eliminarse. Se abrirá entonces un cuadro de diálogo pidiendo \textbf{confirmación} de la operación.
-
-\missingfigure{Imagen modal eliminar}
+del alimento que quiera eliminarse. Se abrirá entonces un cuadro de diálogo (figura \ref{fig:E_13_7_alimentos_borrar}) pidiendo \textbf{confirmación} de la operación.
 
 Si la operación de borrado es exitosa, se notificará al usuario del éxito en el borrado y se actualizará el listado. Si no es exitosa, se informará al usuario del error mediante una notificación.
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_13_7_alimentos_borrar.png}{Modal de eliminación de alimentos}{E_13_7_alimentos_borrar}
 
 %---------------------------------------------------------------
 
@@ -381,7 +390,7 @@ La gestión de reservas abarca la creación, edición y eliminación de reservas
 
 \subsubsection{Listar reservas}
 
-La página de listado muestra una tabla con todas las reservas registradas en la aplicación, ordenadas por ID. Se muestran varios campos relevantes como la fecha y hora de la reserva y el número de comensales. Desde esta página se pueden realizar varias acciones como:
+La página de listado (figura \ref{fig:E_14_1_reservas_lista}) muestra una tabla con todas las reservas registradas en la aplicación, ordenadas por ID. Se muestran varios campos relevantes como la fecha y hora de la reserva y el número de comensales. Desde esta página se pueden realizar varias acciones como:
 \begin{itemize}
 	\item Pulsar el botón de \textit{Nueva Reserva}, que redirigirá a la página de \textit{\nameref{subsubsec:E_Reservas_Crear}}.
 	\item Pulsar el botón de \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_editar.png}}
@@ -392,34 +401,34 @@ La página de listado muestra una tabla con todas las reservas registradas en la
 	\item Si se tienen los permisos necesarios para editar reservas, se puede pulsar en el botón de su \textbf{estado} para modificarlo (ej: \textit{``cancelada''}, \textit{``pagada''}).
 \end{itemize}
 
-\missingfigure{Imagen página listado}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_14_1_reservas_lista.png}{Página de listado de reservas}{E_14_1_reservas_lista}
 
 \subsubsection{Crear reservas}
 \label{subsubsec:E_Reservas_Crear}
 
-La página de creación de una reserva contiene un formulario para rellenar la información asociada a dicha reserva. Aparte del \textbf{nombre} de la mesa y la \textbf{fecha y hora} de reserva, es necesario aportar el número de \textbf{comensales} que acudirán a comer y la \textbf{información de contacto} del cliente que realizó la reserva. Si no se aporta una duración estimada, se le asignan 2 horas por defecto.
+La página de creación de una reserva (figura \ref{fig:E_14_2_reservas_crear}) contiene un formulario para rellenar la información asociada a dicha reserva. Aparte del \textbf{nombre} de la mesa y la \textbf{fecha y hora} de reserva, es necesario aportar el número de \textbf{comensales} que acudirán a comer y la \textbf{información de contacto} del cliente que realizó la reserva. Si no se aporta una duración estimada, se le asignan 2 horas por defecto.
 
-\missingfigure{Imagen página crear}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_14_2_reservas_crear.png}{Página de creación de reservas}{E_14_2_reservas_crear}
 
 A la hora de enviar el formulario, se comprueba si, para la fecha y hora anotadas, la mesa seleccionada está disponible. En caso de que haya \textbf{solapamiento} con otra reserva existente, se notificará del error para que el usuario cambie la fecha o la mesa asociada.
 
 \subsubsection{Editar reservas}
 \label{subsubsec:E_Reservas_Editar}
 
-La página de edición de una mesa permite realizar todas las acciones descritas en el apartado anterior.
+La página de edición de una reserva (figura \ref{fig:E_14_3_reservas_editar}) permite realizar todas las acciones descritas en el apartado anterior.
 
-\missingfigure{Imagen página editar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_14_3_reservas_editar.png}{Página de edición de reservas}{E_14_3_reservas_editar}
 
 \subsubsection{Eliminar reservas}
 \label{subsubsec:E_Reservas_Eliminar}
 
 Para eliminar una reserva, basta con situarse en la pantalla de listado y pulsar el botón  
 \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_borrar.png}}
-de la reserva que quiera eliminarse. Se abrirá entonces un cuadro de diálogo pidiendo \textbf{confirmación} de la operación.
-
-\missingfigure{Imagen modal eliminar}
+de la reserva que quiera eliminarse. Se abrirá entonces un cuadro de diálogo (figura \ref{fig:E_14_4_reservas_borrar}) pidiendo \textbf{confirmación} de la operación.
 
 Si la operación de borrado es exitosa, se notificará al usuario del éxito en el borrado y se actualizará el listado. Si no es exitosa, se informará al usuario del error mediante una notificación.
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_14_4_reservas_borrar.png}{Modal de eliminación de reservas}{E_14_4_reservas_borrar}
 
 %---------------------------------------------------------------
 
@@ -429,7 +438,7 @@ La gestión de mesas abarca la creación, edición y eliminación de registros q
 
 \subsubsection{Listar mesas}
 
-La página de listado muestra una tabla con todas las mesas almacenadas en la base de datos de la aplicación, ordenadas por ID. Se muestran varios campos relevantes como la capacidad de cada mesa (número de comensales que acepta) y su estado (activa o inactiva). Desde esta página se pueden realizar varias acciones como:
+La página de listado (figura \ref{fig:E_15_1_mesas_lista}) muestra una tabla con todas las mesas almacenadas en la base de datos de la aplicación, ordenadas por ID. Se muestran varios campos relevantes como la capacidad de cada mesa (número de comensales que acepta) y su estado (activa o inactiva). Desde esta página se pueden realizar varias acciones como:
 \begin{itemize}
 	\item Pulsar el botón de \textit{Nueva Mesa}, que redirigirá a la página de \textit{\nameref{subsubsec:E_Mesas_Crear}}.
 	\item Pulsar el botón de \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_editar.png}}
@@ -444,23 +453,23 @@ La página de listado muestra una tabla con todas las mesas almacenadas en la ba
 	\end{itemize}
 \end{itemize}
 
-\missingfigure{Imagen página listado}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_15_1_mesas_lista.png}{Página de listado de mesas}{E_15_1_mesas_lista}
 
 \subsubsection{Crear mesas}
 \label{subsubsec:E_Mesas_Crear}
 
-La página de creación de una mesa contiene un formulario para rellenar la información básica asociada a dicha mesa. Como mínimo, se le debe asignar un \textbf{nombre} y un número máximo de comensales (capacidad) que pueden sentarse en dicha mesa.
-
-\missingfigure{Imagen página crear}
+La página de creación de una mesa (figura \ref{fig:E_15_2_mesas_crear}) contiene un formulario para rellenar la información básica asociada a dicha mesa. Como mínimo, se le debe asignar un \textbf{nombre} y un número máximo de comensales (\textbf{capacidad}) que pueden sentarse en dicha mesa.
 
 El nombre introducido debe ser \textbf{único} (no debe coincidir con ninguno de los nombres almacenados en la base de datos). Si se introduce un nombre que ya está en uso, se informa al usuario y no se permite enviar el formulario hasta que se corrija.
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_15_2_mesas_crear.png}{Página de creación de mesas}{E_15_2_mesas_crear}
 
 \subsubsection{Editar mesas}
 \label{subsubsec:E_Mesas_Editar}
 
-La página de edición de una mesa permite realizar todas las acciones descritas en el apartado anterior.
+La página de edición de una mesa (figura \ref{fig:E_15_3_mesas_editar}) permite realizar todas las acciones descritas en el apartado anterior.
 
-\missingfigure{Imagen página editar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_15_3_mesas_editar.png}{Página de edición de mesas}{E_15_3_mesas_editar}
 
 \subsubsection{Eliminar mesas}
 \label{subsubsec:E_Mesas_Eliminar}
@@ -469,9 +478,9 @@ La página de edición de una mesa permite realizar todas las acciones descritas
 
 En caso de que la mesa no tenga reservas asociadas y sí se desee eliminarla, basta con situarse en la pantalla de listado y pulsar el botón 
 \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_borrar.png}}
-de la mesa que quiera eliminarse. Se abrirá entonces un cuadro de diálogo pidiendo \textbf{confirmación} de la operación.
+de la mesa que quiera eliminarse. Se abrirá entonces un cuadro de diálogo (figura \ref{fig:E_15_4_mesas_borrar}) pidiendo \textbf{confirmación} de la operación.
 
-\missingfigure{Imagen modal eliminar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_15_4_mesas_borrar.png}{Modal de eliminación de mesas}{E_15_4_mesas_borrar}
 
 Si la operación de borrado es exitosa, se notificará al usuario del éxito en el borrado y se actualizará el listado. Si no es exitosa, se informará al usuario del error mediante una notificación.
 
@@ -483,7 +492,7 @@ La gestión de usuarios abarca la creación, edición y eliminación de los usua
 
 \subsubsection{Listar usuarios}
 
-La página de listado muestra una tabla con todos los usuarios registrados en la aplicación, ordenados por ID. Se muestran varios campos relevantes como el nombre completo del usuario o sus roles. Desde esta página se pueden realizar varias acciones como:
+La página de listado (figura \ref{fig:E_16_1_usuarios_lista}) muestra una tabla con todos los usuarios registrados en la aplicación, ordenados por ID. Se muestran varios campos relevantes como el nombre completo del usuario o sus roles. Desde esta página se pueden realizar varias acciones como:
 \begin{itemize}
 	\item Pulsar el botón de \textit{Nuevo Usuario}, que redirigirá a la página de \textit{\nameref{subsubsec:E_Usuarios_Crear}}.
 	\item Pulsar el botón de  
@@ -494,43 +503,43 @@ La página de listado muestra una tabla con todos los usuarios registrados en la
 	en la fila de un usuario particular, que abrirá un cuadro de diálogo para \textit{\nameref{subsubsec:E_Usuarios_Eliminar}}.
 \end{itemize}
 
-\missingfigure{Imagen página listado}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_16_1_usuarios_lista.png}{Página de listado de usuarios}{E_16_1_usuarios_lista}
 
 \subsubsection{Crear usuarios}
 \label{subsubsec:E_Usuarios_Crear}
 
-La página de creación de un usuario contiene un formulario para rellenar la información básica asociada a dicho usuario. Como mínimo, se le debe asignar un \textbf{nombre de usuario} y una \textbf{contraseña}, que deberá confirmar.
+La página de creación de un usuario (figura \ref{fig:E_16_2_usuarios_crear}) contiene un formulario para rellenar la información básica asociada a dicho usuario. Como mínimo, se le debe asignar un \textbf{nombre de usuario} y una \textbf{contraseña}, que se deberá confirmar.
 
 El nombre de usuario introducido debe ser \textbf{único} (no debe coincidir con ninguno de los \textit{usernames} almacenados en la base de datos). Si se introduce un nombre que ya está en uso, se informa al usuario y no se permite enviar el formulario hasta que se corrija.
 
-\missingfigure{Imagen página crear}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_16_2_usuarios_crear.png}{Página de creación de usuarios}{E_16_2_usuarios_crear}
 
-Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar los roles} de ese usuario, la cual solo es \textbf{visible} para aquellos usuarios que tengan permisos de edición de roles. Dicha sección contiene dos columnas: una que contiene los roles ya asignados al usuario y otra con los roles que aún se le pueden asignar. Para \textbf{asignar o desasignar} un rol, basta con \textbf{pulsar} en la \textit{píldora} (botón redondeado) que contiene dicho rol.
+Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar los roles} de ese usuario, la cual solo es \textbf{visible} para aquellos usuarios que tengan permisos de edición de roles. Dicha sección contiene dos columnas: una que contiene los roles ya asignados al usuario y otra con los roles que aún se le pueden asignar (figura \ref{fig:E_16_3_usuarios_roleTransfer}). Para \textbf{asignar o desasignar} un rol, basta con \textbf{pulsar} en la \textit{píldora} (botón redondeado) que contiene dicho rol.
 
-\missingfigure{Imagen transfer list roles}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_16_3_usuarios_roleTransfer.png}{Sección de asignación de roles para un usuario}{E_16_3_usuarios_roleTransfer}
 
 Como nota adicional, aunque a un usuario se le \textbf{elimine el rol por defecto} (\texttt{ROLE\_USER}), se le asignará de nuevo tras enviar el formulario. Este rol estará \textbf{siempre presente} en todos los usuarios, puesto que representa los \textbf{permisos mínimos posibles} para un empleado.
 
 \subsubsection{Editar usuarios}
 \label{subsubsec:E_Usuarios_Editar}
 
-La página de edición de un usuario permite realizar todas las acciones descritas en el apartado anterior, introduciendo algunos comportamientos nuevos:
+La página de edición de un usuario (figura \ref{fig:E_16_4_usuarios_editar}) permite realizar todas las acciones descritas en el apartado anterior, introduciendo algunos comportamientos nuevos:
 \begin{itemize}
 	\item Para editar un usuario, no es necesario aportar su contraseña. Sin embargo, en caso de querer modificarla, se deberá confirmar la nueva contraseña.
 	\item Los cambios que se hagan sobre los roles de un usuario, se verán reflejados la próxima vez que ese usuario inicie sesión.
 	\item En caso de que un usuario con permisos se quiera editar a sí mismo, se le redirigirá a la página de \textit{\nameref{subsec:E_Perfil_Editar}}. Si tiene permisos de edición de roles, visualizará la sección correspondiente para editarlos.
 \end{itemize}
 
-\missingfigure{Imagen página editar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_16_4_usuarios_editar.png}{Página de edición de usuarios}{E_16_4_usuarios_editar}
 
 \subsubsection{Eliminar usuarios}
 \label{subsubsec:E_Usuarios_Eliminar}
 
 Para eliminar un usuario, basta con situarse en la pantalla de listado y pulsar el botón  
 \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_borrar.png}}
-del usuario que quiera eliminarse. Se abrirá entonces un cuadro de diálogo pidiendo \textbf{confirmación} de la operación. Se visualizará un mensaje de aviso en caso de que el usuario a eliminar tenga rol de administrador.
+del usuario que quiera eliminarse. Se abrirá entonces un cuadro de diálogo (figura \ref{fig:E_16_5_usuarios_borrar}) pidiendo \textbf{confirmación} de la operación. Se visualizará un mensaje de aviso en caso de que el usuario a eliminar tenga rol de administrador.
 
-\missingfigure{Imagen modal eliminar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_16_5_usuarios_borrar.png}{Modal de eliminación de usuarios}{E_16_5_usuarios_borrar}
 
 Si la operación de borrado es exitosa, se notificará al usuario del éxito en el borrado y se actualizará el listado. Si no es exitosa, se informará al usuario del error mediante una notificación.
 
@@ -542,7 +551,7 @@ La gestión de roles abarca la creación, edición y eliminación de los roles q
 
 \subsubsection{Listar roles}
 
-La página de listado muestra una tabla con todos los roles almacenados en la base de datos de la aplicación, ordenados por ID. Se muestran varios campos relevantes como número de usuarios asignados a cada rol. Desde esta página se pueden realizar varias acciones como:
+La página de listado (figura \ref{fig:E_17_1_roles_lista}) muestra una tabla con todos los roles almacenados en la base de datos de la aplicación, ordenados por ID. Se muestran varios campos relevantes como número de usuarios asignados a cada rol. Desde esta página se pueden realizar varias acciones como:
 \begin{itemize}
 	\item Pulsar el botón de \textit{Nuevo Rol}, que redirigirá a la página de \textit{\nameref{subsubsec:E_Roles_Crear}}.
 	\item Pulsar el botón de 
@@ -553,20 +562,20 @@ La página de listado muestra una tabla con todos los roles almacenados en la ba
 	en la fila de un rol particular, que abrirá un cuadro de diálogo para \textit{\nameref{subsubsec:E_Roles_Eliminar}}.
 \end{itemize}
 
-\missingfigure{Imagen página listado}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_17_1_roles_lista.png}{Página de listado de roles}{E_17_1_roles_lista}
 
 \subsubsection{Crear roles}
 \label{subsubsec:E_Roles_Crear}
 
-La página de creación de un rol contiene un formulario para rellenar la información básica asociada a dicho usuario. Como mínimo, se le debe asignar un \textbf{nombre} al rol.
+La página de creación de un rol (figura \ref{fig:E_17_2_roles_crear}) contiene un formulario para rellenar la información básica asociada a dicho usuario. Como mínimo, se le debe asignar un \textbf{nombre} al rol.
+
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_17_2_roles_crear.png}{Página de creación de roles}{E_17_2_roles_crear}
 
 El nombre introducido debe ser \textbf{único} (no debe coincidir con ninguno de los nombres almacenados en la base de datos). Si se introduce un nombre que ya está en uso, se informa al usuario y no se permite enviar el formulario hasta que se corrija.
 
-\missingfigure{Imagen página crear}
+Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar los permisos} asociados a ese rol (figura \ref{fig:E_17_3_roles_permisos}). Dicha sección contiene una lista con todos los permisos disponibles de la aplicación, los cuales representan acciones a realizar (\textit{``ver alimentos''}, \textit{``editar usuarios''}, \textit{``eliminar reservas''}, etc.).
 
-Aparte del formulario inicial, hay otra sección dedicada para \textbf{gestionar los permisos} asociados a ese rol. Dicha sección contiene una lista con todos los permisos disponibles de la aplicación, los cuales representan acciones a realizar (\textit{``ver alimentos''}, \textit{``editar usuarios''}, \textit{``eliminar reservas''}, etc.).
-
-\missingfigure{Imagen checkboxes permisos}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_17_3_roles_permisos.png}{Sección de asignación de permisos a un rol}{E_17_3_roles_permisos}
 
 La selección de los permisos se hace mediante \textit{checkboxes}, marcando o desmarcando las opciones. En la parte superior hay una opción para seleccionar o deseleccionar \textbf{todos} los permisos.
 
@@ -575,18 +584,18 @@ En el apartado \textit{\nameref{subsec:E_Ejemplos_Permisos}} se incluyen \textbf
 \subsubsection{Editar roles}
 \label{subsubsec:E_Roles_Editar}
 
-La página de edición de un rol permite realizar todas las acciones descritas en el apartado anterior.
+La página de edición de un rol (figura \ref{fig:E_17_4_roles_editar}) permite realizar todas las acciones descritas en el apartado anterior.
 
-\missingfigure{Imagen página editar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_17_4_roles_editar.png}{Página de edición de roles}{E_17_4_roles_editar}
 
 \subsubsection{Eliminar roles}
 \label{subsubsec:E_Roles_Eliminar}
 
 Para eliminar un rol, basta con situarse en la pantalla de listado y pulsar el botón  
 \raisebox{-3pt}{\includegraphics[height=3ex]{img/apen_E/E_icono_borrar.png}}
-del rol que quiera eliminarse. Se abrirá entonces un cuadro de diálogo pidiendo \textbf{confirmación} de la operación.
+del rol que quiera eliminarse. Se abrirá entonces un cuadro de diálogo (figura \ref{fig:E_17_5_roles_borrar}) pidiendo \textbf{confirmación} de la operación.
 
-\missingfigure{Imagen modal eliminar}
+\imagenConEtiqueta[0.9\textwidth]{img/apen_E/E_17_5_roles_borrar.png}{Modal de eliminación de roles}{E_17_5_roles_borrar}
 
 Si la operación de borrado es exitosa, se notificará al usuario del éxito en el borrado y se actualizará el listado. Si no es exitosa, se informará al usuario del error mediante una notificación.
 
@@ -601,29 +610,92 @@ Como ya se ha ido introduciendo en los apartados anteriores, el \textbf{sistema 
 
 Podría interesar tener un \texttt{ROLE\_CHEF} (o similar) en la aplicación, que se encargue exclusivamente del manejo de los \textbf{alimentos} y \textbf{productos}. Los usuarios con este rol podrían configurar los platos ofertados y modificar los ingredientes y sus cantidades, a medida que creen nuevas recetas o ajusten las proporciones.
 
-\todo[inline]{Los permisos contenidos en este rol serían: (…foto o lista permisos)}
-\missingfigure{Los módulos de navegación disponibles, para usuarios que solo dispongan de este rol, serían: <foto navegación>.}
+Los \textbf{permisos} contenidos en este rol serían:
+\begin{multicols}{2}
+	\footnotesize
+	\noindent
+	\begin{itemize}[nosep]
+		\item \texttt{FOOD\_VIEW\_LIST}
+		\item \texttt{FOOD\_CREATE}
+		\item \texttt{FOOD\_EDIT}
+		\item \texttt{FOOD\_DELETE}
+	\end{itemize}
+	\columnbreak
+	\begin{itemize}[nosep]
+		\item \texttt{PRODUCT\_VIEW\_LIST}
+		\item \texttt{PRODUCT\_CREATE}
+		\item \texttt{PRODUCT\_EDIT}
+		\item \texttt{PRODUCT\_EDIT\_INGREDIENTS}
+		\item \texttt{PRODUCT\_DELETE}
+	\end{itemize}
+\end{multicols}
+
+Los módulos de navegación disponibles, para usuarios que solo dispongan de este rol, serían los que se visualizan en la figura \ref{fig:E_18_1_nav_cocinero}.
+
+\imagenConEtiqueta[0.45\textwidth]{img/apen_E/E_18_1_nav_cocinero.png}{Módulos de navegación para usuarios con rol \texttt{ROLE\_CHEF}}{E_18_1_nav_cocinero}
 
 \subsubsection{Camarero (de sala o barra)}
 
-Un usuario con \texttt{ROLE\_WAITER\_DINING} (o similar) sería aquel que cuenta con permisos exclusivos para la gestión de \textbf{pedidos en el comedor}. Sus funciones principales incluirían la apertura de nuevos pedidos para la toma de comandas, la modificación de los ítems de dichos pedidos y la actualización de sus estados conforme al progreso del servicio en las mesas.
+Un usuario con \texttt{ROLE\_WAITER\_BAR} (o similar) sería aquel que cuenta con permisos exclusivos para la gestión de \textbf{pedidos en la barra} del local. Sus funciones principales incluirían la apertura de nuevos pedidos para la barra, la modificación de los ítems de dichos pedidos y la actualización de sus estados conforme al progreso del servicio. A pesar de solo gestionar pedidos, también necesitaría acceso al listado de \textbf{productos} ofertados, para añadirlos como ítems de un pedido.
 
-\todo[inline]{Los permisos contenidos en este rol serían: (…foto o lista permisos)}
+Los \textbf{permisos} contenidos en este rol serían:
+\begin{multicols}{2}
+	\footnotesize
+	\noindent
+	\begin{itemize}[nosep]
+		\item \texttt{PRODUCT\_VIEW\_LIST}
+		\item \texttt{ORDER\_VIEW\_LIST}
+		\item \texttt{ORDER\_BAR\_VIEW\_LIST}
+	\end{itemize}
+	\columnbreak
+	\begin{itemize}[nosep]
+		\item \texttt{ORDER\_BAR\_CREATE}
+		\item \texttt{ORDER\_BAR\_EDIT}
+		\item \texttt{ORDER\_BAR\_DELETE}
+	\end{itemize}
+\end{multicols}
 
-En contraposición, un usuario con \texttt{ROLE\_WAITER\_BAR} (o similar) sería aquel que cuenta con permisos exclusivos para la gestión de \textbf{pedidos en la barra} del local. Sus funciones principales incluirían la apertura de nuevos pedidos para la barra, la modificación de los ítems de dichos pedidos y la actualización de sus estados conforme al progreso del servicio.
+\textbf{Nota técnica:} el permiso \texttt{ORDER\_VIEW\_LIST} es \textbf{necesario} para la visualización de las páginas de historial y \textit{dashboard}. Se debe asignar \textbf{siempre} que se quieran realizar operaciones sobre pedidos, aunque solo se realicen sobre un tipo de pedido. De lo contrario, dichas páginas de gestión no se visualizarían en los módulos de navegación.
 
-\todo[inline]{Los permisos contenidos en este rol serían: (…foto o lista permisos)}
+Los módulos de navegación disponibles, para usuarios que solo dispongan de este rol, serían los que se visualizan en la figura \ref{fig:E_18_2_nav_camarero_bar}.
 
-En ambos casos, las páginas disponibles en los módulos de \textbf{navegación} serían las mismas (\todo{figura XX}). Tan solo se diferenciarían en las vistas (bar/comedor) a las que tienen acceso y la capacidad de realizar acciones en dichas vistas.
+\imagenConEtiqueta[0.45\textwidth]{img/apen_E/E_18_2_nav_camarero_bar.png}{Módulos de navegación para usuarios con rol \texttt{ROLE\_WAITER\_BAR}}{E_18_2_nav_camarero_bar}
 
-\missingfigure{modulos navegacion camarero}
+En contraposición, un usuario con \texttt{ROLE\_WAITER\_DINING} (o similar) sería aquel que cuenta con permisos exclusivos para la gestión de \textbf{pedidos en el comedor}. Sus funciones principales incluirían la apertura de nuevos pedidos para la toma de comandas, la modificación de los ítems de dichos pedidos y la actualización de sus estados conforme al progreso del servicio en las mesas. También se le podría asignar la responsabilidad de gestionar las \textbf{reservas} de las mesas de comedor, sin entrar en la modificación de la disposición de la sala.
 
-También es común encontrar camareros que trabajan simultáneamente en el bar y comedor. Debido a que \textit{Orderly} soporta la \textbf{asignación de múltiples roles} a un usuario, esto no es problema. En vez de crear un rol específico que contenga los permisos para ambos tipos de pedido, bastaría con asignarle los roles \texttt{ROLE\_WAITER\_DINING} y \texttt{ROLE\_WAITER\_BAR}. De esta manera el usuario podrá realizar acciones sobre cualquier tipo de pedido, sin necesidad de generar roles adicionales.
+Los \textbf{permisos} contenidos en este rol serían:
+\begin{multicols}{2}
+	\footnotesize
+	\noindent
+	\begin{itemize}[nosep]
+		\item \texttt{PRODUCT\_VIEW\_LIST}
+		\item \texttt{RESERVATION\_VIEW\_LIST}
+		\item \texttt{RESERVATION\_CREATE}
+		\item \texttt{RESERVATION\_EDIT}
+		\item \texttt{RESERVATION\_DELETE}		
+	\end{itemize}
+	\columnbreak
+	\begin{itemize}[nosep]
+		\item \texttt{ORDER\_VIEW\_LIST}
+		\item \texttt{ORDER\_DINING\_VIEW\_LIST}
+		\item \texttt{ORDER\_DINING\_CREATE}
+		\item \texttt{ORDER\_DINING\_EDIT}
+		\item \texttt{ORDER\_DINING\_DELETE}
+	\end{itemize}
+\end{multicols}
+
+Los módulos de navegación disponibles, para usuarios que solo dispongan de este rol, serían los que se visualizan en la figura \ref{fig:E_18_2_nav_camarero_dining}.
+
+\imagenConEtiqueta[0.45\textwidth]{img/apen_E/E_18_2_nav_camarero_dining.png}{Módulos de navegación para usuarios con rol \texttt{ROLE\_WAITER\_DINING}}{E_18_2_nav_camarero_dining}
+
+También es común encontrar camareros que trabajan simultáneamente en el bar y comedor. Debido a que \textit{Orderly} soporta la \textbf{asignación de múltiples roles} a un usuario, esto no es problema. En vez de crear un rol específico que contenga los permisos para ambos tipos de pedido, bastaría con asignarle los roles \texttt{ROLE\_WAITER\_BAR} y \texttt{ROLE\_WAITER\_DINING}. De esta manera el usuario podrá realizar acciones sobre cualquier tipo de pedido, sin necesidad de generar roles adicionales.
 
 \subsubsection[Consideraciones finales]{Consideraciones finales sobre la coherencia de permisos}
 
 Si bien la plataforma \textit{Orderly} cuenta con un sistema de permisos dinámico y granular que permite una personalización total, se recomienda aplicar un criterio de \textbf{coherencia funcional} al asignar permisos a los distintos roles.
 
 La flexibilidad del sistema permite separar acciones de forma estricta, pero para garantizar una \textbf{operatividad fluida}, las capacidades otorgadas deben ser \textbf{consecuentes entre sí}. Por ejemplo, si se concede a un usuario el permiso para crear \textbf{nuevos productos}, lo lógico, en términos de flujo de trabajo, es que también posea permisos para \textbf{editarlos}, evitando así bloqueos administrativos innecesarios. Del mismo modo, al otorgar facultades de \textbf{edición} sobre, por ejemplo, \textbf{roles de terceros}, es fundamental asegurar que el usuario cuente con\textbf{ permisos de visualización} sobre el listado completo de roles. De lo contrario, se generarían conflictos en la interfaz al intentar gestionar información que el sistema, por jerarquía de acceso, no permitiría cargar.
+
+También se debe tener en cuenta el aspecto mencionado en la creación de roles que gestionen \textbf{pedidos}, referente a la \textbf{obligatoriedad} del permiso \texttt{ORDER\_VIEW\_LIST} para poder \textbf{visualizar} las páginas de historial y \textit{dashboard} de pedidos. La inclusión de estos permisos ``generales'' (frente a los particulares de cada tipo de pedido) se fundamenta en la creación de una capa de abstracción que centraliza la visibilidad \textbf{global} y facilita la gestión de roles transversales, garantizando la escalabilidad del sistema ante la futura incorporación de nuevos tipos de servicio sin fragmentar la lógica de acceso principal.
 
 

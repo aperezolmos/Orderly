@@ -8,7 +8,7 @@ Este apéndice ofrece el contexto necesario para comprender la implementación d
 
 \section{Estructura de directorios}
 
-En este apartado se detalla la organización del proyecto, el cual sigue una estructura modular que \textbf{separa} claramente las responsabilidades del \textbf{cliente} (\textit{frontend}) y del \textbf{servidor} (\textit{backend}), facilitando así el mantenimiento y la escalabilidad del software.
+En este apartado se detalla la organización del proyecto, el cual sigue una estructura modular que \textbf{separa} claramente las responsabilidades del \textbf{cliente} (\textit{frontend}) y del \textbf{servidor} (\textit{backend}), facilitando así el mantenimiento y la escalabilidad del \textit{software}.
 
 \subsection{Organización del repositorio y directorio de aplicación}
 A continuación, se presenta la jerarquía de archivos en la raíz del repositorio, donde se gestionan la documentación, el código principal y los flujos de integración continua.
@@ -18,7 +18,7 @@ A continuación, se presenta la jerarquía de archivos en la raíz del repositor
 \dirtree{%
 	.1 /.
 	.2 .github/workflows -> Automatización de flujos CI/CD.
-	.3 rest-api-tests-sonar.yml -> Tests de API y reporte a SonarCloud.
+	.3 sonar-cloud.yml -> Tests de API y reporte a SonarCloud.
 	.2 app/ -> Código fuente y orquestación de servicios.
 	.2 docs/ -> Documentación técnica y manuales.
 	.2 .gitattributes -> Configuración de atributos de Git.
@@ -43,7 +43,7 @@ El directorio \texttt{app} contiene los servicios que componen el ecosistema de 
 	.3 .mvn/wrapper/ -> Gestión de versión local de Maven.
 	.3 src/ -> Código fuente.
 	.4 main/ -> Lógica de negocio y controladores.
-	.5 test/ -> Pruebas de la API REST.
+	.4 test/ -> Pruebas de la API REST.
 	.3 Dockerfile -> Build multi-etapa para el backend.
 	.3 mvnw -> Ejecutable de Maven Wrapper.
 	.3 mvnw.cmd -> Ejecutable de Maven Wrapper.
@@ -56,7 +56,7 @@ El directorio \texttt{app} contiene los servicios que componen el ecosistema de 
 
 A continuación se muestran los directorios y archivos principales contenidos en la carpeta \texttt{frontend/src}. El directorio \texttt{common} contiene recursos utilizados globalmente por el resto de módulos, como los \textit{layouts} de las páginas de gestión o componentes de navegación (\texttt{Navbar}, \texttt{Sidebar}, etc.).
 
-El directorio \texttt{i18n} alberga toda la lógica relativa a la internacionalización de la aplicación. Contiene un directorio por cada idioma soportado (inglés y español). Cada directorio se compone de \textbf{\textit{namespaces}}, esto es, archivos JSON que albergan los \textit{strings} de las traducciones. Siguiendo el patrón modular y teniendo en cuenta la posibilidad futura de cargas dinámicas, se ha creado un \textit{namespace} por cada módulo, junto a uno común para traducciones recurrentes.
+El directorio \texttt{i18n} alberga toda la lógica relativa a la \textbf{internacionalización} de la aplicación. Contiene un directorio por cada idioma soportado (inglés y español). Cada directorio se compone de \textbf{\textit{namespaces}}, esto es, archivos JSON que albergan los \textit{strings} de las traducciones. Siguiendo el patrón modular y teniendo en cuenta la posibilidad futura de cargas dinámicas, se ha creado un \textit{namespace} por cada módulo, junto a uno común para traducciones recurrentes.
 
 \vspace{1.5ex}
 {\footnotesize
@@ -75,7 +75,7 @@ El directorio \texttt{i18n} alberga toda la lógica relativa a la internacionali
 	.3 en/ -> Diccionarios en inglés.
 	.3 es/ -> Diccionarios en español.
 	.3 index.js -> Configuración de i18next y detección de idioma.
-	.2 modules/ -> Funcionalidades de negocio (Pedidos, Productos, Mesas).
+	.2 modules/ -> Funcionalidades de negocio (Pedidos, Productos...).
 	.2 services/backend/ -> Comunicación con la API REST.
 	.2 utils/ -> Constantes y funciones de ayuda (navegación, permisos).
 	.2 App.jsx -> Componente raíz de la aplicación.
@@ -90,13 +90,13 @@ El directorio \texttt{modules} contiene todo lo relativo al funcionamiento de la
 
 \begin{itemize}
 	\item \texttt{components}: incluye los componentes de interfaz reutilizables del módulo.
-	\item \texttt{hooks}: cada módulo dispone de un \textit{hook} principal (\texttt{use<Entidad>s.js}) que centraliza la lógica de comunicación con el \textit{backend}.
+	\item \texttt{hooks}: cada módulo dispone de un \textit{hook} principal (\texttt{use<Entidad>.js}) que centraliza la lógica de comunicación con el \textit{backend}.
 	\item \texttt{pages}: se implementan al menos tres páginas: \texttt{ListPage}, \texttt{CreatePage} y \texttt{EditPage}.
 \end{itemize}
 
 \imagenConEtiqueta[0.8\textwidth]{img/apen_D/D2_frontend_modules_details.png}{Estructura compartida entre los módulos funcionales de \textit{React}}{D2_frontend_modules_details}
 
-Más allá de dicha estructura homogénea, cada módulo suele implementar componentes propios, particulares para su funcionamiento. Los directorios \texttt{auth} y \texttt{orders} se alejan un poco de la estructura general, pero mantienen las bases compartidas.
+Más allá de dicha estructura homogénea, cada módulo suele implementar componentes \textbf{propios}, particulares para su funcionamiento. Los directorios \texttt{auth} y \texttt{orders} se alejan un poco de la estructura general, pero mantienen las bases compartidas.
 
 \subsection{Desglose del directorio \texttt{spring-boot}}
 
@@ -110,11 +110,13 @@ Como se ha mencionado, esta jerarquía se refleja en la organización de paquete
 
 El directorio \texttt{exception} centraliza la \textbf{gestión de errores} mediante un manejador global que captura excepciones específicas (credenciales inválidas, recursos en uso, etc.). Su propósito es \textbf{transformar} fallos internos en \textbf{respuestas estructuradas} y consistentes para el cliente, asegurando que cada error devuelva un código de estado HTTP adecuado y un mensaje legible.
 
-Por otro lado, el directorio \texttt{security} contiene la \textbf{infraestructura de seguridad} basada en \textit{Spring Security}, gestionando la autenticación y autorización de la API. Incluye la configuración de \textbf{filtros} de acceso, la definición de usuarios personalizados y servicios específicos para verificar permisos, garantizando que solo los usuarios autenticados y con los roles adecuados puedan acceder a los \textbf{recursos protegidos}.
+Por otro lado, el directorio \texttt{security} contiene la \textbf{infraestructura de seguridad} basada en \textit{Spring Security}, gestionando la autenticación y autorización de la API. Incluye la configuración de \textbf{filtros} de acceso, la definición de usuarios personalizados y servicios específicos para verificar permisos, garantizando que solo los usuarios autenticados y con los permisos adecuados puedan acceder a los \textbf{recursos protegidos}.
 
-El resto de directorios (exceptuando \texttt{auth}), se corresponden con los módulos de gestión de la aplicación (alimentos, productos, reservas, etc.). Dentro de cada uno se sitúan sus componentes específicos, como archivos de objetos embebidos o tipos enumerados, presentes en los campos de las entidades.
+Finalmente, el directorio \texttt{init} contiene los archivos de \textbf{inicialización} de la base de datos con registros por defecto, la cual puede activarse o no según una variable de entorno, como se detalla en el apartado \textit{\nameref{subsubsec:D.3_initDefecto}}.
 
-Dejando a un lado las particularidades de cada entidad, todos los directorios de módulos comparten una estructura mínima de archivos y directorios, la cual se puede visualizar en la figura \ref{fig:D2_backend_modules_details}.
+El resto de directorios (exceptuando \texttt{auth}), se corresponden con los \textbf{módulos} de gestión de la aplicación (alimentos, productos, reservas, etc.). Dentro de cada uno se sitúan sus componentes \textbf{específicos}, como archivos de objetos embebidos o tipos enumerados, presentes en los campos de las entidades.
+
+Dejando a un lado las particularidades de cada entidad, todos los directorios de módulos comparten una \textbf{estructura} mínima de archivos y directorios, la cual se puede visualizar en la figura \ref{fig:D2_backend_modules_details}.
 
 \imagenConEtiqueta[0.8\textwidth]{img/apen_D/D2_backend_modules_details.png}{Estructura compartida entre los módulos funcionales de \textit{Spring Boot}}{D2_backend_modules_details}
 
@@ -124,7 +126,7 @@ Dejando a un lado las particularidades de cada entidad, todos los directorios de
 
 \section{Manual del programador}
 
-Este sección tiene como objetivo profundizar en los aspectos técnicos y las decisiones de diseño que permiten el funcionamiento, la mantenibilidad y la extensibilidad de \textit{Orderly}. Mientras que en el apartado \textit{\ref{sec:D.4_Compilacion} \nameref{sec:D.4_Compilacion}} se detallan los pasos operativos para desplegar el sistema, en esta sección se analiza la arquitectura de \textit{software} desde el punto de vista del desarrollo y la infraestructura.
+Esta sección tiene como objetivo profundizar en los aspectos técnicos y las decisiones de diseño que permiten el funcionamiento, la mantenibilidad y la extensibilidad de \textit{Orderly}. Mientras que en el apartado \textit{\ref{sec:D.4_Compilacion} \nameref{sec:D.4_Compilacion}} se detallan los pasos operativos para desplegar el sistema, en esta sección se analiza la arquitectura de \textit{software} desde el punto de vista del desarrollo y la infraestructura.
 
 %\subsection{Arquitectura de servicios y virtualización}
 %
@@ -140,7 +142,7 @@ Este sección tiene como objetivo profundizar en los aspectos técnicos y las de
 
 \subsubsection{\textit{Backend}: \textit{Multi-stage Build} en \textit{Spring Boot}}
 
-Para el servicio de \textit{Spring Boot} se ha implementado una estrategia de construcción en múltiples etapas (\textit{multi-stage build}). Esta técnica es una buena práctica en ingeniería de \textit{software} que divide el Dockerfile en dos fases diferenciadas~\cite{docker:multistage}:
+Para el servicio de \textit{Spring Boot} se ha implementado una estrategia de construcción en múltiples etapas (\textit{multi-stage build}). Esta técnica es una buena práctica en ingeniería de \textit{software} que divide el \texttt{Dockerfile} en dos fases diferenciadas~\cite{docker:multistage}:
 \begin{enumerate}
 	\item \textbf{Etapa de construcción:} utiliza una imagen ligera de \textit{Maven} con el JDK 21 para descargar las dependencias, compilar el código fuente y generar el archivo ejecutable (\texttt{.jar}).
 	\item \textbf{Etapa de ejecución:} utiliza una imagen de JRE (\textit{Java Runtime Environment}) sobre \textit{Alpine Linux}, \textbf{mucho más ligera}, a la que solo se copia el archivo \texttt{.jar} generado en la fase anterior.
@@ -169,15 +171,16 @@ Para el servicio de \textit{Spring Boot} se ha implementado una estrategia de co
 		\\
 		\texttt{WORKDIR /app}\\
 		\texttt{COPY --from=build /spring-boot/target/*.jar app.jar}\\
-		\texttt{ENTRYPOINT ["java", "-jar", "app.jar"]}
+		\texttt{ENTRYPOINT [``java'', ``-jar'', ``app.jar'']}
 	}
 \end{tcolorbox}
 
 Esta separación \textbf{reduce} drásticamente el \textbf{tamaño final de la imagen} de producción (al no incluir herramientas de compilación ni el código fuente original) y aumenta la seguridad, al reducir la superficie de ataque del contenedor.
 
 \subsubsection{\textit{Frontend}: \textit{React} + \textit{Vite} con \textit{HMR}}
+\label{subsubsec:D.3_reactHMR}
 
-El servicio de \textit{frontend} aprovecha las capacidades de \textit{Vite} para ofrecer una experiencia de desarrollo ágil mediante \textit{HMR} (\textit{\textbf{Hot Module Replacement}}). A diferencia del \textit{Hot Reload} tradicional, que reinicia la aplicación completa ante cualquier cambio, el \textit{HMR} permite \textbf{sustituir} exclusivamente el \textbf{módulo} modificado en tiempo de \textbf{ejecución}. Esto permite al programador visualizar cambios en la interfaz de manera instantánea sin perder el estado actual de la aplicación (por ejemplo, manteniendo modales abiertos o formularios rellenos).
+El servicio de \textit{frontend} aprovecha las capacidades de \textit{Vite} para ofrecer una experiencia de \textbf{desarrollo} ágil mediante \textit{HMR} (\textit{\textbf{Hot Module Replacement}}). A diferencia del \textit{Hot Reload} tradicional, que reinicia la aplicación completa ante cualquier cambio, el \textit{HMR} permite \textbf{sustituir} exclusivamente el \textbf{módulo} modificado en tiempo de \textbf{ejecución}. Esto permite al programador visualizar cambios en la interfaz de manera instantánea sin perder el estado actual de la aplicación (por ejemplo, manteniendo modales abiertos o formularios rellenos)~\cite{react:hmr}.
 
 La viabilidad técnica de esta función dentro de un entorno contenerizado se apoya en una gestión específica de \textbf{volúmenes} en \textit{Docker Compose}:
 \begin{enumerate}
@@ -201,7 +204,7 @@ La viabilidad técnica de esta función dentro de un entorno contenerizado se ap
 		\texttt{\hspace*{1em}restart: always}\\
 		\texttt{\hspace*{1em}env\_file: .env}\\
 		\texttt{\hspace*{1em}ports:}\\
-		\texttt{\hspace*{2em}- "\$\{REACT\_LOCAL\_PORT\}:\$\{REACT\_DOCKER\_PORT\}"}\\
+		\texttt{\hspace*{2em}- ``\$\{REACT\_LOCAL\_PORT\}:\$\{REACT\_DOCKER\_PORT\}''}\\
 		\texttt{\hspace*{1em}depends\_on:}\\
 		\texttt{\hspace*{2em}- spring-boot}\\
 		\texttt{\hspace*{1em}volumes:}\\
@@ -229,15 +232,31 @@ El archivo \texttt{.env} diferencia entre los puertos internos del contenedor (\
 	\item Los \textbf{puertos locales} son los que el usuario \textbf{podrá modificar} si tiene conflictos de red en su equipo o si simplemente quiere asignar otros puertos distintos a los proporcionados por defecto.
 \end{itemize}}
 
-Esta configuración está \textbf{centralizada}: cuando el programador \textbf{cambia el puerto} en el \texttt{.env}, el cambio se propaga automáticamente. Por ejemplo, en el \textbf{backend}, la clase \texttt{SecurityConfig.java} lee este valor para configurar las reglas de \textbf{CORS}, permitiendo que las peticiones del \textit{frontend} sean aceptadas sin importar en qué puerto se esté ejecutando este último. Del mismo modo, \texttt{vite.config.js} utiliza estas variables para levantar el servidor de desarrollo en el puerto deseado.
+Esta configuración está \textbf{centralizada}: cuando el programador \textbf{cambia el puerto} en el \texttt{.env}, el cambio se propaga automáticamente (sería necesario reconstruir los contenedores). Por ejemplo, en el \textbf{\textit{backend}}, la clase \texttt{SecurityConfig.java} lee este valor para configurar las reglas de \textbf{CORS}, permitiendo que las peticiones del \textit{frontend} sean aceptadas sin importar en qué puerto se esté ejecutando este último. Del mismo modo, \texttt{vite.config.js} utiliza estas variables para levantar el servidor de desarrollo en el puerto deseado.
 
 \subsubsection{Roles y datos de usuario por defecto}
+\label{subsubsec:D.3_rolesUserDefecto}
 
 Para facilitar la flexibilidad en la gestión de permisos, los nombres de los roles por defecto (\texttt{ROLE\_ADMIN}, \texttt{ROLE\_USER}) y las credenciales del administrador inicial se \textbf{inyectan} mediante variables de entorno. La clase \texttt{UserDataInitializer.java} utiliza estas variables durante el \textbf{arranque} para verificar la existencia del usuario administrador y \textbf{crearlo si fuera necesario}, permitiendo cambiar el acceso por defecto sin modificar una sola línea de código Java.
 
+\subsubsection{Inicialización de la BBDD con datos de prueba}
+\label{subsubsec:D.3_initDefecto}
+
+La inicialización de los roles y el usuario mencionados en el apartado anterior se da \textbf{en todo momento}, durante cada arranque del contenedor \texttt{spring-boot}.
+
+Adicionalmente, se han añadido múltiples \textbf{archivos} de inicialización para el \textbf{resto de entidades} del sistema (alimentos, productos, mesas, etc.), con el objetivo de tener un conjunto de \textbf{datos de prueba} siempre disponible. Dichos archivos se localizan en el directorio \texttt{init} de \textit{Spring Boot} y tienen la particularidad de poder ser \textbf{activados} o desactivados mediante la \textbf{variable} de entorno \texttt{APP\_INIT\_DEMO\_DATA}:
+\begin{itemize}
+	\item Si su valor es \texttt{true}, se ejecutarán todos los archivos de inicialización, rellenando las tablas con múltiples registros de prueba.
+	\begin{itemize}
+		\item El \textbf{orden de ejecución} viene dado por la anotación \texttt{@Order}, de manera que las entidades no propietarias son inicializadas \textbf{antes} que las entidades que dependen de otras.
+		\item En caso de ya existir registros en una tabla, se \textbf{salta} su inicialización y se procede con el siguiente \textit{script}.
+	\end{itemize}
+	\item Si su valor es \texttt{false}, ninguno de los archivos se ejecutará. Solo se dispondrá de los \textbf{roles y usuario por defecto} descritos en \textit{\nameref{subsubsec:D.3_rolesUserDefecto}}, los cuales son necesarios para el correcto funcionamiento del sistema.
+\end{itemize}
+
 \subsubsection{Consistencia horaria (\textit{Timezone})}
 
-Un aspecto crítico en la gestión de \textbf{reservas} y \textbf{auditoría} de entidades (en particular, de pedidos) es la precisión de las fechas. Por defecto, los contenedores suelen operar en tiempo UTC, lo que causaba \textbf{desajustes} en campos como \textit{createdAt} o en las horas de reserva respecto a la hora local de Madrid (UTC+1/+2).
+Un aspecto crítico en la gestión de \textbf{reservas} y \textbf{auditoría} de entidades (en particular, de pedidos) es la precisión de las fechas. Por defecto, los contenedores suelen operar en tiempo UTC, lo que causaba \textbf{desajustes} en campos como \texttt{createdAt} o en las horas de reserva respecto a la hora local de Madrid (UTC+1/+2).
 
 Para solucionar esto, se ha introducido la variable \texttt{APP\_TIMEZONE}. Al establecerla en el archivo \texttt{.env} (ej. \textit{Europe/Madrid}), \textit{Docker} configura la variable de entorno \texttt{TZ} en el sistema operativo del contenedor. Esto garantiza que tanto la máquina virtual de Java como el servidor \textit{MySQL} operen bajo el \textbf{mismo contexto horario que el usuario}, evitando inconsistencias de datos y errores en la lógica de negocio temporal.
 
@@ -273,7 +292,7 @@ Este apartado detalla los pasos necesarios para preparar el entorno, configurar 
 Para la correcta ejecución del sistema, es imprescindible disponer de las herramientas de virtualización de \textit{Docker}. En concreto, se requiere:
 \begin{itemize}
 	\item \textbf{\textit{Docker Engine} y \textit{Docker Compose}:} motor de ejecución de contenedores y herramienta para la definición y gestión de aplicaciones multi-contenedor~\cite{docker:compose}.
-	\item \textbf{\textit{Docker Desktop}:} se recomienda el uso de esta interfaz gráfica (disponible para \textit{Windows}, \textit{macOS} y \textit{Linux}) ya que integra tanto el motor de \textit{Docker} como \textit{Docker Compose} en un único paquete~\cite{docker:desktop}. Su utilidad reside en facilitar la monitorización de los estados de los contenedores, la gestión de volúmenes de datos y la visualización de logs de los servicios (base de datos, \textit{backend} y \textit{frontend}) de manera centralizada y sencilla.
+	\item \textbf{\textit{Docker Desktop}:} se recomienda el uso de esta interfaz gráfica (disponible para \textit{Windows}, \textit{macOS} y \textit{Linux}) ya que integra tanto el motor de \textit{Docker} como \textit{Docker Compose} en un único paquete~\cite{docker:desktop}. Su utilidad reside en facilitar la monitorización de los estados de los contenedores, la gestión de volúmenes de datos y la visualización de \textit{logs} de los servicios (base de datos, \textit{backend} y \textit{frontend}) de manera centralizada y sencilla.
 	\item \textbf{Git:} sistema de control de versiones necesario para la descarga (clonación) del código fuente desde el repositorio remoto y la gestión de las diferentes versiones del proyecto~\cite{git:info}.
 \end{itemize}
 
@@ -318,7 +337,7 @@ A continuación, se debe editar el archivo \texttt{.env} recién creado. Aunque 
 	\texttt{\# Database}\\
 	\texttt{\# ======================}\\
 	\texttt{MYSQL\_ROOT\_PASSWORD=root}\\
-	\texttt{MYSQL\_DATABASE=tfg\_db}\\
+	\texttt{MYSQL\_DATABASE=orderly\_db}\\
 	\texttt{MYSQL\_USER=user}\\
 	\texttt{MYSQL\_PASSWORD=user}\\
 	\texttt{MYSQL\_LOCAL\_PORT=3307}\\
@@ -336,6 +355,9 @@ A continuación, se debe editar el archivo \texttt{.env} recién creado. Aunque 
 	\texttt{DEFAULT\_ADMIN\_ROLE=ROLE\_ADMIN}\\
 	\texttt{DEFAULT\_USER\_ROLE=ROLE\_USER}\\
 	\\
+	\texttt{\# Application default users configuration}\\
+	\texttt{APP\_INIT\_DEMO\_DATA=true}\\
+	\\
 	\\
 	\texttt{\# ======================}\\
 	\texttt{\# Frontend (React)}\\
@@ -344,6 +366,7 @@ A continuación, se debe editar el archivo \texttt{.env} recién creado. Aunque 
 	\texttt{REACT\_DOCKER\_PORT=5173}\\
 	\\
 	\texttt{VITE\_API\_BASE\_URL=http://localhost:\$\{SPRING\_LOCAL\_PORT\}/api}\\
+	\texttt{REACT\_URL=http://localhost:\$\{REACT\_LOCAL\_PORT\}}\\
 	\\
 	\\
 	\texttt{\# ======================}\\
@@ -353,27 +376,46 @@ A continuación, se debe editar el archivo \texttt{.env} recién creado. Aunque 
 	}
 \end{tcolorbox}
 
+\subsection{Permisos de acceso a archivos (\textit{File Sharing})}
+\label{subsec:C.3_fileSharing}
+
+Antes de proceder con la ejecución, es importante tener en cuenta que, dependiendo de la configuración de \textit{Docker Desktop} y del sistema operativo anfitrión, puede ser necesario \textbf{autorizar explícitamente el acceso} de \textit{Docker} a la carpeta del proyecto.
+
+Si al intentar levantar los contenedores se produce un \textbf{error} de tipo \textit{\textbf{Mounts denied}} o problemas de permisos al montar los volúmenes, se deben seguir estos pasos para solucionar el conflicto de \textit{File Sharing}~\cite{fileSharing:microsoft,filesharing:dockerForums}:
+\begin{enumerate}
+	\item Abrir la interfaz de \textbf{\textit{Docker Desktop}}.
+	\item Acceder a \texttt{Settings > Resources > File sharing}.
+	\item Añadir la \textbf{ruta} del directorio donde se ha clonado el proyecto \textit{Orderly} mediante el botón +.
+	\item Hacer clic en \textbf{\textit{Apply} \& \textit{Restart}} para aplicar los cambios.
+\end{enumerate}
+
+\textbf{Nota técnica:} este paso es generalmente innecesario en sistemas \textit{Windows 11} que utilicen el motor de \textbf{\textit{WSL 2}}, ya que la gestión de permisos y recursos se realiza de forma automática a través del subsistema de \textit{Linux}. No obstante, es un requisito común en instalaciones que utilicen el \textit{backend} de \textit{\textbf{Hyper-V}} o en sistemas \textit{\textbf{macOS}}.
+
 \subsection{Ejecución de la aplicación}
 
-Una vez configurado el archivo de entorno, el despliegue de los servicios es automático. El flujo de ejecución se rige por el archivo \textbf{\texttt{docker-compose.yml}}, el cual coordina la lectura de los \texttt{Dockerfile} específicos para el \textit{backend} (Spring Boot) y el \textit{frontend} (\textit{React}), además de levantar una instancia de \textit{MySQL}.
+Una vez configurado el archivo de entorno, el despliegue de los servicios es automático. El flujo de ejecución se rige por el archivo \textbf{\texttt{docker-compose.yml}}, el cual coordina la lectura de los \texttt{Dockerfile} específicos para el \textit{backend} (\textit{Spring Boot}) y el \textit{frontend} (\textit{React}), además de levantar una instancia de \textit{MySQL}.
 
-Para iniciar el proceso de construcción de imágenes y levantado de contenedores, se debe ejecutar el siguiente comando en la raíz del proyecto:
+Para iniciar el proceso de construcción de imágenes y levantado de contenedores, se debe ejecutar el siguiente comando dentro del directorio \texttt{app}:
 
 \begin{tcolorbox}[colback=black!5, colframe=black!75, title=Terminal, fonttitle=\bfseries]
 	\texttt{docker-compose up -{}-build -d}
 \end{tcolorbox}
 
 {\small
-\begin{itemize}[nosep]
-	\item El \textit{flag} \texttt{--build} asegura que las imágenes se construyan con la \textbf{última versión} del código fuente disponible.
+\begin{itemize}
+	\item El \textit{flag} \texttt{-{}-build} asegura que las imágenes se construyan con la \textbf{última versión} del código fuente disponible.
 	\item El flag \texttt{-d} (\textit{detached mode}) permite que los contenedores se ejecuten en segundo plano, liberando la terminal para seguir introduciendo comandos mientras la aplicación permanece activa.
 \end{itemize}}
 
 \textit{Docker} se encargará de descargar las imágenes base, instalar las dependencias necesarias (\textit{\textbf{Maven}} para \textit{Java} y \textit{\textbf{NPM}} para \textit{Node.js}) y configurar la \textbf{red interna} para que los tres servicios puedan comunicarse entre sí.
 
+En caso de no poder llevar a cabo la ejecución del comando debido a un \textbf{error} \textit{Mounts denied}, se recomienda seguir los pasos indicados en el apartado \textit{\nameref{subsec:C.3_fileSharing}}.
+
+Por otro lado, si el servicio \texttt{db} mostrara un estado \textit{Unhealthy}, esto indicaría que el \textit{healthcheck} ha \textbf{fallado} al no recibir una respuesta válida de \textit{MySQL} en el tiempo previsto. En este caso, se debe editar el archivo \texttt{docker-compose.yml} y aumentar los valores de \texttt{start\_period} (tiempo de gracia inicial) o \texttt{retries} (número de reintentos), permitiendo así que el motor de base de datos complete su inicialización en equipos con menor rendimiento. Se trata de un escenario poco probable debido a los márgenes de tiempo holgados que se han definido originalmente, aunque factible en sistemas con recursos de \textit{hardware} muy limitados.
+
 \subsection{Acceso al sistema}
 
-Tras finalizar el proceso de arranque (el cual puede demorarse unos minutos en la primera ejecución mientras se descargan las dependencias), la aplicación estará disponible para su uso. Si abrimos Docker Desktop, podrán visualizarse los tres contenedores mediante los que se despliega la aplicación (figura \ref{fig:D3_docker}). Haciendo \textit{click} sobre el nombre de cada contenedor, podrán visualizarse sus \textit{logs}, si se quisieran comprobar los detalles del arranque.
+Tras finalizar el proceso de arranque (el cual puede demorarse unos minutos en la primera ejecución mientras se descargan las dependencias), la aplicación estará disponible para su uso. Si abrimos \textit{Docker Desktop}, podrán visualizarse los tres contenedores mediante los que se despliega la aplicación (figura \ref{fig:D3_docker}). Haciendo \textit{click} sobre el nombre de cada contenedor, podrán visualizarse sus \textit{logs}, si se quisieran comprobar los detalles del arranque.
 
 \imagenConEtiqueta[0.9\textwidth]{img/apen_D/D3_docker.png}{Contenedores \textit{Docker} con los servicios de \textit{Orderly}}{D3_docker}
 
@@ -392,10 +434,10 @@ Para garantizar la calidad y fiabilidad de la API REST desarrollada en \textit{S
 Se han desarrollado tanto pruebas unitarias como pruebas de integración, siguiendo buenas prácticas de desarrollo en aplicaciones empresariales con \textit{Spring Boot}:
 \begin{itemize}
 	\item \textbf{Pruebas unitarias:} se han creado tests para los servicios y \textit{mappers} de todas las entidades principales del sistema (alimentos, productos, mesas, reservas, pedidos, usuarios, roles). Estas pruebas verifican el correcto funcionamiento de la lógica interna de cada clase, \textbf{simulando dependencias} mediante \textit{mocks} (\textit{\textbf{Mockito}}), y comprobando que los métodos devuelven los resultados esperados ante distintos escenarios.
-	\item \textbf{Pruebas de integración}: para las entidades que \textbf{gestionan relaciones} y flujos críticos (por ejemplo, usuarios sobre roles, productos sobre ingredientes, pedidos sobre ítems), se han implementado tests de integración. Estas pruebas se ejecutan sobre una base de datos en memoria (\textbf{H2}) y validan que los procesos completos funcionan correctamente, incluyendo la \textbf{persistencia} y \textbf{consistencia} de las relaciones entre entidades. Así, se comprueba que los cambios realizados en una entidad se reflejan adecuadamente en las entidades relacionadas.
+	\item \textbf{Pruebas de integración}: para las entidades que \textbf{gestionan relaciones} y flujos críticos (por ejemplo, usuarios sobre roles, productos sobre ingredientes, pedidos sobre ítems), se han implementado tests de integración. Estas pruebas se ejecutan sobre una base de datos en memoria (\textbf{H2}) y validan que los procesos completos funcionen correctamente, incluyendo la \textbf{persistencia} y \textbf{consistencia} de las relaciones entre entidades. Así, se comprueba que los cambios realizados en una entidad se reflejan adecuadamente en las entidades relacionadas.
 \end{itemize}
 
-El sistema cuenta con una \textbf{cobertura} de pruebas del 56\%. Aunque no se han cubierto todos los flujos y casos posibles de la API REST, sí se han probado los escenarios más relevantes y \textbf{críticos} para el correcto funcionamiento del sistema, como la gestión de \textbf{relaciones}, la validación de datos y los procesos de negocio principales. La cobertura no era un requisito prioritario, pero se ha procurado asegurar la fiabilidad de los módulos más importantes.
+El \textit{backend} cuenta con una \textbf{cobertura} de pruebas del 50\%. Aunque no se han cubierto todos los flujos y casos posibles de la API REST, sí se han probado los escenarios más relevantes y \textbf{críticos} para el correcto funcionamiento del sistema, como la gestión de \textbf{relaciones}, la validación de datos y los procesos de negocio principales. La cobertura no era un requisito prioritario, pero se ha procurado asegurar la fiabilidad de los módulos más importantes.
 
 \subsection{Ejecución de las pruebas}
 
