@@ -10,12 +10,15 @@ import { useProducts } from '../hooks/useProducts';
 import ProductIngredientCard from '../components/ProductIngredientCard';
 import AllergensList from '../components/AllergensList';
 import { getNavigationConfig } from '../../../utils/navigationConfig';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 
 
 const ProductViewPage = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const {
     currentProduct,
     loading,
@@ -84,6 +87,7 @@ const ProductViewPage = () => {
           <Button
             leftSection={<IconEdit size="1rem" />}
             onClick={() => navigate(`/products/${id}/edit`)}
+            disabled={!hasPermission(PERMISSIONS.PRODUCT_EDIT)}
           >
             {t('products:form.edit')}
           </Button>

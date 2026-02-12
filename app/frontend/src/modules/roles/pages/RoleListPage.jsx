@@ -91,6 +91,7 @@ const RoleListPage = () => {
         showCreateButton={true}
         createButtonLabel={t('roles:list.newRole')}
         onCreateClick={() => navigate('/roles/new')}
+        createButtonDisabled={!hasPermission(PERMISSIONS.ROLE_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

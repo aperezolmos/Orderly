@@ -38,6 +38,8 @@ public class FoodController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('FOOD_VIEW_LIST', 'PRODUCT_CREATE', " +
+                    "'PRODUCT_EDIT', 'PRODUCT_EDIT_INGREDIENTS')")
     public ResponseEntity<List<FoodResponseDTO>> searchFoods(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) FoodGroup foodGroup) {

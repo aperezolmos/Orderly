@@ -111,6 +111,7 @@ const FoodListPage = () => {
         showCreateButton={true}
         createButtonLabel={t('foods:list.newFood')}
         onCreateClick={() => navigate('/foods/new')}
+        createButtonDisabled={!hasPermission(PERMISSIONS.FOOD_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

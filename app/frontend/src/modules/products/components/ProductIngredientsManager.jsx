@@ -95,7 +95,7 @@ const ProductIngredientsManager = ({
                           {food.name}
                         </Text>
                         {isAdded && (
-                          <Text size="xs" c="blue.5" italic>
+                          <Text size="xs" c="blue.5" fs="italic">
                             {t('products:ingredients.inList')}
                           </Text>
                         )}

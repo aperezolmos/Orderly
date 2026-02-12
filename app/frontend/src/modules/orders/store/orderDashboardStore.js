@@ -47,6 +47,10 @@ export const useOrderDashboardStore = create((set, get) => ({
   products: [],
   isLoadingProducts: false,
   allergenFilter: [],
+  // Simple in-memory cache to avoid refetching when switching views rapidly
+  _ordersCache: { bar: null, dining: null },
+  _productsCache: null,
+  _cacheTtl: 30000, // ms
 
 
 
@@ -58,14 +62,14 @@ export const useOrderDashboardStore = create((set, get) => ({
    * Change order type (bar/dining) and load all orders
    * This is the main loader for the orders section
    */
-  setOrderType: async (type) => {
+  // Only update the selected order type in the store.
+  // Fetching is handled by the consumer (hook) so we avoid duplicated requests
+  // and allow permission-based initialization before the first load.
+  setOrderType: (type) => {
     set({
       orderType: type,
-      isLoadingOrdersList: true,
-      isLoadingCurrentOrder: true,
       editedQuantities: {},
     });
-    await get().fetchOrders(type);
   },
 
   /**
@@ -73,13 +77,26 @@ export const useOrderDashboardStore = create((set, get) => ({
    * Keeps currentOrder updated if it is still valid
    */
   fetchOrders: async (type = get().orderType) => {
+    // console.debug('[orderDashboardStore] fetchOrders called for type:', type);
     set({ isLoadingOrdersList: true });
     try {
+      // Use cache when available and fresh
+      const cacheEntry = get()._ordersCache[type];
+      const now = Date.now();
       let orders = [];
-      if (type === 'bar') {
-        orders = await orderService.getPendingBarOrders();
-      } else {
-        orders = await orderService.getPendingDiningOrders();
+      if (cacheEntry && now - cacheEntry.ts < get()._cacheTtl) {
+        // console.debug('[orderDashboardStore] cache hit for', type);
+        orders = cacheEntry.data;
+      } 
+      else {
+        // console.debug('[orderDashboardStore] cache miss for', type, '-> fetching from API');
+        if (type === 'bar') {
+          orders = await orderService.getPendingBarOrders();
+        } else {
+          orders = await orderService.getPendingDiningOrders();
+        }
+        // Save cache
+        set(state => ({ _ordersCache: { ...state._ordersCache, [type]: { ts: Date.now(), data: orders } } }));
       }
 
       set({ orders });
@@ -203,6 +220,8 @@ export const useOrderDashboardStore = create((set, get) => ({
       });
 
       // Refresh the list
+      // Invalidate cache for this type and refresh
+      set(state => ({ _ordersCache: { ...state._ordersCache, [orderType]: null } }));
       await get().fetchOrders(orderType);
     } 
     catch (error) {
@@ -240,7 +259,8 @@ export const useOrderDashboardStore = create((set, get) => ({
         },
       });
 
-      // Refresh the list
+      // Invalidate cache for this type and refresh
+      set(state => ({ _ordersCache: { ...state._ordersCache, [orderType]: null } }));
       await get().fetchOrders(orderType);
 
       return updatedOrder;
@@ -278,7 +298,8 @@ export const useOrderDashboardStore = create((set, get) => ({
         editedQuantities: {},
       });
 
-      // Refresh the list
+      // invalidate cache for this type and refresh
+      set(state => ({ _ordersCache: { ...state._ordersCache, [orderType]: null } }));
       await get().fetchOrders(orderType);
     } 
     catch (error) {
@@ -314,7 +335,8 @@ export const useOrderDashboardStore = create((set, get) => ({
         editedQuantities: {},
       });
 
-      // Refresh the list
+      // Invalidate cache for this type and refresh
+      set(state => ({ _ordersCache: { ...state._ordersCache, [orderType]: null } }));
       await get().fetchOrders(orderType);
     } 
     catch (error) {
@@ -344,7 +366,8 @@ export const useOrderDashboardStore = create((set, get) => ({
         createdOrder = await orderService.createDiningOrder(dto);
       }
 
-      // Refresh the list
+      // Invalidate cache for this type and refresh
+      set(state => ({ _ordersCache: { ...state._ordersCache, [orderType]: null } }));
       await get().fetchOrders(orderType);
 
       // Select new order as the current one

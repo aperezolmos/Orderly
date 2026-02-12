@@ -8,7 +8,7 @@ import { useOrderDashboardStore } from '../store/orderDashboardStore';
 import StatusButton from '../../../common/components/StatusButton';
 
 
-const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
+const OrderDetailsTable = ({ viewOnly = false, order: propOrder, editDisabled = false }) => {
   
   const {
     currentOrder,
@@ -42,15 +42,16 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
     });
   };
 
-  const isSaveDisabled = isLoadingOrderDetails || viewOnly || !hasItemQuantityChanges();
+  const effectiveReadOnly = viewOnly || editDisabled;
+  const isSaveDisabled = isLoadingOrderDetails || effectiveReadOnly || !hasItemQuantityChanges();
 
 
   // Reset edition when current order changes
   useEffect(() => {
-    if (!viewOnly && orderToShow?.id) {
+    if (!effectiveReadOnly && orderToShow?.id) {
       setItemQuantity({});
     }
-  }, [orderToShow?.id, setItemQuantity, viewOnly]);
+  }, [orderToShow?.id, setItemQuantity, effectiveReadOnly]);
 
   if (!orderToShow) {
     return (
@@ -65,16 +66,16 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
 
   // Change the quantity locally (in the store)
   const handleQuantityChange = (itemId, value) => {
-    if (!viewOnly) setItemQuantity(itemId, value);
+    if (!effectiveReadOnly) setItemQuantity(itemId, value);
   };
 
   // Save changes (full update)
   const handleSave = () => {
-    if (!viewOnly) updateOrder({ ...currentOrder, items });
+    if (!effectiveReadOnly) updateOrder({ ...currentOrder, items });
   };
 
   const handleChangeStatus = async (newStatus) => {
-    if (!viewOnly) await updateOrderStatus(newStatus);
+    if (!effectiveReadOnly) await updateOrderStatus(newStatus);
   };
 
 
@@ -97,6 +98,7 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
           onChange={handleChangeStatus}
           disabled={isUpdatingStatus || viewOnly}
           size="md"
+          readOnly={effectiveReadOnly}
         />
       </Group>
       
@@ -127,7 +129,7 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
                     <Table.Td>{formatCurrency(item.unitPrice)}</Table.Td>
                     <Table.Td>
                       <Group gap="xs">
-                        {!viewOnly && (
+                        {!effectiveReadOnly && (
                           <ActionIcon
                             size="sm"
                             variant="subtle"
@@ -143,7 +145,7 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
                           value={editedQuantities[item.id] ?? item.quantity}
                           onChange={(value) => handleQuantityChange(item.id, value)}
                           style={{ width: 60 }}
-                          disabled={viewOnly}
+                          disabled={effectiveReadOnly}
                         />
                       </Group>
                     </Table.Td>
@@ -168,7 +170,7 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder }) => {
           <Text size="lg" fw={700}>
             {t('orders:dashboard.totalWithAmount', { amount: formatCurrency(orderToShow.totalAmount) })}
           </Text>
-          {!viewOnly && (
+          {!effectiveReadOnly && (
             <Group justify="flex-end" mt="md">
               <Button 
                 variant="filled" 

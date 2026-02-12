@@ -121,6 +121,7 @@ const UserListPage = () => {
         showCreateButton={true}
         createButtonLabel={t('users:list.newUser')}
         onCreateClick={() => navigate('/users/new')}
+        createButtonDisabled={!hasPermission(PERMISSIONS.USER_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

@@ -25,7 +25,8 @@
     "guestSpecialRequests": "Peticiones especiales",
     "guestSpecialRequestsPlaceholder": "Alergias, preferencias, etc.",
     "create": "Crear Reserva",
-    "update": "Actualizar Reserva"
+    "update": "Actualizar Reserva",
+    "requiredFieldsInfo": "Es necesario completar la información básica requerida y los datos del comensal"
   },
   "list": {
     "id": "ID",

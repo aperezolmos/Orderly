@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Grid, Group, Text, Pagination } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import ProductCard from '../elements/ProductCard';
@@ -23,6 +24,7 @@ const ProductGrid = () => {
 
   
   const pagination = usePagination(products, PAGE_SIZE);
+  const paginatedProducts = useMemo(() => pagination.paginatedData, [pagination.paginatedData]);
   const skeletonCount = PAGE_SIZE;
 
 
@@ -43,13 +45,13 @@ const ProductGrid = () => {
           {isLoadingProducts
             ? // Show skeletons while loading
               Array.from({ length: skeletonCount }).map((_, i) => (
-                <Grid.Col key={`skeleton-${i}`} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
+                <Grid.Col key={`skeleton-${i}`} span={{ base: 12, xs: 6, sm: 4, md: 4, lg: 4 }}>
                   <ProductCardSkeleton />
                 </Grid.Col>
               ))
             : // Show actual products
-              pagination.paginatedData.map((product) => (
-                <Grid.Col key={product.id} span={{ base: 6, xs: 6, sm: 4, md: 4, lg: 4 }}>
+              paginatedProducts.map((product) => (
+                <Grid.Col key={product.id} span={{ base: 12, xs: 6, sm: 4, md: 4, lg: 4 }}>
                   <ProductCard
                     product={product}
                     onSelect={() => useOrderDashboardStore.getState().addProductToOrder(product)}

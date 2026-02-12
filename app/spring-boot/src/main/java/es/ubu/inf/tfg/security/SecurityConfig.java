@@ -29,8 +29,8 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Value("${REACT_LOCAL_PORT:5173}")
-    private String reactPort;
+    @Value("${REACT_URL:http://localhost:5173}")
+    private String reactURL;
 
 
     @Bean
@@ -80,7 +80,7 @@ public class SecurityConfig {
         
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:" + reactPort)); 
+        configuration.setAllowedOrigins(List.of(reactURL)); 
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));

@@ -25,7 +25,8 @@
     "guestSpecialRequests": "Special requests",
     "guestSpecialRequestsPlaceholder": "Allergies, preferences, etc.",
     "create": "Create Reservation",
-    "update": "Update Reservation"
+    "update": "Update Reservation",
+    "requiredFieldsInfo": "You must fill in the required basic information and guest details"
   },
   "list": {
     "id": "ID",

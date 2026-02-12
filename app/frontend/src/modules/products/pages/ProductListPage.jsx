@@ -104,6 +104,7 @@ const ProductListPage = () => {
         showCreateButton={true}
         createButtonLabel={t('products:list.newProduct')}
         onCreateClick={() => navigate('/products/new')}
+        createButtonDisabled={!hasPermission(PERMISSIONS.PRODUCT_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

@@ -4,14 +4,20 @@ import { useTranslation } from 'react-i18next';
 import ProductGrid from '../components/groups/ProductGrid';
 import OrderDashboardSection from '../components/OrderDashboardSection';
 import { useOrderDashboard } from '../hooks/useOrderDashboard';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
+import AccessDeniedView from '../../../common/components/feedback/AccessDeniedView';
 
 
 const OrderDashboardPage = () => {
   
   const { t } = useTranslation(['orders']);
+  const { hasPermission } = useAuth();
   
   // Initialize hook that triggers order and product loading
   useOrderDashboard();
+
+  const canViewProducts = hasPermission(PERMISSIONS.PRODUCT_VIEW);
   
 
   return (
@@ -49,7 +55,7 @@ const OrderDashboardPage = () => {
               <IconListCheck size={24} />
               <Title order={2}>{t('orders:dashboard.productsAvailable')}</Title>
             </Group>
-            <ProductGrid />
+            {canViewProducts ? <ProductGrid /> : <AccessDeniedView showHomeButton={false} />}
           </Paper>
         </Grid.Col>
 

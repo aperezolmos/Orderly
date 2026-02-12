@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Group, Button, Space, ActionIcon, Modal,
          Text, useMantineTheme } from '@mantine/core';
 import { modals } from '@mantine/modals';
@@ -9,6 +9,9 @@ import { useOrderDashboardStore } from '../store/orderDashboardStore';
 import OrderDetailsTable from './OrderDetailsTable';
 import PendingOrdersList from './groups/PendingOrdersList';
 import OrderForm from './OrderForm';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
+import AccessDeniedView from '../../../common/components/feedback/AccessDeniedView';
 
 
 const OrderDashboardSection = () => {
@@ -22,6 +25,27 @@ const OrderDashboardSection = () => {
     createOrder,
     deleteOrder,
   } = useOrderDashboardStore();
+  const { hasPermission } = useAuth();
+
+
+  const canViewBar = hasPermission(PERMISSIONS.ORDER_BAR_VIEW);
+  const canViewDining = hasPermission(PERMISSIONS.ORDER_DINING_VIEW);
+
+  const canCreate = useMemo(() => {
+    if (orderType === 'bar') return hasPermission(PERMISSIONS.ORDER_BAR_CREATE);
+    return hasPermission(PERMISSIONS.ORDER_DINING_CREATE);
+  }, [orderType, hasPermission]);
+
+  const canEdit = useMemo(() => {
+    if (orderType === 'bar') return hasPermission(PERMISSIONS.ORDER_BAR_EDIT);
+    return hasPermission(PERMISSIONS.ORDER_DINING_EDIT);
+  }, [orderType, hasPermission]);
+
+  const canDelete = useMemo(() => {
+    if (orderType === 'bar') return hasPermission(PERMISSIONS.ORDER_BAR_DELETE);
+    return hasPermission(PERMISSIONS.ORDER_DINING_DELETE);
+  }, [orderType, hasPermission]);
+  
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
@@ -159,62 +183,81 @@ const OrderDashboardSection = () => {
   };
 
 
+  if (!canViewBar && !canViewDining) {
+    return <AccessDeniedView showHomeButton={false} />;
+  }
+  
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       {/* Toggle order type and create buttons */}
-      <Group mb="md">
-        <Button
-          variant={orderType === 'bar' ? 'filled' : 'outline'}
-          onClick={() => setOrderType('bar')}
-          leftSection={<IconGlass size={15} />}
-          color="teal"
-          disabled={isLoadingOrdersList}
-        >
-          {t('orders:types.bar')}
-        </Button>
-        <Button
-          variant={orderType === 'dining' ? 'filled' : 'outline'}
-          onClick={() => setOrderType('dining')}
-          leftSection={<IconToolsKitchen2 size={15} />}
-          color="orange"
-          disabled={isLoadingOrdersList}
-        >
-          {t('orders:types.dining')}
-        </Button>
-        <Button
-          variant="light"
-          color="green"
-          leftSection="+"
-          onClick={openCreateOrderModal}
-          style={{ marginLeft: 'auto' }}
-          disabled={isLoadingOrdersList}
-        >
-          {t('orders:form.create')}
-        </Button>
+      <Group mb="md" justify="space-between">
+        <Group>
+          {canViewBar && (
+            <Button
+              variant={orderType === 'bar' ? 'filled' : 'outline'}
+              onClick={() => canViewBar && setOrderType('bar')}
+              leftSection={<IconGlass size={15} />}
+              color="teal"
+              disabled={isLoadingOrdersList}
+            >
+              {t('orders:types.bar')}
+            </Button>
+          )}
+
+          {canViewDining && (
+            <Button
+              variant={orderType === 'dining' ? 'filled' : 'outline'}
+              onClick={() => canViewDining && setOrderType('dining')}
+              leftSection={<IconToolsKitchen2 size={15} />}
+              color="orange"
+              disabled={isLoadingOrdersList}
+            >
+              {t('orders:types.dining')}
+            </Button>
+          )}
+        </Group>
+        
+        {canCreate && (
+          <Button
+            variant="light"
+            color="green"
+            leftSection="+"
+            onClick={openCreateOrderModal}
+            disabled={isLoadingOrdersList}
+          >
+            {t('orders:form.create')}
+          </Button>
+        )}
       </Group>
 
       {/* Edit and delete buttons */}
       <Group mb="md" gap="xs" justify="flex-end">
-        <ActionIcon
-          variant="subtle"
-          color="blue"
-          size="lg"
-          onClick={openEditOrderModal}
-          disabled={!currentOrder || isLoadingOrdersList}
-          title={t('orders:form.edit')}
-        >
-          <IconPencil size={20} />
-        </ActionIcon>
-        <ActionIcon
-          variant="subtle"
-          color="red"
-          size="lg"
-          onClick={() => setDeleteModalOpen(true)}
-          disabled={!currentOrder || isLoadingOrdersList}
-          title={t('orders:dashboard.deleteOrder')}
-        >
-          <IconTrash size={20} />
-        </ActionIcon>
+        {canEdit && (
+          <ActionIcon
+            variant="subtle"
+            color="blue"
+            size="lg"
+            onClick={openEditOrderModal}
+            disabled={!currentOrder || isLoadingOrdersList}
+            title={t('orders:form.edit')}
+          >
+            <IconPencil size={20} />
+          </ActionIcon>
+        )}
+
+        {canDelete && (
+          <ActionIcon
+            variant="subtle"
+            color="red"
+            size="lg"
+            onClick={() => setDeleteModalOpen(true)}
+            disabled={!currentOrder || isLoadingOrdersList}
+            title={t('orders:dashboard.deleteOrder')}
+          >
+            <IconTrash size={20} />
+          </ActionIcon>
+        )}
       </Group>
 
       {/* Confirm deletion modal */}
@@ -240,7 +283,7 @@ const OrderDashboardSection = () => {
         </Group>
       </Modal>
 
-      <OrderDetailsTable viewOnly={false} />
+      <OrderDetailsTable viewOnly={false} editDisabled={!canEdit} />
       <Space h="md" />
       <PendingOrdersList />
     </div>

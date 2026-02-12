@@ -151,6 +151,7 @@
       "adminHint": "Contacta con un administrador para que te asignen los permisos adecuados"
     },
     "notFound": "No se pudo encontrar el recurso solicitado",
+    "resourceInUse": "El elemento está siendo referenciado por una o más entidades",
     "loadError": "Error cargando datos"
   },
   "form": {

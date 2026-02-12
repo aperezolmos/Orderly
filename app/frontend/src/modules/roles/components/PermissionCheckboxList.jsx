@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Checkbox, SimpleGrid, Title, Text, LoadingOverlay,
-         Group, Stack } from '@mantine/core';
+import { Checkbox, Box, Title, Text, LoadingOverlay,
+         Group, Stack, useMatches } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 
 
@@ -34,6 +34,8 @@ const PermissionCheckboxList = memo(({
     }
   };
 
+  const columnCount = useMatches({ base: 1, sm: 2, lg: 3 });
+
 
   return (
     <div style={{ position: 'relative', minHeight: '100px' }}>
@@ -54,16 +56,29 @@ const PermissionCheckboxList = memo(({
         />
       </Group>
 
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+      <Box
+        style={{
+          columnCount: columnCount,
+          columnGap: 'var(--mantine-spacing-md)',
+        }}
+      >
         {permissions.map((perm) => (
-          <Checkbox
-            key={perm}
-            label={perm}
-            checked={selected.includes(perm)}
-            onChange={(event) => handleCheckboxChange(perm, event.currentTarget.checked)}
-          />
+          <Box 
+            key={perm} 
+            mb="sm" 
+            style={{ 
+              breakInside: 'avoid',
+              display: 'block' 
+            }}
+          >
+            <Checkbox
+              label={perm}
+              checked={selected.includes(perm)}
+              onChange={(event) => handleCheckboxChange(perm, event.currentTarget.checked)}
+            />
+          </Box>
         ))}
-      </SimpleGrid>
+      </Box>
     </div>
   );
 });

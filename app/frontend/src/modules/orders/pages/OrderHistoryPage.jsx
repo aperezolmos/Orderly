@@ -60,9 +60,9 @@ export default function OrderHistoryPage() {
       )
     },
     {
-      key: 'createdAt',
-      title: t('orders:list.created'),
-      render: (order) => order.createdAt ? new Date(order.createdAt).toLocaleString() : '-'
+      key: 'updatedAt',
+      title: t('orders:list.updated'),
+      render: (order) => order.updatedAt ? new Date(order.updatedAt).toLocaleString() : '-'
     },
     {
       key: 'tableName',

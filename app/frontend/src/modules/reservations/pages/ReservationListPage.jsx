@@ -76,6 +76,7 @@ const ReservationListPage = () => {
           size="sm"
           onChange={(newStatus) => updateReservationStatus(reservation.id, newStatus)}
           disabled={loading}
+          readOnly={!hasPermission(PERMISSIONS.RESERVATION_EDIT)}
         />
       ),
     },
@@ -116,6 +117,7 @@ const ReservationListPage = () => {
         showCreateButton={true}
         createButtonLabel={t('reservations:list.newReservation')}
         onCreateClick={() => navigate('/reservations/new')}
+        createButtonDisabled={!hasPermission(PERMISSIONS.RESERVATION_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

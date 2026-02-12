@@ -4,11 +4,12 @@ import { Container, Title, Text, Group, Badge,
 import { IconEdit, IconUser, IconLogout, IconShield } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS } from '../../../utils/permissions';
 
 
 const ProfilePage = () => {
   
-  const { user, logout } = useAuth();
+  const { user, logout, hasPermission } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation(['common', 'auth', 'users']);
 
@@ -30,6 +31,7 @@ const ProfilePage = () => {
             variant="light"
             leftSection={<IconEdit size="1rem" />}
             onClick={() => navigate('/profile/edit')}
+            disabled={!hasPermission(PERMISSIONS.USER_EDIT_MYSELF)}
           >
             {t('auth:profile.editTitle')}
           </Button>

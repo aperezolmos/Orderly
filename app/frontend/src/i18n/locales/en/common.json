@@ -151,6 +151,7 @@
       "adminHint": "Contact an administrator to assign you the appropriate permissions"
     },
     "notFound": "Could not find the requested resource",
+    "resourceInUse": "The item is being referenced by one or more entities",
     "loadError": "Error loading data"
   },
   "form": {

@@ -13,6 +13,7 @@ const ManagementLayout = ({
   showCreateButton = false,
   createButtonLabel = "Create New",
   onCreateClick,
+  createButtonDisabled = false,
   breadcrumbs = []
 }) => {
   
@@ -55,6 +56,7 @@ const ManagementLayout = ({
             <Button
               leftSection={<IconPlus size="1rem" />}
               onClick={onCreateClick}
+              disabled={createButtonDisabled}
             >
               {createButtonLabel}
             </Button>

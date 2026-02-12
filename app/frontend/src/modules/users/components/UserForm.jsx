@@ -206,7 +206,7 @@ const UserForm = ({
             <Alert icon={<IconAlertCircle size="1rem" />} color="blue" mb="md">
               <Text size="sm">
                 {t('users:form.passwordInfo')}
-                {isProfileEdit && (". ")}{isProfileEdit && (t('users:form.passwordInfo'))}
+                {isProfileEdit && (". ")}{isProfileEdit && (t('users:form.currentPasswordInfo'))}
               </Text>
             </Alert>
           )}

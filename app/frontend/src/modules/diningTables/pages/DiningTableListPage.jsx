@@ -101,6 +101,7 @@ const DiningTableListPage = () => {
             size="sm"
             onChange={(newStatus) => updateTableStatus(table.id, newStatus)}
             disabled={loading}
+            readOnly={!hasPermission(PERMISSIONS.TABLE_EDIT)}
           />
         );
       }
@@ -127,6 +128,7 @@ const DiningTableListPage = () => {
         showCreateButton={true}
         createButtonLabel={t('diningTables:list.newTable')}
         onCreateClick={() => navigate('/tables/new')}
+        createButtonDisabled={!hasPermission(PERMISSIONS.TABLE_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

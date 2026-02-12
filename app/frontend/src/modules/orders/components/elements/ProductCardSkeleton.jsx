@@ -14,9 +14,8 @@ const ProductCardSkeleton = () => {
         flexDirection: 'column',
       }}
     >
-      {/* Badge + Action button */}
+      {/* Action button */}
       <Group justify="apart" align="start" mb="xs">
-        <Skeleton height={28} width={80} radius="sm" />
         <Skeleton height={32} width={32} radius="md" circle />
       </Group>
 

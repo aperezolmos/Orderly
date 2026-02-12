@@ -31,6 +31,7 @@
     "table": "Table",
     "status": "Status",
     "created": "Created",
+    "updated": "Updated",
     "totalAmount": "Total",
     "itemCount": "Items",
     "newOrder": "New Order",

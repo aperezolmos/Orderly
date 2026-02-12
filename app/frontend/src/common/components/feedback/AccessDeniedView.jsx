@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 
-const AccessDeniedView = () => {
+const AccessDeniedView = ({ showHomeButton = true }) => {
   
   const { t } = useTranslation('common');
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const AccessDeniedView = () => {
   return (
     <Center style={{ height: '70vh' }}>
       <Container size="sm" p="xl">
-        <Stack align="center" spacing="xl">
+        <Stack align="center" gap="xl">
           <IconShieldLock 
             size={80} 
             style={{ 
@@ -34,16 +34,18 @@ const AccessDeniedView = () => {
             </Text>
           </div>
 
-          <Button
-            size="sm"
-            leftSection={<IconHome size={16} />}
-            onClick={() => navigate('/')}
-            variant="light"
-            color="blue"
-            mt="xl"
-          >
-            {t('common:error.accessDenied.backToHome')}
-          </Button>
+          {showHomeButton && (
+            <Button
+              size="sm"
+              leftSection={<IconHome size={16} />}
+              onClick={() => navigate('/')}
+              variant="light"
+              color="blue"
+              mt="xl"
+            >
+              {t('common:error.accessDenied.backToHome')}
+            </Button>
+          )}
         </Stack>
       </Container>
     </Center>

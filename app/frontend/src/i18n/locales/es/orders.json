@@ -31,6 +31,7 @@
     "table": "Mesa",
     "status": "Estado",
     "created": "Creado",
+    "updated": "Modificado",
     "totalAmount": "Total",
     "itemCount": "Ítems",
     "newOrder": "Nuevo Pedido",

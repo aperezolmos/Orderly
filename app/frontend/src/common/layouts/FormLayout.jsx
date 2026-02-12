@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, LoadingOverlay, Alert } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import ManagementLayout from './ManagementLayout';
