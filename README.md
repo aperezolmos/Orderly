@@ -1,5 +1,15 @@
 # 🍽️ Orderly
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=bugs)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=aperezolmos_Orderly&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=aperezolmos_Orderly)
+
 Orderly is the **all-in-one** digital hub for modern restaurants. Manage **products**, track **orders**, handle **reservations**, and ensure **nutritional transparency** — all through a unified platform designed for efficiency and team collaboration.
 
 ## 🚀 Deployment
@@ -9,12 +19,22 @@ Orderly is the **all-in-one** digital hub for modern restaurants. Manage **produ
 2. Docker and Docker Compose
 
 ### Installation Steps
-#### 1. Clone the repository
+#### 1. Download the source code
 
+🔸**Option A: Clone the repository _(recommended for developers)_**
 ```bash
 git clone https://github.com/aperezolmos/Orderly.git
+```
+
+Navigate to the `app` folder.
+
+```bash
 cd Orderly/app
 ```
+
+🔹**Option B: Download a stable release**
+
+Download the **latest** source code (ZIP or tar.gz) from the [Releases page](https://github.com/aperezolmos/Orderly/releases), extract it, and navigate to the `app` folder.
 
 #### 2. Configure environment variables
 ```bash
