@@ -1,4 +1,6 @@
 import { Table } from '@mantine/core';
+import { formatValue } from '../../../../utils/formatters';
+
 
 const MicroTable = ({ data, t, prefix, referenceMap }) => {
   
@@ -28,7 +30,7 @@ const MicroTable = ({ data, t, prefix, referenceMap }) => {
                 bg={getRowBg(value, reference)}
               >
                 <Table.Td fw={500}>{t(`${prefix}.${key}`)}</Table.Td>
-                <Table.Td>{value === null ? '-' : `${value} mg`}</Table.Td>
+                <Table.Td>{value === null ? '-' : `${formatValue(value)} mg`}</Table.Td>
                 <Table.Td c="dimmed">
                   {reference === null ? '-' : `${reference} mg`}
                 </Table.Td>

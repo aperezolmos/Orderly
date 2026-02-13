@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import ProductCard from '../elements/ProductCard';
 import ProductCardSkeleton from '../elements/ProductCardSkeleton';
 import { useOrderDashboardStore } from '../../store/orderDashboardStore';
+import { useAuth } from '../../../../context/AuthContext';
+import { PERMISSIONS } from '../../../../utils/permissions';
 import ProductAllergenFilter from '../elements/ProductAllergenFilter';
 import { usePagination } from '../../../../common/hooks/usePagination';
 
@@ -19,7 +21,9 @@ const ProductGrid = () => {
     allergenFilter,
     setAllergenFilter,
     fetchFilteredProducts,
+    orderType,
   } = useOrderDashboardStore();
+  const { hasPermission } = useAuth();
   const { t } = useTranslation(['orders']);
 
   
@@ -54,7 +58,24 @@ const ProductGrid = () => {
                 <Grid.Col key={product.id} span={{ base: 12, xs: 6, sm: 4, md: 4, lg: 4 }}>
                   <ProductCard
                     product={product}
-                    onSelect={() => useOrderDashboardStore.getState().addProductToOrder(product)}
+                    onSelect={() => {
+                      if (hasPermission(PERMISSIONS.ORDER_EDIT)) {
+                        useOrderDashboardStore.getState().addProductToOrder(product);
+                        return;
+                      }
+                      if (orderType === 'bar') {
+                        if (hasPermission(PERMISSIONS.ORDER_BAR_EDIT)) {
+                          useOrderDashboardStore.getState().addProductToOrder(product);
+                        }
+                        return;
+                      }
+                      if (orderType === 'dining') {
+                        if (hasPermission(PERMISSIONS.ORDER_DINING_EDIT)) {
+                          useOrderDashboardStore.getState().addProductToOrder(product);
+                        }
+                        return;
+                      }
+                    }}
                   />
                 </Grid.Col>
               ))}

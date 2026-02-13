@@ -14,6 +14,7 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder, editDisabled = 
     currentOrder,
     editedQuantities,
     setItemQuantity,
+    isLoadingCurrentOrder,
     isLoadingOrderDetails,
     isUpdatingStatus,
     updateOrderStatus,
@@ -83,7 +84,7 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder, editDisabled = 
     <div className="order-details" style={{ position: 'relative' }}>
       <LoadingOverlay 
         zIndex={50}
-        visible={isLoadingOrderDetails} 
+        visible={isLoadingOrderDetails || isLoadingCurrentOrder} 
         overlayProps={{ blur: 1, backgroundOpacity: 0.5 }}
       />
 

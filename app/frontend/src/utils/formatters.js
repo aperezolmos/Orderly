@@ -12,3 +12,8 @@ export const formatTime = (dateTime) => {
     minute: '2-digit' 
   });
 };
+
+export const formatValue = (val) => {
+  if (val === null || val === undefined) return '-';
+  return Number(val.toFixed(3));
+};

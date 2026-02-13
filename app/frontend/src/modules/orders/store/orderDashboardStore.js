@@ -77,7 +77,6 @@ export const useOrderDashboardStore = create((set, get) => ({
    * Keeps currentOrder updated if it is still valid
    */
   fetchOrders: async (type = get().orderType) => {
-    // console.debug('[orderDashboardStore] fetchOrders called for type:', type);
     set({ isLoadingOrdersList: true });
     try {
       // Use cache when available and fresh
@@ -85,11 +84,9 @@ export const useOrderDashboardStore = create((set, get) => ({
       const now = Date.now();
       let orders = [];
       if (cacheEntry && now - cacheEntry.ts < get()._cacheTtl) {
-        // console.debug('[orderDashboardStore] cache hit for', type);
         orders = cacheEntry.data;
       } 
       else {
-        // console.debug('[orderDashboardStore] cache miss for', type, '-> fetching from API');
         if (type === 'bar') {
           orders = await orderService.getPendingBarOrders();
         } else {
@@ -298,7 +295,7 @@ export const useOrderDashboardStore = create((set, get) => ({
         editedQuantities: {},
       });
 
-      // invalidate cache for this type and refresh
+      // Invalidate cache for this type and refresh
       set(state => ({ _ordersCache: { ...state._ordersCache, [orderType]: null } }));
       await get().fetchOrders(orderType);
     } 
@@ -395,6 +392,8 @@ export const useOrderDashboardStore = create((set, get) => ({
       } else {
         await orderService.deleteDiningOrder(orderId);
       }
+      // Invalidate cache for this type and refresh
+      set(state => ({ _ordersCache: { ...state._ordersCache, [orderType]: null } }));
       await get().fetchOrders(orderType);
     } 
     catch (error) {
