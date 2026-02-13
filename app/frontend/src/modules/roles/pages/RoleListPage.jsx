@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Text, Modal, Button, LoadingOverlay } from '@mantine/core';
+import { Group, Text, Modal, Button, LoadingOverlay, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconShield } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -67,7 +67,36 @@ const RoleListPage = () => {
     {
       key: 'description',
       title: t('roles:list.description'),
-      render: (role) => role.description || <Text color="dimmed">{t('roles:list.noDescription')}</Text>
+      render: (role) => {
+        const hasDescription = !!role.description;
+        const displayContent = role.description || t('roles:list.noDescription');
+
+        return (
+          <Tooltip 
+            label={displayContent} 
+            multiline 
+            withArrow 
+            disabled={!hasDescription}
+            styles={{
+              tooltip: {
+                maxWidth: 450,
+                whiteSpace: 'normal',
+                wordBreak: 'break-word',
+                
+              },
+            }}
+          >
+            <Text 
+              size="sm" 
+              truncate="end" 
+              color={hasDescription ? undefined : 'dimmed'}
+              style={{ maxWidth: '370px' }}
+            >
+              {displayContent}
+            </Text>
+          </Tooltip>
+        );
+      }
     },
     {
       key: 'userCount',
@@ -75,6 +104,15 @@ const RoleListPage = () => {
       render: (role) => (
         <Text weight={500} color={role.userCount > 0 ? 'blue' : 'dimmed'}>
           {role.userCount || 0}
+        </Text>
+      )
+    },
+    {
+      key: 'updatedAt',
+      title: t('common:list.updated'),
+      render: (role) => (
+        <Text size="sm">
+          {role.updatedAt ? new Date(role.updatedAt).toLocaleString() : 'N/A'}
         </Text>
       )
     }
@@ -88,10 +126,9 @@ const RoleListPage = () => {
         icon={moduleConfig?.icon}
         iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('roles:management.list'), href: '/roles' }]}
-        showCreateButton={true}
+        showCreateButton={hasPermission(PERMISSIONS.ROLE_CREATE)}
         createButtonLabel={t('roles:list.newRole')}
         onCreateClick={() => navigate('/roles/new')}
-        createButtonDisabled={!hasPermission(PERMISSIONS.ROLE_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

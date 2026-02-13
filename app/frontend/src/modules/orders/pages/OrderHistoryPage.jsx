@@ -1,7 +1,8 @@
 import { useCallback, useState, useMemo } from 'react';
-import { Button, Group, Title, Container, Modal, Loader, Center, Box, Badge } from '@mantine/core';
+import { Button, Group, Title, Container, Modal, 
+         Loader, Center, Box, Badge, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { IconShoppingCartSearch } from '@tabler/icons-react';
+import { IconShoppingCartSearch, IconUser } from '@tabler/icons-react';
 import ManagementLayout from '../../../common/layouts/ManagementLayout';
 import DataTable from '../../../common/components/DataTable';
 import { usePagination, DEFAULT_PAGE_SIZE } from '../../../common/hooks/usePagination';
@@ -65,11 +66,6 @@ export default function OrderHistoryPage() {
       render: (order) => order.updatedAt ? new Date(order.updatedAt).toLocaleString() : '-'
     },
     {
-      key: 'tableName',
-      title: t('orders:list.table'),
-      render: (order) => order.tableName || (order.tableId ? order.tableId : '-')
-    },
-    {
       key: 'status',
       title: t('orders:list.status'),
       render: (order) => (
@@ -79,9 +75,24 @@ export default function OrderHistoryPage() {
       )
     },
     {
+      key: 'createdBy',
+      title: t('orders:list.createdBy'),
+      render: (order) => (
+        <Group>
+          <IconUser size="1rem" />
+          <Text>{order.employeeName ? order.employeeName : '-'}</Text>
+        </Group>
+      )
+    },
+    {
       key: 'orderType',
       title: t('orders:list.type'),
       render: (order) => t(`orders:types.${(order.orderType || '').toLowerCase()}`, order.orderType)
+    },
+    {
+      key: 'tableName',
+      title: t('orders:list.table'),
+      render: (order) => order.tableName || (order.tableId ? order.tableId : '-')
     }
   ], [t, handleOrderNumberClick]);
 

@@ -42,32 +42,6 @@ const FoodEditPage = () => {
   ];
 
 
-  if (error && !loading) {
-    return (
-      <FormLayout
-        title={t('foods:management.edit')}
-        icon={IconEdit}
-        iconColor={moduleConfig?.color}
-        breadcrumbs={breadcrumbs}
-        showBackButton={true}
-        error={error}
-        onClearError={clearError}
-      >
-        <Alert
-          icon={<IconAlertCircle size="1rem" />}
-          title={t('foods:errors.loadError')}
-          color="red"
-        >
-          <Text mb="md">{t('foods:errors.notFound', { id })}</Text>
-          <Text size="sm" color="dimmed">
-            {t('foods:errors.notFoundDetails')}
-          </Text>
-        </Alert>
-      </FormLayout>
-    );
-  }
-
-
   return (
     <FormLayout
       title={t('foods:management.edit')}

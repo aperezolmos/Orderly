@@ -3,6 +3,7 @@ package es.ubu.inf.tfg.reservation;
 import es.ubu.inf.tfg.reservation.details.ReservationStatus;
 import es.ubu.inf.tfg.reservation.diningTable.DiningTable;
 import es.ubu.inf.tfg.reservation.diningTable.DiningTableService;
+import es.ubu.inf.tfg.reservation.diningTable.dto.DiningTableResponseDTO;
 import es.ubu.inf.tfg.reservation.dto.ReservationRequestDTO;
 import es.ubu.inf.tfg.reservation.dto.ReservationResponseDTO;
 import es.ubu.inf.tfg.reservation.dto.mapper.ReservationMapper;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -166,10 +168,25 @@ public class ReservationService {
         }
         
         DiningTable table = diningTableService.findEntityById(reservationRequest.getDiningTableId());
+        
         if (reservationRequest.getNumberOfGuests() > table.getCapacity()) {
+
+            List<DiningTableResponseDTO> suitableTables = diningTableService
+                    .findActiveTablesByCapacity(reservationRequest.getNumberOfGuests());
+
+            String availableTablesFormatted = suitableTables.isEmpty() 
+                    ? "none" 
+                    : suitableTables.stream()
+                        .map(DiningTableResponseDTO::getName)
+                        .collect(Collectors.joining(", "));
+
             throw new IllegalArgumentException(
-                "Number of guests (" + reservationRequest.getNumberOfGuests() + 
-                ") exceeds table capacity (" + table.getCapacity() + ")");
+                String.format("Number of guests (%d) exceeds table capacity (%d). " +
+                            "Available active tables for specified number of guests: %s", 
+                            reservationRequest.getNumberOfGuests(), 
+                            table.getCapacity(), 
+                            availableTablesFormatted)
+            );
         }
     }
 

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { Textarea, Button, Group, LoadingOverlay, Tabs } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { IconInfoCircle, IconUserShield } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import PermissionCheckboxList from './PermissionCheckboxList';
 import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
@@ -106,8 +107,12 @@ const RoleForm = ({
 
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic">{t('common:form.basicInfo')}</Tabs.Tab>
-          <Tabs.Tab value="permissions">{t('roles:form.permissions')}</Tabs.Tab>
+          <Tabs.Tab value="basic" leftSection={<IconInfoCircle size="0.8rem" />}>
+            {t('common:form.basicInfo')}
+          </Tabs.Tab>
+          <Tabs.Tab value="permissions" leftSection={<IconUserShield size="0.8rem" />}>
+            {t('roles:form.permissions')}
+          </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="basic" pt="md">

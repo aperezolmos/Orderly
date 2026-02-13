@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TextInput, NumberInput, Button, Group,
+import { TextInput, Textarea, NumberInput, Button, Group,
         LoadingOverlay, Tabs, Select, Alert, Text } from '@mantine/core';
 import { DateTimePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
@@ -34,7 +34,11 @@ const ReservationForm = ({
     validate: {
       diningTableId: (value) => (value ? null : t('common:validation.required')),
       numberOfGuests: (value) => !value || value < 1 ? t('common:validation.positive') : null,
-      reservationDateTime: (value) => (value ? null : t('common:validation.required')),
+      reservationDateTime: (value) => {
+        if (!value) return t('common:validation.required');
+        if (value <= new Date()) return t('reservations:validation.futureDate');
+        return null;
+      },
       estimatedDurationMinutes: (value) => value < 30 || value > 240 
         ? t('reservations:validation.durationRange', { minDuration: 30, maxDuration: 240 }) : null,
       guestFirstName: (value) => (value ? null : t('common:validation.required')),
@@ -42,30 +46,20 @@ const ReservationForm = ({
       guestPhone: (value) => (value ? null : t('common:validation.required')),
       guestSpecialRequests: (value) => value && value.length > 500 ? t('common:validation.maxLength', { count: 500 }) : null,
     },
+    validateInputOnChange: true,
   });
 
   useEffect(() => {
-    const fetchTables = async () => {
-      setTablesLoading(true);
-      try {
-        const activeTables = await diningTableService.getActiveTables();
-        setTables(activeTables);
-      } 
-      catch (err) {
-        setTables([]);
-        console.error('Error:', err);
-      } 
-      finally {
-        setTablesLoading(false);
-      }
-    };
-    fetchTables();
+    setTablesLoading(true);
+    diningTableService.getActiveTables()
+      .then(setTables)
+      .finally(() => setTablesLoading(false));
   }, []);
 
   useEffect(() => {
     if (reservation) {
       form.setValues({
-        diningTableId: reservation.diningTableId || '',
+        diningTableId: reservation.diningTableId?.toString() || '',
         numberOfGuests: reservation.numberOfGuests || 1,
         reservationDateTime: reservation.reservationDateTime ? new Date(reservation.reservationDateTime) : null,
         estimatedDurationMinutes: reservation.estimatedDurationMinutes || 120,
@@ -74,6 +68,7 @@ const ReservationForm = ({
         guestPhone: reservation.guestPhone || '',
         guestSpecialRequests: reservation.guestSpecialRequests || '',
       });
+      form.resetDirty();
     }
   }, [reservation]);
 
@@ -96,19 +91,15 @@ const ReservationForm = ({
       <LoadingOverlay visible={loading || tablesLoading} />
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic" icon={<IconInfoCircle size="0.8rem" />}>
+          <Tabs.Tab value="basic" leftSection={<IconInfoCircle size="0.8rem" />}>
             {t('common:form.basicInfo')}
           </Tabs.Tab>
-          <Tabs.Tab value="guest" icon={<IconUser size="0.8rem" />}>
+          <Tabs.Tab value="guest" leftSection={<IconUser size="0.8rem" />}>
             {t('reservations:form.guestInfo')}
           </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="basic" pt="xs">
-          <Alert icon={<IconAlertCircle size="1rem" />} color="blue" mb="md">
-            <Text size="sm">{t('reservations:form.requiredFieldsInfo')}</Text>
-          </Alert>
-
           <Select
             label={t('reservations:form.diningTable')}
             placeholder={t('reservations:form.diningTablePlaceholder')}
@@ -136,6 +127,7 @@ const ReservationForm = ({
             required
             {...form.getInputProps('reservationDateTime')}
             mb="md"
+            minDate={new Date()}
           />
           <NumberInput
             label={t('reservations:form.estimatedDurationMinutes')}
@@ -146,13 +138,13 @@ const ReservationForm = ({
             {...form.getInputProps('estimatedDurationMinutes')}
             mb="md"
           />
-        </Tabs.Panel>
 
-        <Tabs.Panel value="guest" pt="xs">
           <Alert icon={<IconAlertCircle size="1rem" />} color="blue" mb="md">
             <Text size="sm">{t('reservations:form.requiredFieldsInfo')}</Text>
           </Alert>
-          
+        </Tabs.Panel>
+
+        <Tabs.Panel value="guest" pt="xs">         
           <Group grow mb="md">
             <TextInput
               label={t('reservations:form.guestFirstName')}
@@ -177,13 +169,19 @@ const ReservationForm = ({
             {...form.getInputProps('guestPhone')}
             mb="md"
           />
-          <TextInput
+          <Textarea
             label={t('reservations:form.guestSpecialRequests')}
             placeholder={t('reservations:form.guestSpecialRequestsPlaceholder')}
             maxLength={500}
+            autosize
+            minRows={3}
             {...form.getInputProps('guestSpecialRequests')}
             mb="md"
           />
+
+          <Alert icon={<IconAlertCircle size="1rem" />} color="blue" mb="md">
+            <Text size="sm">{t('reservations:form.requiredFieldsInfo')}</Text>
+          </Alert>
         </Tabs.Panel>
       </Tabs>
       <Group position="right" mt="xl">

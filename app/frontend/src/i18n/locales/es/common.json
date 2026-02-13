@@ -10,6 +10,7 @@
     "edit": "Editar",
     "create": "Crear",
     "confirm": "Confirmar",
+    "add": "Añadir",
     "back": "Volver",
     "welcome": "¡Bienvenido!",
     "welcomeUser": "¡Bienvenido, {{name}}!",
@@ -128,6 +129,9 @@
     "titleDelete": "Confirmar eliminación",
     "messageDelete": "¿Estás seguro de que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer",
     "messageDeleteWithId": "¿Estás seguro de que quieres eliminar el elemento con id \"#{{id}}\"? Esta acción no se puede deshacer"
+  },
+  "list": {
+    "updated": "Modificado"
   },
   "error": {
     "generic": "Error",

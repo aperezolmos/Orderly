@@ -38,7 +38,7 @@ class DiningOrderMapperTest {
     
 
     private static final Integer EMPLOYEE_ID = 1;
-    private static final String EMPLOYEE_NAME = "Amanda";
+    private static final String EMPLOYEE_USERNAME = "amanda";
     private static final Integer TABLE_ID = 5;
     private static final String TABLE_NAME = "TABLE-5";
     private static final String ORDER_NUMBER = "DINING-001";
@@ -58,7 +58,7 @@ class DiningOrderMapperTest {
         
         employee = User.builder()
                 .id(EMPLOYEE_ID)
-                .firstName(EMPLOYEE_NAME)
+                .username(EMPLOYEE_USERNAME)
                 .build();
 
         diningTable = DiningTable.builder()
@@ -129,7 +129,7 @@ class DiningOrderMapperTest {
         assertThat(result.getNotes()).isEqualTo(NOTES);
         assertThat(result.getOrderType()).isEqualTo(ORDER_TYPE_DINING);
         assertThat(result.getEmployeeId()).isEqualTo(EMPLOYEE_ID);
-        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_NAME);
+        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_USERNAME);
         assertThat(result.getTableId()).isEqualTo(TABLE_ID);
         assertThat(result.getTableName()).isEqualTo(TABLE_NAME);
         assertThat(result.getItems()).isNull();
@@ -147,7 +147,7 @@ class DiningOrderMapperTest {
         assertThat(result.getOrderNumber()).isEqualTo(ORDER_NUMBER);
         assertThat(result.getOrderType()).isEqualTo(ORDER_TYPE_DINING);
         assertThat(result.getEmployeeId()).isEqualTo(EMPLOYEE_ID);
-        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_NAME);
+        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_USERNAME);
         assertThat(result.getTableId()).isEqualTo(TABLE_ID);
         assertThat(result.getTableName()).isEqualTo(TABLE_NAME);
         assertThat(result.getItems()).isNotNull();
@@ -173,7 +173,7 @@ class DiningOrderMapperTest {
 
         User newEmployee = User.builder()
                 .id(NEW_EMPLOYEE_ID)
-                .firstName("Ana")
+                .username("ana")
                 .build();
 
         DiningTable newTable = DiningTable.builder()

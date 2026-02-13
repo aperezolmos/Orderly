@@ -83,11 +83,11 @@ const ProductListPage = () => {
       render: (product) => <Text>{product.ingredientCount}</Text>
     },
     {
-      key: 'createdAt',
-      title: t('products:list.created'),
+      key: 'updatedAt',
+      title: t('common:list.updated'),
       render: (product) => (
         <Text size="sm">
-          {product.createdAt ? new Date(product.createdAt).toLocaleDateString() : 'N/A'}
+          {product.updatedAt ? new Date(product.updatedAt).toLocaleString() : 'N/A'}
         </Text>
       )
     }
@@ -101,10 +101,9 @@ const ProductListPage = () => {
         icon={moduleConfig?.icon}
         iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('products:management.list'), href: '/products' }]}
-        showCreateButton={true}
+        showCreateButton={hasPermission(PERMISSIONS.PRODUCT_CREATE)}
         createButtonLabel={t('products:list.newProduct')}
         onCreateClick={() => navigate('/products/new')}
-        createButtonDisabled={!hasPermission(PERMISSIONS.PRODUCT_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

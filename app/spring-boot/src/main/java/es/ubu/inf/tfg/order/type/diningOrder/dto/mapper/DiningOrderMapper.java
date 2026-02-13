@@ -43,7 +43,7 @@ public abstract class DiningOrderMapper {
 
     @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
-    @Mapping(target = "employeeName", source = "employee.firstName")
+    @Mapping(target = "employeeName", source = "employee.username")
     @Mapping(target = "tableId", source = "table.id")
     @Mapping(target = "tableName", source = "table.name")
     @Mapping(target = "itemCount", expression = "java(entity.getItems() != null ? entity.getItems().size() : 0)")
@@ -53,7 +53,7 @@ public abstract class DiningOrderMapper {
 
     @Mapping(target = "orderType", source = ".", qualifiedByName = "mapEntityToOrderType")
     @Mapping(target = "employeeId", source = "employee.id")
-    @Mapping(target = "employeeName", source = "employee.firstName")
+    @Mapping(target = "employeeName", source = "employee.username")
     @Mapping(target = "tableId", source = "table.id")
     @Mapping(target = "tableName", source = "table.name")
     @Mapping(target = "itemCount", expression = "java(entity.getItems() != null ? entity.getItems().size() : 0)")

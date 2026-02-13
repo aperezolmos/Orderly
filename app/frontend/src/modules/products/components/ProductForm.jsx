@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Textarea, NumberInput, Button, Group, Tabs, LoadingOverlay } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { IconInfoCircle, IconCarrot } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useUniqueCheck } from '../../../common/hooks/useUniqueCheck';
 import UniqueTextField from '../../../common/components/UniqueTextField';
@@ -12,6 +13,7 @@ const ProductForm = ({
   onSubmit,
   loading = false,
   submitLabel = "Create Product",
+  showIngredientManagement = false,
   initialIngredients = [],
   onIngredientsChange,
 }) => {
@@ -118,8 +120,15 @@ const ProductForm = ({
       <LoadingOverlay visible={loading} />
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic">{t('common:form.basicInfo')}</Tabs.Tab>
-          <Tabs.Tab value="ingredients">{t('products:form.ingredients')}</Tabs.Tab>
+          <Tabs.Tab value="basic" leftSection={<IconInfoCircle size="0.8rem" />}>
+            {t('common:form.basicInfo')}
+          </Tabs.Tab>
+
+          {showIngredientManagement && (
+            <Tabs.Tab value="ingredients" leftSection={<IconCarrot size="0.8rem" />}>
+              {t('products:form.ingredients')}
+            </Tabs.Tab>
+          )}
         </Tabs.List>
         <Tabs.Panel value="basic" pt="xs">
           <UniqueTextField
@@ -148,16 +157,19 @@ const ProductForm = ({
             mb="md"
           />
         </Tabs.Panel>
-        <Tabs.Panel value="ingredients" pt="xs">
-          <ProductIngredientsManager
-            productId={product?.id}
-            ingredients={ingredients}
-            onAddIngredient={handleAddIngredient}
-            onUpdateIngredient={handleUpdateIngredient}
-            onRemoveIngredient={handleRemoveIngredient}
-            loading={loading}
-          />
-        </Tabs.Panel>
+
+        {showIngredientManagement && (
+          <Tabs.Panel value="ingredients" pt="xs">
+            <ProductIngredientsManager
+              productId={product?.id}
+              ingredients={ingredients}
+              onAddIngredient={handleAddIngredient}
+              onUpdateIngredient={handleUpdateIngredient}
+              onRemoveIngredient={handleRemoveIngredient}
+              loading={loading}
+            />
+          </Tabs.Panel>
+        )}
       </Tabs>
       <Group justify="flex-end" mt="xl">
         <Button 

@@ -233,18 +233,17 @@ const OrderDashboardSection = () => {
 
       {/* Edit and delete buttons */}
       <Group mb="md" gap="xs" justify="flex-end">
-        {canEdit && (
-          <ActionIcon
-            variant="subtle"
-            color="blue"
-            size="lg"
-            onClick={openEditOrderModal}
-            disabled={!currentOrder || isLoadingOrdersList}
-            title={t('orders:form.edit')}
-          >
-            <IconPencil size={20} />
-          </ActionIcon>
-        )}
+        <ActionIcon
+          variant="subtle"
+          color="blue"
+          size="lg"
+          onClick={openEditOrderModal}
+          disabled={!currentOrder || isLoadingOrdersList}
+          title={t('orders:form.edit')}
+          style={{ visibility: canEdit ? 'visible' : 'hidden' }}
+        >
+          <IconPencil size={20} />
+        </ActionIcon>
 
         {canDelete && (
           <ActionIcon

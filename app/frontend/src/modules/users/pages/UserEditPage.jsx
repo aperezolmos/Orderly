@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Text, Alert } from '@mantine/core';
-import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
+import { IconEdit } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import UserForm from '../components/UserForm';
@@ -43,32 +42,6 @@ const UserEditPage = () => {
     { title: t('users:management.list'), href: '/users' },
     { title: t('users:management.edit'), href: `/users/${id}/edit` }
   ];
-
-
-  if (error && !loading) {
-    return (
-      <FormLayout
-        title={t('users:management.edit')}
-        icon={IconEdit}
-        iconColor={moduleConfig?.color}
-        breadcrumbs={breadcrumbs}
-        showBackButton={true}
-        error={error}
-        onClearError={clearError}
-      >
-        <Alert 
-          icon={<IconAlertCircle size="1rem" />} 
-          title={t('users:errors.loadError')} 
-          color="red"
-        >
-          <Text mb="md">{t('users:errors.notFound', { id })}</Text>
-          <Text size="sm" color="dimmed">
-            {t('users:errors.notFoundDetails')}
-          </Text>
-        </Alert>
-      </FormLayout>
-    );
-  }
 
 
   return (

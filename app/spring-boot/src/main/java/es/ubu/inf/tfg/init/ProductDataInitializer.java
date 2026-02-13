@@ -129,7 +129,7 @@ public class ProductDataInitializer implements CommandLineRunner {
         createProduct("Ensalada Nórdica", "Salmón ahumado, huevo y aguacate", 12.00, Set.of(
             ing(lechugaIceberg, 80), ing(salmonNoruego, 60), ing(huevoDeGallina, 50), ing(aguacate, 40)));
 
-        createProduct("Bowl Snack", "Nueces y trozos de chocolate negro", 3.50, Set.of(
+        createProduct("Snack Bowl", "Nueces y trozos de chocolate negro", 3.50, Set.of(
             ing(nuecesPeladas, 50), ing(chocolateNegro, 30)));
 
         log.info("Inserted 16 demo products with their ingredients");

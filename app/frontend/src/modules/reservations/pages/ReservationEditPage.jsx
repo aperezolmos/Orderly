@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Text, Alert } from '@mantine/core';
-import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
+import { IconEdit } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ReservationForm from '../components/ReservationForm';
@@ -40,32 +39,6 @@ const ReservationEditPage = () => {
     { title: t('reservations:management.list'), href: '/reservations' },
     { title: t('reservations:management.edit'), href: `/reservations/${id}/edit` }
   ];
-
-
-  if (error && !loading) {
-    return (
-      <FormLayout
-        title={t('reservations:management.edit')}
-        icon={IconEdit}
-        iconColor={moduleConfig?.color}
-        breadcrumbs={breadcrumbs}
-        showBackButton={true}
-        error={error}
-        onClearError={clearError}
-      >
-        <Alert
-          icon={<IconAlertCircle size="1rem" />}
-          title={t('reservations:errors.loadError')}
-          color="red"
-        >
-          <Text mb="md">{t('reservations:errors.notFound', { id })}</Text>
-          <Text size="sm" color="dimmed">
-            {t('reservations:errors.notFoundDetails')}
-          </Text>
-        </Alert>
-      </FormLayout>
-    );
-  }
   
 
   return (

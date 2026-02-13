@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Table, Group, Text, Button, ActionIcon, LoadingOverlay,
-         NumberInput, ScrollArea } from '@mantine/core';
+         NumberInput, ScrollArea, Tooltip } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { formatCurrency } from '../../../utils/formatters';
@@ -81,15 +81,19 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder, editDisabled = 
 
   return (
     <div className="order-details" style={{ position: 'relative' }}>
-      <LoadingOverlay visible={isLoadingOrderDetails} />
+      <LoadingOverlay 
+        zIndex={50}
+        visible={isLoadingOrderDetails} 
+        overlayProps={{ blur: 1, backgroundOpacity: 0.5 }}
+      />
 
       <Group justify="space-between" mb="md" align="center">
         <div>
-          <Text fw={500}>
-            {t('orders:list.orderNumber') + ' #' + orderToShow.orderNumber}
+          <Text fw={500} truncate>
+            {' #' + orderToShow.orderNumber}
           </Text>
-          <Text size="sm" c="dimmed">
-            {orderToShow.customerName || t('orders:list.customerName')}
+          <Text size="sm" c="dimmed" truncate>
+            {orderToShow.customerName || t('orders:list.noCustomerName')}
           </Text>
         </div>
         <StatusButton
@@ -161,9 +165,11 @@ const OrderDetailsTable = ({ viewOnly = false, order: propOrder, editDisabled = 
       <Group justify="space-between" mt="xl">
         <div style={{ maxWidth: '60%' }}>
           <Text size="sm" c="dimmed">{t('orders:dashboard.notes')}</Text>
-          <Text style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-            {orderToShow.notes || t('orders:dashboard.noNotes')}
-          </Text>
+          <Tooltip label={orderToShow.notes} multiline w={400} withArrow position="bottom-start">
+              <Text lineClamp={2} style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                {orderToShow.notes || t('orders:dashboard.noNotes')}
+              </Text>
+          </Tooltip>
         </div>
 
         <div style={{ textAlign: 'right' }}>

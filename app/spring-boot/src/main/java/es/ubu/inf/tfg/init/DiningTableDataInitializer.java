@@ -33,27 +33,27 @@ public class DiningTableDataInitializer implements CommandLineRunner {
 
         List<DiningTable> tables = List.of(
             DiningTable.builder()
-                .name("T1")
+                .name("M1")
                 .capacity(2)
-                .locationDescription("Window")
+                .locationDescription("Ventana")
                 .isActive(true)
                 .build(),
             DiningTable.builder()
-                .name("T2")
+                .name("M2")
                 .capacity(4)
-                .locationDescription("Center")
+                .locationDescription("Centro")
                 .isActive(true)
                 .build(),
             DiningTable.builder()
-                .name("T3")
+                .name("M3")
                 .capacity(6)
-                .locationDescription("Terrace")
+                .locationDescription("Terraza")
                 .isActive(true)
                 .build(),
             DiningTable.builder()
-                .name("T4")
+                .name("M4")
                 .capacity(8)
-                .locationDescription("Private Room")
+                .locationDescription("Sala privada")
                 .isActive(true)
                 .build()
         );

@@ -100,11 +100,11 @@ const UserListPage = () => {
       )
     },
     {
-      key: 'createdAt',
-      title: t('users:list.created'),
+      key: 'updatedAt',
+      title: t('common:list.updated'),
       render: (user) => (
         <Text size="sm">
-          {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+          {user.updatedAt ? new Date(user.updatedAt).toLocaleString() : 'N/A'}
         </Text>
       )
     }
@@ -118,10 +118,9 @@ const UserListPage = () => {
         icon={moduleConfig?.icon}
         iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('users:management.list'), href: '/users' }]}
-        showCreateButton={true}
+        showCreateButton={hasPermission(PERMISSIONS.USER_CREATE)}
         createButtonLabel={t('users:list.newUser')}
         onCreateClick={() => navigate('/users/new')}
-        createButtonDisabled={!hasPermission(PERMISSIONS.USER_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

@@ -27,11 +27,12 @@
   "list": {
     "id": "ID",
     "orderNumber": "Order No.",
-    "customerName": "Customer",
+    "noCustomerName": "No customer specified",
     "table": "Table",
     "status": "Status",
     "created": "Created",
     "updated": "Updated",
+    "createdBy": "Created by",
     "totalAmount": "Total",
     "itemCount": "Items",
     "newOrder": "New Order",

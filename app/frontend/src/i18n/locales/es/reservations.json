@@ -39,12 +39,13 @@
   },
   "status": {
     "CONFIRMED": "Confirmada",
-    "SEATED": "Sentado",
+    "SEATED": "En mesa",
     "COMPLETED": "Completada",
     "CANCELLED": "Cancelada"
   },
   "validation": {
-    "durationRange": "La duración debe estar entre {{minDuration}} y {{maxDuration}} minutos"
+    "durationRange": "La duración debe estar entre {{minDuration}} y {{maxDuration}} minutos",
+    "futureDate": "La reserva debe ser para una fecha futura"
   },
   "notifications": {
     "createSuccess": "Reserva creada exitosamente",

@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../../context/AuthContext';
+import { PERMISSIONS } from '../../../utils/permissions';
 import FormLayout from '../../../common/layouts/FormLayout';
 import ProductForm from '../components/ProductForm';
 import { useProducts } from '../hooks/useProducts';
@@ -9,6 +11,7 @@ import { getNavigationConfig } from '../../../utils/navigationConfig';
 const ProductCreatePage = () => {
   
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { createProduct, loading, error, clearError } = useProducts();
   const { t } = useTranslation(['common', 'products']);
 
@@ -42,6 +45,7 @@ const ProductCreatePage = () => {
         onSubmit={handleSubmit}
         loading={loading}
         submitLabel={t('products:form.create')}
+        showIngredientManagement={hasPermission(PERMISSIONS.PRODUCT_EDIT_INGREDIENTS)}
       />
     </FormLayout>
   );

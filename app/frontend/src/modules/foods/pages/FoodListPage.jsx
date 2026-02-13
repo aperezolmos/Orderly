@@ -90,11 +90,11 @@ const FoodListPage = () => {
       )
     },
     {
-      key: 'createdAt',
-      title: t('foods:list.created'),
+      key: 'updatedAt',
+      title: t('common:list.updated'),
       render: (food) => (
         <Text size="sm">
-          {food.createdAt ? new Date(food.createdAt).toLocaleDateString() : 'N/A'}
+          {food.updatedAt ? new Date(food.updatedAt).toLocaleString() : 'N/A'}
         </Text>
       )
     }
@@ -108,10 +108,9 @@ const FoodListPage = () => {
         icon={moduleConfig?.icon}
         iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('foods:management.list'), href: '/foods' }]}
-        showCreateButton={true}
+        showCreateButton={hasPermission(PERMISSIONS.FOOD_CREATE)}
         createButtonLabel={t('foods:list.newFood')}
         onCreateClick={() => navigate('/foods/new')}
-        createButtonDisabled={!hasPermission(PERMISSIONS.FOOD_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

@@ -34,7 +34,7 @@ class BarOrderMapperTest {
 
 
     private static final Integer EMPLOYEE_ID = 1;
-    private static final String EMPLOYEE_NAME = "Amanda";
+    private static final String EMPLOYEE_USERNAME = "amanda";
     private static final String ORDER_NUMBER = "BAR-001";
     private static final String ORDER_TYPE_BAR = "BAR";
     private static final String CUSTOMER_NAME = "Bar Customer";
@@ -52,7 +52,7 @@ class BarOrderMapperTest {
         
         employee = User.builder()
                 .id(EMPLOYEE_ID)
-                .firstName(EMPLOYEE_NAME)
+                .username(EMPLOYEE_USERNAME)
                 .build();
 
         orderItem = OrderItem.builder()
@@ -131,7 +131,7 @@ class BarOrderMapperTest {
         assertThat(result.getNotes()).isEqualTo(NOTES);
         assertThat(result.getOrderType()).isEqualTo(ORDER_TYPE_BAR);
         assertThat(result.getEmployeeId()).isEqualTo(EMPLOYEE_ID);
-        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_NAME);
+        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_USERNAME);
         assertThat(result.getDrinksOnly()).isTrue();
         assertThat(result.getItems()).isNull();
     }
@@ -148,7 +148,7 @@ class BarOrderMapperTest {
         assertThat(result.getOrderNumber()).isEqualTo(ORDER_NUMBER);
         assertThat(result.getOrderType()).isEqualTo(ORDER_TYPE_BAR);
         assertThat(result.getEmployeeId()).isEqualTo(EMPLOYEE_ID);
-        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_NAME);
+        assertThat(result.getEmployeeName()).isEqualTo(EMPLOYEE_USERNAME);
         assertThat(result.getDrinksOnly()).isTrue();
         assertThat(result.getItems()).isNotNull();
         assertThat(result.getItems()).hasSize(1);
@@ -172,7 +172,7 @@ class BarOrderMapperTest {
 
         User newEmployee = User.builder()
                 .id(NEW_EMPLOYEE_ID)
-                .firstName("Ana")
+                .username("ana")
                 .build();
 
         when(userService.findEntityById(NEW_EMPLOYEE_ID)).thenReturn(newEmployee);

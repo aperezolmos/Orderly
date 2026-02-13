@@ -10,6 +10,7 @@
     "edit": "Edit",
     "create": "Create",
     "confirm": "Confirm",
+    "add": "Add",
     "back": "Back",
     "welcome": "Welcome!",
     "welcomeUser": "Welcome, {{name}}!",
@@ -120,6 +121,9 @@
       "perPage": "elements per page",
       "footer": "Page {{page}} of {{totalPages}} • {{count}} elements in total"
     }
+  },
+  "list": {
+    "updated": "Updated"
   },
   "modal": {
     "cancel": "Cancel",

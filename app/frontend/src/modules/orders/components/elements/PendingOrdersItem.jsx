@@ -49,22 +49,24 @@ const PendingOrdersItem = ({
       onMouseLeave={e => { e.currentTarget.style.transform = 'translateX(0)'; }}
       data-selected={selected}
     >
-      <Group justify="apart">
-        <div style={{ flex: 1 }}>
+      <Group justify="space-between" wrap="nowrap" align="flex-start">
+        <div style={{ flex: 1, minWidth: 0 }}>
           <Text fw={500} truncate>
-            {t('orders:list.orderNumber') + ' #' + order.orderNumber}
+            {' #' + order.orderNumber}
           </Text>
-          <Text size="sm" c="dimmed">
-            {order.customerName || t('orders:list.customerName')}
+
+          <Text size="sm" c="dimmed" truncate>
+            {order.customerName || t('orders:list.noCustomerName')}
             {order.tableName && ` • ${t('orders:list.table')}: ${order.tableName}`}
-            {order.drinksOnly !== undefined && ` • ${order.drinksOnly ? t('orders:form.drinksOnly') : t('orders:dashboard.addProduct')}`}
+            {order.drinksOnly && ` • ${t('orders:form.drinksOnly')}`}
           </Text>
+
           <Text size="xs" c="dimmed" mt={4}>
             {t('orders:dashboard.created', { time: formatTime(order.createdAt) })}
           </Text>
         </div>
         
-        <div style={{ textAlign: 'right', minWidth: 120 }}>
+        <div style={{ textAlign: 'right', minWidth: 120, flexShrink: 0 }}>
           <Badge color={getStatusColor(order.status)} mb={4}>
             {t(`orders:status.${order.status}`, order.status)}
           </Badge>

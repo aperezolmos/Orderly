@@ -27,11 +27,12 @@
   "list": {
     "id": "ID",
     "orderNumber": "Nº Pedido",
-    "customerName": "Cliente",
+    "noCustomerName": "Sin cliente especificado",
     "table": "Mesa",
     "status": "Estado",
     "created": "Creado",
     "updated": "Modificado",
+    "createdBy": "Creado por",
     "totalAmount": "Total",
     "itemCount": "Ítems",
     "newOrder": "Nuevo Pedido",

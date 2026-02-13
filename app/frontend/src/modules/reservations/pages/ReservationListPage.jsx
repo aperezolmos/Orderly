@@ -114,10 +114,9 @@ const ReservationListPage = () => {
         icon={moduleConfig?.icon}
         iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('reservations:management.list'), href: '/reservations' }]}
-        showCreateButton={true}
+        showCreateButton={hasPermission(PERMISSIONS.RESERVATION_CREATE)}
         createButtonLabel={t('reservations:list.newReservation')}
         onCreateClick={() => navigate('/reservations/new')}
-        createButtonDisabled={!hasPermission(PERMISSIONS.RESERVATION_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />

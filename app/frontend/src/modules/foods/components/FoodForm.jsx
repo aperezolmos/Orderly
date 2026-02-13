@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { NumberInput, Button, Group, Select, LoadingOverlay, Tabs } from '@mantine/core';
+import { IconInfoCircle, IconLeaf, IconWheatOff } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
 import { useTranslation } from 'react-i18next';
 import NutritionInfoForm from './NutritionInfoForm';
@@ -67,7 +68,7 @@ const FoodForm = ({
         return null;
       }
     },
-    //validateInputOnChange: true,
+    validateInputOnChange: true,
   });
 
 
@@ -118,9 +119,15 @@ const FoodForm = ({
       <LoadingOverlay visible={loading} />
       <Tabs defaultValue="basic">
         <Tabs.List>
-          <Tabs.Tab value="basic">{t('common:form.basicInfo')}</Tabs.Tab>
-          <Tabs.Tab value="nutrition">{t('foods:form.nutritionInfo.title')}</Tabs.Tab>
-          <Tabs.Tab value="allergens">{t('foods:allergens.form.title')}</Tabs.Tab>
+          <Tabs.Tab value="basic" leftSection={<IconInfoCircle size="0.8rem" />}>
+            {t('common:form.basicInfo')}
+          </Tabs.Tab>
+          <Tabs.Tab value="nutrition" leftSection={<IconLeaf size="0.8rem" />}>
+            {t('foods:form.nutritionInfo.title')}
+          </Tabs.Tab>
+          <Tabs.Tab value="allergens" leftSection={<IconWheatOff size="0.8rem" />}>
+            {t('foods:allergens.form.title')}
+          </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="basic" pt="md">
@@ -133,7 +140,7 @@ const FoodForm = ({
             {...form.getInputProps('name')}
             mb="md"
           />
-          <Group grow mb="md">
+          <Group grow mb="md" align="flex-start">
             <Select
               label={t('foods:form.foodGroup')}
               placeholder={t('foods:form.foodGroupPlaceholder')}

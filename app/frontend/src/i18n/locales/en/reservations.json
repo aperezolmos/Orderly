@@ -44,7 +44,8 @@
     "CANCELLED": "Cancelled"
   },
   "validation": {
-    "durationRange": "Duration must be between {{minDuration}} and {{maxDuration}} minutes"
+    "durationRange": "Duration must be between {{minDuration}} and {{maxDuration}} minutes",
+    "futureDate": "Reservation must be for a future date"
   },
   "notifications": {
     "createSuccess": "Reservation created successfully",

@@ -56,14 +56,14 @@ const ProductCard = ({ product, onSelect }) => {
           <IconShoppingCartPlus size={14} />
         </ActionIcon>
       </Group>
-      <Text fw={700} size="lg" lineClamp={1} mb="xs">
+      <Text fw={700} size="lg" lineClamp={2} mb="xs">
         {product.name}
       </Text>
-      <Text size="sm" c="dimmed" lineClamp={2} style={{ flexGrow: 1 }}>
+      <Text size="xs" c="dimmed" lineClamp={2} style={{ flexGrow: 1 }}>
         {product.description}
       </Text>
       <Group justify="flex-end" mt="md" style={{ marginTop: 'auto' }}>
-        <Text fw={700} size="xl" c="green">
+        <Text fw={700} size="lg" c="green">
           {formatCurrency(product.price)}
         </Text>
       </Group>

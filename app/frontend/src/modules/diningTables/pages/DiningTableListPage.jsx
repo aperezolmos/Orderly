@@ -107,11 +107,11 @@ const DiningTableListPage = () => {
       }
     },
     {
-      key: 'createdAt',
-      title: t('diningTables:list.created'),
+      key: 'updatedAt',
+      title: t('common:list.updated'),
       render: (table) => (
         <Text size="sm">
-          {table.createdAt ? new Date(table.createdAt).toLocaleDateString() : 'N/A'}
+          {table.updatedAt ? new Date(table.updatedAt).toLocaleString() : 'N/A'}
         </Text>
       )
     }
@@ -125,10 +125,9 @@ const DiningTableListPage = () => {
         icon={moduleConfig?.icon}
         iconColor={moduleConfig?.color}
         breadcrumbs={[{ title: t('diningTables:management.list'), href: '/tables' }]}
-        showCreateButton={true}
+        showCreateButton={hasPermission(PERMISSIONS.TABLE_CREATE)}
         createButtonLabel={t('diningTables:list.newTable')}
         onCreateClick={() => navigate('/tables/new')}
-        createButtonDisabled={!hasPermission(PERMISSIONS.TABLE_CREATE)}
       >
         <div style={{ position: 'relative' }}>
           <LoadingOverlay visible={loading && !deleteModalOpened} overlayblur={2} />
